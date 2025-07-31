@@ -22,17 +22,17 @@ export default async function ShopPage({ params }: { params: { id: string } }) {
           <TabsList>
             <TabsTrigger value="settings">General Settings</TabsTrigger>
             <TabsTrigger value="home">Home Page</TabsTrigger>
-            <TabsTrigger value="contact">Contact</TabsTrigger>
             <TabsTrigger value="about">About</TabsTrigger>
+            <TabsTrigger value="contact">Contact</TabsTrigger>
           </TabsList>
           <TabsContent value="settings">
             <GeneralSettings />
           </TabsContent>
           <TabsContent value="home">Home</TabsContent>
+          <TabsContent value="about">About</TabsContent>
           <TabsContent value="contact">
             <Contact />
           </TabsContent>
-          <TabsContent value="about">About</TabsContent>
         </Tabs>
       </div>
     </>

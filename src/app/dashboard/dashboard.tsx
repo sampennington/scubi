@@ -7,7 +7,7 @@ import { redirect } from "next/navigation"
 
 export const Dashboard = ({ shops }: { shops: Shop[] }) => {
   const emptyState = shops.length === 0
-  console.log(shops)
+
   const handleCreateShop = async () => {
     redirect("/dashboard/shops/create")
   }

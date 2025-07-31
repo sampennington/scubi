@@ -1,12 +1,38 @@
-import { Card, CardTitle } from "./card"
+import { Card, CardDescription, CardTitle } from "./card"
 import { CardHeader } from "./card"
 import type { Shop } from "@/lib/api"
+import { Button } from "./button"
+import { ExternalLink, Pencil } from "lucide-react"
+import Link from "next/link"
 
 export const ShopCard = ({ shop }: { shop: Shop }) => {
   return (
     <Card>
       <CardHeader>
         <CardTitle>{shop.name}</CardTitle>
+        <CardDescription>
+          <span className="font-medium">Domain:</span> {shop.customDomain}
+        </CardDescription>
+        <CardDescription>
+          <span className="font-medium">Created:</span>{" "}
+          {new Date(shop.createdAt).toLocaleDateString()}
+        </CardDescription>
+
+        <div className="mt-2 flex gap-2">
+          <Link href={`/dashboard/shops/${shop.id}`}>
+            <Button variant="default">
+              <Pencil className="mr-2 h-4 w-4" />
+              Edit
+            </Button>
+          </Link>
+
+          <Link href={`https://${shop.customDomain}`} target="_blank">
+            <Button variant="secondary">
+              <ExternalLink className="mr-2 h-4 w-4" />
+              Preview
+            </Button>
+          </Link>
+        </div>
       </CardHeader>
     </Card>
   )
