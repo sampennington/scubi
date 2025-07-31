@@ -24,6 +24,8 @@ export async function createShop(data: { name: string; domain: string }) {
       customDomain: data.domain
     })
 
+    await api.members.add({ shopId: shop.id, userId: session.user.id })
+
     revalidatePath("/dashboard/shops")
     return { success: true, shop }
   } catch (error) {

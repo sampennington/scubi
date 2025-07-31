@@ -42,8 +42,8 @@ export const shopApi = {
       })
       .from(shops)
       .innerJoin(shopMembers, eq(shops.id, shopMembers.shopId))
-      .where(eq(shopMembers.userId, userId))
-      .orderBy(desc(shops.createdAt))
+    // .where(eq(shopMembers.userId, userId))
+    // .orderBy(desc(shops.createdAt))
     return results
   },
 

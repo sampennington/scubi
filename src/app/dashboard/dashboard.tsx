@@ -1,3 +1,4 @@
+"use client"
 import { PageHeader } from "@/components/layout/page-header"
 import type { Shop } from "@/lib/api"
 import { ShopCard } from "@/components/ui/shop-card"
@@ -6,9 +7,9 @@ import { redirect } from "next/navigation"
 
 export const Dashboard = ({ shops }: { shops: Shop[] }) => {
   const emptyState = shops.length === 0
-
+  console.log(shops)
   const handleCreateShop = async () => {
-    redirect("/create")
+    redirect("/dashboard/shops/create")
   }
 
   if (emptyState) {

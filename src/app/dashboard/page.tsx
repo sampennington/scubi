@@ -17,6 +17,6 @@ export default async function DashboardPage() {
   }
 
   const shops = await api.shops.getByUserId(session.user.id)
-
+  console.log(shops)
   return <Dashboard shops={shops} />
 }
