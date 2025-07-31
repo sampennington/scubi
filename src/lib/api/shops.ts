@@ -1,6 +1,7 @@
 import { db } from "@/database/db"
 import { eq, desc } from "drizzle-orm"
 import { users, shops, shopMembers } from "@/database/schema"
+import { generateId } from "@/lib/utils"
 
 export type Shop = typeof shops.$inferSelect
 export type ShopWithMembers = Shop & {
@@ -47,14 +48,19 @@ export const shopApi = {
   },
 
   async create(data: {
-    id: string
     name: string
     slug: string
     createdBy: string
     customDomain?: string
     templateId?: string
   }): Promise<Shop> {
-    const [shop] = await db.insert(shops).values(data).returning()
+    const [shop] = await db
+      .insert(shops)
+      .values({
+        id: generateId(),
+        ...data
+      })
+      .returning()
     return shop
   },
 

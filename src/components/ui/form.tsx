@@ -9,10 +9,12 @@ import {
   type FieldPath,
   type FieldValues,
   FormProvider,
+  RegisterOptions,
   useFormContext
 } from "react-hook-form"
 import { Label } from "@/components/ui/label"
 import { cn } from "@/lib/utils"
+import { Input } from "./input"
 
 const Form = FormProvider
 
@@ -166,6 +168,36 @@ const FormMessage = React.forwardRef<
 })
 FormMessage.displayName = "FormMessage"
 
+interface FormInputProps {
+  name: string
+  label: string
+  placeholder?: string
+  rules?: RegisterOptions
+}
+
+const FormInput = ({ name, label, placeholder, rules }: FormInputProps) => {
+  const form = useFormContext()
+
+  return (
+    <FormField
+      control={form.control}
+      name={name}
+      rules={rules}
+      render={({ field }) => (
+        <FormItem>
+          <FormLabel>{label}</FormLabel>
+          <FormControl>
+            <Input placeholder={placeholder} {...field} />
+          </FormControl>
+          <FormMessage />
+        </FormItem>
+      )}
+    />
+  )
+}
+
+FormInput.displayName = "FormInput"
+
 export {
   useFormField,
   Form,
@@ -174,5 +206,6 @@ export {
   FormControl,
   FormDescription,
   FormMessage,
-  FormField
+  FormField,
+  FormInput
 }

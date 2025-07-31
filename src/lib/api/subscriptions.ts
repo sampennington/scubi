@@ -1,6 +1,7 @@
 import { db } from "@/database/db"
 import { eq, desc } from "drizzle-orm"
 import { subscriptions } from "@/database/schema"
+import { generateId } from "@/lib/utils"
 
 export const subscriptionApi = {
   async getByUserId(userId: string) {
@@ -14,7 +15,6 @@ export const subscriptionApi = {
   },
 
   async create(data: {
-    id: string
     plan: string
     referenceId: string
     stripeCustomerId?: string
@@ -24,7 +24,10 @@ export const subscriptionApi = {
   }) {
     const [subscription] = await db
       .insert(subscriptions)
-      .values(data)
+      .values({
+        id: generateId(),
+        ...data
+      })
       .returning()
     return subscription
   },

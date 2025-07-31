@@ -1,6 +1,7 @@
 import { db } from "@/database/db"
 import { eq, asc } from "drizzle-orm"
 import { blocks } from "@/database/schema"
+import { generateId } from "@/lib/utils"
 
 export type Block = typeof blocks.$inferSelect
 
@@ -14,13 +15,18 @@ export const blockApi = {
   },
 
   async create(data: {
-    id: string
     pageId: string
     type: string
     content: Record<string, unknown>
     order?: number
   }): Promise<Block> {
-    const [block] = await db.insert(blocks).values(data).returning()
+    const [block] = await db
+      .insert(blocks)
+      .values({
+        id: generateId(),
+        ...data
+      })
+      .returning()
     return block
   },
 

@@ -1,6 +1,7 @@
 import { db } from "@/database/db"
 import { eq, and, asc } from "drizzle-orm"
 import { pages } from "@/database/schema"
+import { generateId } from "@/lib/utils"
 
 export type Page = typeof pages.$inferSelect
 
@@ -27,14 +28,19 @@ export const pageApi = {
   },
 
   async create(data: {
-    id: string
     shopId: string
     title: string
     slug: string
     metaTitle?: string
     metaDescription?: string
   }): Promise<Page> {
-    const [page] = await db.insert(pages).values(data).returning()
+    const [page] = await db
+      .insert(pages)
+      .values({
+        id: generateId(),
+        ...data
+      })
+      .returning()
     return page
   },
 
