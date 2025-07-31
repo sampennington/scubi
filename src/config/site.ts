@@ -1,4 +1,4 @@
-const site_url = process.env.NEXT_PUBLIC_APP_URL || "http://localhost:3000";
+const site_url = process.env.NEXT_PUBLIC_APP_URL || "http://localhost:3000"
 
 export const site = {
   name: "Indie SaaS",
@@ -12,6 +12,6 @@ export const site = {
   links: {
     twitter: "https://twitter.com/indieceo",
     github: "https://github.com/indieceo/indiesaas",
-    linkedin: "https://www.linkedin.com/in/indieceo/",
-  },
-} as const;
+    linkedin: "https://www.linkedin.com/in/indieceo/"
+  }
+} as const

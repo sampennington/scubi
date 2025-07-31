@@ -5,8 +5,8 @@ import {
   boolean,
   integer,
   jsonb,
-  unique,
-} from "drizzle-orm/pg-core";
+  unique
+} from "drizzle-orm/pg-core"
 
 export const users = pgTable("users", {
   id: text("id").primaryKey(),
@@ -24,8 +24,8 @@ export const users = pgTable("users", {
   updatedAt: timestamp("updated_at")
     .$defaultFn(() => /* @__PURE__ */ new Date())
     .notNull(),
-  stripeCustomerId: text("stripe_customer_id"),
-});
+  stripeCustomerId: text("stripe_customer_id")
+})
 
 export const sessions = pgTable("sessions", {
   id: text("id").primaryKey(),
@@ -37,8 +37,8 @@ export const sessions = pgTable("sessions", {
   userAgent: text("user_agent"),
   userId: text("user_id")
     .notNull()
-    .references(() => users.id, { onDelete: "cascade" }),
-});
+    .references(() => users.id, { onDelete: "cascade" })
+})
 
 export const accounts = pgTable("accounts", {
   id: text("id").primaryKey(),
@@ -55,8 +55,8 @@ export const accounts = pgTable("accounts", {
   scope: text("scope"),
   password: text("password"),
   createdAt: timestamp("created_at").notNull(),
-  updatedAt: timestamp("updated_at").notNull(),
-});
+  updatedAt: timestamp("updated_at").notNull()
+})
 
 export const verifications = pgTable("verifications", {
   id: text("id").primaryKey(),
@@ -68,8 +68,8 @@ export const verifications = pgTable("verifications", {
   ),
   updatedAt: timestamp("updated_at").$defaultFn(
     () => /* @__PURE__ */ new Date()
-  ),
-});
+  )
+})
 
 export const subscriptions = pgTable("subscriptions", {
   id: text("id").primaryKey(),
@@ -83,8 +83,8 @@ export const subscriptions = pgTable("subscriptions", {
   cancelAtPeriodEnd: boolean("cancel_at_period_end"),
   seats: integer("seats"),
   trialStart: timestamp("trial_start"),
-  trialEnd: timestamp("trial_end"),
-});
+  trialEnd: timestamp("trial_end")
+})
 
 export const shops = pgTable("shops", {
   id: text("id").primaryKey(), // UUID or ULID
@@ -93,10 +93,10 @@ export const shops = pgTable("shops", {
   customDomain: text("custom_domain"), // e.g. bluedivers.com
   templateId: text("template_id"),
   createdBy: text("created_by").references(() => users.id, {
-    onDelete: "set null",
+    onDelete: "set null"
   }),
-  createdAt: timestamp("created_at").defaultNow().notNull(),
-});
+  createdAt: timestamp("created_at").defaultNow().notNull()
+})
 
 export const shopMembers = pgTable("shop_members", {
   userId: text("user_id")
@@ -105,8 +105,8 @@ export const shopMembers = pgTable("shop_members", {
   shopId: text("shop_id")
     .references(() => shops.id, { onDelete: "cascade" })
     .notNull(),
-  role: text("role").default("editor"), // 'admin', 'editor', 'viewer'
-});
+  role: text("role").default("editor") // 'admin', 'editor', 'viewer'
+})
 
 export const pages = pgTable(
   "pages",
@@ -122,12 +122,12 @@ export const pages = pgTable(
     createdAt: timestamp("created_at").defaultNow().notNull(),
     updatedAt: timestamp("updated_at")
       .$defaultFn(() => /* @__PURE__ */ new Date())
-      .notNull(),
+      .notNull()
   },
   (pages) => ({
-    uniqueSlugPerShop: unique().on(pages.shopId, pages.slug),
+    uniqueSlugPerShop: unique().on(pages.shopId, pages.slug)
   })
-);
+)
 
 export const blocks = pgTable("blocks", {
   id: text("id").primaryKey(),
@@ -139,15 +139,15 @@ export const blocks = pgTable("blocks", {
   order: integer("order").default(0),
   updatedAt: timestamp("updated_at")
     .$defaultFn(() => /* @__PURE__ */ new Date())
-    .notNull(),
-});
+    .notNull()
+})
 
 export const templates = pgTable("templates", {
   id: text("id").primaryKey(),
   name: text("name").notNull(),
   previewUrl: text("preview_url"),
-  settings: jsonb("settings"), // { font: "Poppins", colors: { ... } }
-});
+  settings: jsonb("settings") // { font: "Poppins", colors: { ... } }
+})
 
 export const siteSettings = pgTable("site_settings", {
   shopId: text("shop_id")
@@ -157,5 +157,5 @@ export const siteSettings = pgTable("site_settings", {
   faviconUrl: text("favicon_url"),
   logoUrl: text("logo_url"),
   metaTitle: text("meta_title"),
-  metaDescription: text("meta_description"),
-});
+  metaDescription: text("meta_description")
+})
