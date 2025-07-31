@@ -7,7 +7,6 @@
   </h1>
 </div>
 
-
 A modern, Next.js Saas boilerplate with comprehensive authentication built on Better Auth, featuring a beautiful UI with shadcn/ui components and a robust tech stack.
 
 ## Tech Stack
@@ -22,7 +21,6 @@ A modern, Next.js Saas boilerplate with comprehensive authentication built on Be
 - **UploadThing** - Modern file uploads with built-in storage
 - **Resend** - Transactional email service
 
-
 ## Roadmap
 
 - [x] landing page
@@ -30,25 +28,10 @@ A modern, Next.js Saas boilerplate with comprehensive authentication built on Be
 - [x] Dashboard
 - [x] Stripe Payment
 
-
-
-
-##  Quick start
-
-### 1. Clone the Repository
-```bash
-git clone https://github.com/indieceo/Indiesaas
-cd indiesaas
-```
-
-### 2. Install Dependencies
-```bash
-npm install
-# or
-pnpm install
-```
+## Quick start
 
 ### 3. Environment Setup
+
 Copy `.env.example` to `.env.local` and update the variables.
 
 ```bash
@@ -56,11 +39,12 @@ cp .env.example .env.local
 ```
 
 ### 4. Database Setup
+
 Generate the authentication schema and run migrations:
 
 ```bash
 # Generate Better Auth schema
-npx @better-auth/cli generate
+``npx @better-auth/cli generate``
 
 # Generate Drizzle migrations
 npx drizzle-kit generate
@@ -70,39 +54,47 @@ npx drizzle-kit migrate
 ```
 
 ### 5. Start Development Server
+
 ```bash
 npm run dev
 # or
 pnpm dev
 ```
 
-##  Configuration
+## Configuration
 
 ### Site Configuration
+
 Customize your website settings in `src/config/site.ts`:
+
 - App name, description, and branding
 - Email addresses for support and system emails
 - Social media links
 - Logo and OG image paths
 
 ### Better Auth Configuration
+
 The authentication is configured in `src/lib/auth.ts`. You can customize:
+
 - OAuth providers (Google, GitHub, etc.)
 - Email templates
 - Session settings
 - Password policies
 
 ### Database Configuration
+
 Database connection and schema are managed through:
+
 - `drizzle.config.ts` - Drizzle ORM configuration
 - `src/database/schema.ts` - Better Auth schema definition
 
 ### UI Customization
+
 The UI is built with shadcn/ui components and can be customized:
+
 - Theme colors in `src/styles/globals.css`
 - Custom styles in `src/styles/custom.css`
 - Component variants in individual component files
-
 
 ## Usage
 
@@ -114,11 +106,8 @@ This project is licensed under the MIT License. You are free to use, modify, and
 
 ## 🙏 Credits
 
-
 - [Better Auth Ui](https://better-auth-ui.com) - Pre-built authentication components
 - [shadcn landing page](https://github.com/nobruf/shadcn-landing-page) - landing page used for this project
-
-
 
 ---
 
@@ -132,6 +121,6 @@ This project is licensed under the MIT License. You are free to use, modify, and
 
 <div align="center">
 
-  **Made with ❤️ by [@indieceo](https://x.com/indieceo)**
+**Made with ❤️ by [@indieceo](https://x.com/indieceo)**
 
 </div>
