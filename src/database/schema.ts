@@ -157,5 +157,11 @@ export const siteSettings = pgTable("site_settings", {
   faviconUrl: text("favicon_url"),
   logoUrl: text("logo_url"),
   metaTitle: text("meta_title"),
-  metaDescription: text("meta_description")
+  metaDescription: text("meta_description"),
+  instagramUrl: text("instagram_url"),
+  facebookUrl: text("facebook_url"),
+  whatsappUrl: text("whatsapp_url"),
+  phoneNumber: text("phone_number"),
+  email: text("email"),
+  address: text("address")
 })

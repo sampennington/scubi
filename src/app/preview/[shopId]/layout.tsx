@@ -19,7 +19,7 @@ export default function Layout({
   return (
     <>
       <Button
-        className="absolute top-10 left-10 flex items-center gap-2"
+        className="absolute top-10 left-10 z-51 flex items-center gap-2"
         onClick={handleBack}
       >
         <ArrowLeftIcon className="h-4 w-4" />

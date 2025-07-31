@@ -18,6 +18,11 @@ export default async function PreviewPage({
   }
 
   const blocks = await api.blocks.getByPageId(page.id)
+  const siteSettings = await api.siteSettings.getByShopId(shopId)
 
-  return <Preview page={page} blocks={blocks} />
+  if (!siteSettings) {
+    return <div>No site settings found, please create one</div>
+  }
+
+  return <Preview page={page} blocks={blocks} siteSettings={siteSettings} />
 }
