@@ -1,6 +1,6 @@
 import { db } from "@/database/db"
 import { eq, desc } from "drizzle-orm"
-import { users, shops, shopMembers } from "@/database/schema"
+import { type users, shops, shopMembers } from "@/database/schema"
 import { generateId } from "@/lib/utils"
 
 export type Shop = typeof shops.$inferSelect
@@ -42,8 +42,9 @@ export const shopApi = {
       })
       .from(shops)
       .innerJoin(shopMembers, eq(shops.id, shopMembers.shopId))
-    // .where(eq(shopMembers.userId, userId))
-    // .orderBy(desc(shops.createdAt))
+      .where(eq(shopMembers.userId, userId))
+      .orderBy(desc(shops.createdAt))
+
     return results
   },
 
@@ -61,6 +62,7 @@ export const shopApi = {
         ...data
       })
       .returning()
+
     return shop
   },
 

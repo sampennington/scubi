@@ -16,6 +16,7 @@ export const pageApi = {
       .select()
       .from(pages)
       .where(and(eq(pages.shopId, shopId), eq(pages.slug, slug)))
+
     return page || null
   },
 

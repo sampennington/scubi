@@ -37,6 +37,7 @@ export const Dashboard = ({ shops }: { shops: Shop[] }) => {
           <ShopCard key={shop.id} shop={shop} />
         ))}
       </div>
+      <Button onClick={handleCreateShop}>Create Shop</Button>
     </div>
   )
 }
