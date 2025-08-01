@@ -164,5 +164,10 @@ export const siteSettings = pgTable("site_settings", {
   whatsappUrl: text("whatsapp_url"),
   phoneNumber: text("phone_number"),
   email: text("email"),
-  address: text("address")
+  address: text("address"),
+  primaryColor: text("primary_color"),
+  secondaryColor: text("secondary_color"),
+  accentColor: text("accent_color"),
+  fontFamilyHeading: text("font_family_heading"),
+  fontFamilyBody: text("font_family_body")
 })

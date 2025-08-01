@@ -1,48 +1,11 @@
 "use client"
-
-import { Button } from "@/components/ui/button"
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
-import { Badge } from "@/components/ui/badge"
-import { Star, Phone, Calendar } from "lucide-react"
 import heroImage from "@/assets/hero-underwater.jpg"
 import { Nav } from "./nav"
 import { Footer } from "./footer"
-import Image from "next/image"
-import { About } from "./about"
-import { type Course, Courses } from "./courses"
-import { SiteSettings } from "@/lib/api/site-settings"
-import { Block, Page } from "../lib/api"
+import type { Block, Page } from "../lib/api"
 import { BlockRenderer } from "@/components/blocks/block-renderer"
-
-const courses: Course[] = [
-  {
-    title: "Open Water Diver",
-    description:
-      "Your first step into the underwater world. Learn the basics of scuba diving in a safe, fun environment.",
-    price: 399,
-    duration_days: 3,
-    max_depth_meters: 18,
-    certification_level: "Beginner"
-  },
-  {
-    title: "Advanced Open Water",
-    description:
-      "Expand your diving skills with specialized adventure dives and deeper exploration.",
-    price: 299,
-    duration_days: 2,
-    max_depth_meters: 30,
-    certification_level: "Intermediate"
-  },
-  {
-    title: "Rescue Diver",
-    description:
-      "Learn to prevent and manage problems underwater and become a more confident diver.",
-    price: 450,
-    duration_days: 4,
-    max_depth_meters: 30,
-    certification_level: "Advanced"
-  }
-]
+import { ThemeProvider } from "@/components/blocks/theme-provider"
+import type { SiteSettings } from "@/lib/api/types"
 
 export const DiveShopSite = ({
   currentPage,
@@ -54,20 +17,28 @@ export const DiveShopSite = ({
   siteSettings: SiteSettings
 }) => {
   return (
-    <div className="flex min-h-screen flex-col bg-background">
-      <Nav
-        setCurrentPage={() => {}}
-        currentPage={currentPage}
-        siteSettings={siteSettings}
-        pages={pages}
-      />
+    <ThemeProvider
+      theme={{
+        primaryColor: siteSettings.primaryColor,
+        secondaryColor: siteSettings.secondaryColor,
+        accentColor: siteSettings.accentColor
+      }}
+    >
+      <div className="flex min-h-screen flex-col bg-background">
+        <Nav
+          setCurrentPage={() => {}}
+          currentPage={currentPage}
+          siteSettings={siteSettings}
+          pages={pages}
+        />
 
-      <main className="flex-1">
-        <BlockRenderer blocks={[block]} />
-      </main>
+        <main className="flex-1">
+          <BlockRenderer blocks={[block]} />
+        </main>
 
-      <Footer siteSettings={siteSettings} />
-    </div>
+        <Footer siteSettings={siteSettings} />
+      </div>
+    </ThemeProvider>
   )
 }
 
@@ -78,7 +49,9 @@ const block: Block = {
   order: 1,
   type: "hero",
   content: {
-    title: "Hellloooooooooo"
+    title: "Hellloooooooooo",
+    description: "This is a description",
+    image: heroImage
   }
 }
 

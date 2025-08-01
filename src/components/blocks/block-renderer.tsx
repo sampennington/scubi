@@ -13,7 +13,7 @@ function isBlockType<T extends Block["type"]>(
 
 export const BlockRenderer = ({ blocks }: { blocks: Block[] }) => {
   return (
-    <div className="block-renderer container">
+    <div className="flex w-full flex-col">
       {blocks.map((block) => {
         if (isBlockType(block, "hero")) {
           return <HeroBlock key={block.id} content={block.content} />
