@@ -4,11 +4,15 @@ import { api } from "@/lib/api"
 import { notFound } from "next/navigation"
 import { GeneralSettings } from "./components/tabs/GeneralSettings"
 import { Contact } from "./components/tabs/Contact"
+import { HomePage } from "./components/tabs/HomePage"
 
 export default async function ShopPage({ params }: { params: { id: string } }) {
   const id = await params.id
   const shop = await api.shops.getById(id)
   const siteSettings = await api.siteSettings.getByShopId(id)
+
+  const pages = await api.pages.getByShopId(id)
+  const homePage = pages.find((page) => page.slug === "/")
 
   if (!shop) {
     return notFound()
@@ -29,7 +33,9 @@ export default async function ShopPage({ params }: { params: { id: string } }) {
           <TabsContent value="settings">
             <GeneralSettings shopId={id} siteSettings={siteSettings} />
           </TabsContent>
-          <TabsContent value="home">Home</TabsContent>
+          <TabsContent value="home">
+            <HomePage shopId={id} homePage={homePage || null} />
+          </TabsContent>
           <TabsContent value="about">About</TabsContent>
           <TabsContent value="contact">
             <Contact />

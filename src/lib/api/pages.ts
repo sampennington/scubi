@@ -51,6 +51,7 @@ export const pageApi = {
       .set(data)
       .where(eq(pages.id, id))
       .returning()
+
     return page || null
   },
 
