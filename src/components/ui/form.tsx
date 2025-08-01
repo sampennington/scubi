@@ -9,7 +9,7 @@ import {
   type FieldPath,
   type FieldValues,
   FormProvider,
-  RegisterOptions,
+  type RegisterOptions,
   useFormContext
 } from "react-hook-form"
 import { Label } from "@/components/ui/label"

@@ -5,6 +5,7 @@ import { notFound } from "next/navigation"
 import { GeneralSettings } from "./components/tabs/GeneralSettings"
 import { Contact } from "./components/tabs/Contact"
 import { HomePage } from "./components/tabs/HomePage"
+import { PreviewButton } from "../../components/PreviewButton"
 
 export default async function ShopPage({ params }: { params: { id: string } }) {
   const id = await params.id
@@ -20,7 +21,10 @@ export default async function ShopPage({ params }: { params: { id: string } }) {
 
   return (
     <>
-      <PageHeader title={shop.name} description="Manage your shop" />
+      <div className="flex items-center justify-between">
+        <PageHeader title={shop.name} description="Manage your shop" />
+        <PreviewButton shopId={shop.id} />
+      </div>
       <div className="flex flex-col gap-4">
         <h2 className="font-medium text-lg">Shop Details</h2>
         <Tabs defaultValue="details">

@@ -6,6 +6,7 @@ import { Button } from "./button"
 import { ExternalLink, Pencil } from "lucide-react"
 import Link from "next/link"
 import { useRouter } from "next/navigation"
+import { PreviewButton } from "@/app/dashboard/components/PreviewButton"
 
 export const ShopCard = ({ shop }: { shop: Shop }) => {
   const router = useRouter()
@@ -34,12 +35,7 @@ export const ShopCard = ({ shop }: { shop: Shop }) => {
             </Button>
           </Link>
 
-          {/* <Link href={`/preview/${shop.id}/home`} target="_blank"> */}
-          <Button variant="secondary" onClick={goToPreview}>
-            <ExternalLink className="mr-2 h-4 w-4" />
-            Preview
-          </Button>
-          {/* </Link> */}
+          <PreviewButton shopId={shop.id} />
         </div>
       </CardHeader>
     </Card>

@@ -11,8 +11,6 @@ export const siteSettingsApi = {
         .from(siteSettings)
         .where(eq(siteSettings.shopId, shopId))
 
-      console.log({ settings })
-
       return settings || null
     } catch (error) {
       console.error(error)
