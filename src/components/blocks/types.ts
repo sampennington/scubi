@@ -1,9 +1,17 @@
 import type { Block } from "@/lib/api"
 
+type BlockButton = {
+  label: string
+  url: string
+  variant: "secondary" | "outline"
+}
+
 export type HeroBlockContent = {
   title: string
-  description: string
+  text: string
   image: string
+  primaryButton: BlockButton
+  secondaryButton: BlockButton
 }
 
 export type TextBlockContent = {

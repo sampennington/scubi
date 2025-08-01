@@ -6,6 +6,7 @@ import type { Block, Page } from "../lib/api"
 import { BlockRenderer } from "@/components/blocks/block-renderer"
 import { ThemeProvider } from "@/components/blocks/theme-provider"
 import type { SiteSettings } from "@/lib/api/types"
+import { Calendar, Phone } from "lucide-react"
 
 export const DiveShopSite = ({
   currentPage,
@@ -33,7 +34,7 @@ export const DiveShopSite = ({
         />
 
         <main className="flex-1">
-          <BlockRenderer blocks={[block]} />
+          <BlockRenderer blocks={blocks} />
         </main>
 
         <Footer siteSettings={siteSettings} />
@@ -42,18 +43,44 @@ export const DiveShopSite = ({
   )
 }
 
-const block: Block = {
-  id: "1",
-  updatedAt: new Date(),
-  pageId: "1",
-  order: 1,
-  type: "hero",
-  content: {
-    title: "Hellloooooooooo",
-    description: "This is a description",
-    image: heroImage
+const blocks: Block[] = [
+  {
+    id: "1",
+    updatedAt: new Date(),
+    pageId: "1",
+    order: 1,
+    type: "hero",
+    content: {
+      title: "Koh Tao Divers",
+      text: "Koh Taos original dive shop",
+      image: heroImage,
+      primaryButton: {
+        label: "Book Now",
+        url: "/book",
+        variant: "secondary",
+        icon: <Calendar className="mr-2 h-5 w-5" />
+      },
+      secondaryButton: {
+        label: "Call Us",
+        url: "/contact",
+        variant: "default",
+        icon: <Phone className="mr-2 h-5 w-5" />
+      }
+    }
+  },
+  {
+    id: "2",
+    updatedAt: new Date(),
+    pageId: "1",
+    order: 2,
+    type: "about",
+    content: {
+      title: "About Us",
+      description: "This is a description",
+      image: heroImage
+    }
   }
-}
+]
 
 export default DiveShopSite
 

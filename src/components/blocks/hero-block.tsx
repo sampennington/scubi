@@ -22,20 +22,16 @@ export const HeroBlock = ({ content }: { content: HeroBlockContent }) => {
               {content.title}
             </h1>
             <p className="mb-8 text-white/90 text-xl md:text-2xl">
-              {content.description}
+              {content.text}
             </p>
             <div className="flex flex-col gap-4 sm:flex-row">
-              <Button size="lg" variant="secondary">
+              <Button size="lg" variant={content.primaryButton.variant}>
                 <Calendar className="mr-2 h-5 w-5" />
-                Book Now
+                {content.primaryButton.label}
               </Button>
-              <Button
-                size="lg"
-                variant="outline"
-                className="border-white text-white hover:bg-white hover:text-primary"
-              >
+              <Button size="lg" variant={content.secondaryButton.variant}>
                 <Phone className="mr-2 h-5 w-5" />
-                Call Us
+                {content.secondaryButton.label}
               </Button>
             </div>
           </div>
