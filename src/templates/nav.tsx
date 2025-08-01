@@ -1,23 +1,26 @@
 import { Facebook, Instagram, MessageCircle } from "lucide-react"
-import type { SiteSettings } from "@/lib/api/site-settings"
+import type { SiteSettings } from "@/lib/api/types"
+import { Page } from "@/lib/api"
 
 export const Nav = ({
   setCurrentPage,
   currentPage,
-  name,
+  pages,
   siteSettings
 }: {
   setCurrentPage: (page: string) => void
-  currentPage: string
-  name: string
+  currentPage: Page
+  pages: Page[]
   siteSettings: SiteSettings
 }) => (
   <nav className="sticky top-0 z-50 border-border/40 border-b bg-background/95 backdrop-blur-sm">
     <div className="container mx-auto px-4 py-4">
       <div className="flex items-center justify-between">
-        <div className="font-bold text-2xl text-primary">{name}</div>
+        <div className="font-bold text-2xl text-primary">
+          {siteSettings.name}
+        </div>
         <div className="hidden items-center gap-6 md:flex">
-          {["home", "about", "courses", "fun-dives", "contact"].map((page) => (
+          {/* {["home", "about", "courses", "fun-dives", "contact"].map((page) => (
             <button
               key={page}
               type="button"
@@ -27,6 +30,15 @@ export const Nav = ({
               }`}
             >
               {page.charAt(0).toUpperCase() + page.slice(1).replace("-", " ")}
+            </button>
+          ))} */}
+          {pages.map((page) => (
+            <button
+              key={page.id}
+              type="button"
+              onClick={() => setCurrentPage(page.slug)}
+            >
+              {page.title}
             </button>
           ))}
         </div>

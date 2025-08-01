@@ -11,18 +11,26 @@ export default async function PreviewPage({
 
   const isHome = slug === "home"
 
-  const page = await api.pages.getBySlug(shopId, isHome ? "/" : slug)
+  const currentPage = await api.pages.getBySlug(shopId, isHome ? "/" : slug)
+  const pages = await api.pages.getByShopId(shopId)
 
-  if (!page) {
+  if (!currentPage) {
     return notFound()
   }
 
-  const blocks = await api.blocks.getByPageId(page.id)
+  const blocks = await api.blocks.getByPageId(currentPage.id)
   const siteSettings = await api.siteSettings.getByShopId(shopId)
 
   if (!siteSettings) {
     return <div>No site settings found, please create one</div>
   }
 
-  return <Preview page={page} blocks={blocks} siteSettings={siteSettings} />
+  return (
+    <Preview
+      page={currentPage}
+      pages={pages}
+      blocks={blocks}
+      siteSettings={siteSettings}
+    />
+  )
 }

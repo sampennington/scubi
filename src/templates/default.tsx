@@ -11,91 +11,7 @@ import Image from "next/image"
 import { About } from "./about"
 import { type Course, Courses } from "./courses"
 import { SiteSettings } from "@/lib/api/site-settings"
-
-const sampleDiveShop = {
-  name: "Coral Paradise Diving",
-  subdomain: "coral-paradise",
-  customization: {
-    primary_color: "#1e40af",
-    secondary_color: "#f97316",
-    accent_color: "#06b6d4",
-    font_family: "Inter"
-  },
-  content: {
-    home: {
-      title: "Explore the Underwater Paradise",
-      subtitle:
-        "Professional dive training and unforgettable underwater adventures",
-      body_content:
-        "Welcome to Coral Paradise Diving, your gateway to the most spectacular underwater experiences. With over 15 years of expertise, we offer world-class diving courses, guided tours, and equipment rental in some of the most pristine waters on earth.",
-      contact_info: {
-        phone: "+1 (555) 123-DIVE",
-        email: "info@coralparadise.com",
-        address: "123 Ocean Drive, Paradise Bay"
-      },
-      social_links: {
-        facebook: "https://facebook.com/coralparadise",
-        instagram: "https://instagram.com/coralparadise",
-        whatsapp: "+1555123DIVE"
-      }
-    }
-  },
-  courses: [
-    {
-      title: "Open Water Diver",
-      description:
-        "Your first step into the underwater world. Learn the basics of scuba diving in a safe, fun environment.",
-      price: 399,
-      duration_days: 3,
-      max_depth_meters: 18,
-      certification_level: "Beginner"
-    },
-    {
-      title: "Advanced Open Water",
-      description:
-        "Expand your diving skills with specialized adventure dives and deeper exploration.",
-      price: 299,
-      duration_days: 2,
-      max_depth_meters: 30,
-      certification_level: "Intermediate"
-    },
-    {
-      title: "Rescue Diver",
-      description:
-        "Learn to prevent and manage problems underwater and become a more confident diver.",
-      price: 450,
-      duration_days: 4,
-      max_depth_meters: 30,
-      certification_level: "Advanced"
-    }
-  ],
-  reviews: [
-    {
-      customer_name: "Sarah Johnson",
-      rating: 5,
-      title: "Amazing Experience!",
-      content:
-        "The instructors were incredibly professional and made me feel safe throughout the entire course. The underwater world here is absolutely breathtaking!",
-      course_taken: "Open Water Diver"
-    },
-    {
-      customer_name: "Mike Chen",
-      rating: 5,
-      title: "Best Dive Shop Ever",
-      content:
-        "I've been diving for 10 years and this is hands down the best dive shop I've ever worked with. Equipment is top-notch and the dive sites are incredible.",
-      course_taken: "Advanced Open Water"
-    },
-    {
-      customer_name: "Emma Rodriguez",
-      rating: 5,
-      title: "Life-changing",
-      content:
-        "Taking my rescue diver course here was life-changing. The instructors pushed me to be my best while keeping everything fun and engaging.",
-      course_taken: "Rescue Diver"
-    }
-  ]
-}
+import { Page } from "../lib/api"
 
 const courses: Course[] = [
   {
@@ -129,9 +45,11 @@ const courses: Course[] = [
 
 export const DiveShopSite = ({
   currentPage,
+  pages,
   siteSettings
 }: {
-  currentPage: string
+  currentPage: Page
+  pages: Page[]
   siteSettings: SiteSettings
 }) => {
   return (
@@ -139,13 +57,15 @@ export const DiveShopSite = ({
       <Nav
         setCurrentPage={() => {}}
         currentPage={currentPage}
-        name={sampleDiveShop.name}
         siteSettings={siteSettings}
+        pages={pages}
       />
 
       {/* {renderPage()} */}
 
-      <Footer name={"test"} siteSettings={siteSettings} />
+      {/* <Home /> */}
+
+      <Footer siteSettings={siteSettings} />
     </div>
   )
 }

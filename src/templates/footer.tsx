@@ -1,18 +1,12 @@
 import { Facebook, Instagram, MessageCircle } from "lucide-react"
-import type { SiteSettings } from "@/lib/api/site-settings"
+import type { SiteSettings } from "@/lib/api/types"
 
-export const Footer = ({
-  name,
-  siteSettings
-}: {
-  name: string
-  siteSettings: SiteSettings
-}) => (
+export const Footer = ({ siteSettings }: { siteSettings: SiteSettings }) => (
   <footer className="border-border/20 border-t bg-primary/5 py-12">
     <div className="container mx-auto px-4">
       <div className="grid gap-8 md:grid-cols-4">
         <div>
-          <h3 className="mb-4 font-semibold text-lg">{name}</h3>
+          <h3 className="mb-4 font-semibold text-lg">{siteSettings.name}</h3>
           <p className="text-muted-foreground text-sm">
             Your gateway to underwater adventures and professional dive
             training.
@@ -72,7 +66,10 @@ export const Footer = ({
         </div>
       </div>
       <div className="mt-8 border-border/20 border-t pt-8 text-center text-muted-foreground text-sm">
-        <p>© 2025 {name}. All rights reserved. Powered by DiveSiteBuilder.</p>
+        <p>
+          © 2025 {siteSettings.name}. All rights reserved. Powered by
+          DiveSiteBuilder.
+        </p>
       </div>
     </div>
   </footer>

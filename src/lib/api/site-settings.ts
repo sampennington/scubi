@@ -21,8 +21,6 @@ export const siteSettingsApi = {
   },
 
   async update(shopId: string, data: Partial<SiteSettings>) {
-    console.log({ data, shopId })
-
     // Filter out undefined values and ensure required fields
     const cleanData = Object.fromEntries(
       Object.entries(data).filter(([_, value]) => value !== undefined)
