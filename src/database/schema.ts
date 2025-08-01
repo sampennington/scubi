@@ -153,6 +153,7 @@ export const siteSettings = pgTable("site_settings", {
   shopId: text("shop_id")
     .primaryKey()
     .references(() => shops.id),
+  name: text("name").notNull(),
   homePageId: text("home_page_id").references(() => pages.id),
   faviconUrl: text("favicon_url"),
   logoUrl: text("logo_url"),

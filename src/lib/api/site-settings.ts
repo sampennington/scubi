@@ -1,8 +1,7 @@
 import { db } from "@/database/db"
 import { eq } from "drizzle-orm"
 import { siteSettings } from "@/database/schema"
-
-export type SiteSettings = typeof siteSettings.$inferSelect
+import type { SiteSettings } from "./types"
 
 export const siteSettingsApi = {
   async getByShopId(shopId: string): Promise<SiteSettings | null> {
@@ -12,6 +11,8 @@ export const siteSettingsApi = {
         .from(siteSettings)
         .where(eq(siteSettings.shopId, shopId))
 
+      console.log({ settings })
+
       return settings || null
     } catch (error) {
       console.error(error)
@@ -20,12 +21,26 @@ export const siteSettingsApi = {
   },
 
   async update(shopId: string, data: Partial<SiteSettings>) {
-    const [settings] = await db
-      .update(siteSettings)
-      .set(data)
-      .where(eq(siteSettings.shopId, shopId))
+    console.log({ data, shopId })
+
+    // Filter out undefined values and ensure required fields
+    const cleanData = Object.fromEntries(
+      Object.entries(data).filter(([_, value]) => value !== undefined)
+    )
+
+    const [result] = await db
+      .insert(siteSettings)
+      .values({
+        shopId,
+        name: cleanData.name || "Untitled Shop", // Provide default for required field
+        ...cleanData
+      })
+      .onConflictDoUpdate({
+        target: siteSettings.shopId,
+        set: cleanData
+      })
       .returning()
 
-    return settings || null
+    return result || null
   }
 }

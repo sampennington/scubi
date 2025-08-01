@@ -8,6 +8,7 @@ import { Contact } from "./components/tabs/Contact"
 export default async function ShopPage({ params }: { params: { id: string } }) {
   const id = await params.id
   const shop = await api.shops.getById(id)
+  const siteSettings = await api.siteSettings.getByShopId(id)
 
   if (!shop) {
     return notFound()
@@ -26,7 +27,7 @@ export default async function ShopPage({ params }: { params: { id: string } }) {
             <TabsTrigger value="contact">Contact</TabsTrigger>
           </TabsList>
           <TabsContent value="settings">
-            <GeneralSettings />
+            <GeneralSettings shopId={id} siteSettings={siteSettings} />
           </TabsContent>
           <TabsContent value="home">Home</TabsContent>
           <TabsContent value="about">About</TabsContent>

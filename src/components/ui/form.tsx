@@ -174,6 +174,7 @@ interface FormInputProps {
   placeholder?: string
   rules?: RegisterOptions
   className?: string
+  value?: string | null
 }
 
 const FormInput = ({
@@ -181,7 +182,8 @@ const FormInput = ({
   label,
   placeholder,
   rules,
-  className = ""
+  className = "",
+  value = ""
 }: FormInputProps) => {
   const form = useFormContext()
 
@@ -190,6 +192,7 @@ const FormInput = ({
       control={form.control}
       name={name}
       rules={rules}
+      defaultValue={value}
       render={({ field }) => (
         <FormItem className={className}>
           <FormLabel>{label}</FormLabel>
