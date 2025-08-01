@@ -11,7 +11,8 @@ import Image from "next/image"
 import { About } from "./about"
 import { type Course, Courses } from "./courses"
 import { SiteSettings } from "@/lib/api/site-settings"
-import { Page } from "../lib/api"
+import { Block, Page } from "../lib/api"
+import { BlockRenderer } from "@/components/blocks/block-renderer"
 
 const courses: Course[] = [
   {
@@ -53,7 +54,7 @@ export const DiveShopSite = ({
   siteSettings: SiteSettings
 }) => {
   return (
-    <div className="min-h-screen bg-background">
+    <div className="flex min-h-screen flex-col bg-background">
       <Nav
         setCurrentPage={() => {}}
         currentPage={currentPage}
@@ -61,13 +62,24 @@ export const DiveShopSite = ({
         pages={pages}
       />
 
-      {/* {renderPage()} */}
-
-      {/* <Home /> */}
+      <main className="flex-1">
+        <BlockRenderer blocks={[block]} />
+      </main>
 
       <Footer siteSettings={siteSettings} />
     </div>
   )
+}
+
+const block: Block = {
+  id: "1",
+  updatedAt: new Date(),
+  pageId: "1",
+  order: 1,
+  type: "hero",
+  content: {
+    title: "Hellloooooooooo"
+  }
 }
 
 export default DiveShopSite
