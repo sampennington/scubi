@@ -19,9 +19,9 @@ export const DiveShopSite = ({
   return (
     <ThemeProvider
       theme={{
-        primaryColor: siteSettings.primaryColor,
-        secondaryColor: siteSettings.secondaryColor,
-        accentColor: siteSettings.accentColor
+        primaryColor: siteSettings.primaryColor || "#3b82f6",
+        secondaryColor: siteSettings.secondaryColor || "#64748b",
+        accentColor: siteSettings.accentColor || "#f59e0b"
       }}
     >
       <div className="flex min-h-screen flex-col bg-background">

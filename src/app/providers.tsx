@@ -33,7 +33,7 @@ export function Providers({ children }: { children: ReactNode }) {
           url: "/dashboard/settings"
         }}
         social={{
-          providers: ["github", "google", "twitter"]
+          providers: ["google"]
         }}
         avatar={{
           upload: async (file: File) => {
