@@ -6,6 +6,7 @@ import { toast } from "sonner"
 import type { SiteSettings } from "@/lib/api/types"
 import { Button } from "@/components/ui/button"
 import { ColorPicker } from "@/components/ui/color-picker"
+import { FontPicker } from "@/components/ui/font-picker"
 import { SettingsSection } from "./SettingsSection"
 
 export const GeneralSettings = ({
@@ -127,7 +128,7 @@ export const GeneralSettings = ({
         </SettingsSection>
         <SettingsSection title="Theme">
           <div>
-            <label htmlFor="primary-color" className="text-sm font-medium">
+            <label htmlFor="primary-color" className="font-medium text-sm">
               Primary Color
             </label>
             <ColorPicker
@@ -136,7 +137,7 @@ export const GeneralSettings = ({
             />
           </div>
           <div>
-            <label htmlFor="secondary-color" className="text-sm font-medium">
+            <label htmlFor="secondary-color" className="font-medium text-sm">
               Secondary Color
             </label>
             <ColorPicker
@@ -145,7 +146,7 @@ export const GeneralSettings = ({
             />
           </div>
           <div>
-            <label htmlFor="accent-color" className="text-sm font-medium">
+            <label htmlFor="accent-color" className="font-medium text-sm">
               Accent Color
             </label>
             <ColorPicker
@@ -153,16 +154,30 @@ export const GeneralSettings = ({
               onChange={(color) => form.setValue("accentColor", color)}
             />
           </div>
-          <FormInput
-            name="fontFamilyHeading"
-            label="Headings Font Family"
-            placeholder="Font family for headings"
-          />
-          <FormInput
-            name="fontFamilyBody"
-            label="Body Font Family"
-            placeholder="Font family for body text"
-          />
+          <div>
+            <label htmlFor="heading-font" className="font-medium text-sm">
+              Headings Font Family
+            </label>
+            <FontPicker
+              value={form.watch("fontFamilyHeading")}
+              onValueChange={(value) =>
+                form.setValue("fontFamilyHeading", value)
+              }
+              placeholder="Select heading font..."
+              className="mt-2"
+            />
+          </div>
+          <div>
+            <label htmlFor="body-font" className="font-medium text-sm">
+              Body Font Family
+            </label>
+            <FontPicker
+              value={form.watch("fontFamilyBody")}
+              onValueChange={(value) => form.setValue("fontFamilyBody", value)}
+              placeholder="Select body font..."
+              className="mt-2"
+            />
+          </div>
         </SettingsSection>
         <Button className="mt-4" type="submit">
           Save

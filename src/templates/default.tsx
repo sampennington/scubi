@@ -22,7 +22,9 @@ export const DiveShopSite = ({
       theme={{
         primaryColor: siteSettings.primaryColor || "#3b82f6",
         secondaryColor: siteSettings.secondaryColor || "#64748b",
-        accentColor: siteSettings.accentColor || "#f59e0b"
+        accentColor: siteSettings.accentColor || "#f59e0b",
+        fontFamilyHeading: siteSettings.fontFamilyHeading || undefined,
+        fontFamilyBody: siteSettings.fontFamilyBody || undefined
       }}
     >
       <div className="flex min-h-screen flex-col bg-background">
