@@ -8,6 +8,16 @@ import {
   unique
 } from "drizzle-orm/pg-core"
 
+// Block type enum for type safety
+export const BlockType = {
+  HERO: "hero",
+  TEXT: "text",
+  IMAGE: "image",
+  MULTI_COLUMN: "multi-column"
+} as const
+
+export type BlockType = (typeof BlockType)[keyof typeof BlockType]
+
 export const users = pgTable("users", {
   id: text("id").primaryKey(),
   name: text("name").notNull(),
@@ -134,7 +144,7 @@ export const blocks = pgTable("blocks", {
   pageId: text("page_id")
     .references(() => pages.id, { onDelete: "cascade" })
     .notNull(),
-  type: text("type").notNull(), // e.g. 'hero', 'text', 'gallery'
+  type: text("type").notNull(), // 'hero', 'text', 'image', 'multi-column'
   content: jsonb("content").notNull(), // block content
   order: integer("order").default(0),
   updatedAt: timestamp("updated_at")

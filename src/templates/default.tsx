@@ -7,6 +7,7 @@ import { BlockRenderer } from "@/components/blocks/block-renderer"
 import { ThemeProvider } from "@/components/blocks/theme-provider"
 import type { SiteSettings } from "@/lib/api/types"
 import { Calendar, Phone } from "lucide-react"
+import { BlockType } from "@/database/schema"
 
 export const DiveShopSite = ({
   currentPage,
@@ -32,7 +33,6 @@ export const DiveShopSite = ({
           siteSettings={siteSettings}
           pages={pages}
         />
-
         <main className="flex-1">
           <BlockRenderer blocks={blocks} />
         </main>
@@ -49,7 +49,7 @@ const blocks: Block[] = [
     updatedAt: new Date(),
     pageId: "1",
     order: 1,
-    type: "hero",
+    type: BlockType.HERO,
     content: {
       title: "Koh Tao Divers",
       text: "Koh Taos original dive shop",
@@ -70,14 +70,33 @@ const blocks: Block[] = [
   },
   {
     id: "2",
+    type: BlockType.MULTI_COLUMN,
     updatedAt: new Date(),
     pageId: "1",
     order: 2,
-    type: "about",
     content: {
-      title: "About Us",
-      description: "This is a description",
-      image: heroImage
+      title: "Our Services",
+      description: "Everything you need for your diving adventure",
+      columns: [
+        {
+          icon: "Waves",
+          heading: "Scuba Diving",
+          body: "Professional scuba diving courses for all skill levels"
+        },
+        {
+          icon: "Ship",
+          heading: "Boat Tours",
+          body: "Explore the ocean with our guided boat tours"
+        },
+        {
+          icon: "Camera",
+          heading: "Underwater Photography",
+          body: "Capture your underwater memories with our photography services"
+        }
+      ],
+      columnsPerRow: 3,
+      alignment: "center",
+      showIcons: true
     }
   }
 ]
