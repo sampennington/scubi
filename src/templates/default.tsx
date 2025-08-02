@@ -49,8 +49,8 @@ const exampleBlocks: Block[] = [
     pageId: "1",
     type: BlockType.HERO,
     content: {
-      title: "Welcome to Coral Paradise Diving",
-      text: "Discover the underwater world with our professional diving courses and guided tours",
+      title: "Koh Tao Divers",
+      text: "Diving Sucks, you into another world",
       image: heroImage,
       primaryButton: {
         label: "Book Now",
@@ -60,7 +60,7 @@ const exampleBlocks: Block[] = [
       secondaryButton: {
         label: "Learn More",
         url: "/about",
-        variant: "outline"
+        variant: "default"
       }
     },
     order: 1,
@@ -249,7 +249,7 @@ const exampleBlocks: Block[] = [
           name: "Captain Alex",
           role: "Master Instructor",
           bio: "PADI Master Instructor with 15+ years of experience",
-          photo: "https://picsum.photos/200/200?random=10",
+          photo: "https://picsum.photos/400/300?random=10",
           email: "alex@coralparadise.com",
           phone: "+1-555-0123"
         },
@@ -257,7 +257,7 @@ const exampleBlocks: Block[] = [
           name: "Maria Santos",
           role: "Divemaster",
           bio: "Experienced divemaster specializing in reef conservation",
-          photo: "https://picsum.photos/200/200?random=11",
+          photo: "https://picsum.photos/400/300?random=11",
           email: "maria@coralparadise.com",
           phone: "+1-555-0124"
         },
@@ -265,7 +265,7 @@ const exampleBlocks: Block[] = [
           name: "David Kim",
           role: "Instructor",
           bio: "PADI Instructor with expertise in underwater photography",
-          photo: "https://picsum.photos/200/200?random=12",
+          photo: "https://picsum.photos/400/300?random=12",
           email: "david@coralparadise.com",
           phone: "+1-555-0125"
         }
@@ -273,7 +273,8 @@ const exampleBlocks: Block[] = [
       layout: "grid",
       columns: 3,
       showContactInfo: true,
-      showSocialLinks: false
+      showSocialLinks: false,
+      fullWidthPhoto: true
     },
     order: 6,
     updatedAt: new Date()
@@ -390,7 +391,7 @@ const exampleBlocks: Block[] = [
       backgroundImage: "https://picsum.photos/1200/400?random=13",
       alignment: "center"
     },
-    order: 9,
+    order: 1,
     updatedAt: new Date()
   },
   {
@@ -467,7 +468,6 @@ const exampleBlocks: Block[] = [
       latitude: 34.0522,
       longitude: -118.2437,
       zoom: 15,
-      apiKey: "YOUR_GOOGLE_MAPS_API_KEY",
       height: 400
     },
     order: 12,

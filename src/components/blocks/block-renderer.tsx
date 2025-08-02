@@ -27,9 +27,11 @@ function isBlockType<T extends Block["type"]>(
 }
 
 export const BlockRenderer = ({ blocks }: { blocks: Block[] }) => {
+  const sortedBlocks = blocks.sort((a, b) => (a.order || 99) - (b.order || 99))
+
   return (
     <div className="flex w-full flex-col">
-      {blocks.map((block) => {
+      {sortedBlocks.map((block) => {
         if (isBlockType(block, BlockType.HERO)) {
           return <HeroBlock key={block.id} content={block.content} />
         }

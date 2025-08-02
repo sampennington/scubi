@@ -59,7 +59,7 @@ export const FAQBlock = ({ content }: { content: FAQBlockContent }) => {
                 </button>
 
                 {openItems.includes(index) && (
-                  <div className="border-t px-6 pb-6 pt-0">
+                  <div className="border-t px-6 py-4">
                     <p className="text-muted-foreground">{item.answer}</p>
                   </div>
                 )}
@@ -72,7 +72,7 @@ export const FAQBlock = ({ content }: { content: FAQBlockContent }) => {
           <div className="mx-auto max-w-4xl space-y-8">
             {items.map((item, index) => (
               <div key={index} className="rounded-lg bg-card p-6">
-                <h3 className="mb-3 text-xl font-semibold">{item.question}</h3>
+                <h3 className="mb-3 font-semibold text-xl">{item.question}</h3>
                 <p className="text-muted-foreground">{item.answer}</p>
               </div>
             ))}

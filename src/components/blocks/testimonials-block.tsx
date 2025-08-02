@@ -77,7 +77,7 @@ export const TestimonialsBlock = ({
                   <div>
                     <h4 className="font-semibold">{testimonial.name}</h4>
                     {testimonial.role && (
-                      <p className="text-sm text-muted-foreground">
+                      <p className="text-muted-foreground text-sm">
                         {testimonial.role}
                         {testimonial.company && ` at ${testimonial.company}`}
                       </p>
@@ -121,7 +121,7 @@ export const TestimonialsBlock = ({
                       <div>
                         <h4 className="font-semibold">{testimonial.name}</h4>
                         {testimonial.role && (
-                          <p className="text-sm text-muted-foreground">
+                          <p className="text-muted-foreground text-sm">
                             {testimonial.role}
                             {testimonial.company &&
                               ` at ${testimonial.company}`}

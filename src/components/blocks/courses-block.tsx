@@ -74,11 +74,11 @@ export const CoursesBlock = ({ content }: { content: CoursesBlockContent }) => {
                   )}
                   {showPricing && (
                     <div className="text-right">
-                      <span className="text-2xl font-bold text-primary">
+                      <span className="font-bold text-2xl text-primary">
                         ${course.price}
                       </span>
                       {course.currency && course.currency !== "USD" && (
-                        <span className="text-sm text-muted-foreground">
+                        <span className="text-muted-foreground text-sm">
                           {course.currency}
                         </span>
                       )}
@@ -86,12 +86,12 @@ export const CoursesBlock = ({ content }: { content: CoursesBlockContent }) => {
                   )}
                 </div>
 
-                <h3 className="mb-2 text-xl font-semibold">{course.title}</h3>
+                <h3 className="mb-2 font-semibold text-xl">{course.title}</h3>
                 <p className="mb-4 text-muted-foreground">
                   {course.description}
                 </p>
 
-                <div className="mb-4 space-y-2 text-sm text-muted-foreground">
+                <div className="mb-4 space-y-2 text-muted-foreground text-sm">
                   <div className="flex items-center gap-2">
                     <Calendar className="h-4 w-4" />
                     <span>{course.duration}</span>
@@ -115,7 +115,7 @@ export const CoursesBlock = ({ content }: { content: CoursesBlockContent }) => {
                 {course.includes && course.includes.length > 0 && (
                   <div className="mb-4">
                     <h4 className="mb-2 font-semibold">Includes:</h4>
-                    <ul className="space-y-1 text-sm text-muted-foreground">
+                    <ul className="space-y-1 text-muted-foreground text-sm">
                       {course.includes.map((item, i) => (
                         <li key={i} className="flex items-center gap-2">
                           <div className="h-1.5 w-1.5 rounded-full bg-primary" />
@@ -153,14 +153,14 @@ export const CoursesBlock = ({ content }: { content: CoursesBlockContent }) => {
 
                 <div className="flex-1">
                   <div className="mb-2 flex items-center justify-between">
-                    <h3 className="text-xl font-semibold">{course.title}</h3>
+                    <h3 className="font-semibold text-xl">{course.title}</h3>
                     {showPricing && (
                       <div className="text-right">
-                        <span className="text-2xl font-bold text-primary">
+                        <span className="font-bold text-2xl text-primary">
                           ${course.price}
                         </span>
                         {course.currency && course.currency !== "USD" && (
-                          <span className="text-sm text-muted-foreground">
+                          <span className="text-muted-foreground text-sm">
                             {course.currency}
                           </span>
                         )}
@@ -172,7 +172,7 @@ export const CoursesBlock = ({ content }: { content: CoursesBlockContent }) => {
                     {course.description}
                   </p>
 
-                  <div className="mb-3 flex flex-wrap gap-4 text-sm text-muted-foreground">
+                  <div className="mb-3 flex flex-wrap gap-4 text-muted-foreground text-sm">
                     <div className="flex items-center gap-2">
                       <Calendar className="h-4 w-4" />
                       <span>{course.duration}</span>

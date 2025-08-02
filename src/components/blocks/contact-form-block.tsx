@@ -11,7 +11,7 @@ import {
   SelectTrigger,
   SelectValue
 } from "../ui/select"
-import type { ContactFormBlockContent } from "./types"
+import type { ContactFormBlockContent, ContactFormField } from "./types"
 
 export const ContactFormBlock = ({
   content
@@ -39,90 +39,20 @@ export const ContactFormBlock = ({
     e.preventDefault()
     setIsSubmitting(true)
 
-    // Simulate form submission
-    await new Promise((resolve) => setTimeout(resolve, 1000))
+    // TODO: Send form data to server
+    console.log(`Sending form data to ${emailTo}`)
 
     setIsSubmitting(false)
     setIsSubmitted(true)
 
-    // Reset form after 3 seconds
     setTimeout(() => {
       setIsSubmitted(false)
       setFormData({})
     }, 3000)
   }
 
-  const renderField = (field: any) => {
-    const { name, type, label, required, placeholder, options } = field
-
-    switch (type) {
-      case "textarea":
-        return (
-          <Textarea
-            key={name}
-            id={name}
-            name={name}
-            placeholder={placeholder}
-            required={required}
-            value={formData[name] || ""}
-            onChange={(e) => handleInputChange(name, e.target.value)}
-            className="min-h-[120px]"
-          />
-        )
-
-      case "select":
-        return (
-          <Select
-            key={name}
-            value={formData[name] || ""}
-            onValueChange={(value) => handleInputChange(name, value)}
-          >
-            <SelectTrigger>
-              <SelectValue placeholder={placeholder || `Select ${label}`} />
-            </SelectTrigger>
-            <SelectContent>
-              {options?.map((option: string) => (
-                <SelectItem key={option} value={option}>
-                  {option}
-                </SelectItem>
-              ))}
-            </SelectContent>
-          </Select>
-        )
-
-      default:
-        return (
-          <Input
-            key={name}
-            id={name}
-            type={type}
-            name={name}
-            placeholder={placeholder}
-            required={required}
-            value={formData[name] || ""}
-            onChange={(e) => handleInputChange(name, e.target.value)}
-          />
-        )
-    }
-  }
-
   if (isSubmitted) {
-    return (
-      <section className="py-16">
-        <div className="container mx-auto px-4">
-          <div className="mx-auto max-w-2xl text-center">
-            <div className="mb-8 rounded-lg bg-green-50 p-8 dark:bg-green-900/20">
-              <h3 className="mb-4 text-2xl font-semibold text-green-800 dark:text-green-200">
-                Success!
-              </h3>
-              <p className="text-green-700 dark:text-green-300">
-                {successMessage}
-              </p>
-            </div>
-          </div>
-        </div>
-      </section>
-    )
+    return <SuccessMessage successMessage={successMessage} />
   }
 
   return (
@@ -145,12 +75,16 @@ export const ContactFormBlock = ({
               <div key={field.name}>
                 <label
                   htmlFor={field.name}
-                  className="mb-2 block text-sm font-medium"
+                  className="mb-2 block font-medium text-sm"
                 >
                   {field.label}
                   {field.required && <span className="text-red-500"> *</span>}
                 </label>
-                {renderField(field)}
+                <Field
+                  field={field}
+                  handleInputChange={handleInputChange}
+                  formData={formData}
+                />
               </div>
             ))}
 
@@ -167,4 +101,85 @@ export const ContactFormBlock = ({
       </div>
     </section>
   )
+}
+
+const SuccessMessage = ({ successMessage }: { successMessage: string }) => {
+  return (
+    <section className="py-16">
+      <div className="container mx-auto px-4">
+        <div className="mx-auto max-w-2xl text-center">
+          <div className="mb-8 rounded-lg bg-green-50 p-8 dark:bg-green-900/20">
+            <h3 className="mb-4 text-2xl font-semibold text-green-800 dark:text-green-200">
+              Success!
+            </h3>
+            <p className="text-green-700 dark:text-green-300">
+              {successMessage}
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+  )
+}
+
+const Field = ({
+  field,
+  handleInputChange,
+  formData
+}: {
+  field: ContactFormField
+  handleInputChange: (name: string, value: string) => void
+  formData: Record<string, string>
+}) => {
+  const { name, type, label, required, placeholder, options } = field
+
+  switch (type) {
+    case "textarea":
+      return (
+        <Textarea
+          key={name}
+          id={name}
+          name={name}
+          placeholder={placeholder}
+          required={required}
+          value={formData[name] || ""}
+          onChange={(e) => handleInputChange(name, e.target.value)}
+          className="min-h-[120px]"
+        />
+      )
+
+    case "select":
+      return (
+        <Select
+          key={name}
+          value={formData[name] || ""}
+          onValueChange={(value) => handleInputChange(name, value)}
+        >
+          <SelectTrigger>
+            <SelectValue placeholder={placeholder || `Select ${label}`} />
+          </SelectTrigger>
+          <SelectContent>
+            {options?.map((option: string) => (
+              <SelectItem key={option} value={option}>
+                {option}
+              </SelectItem>
+            ))}
+          </SelectContent>
+        </Select>
+      )
+
+    default:
+      return (
+        <Input
+          key={name}
+          id={name}
+          type={type}
+          name={name}
+          placeholder={placeholder}
+          required={required}
+          value={formData[name] || ""}
+          onChange={(e) => handleInputChange(name, e.target.value)}
+        />
+      )
+  }
 }

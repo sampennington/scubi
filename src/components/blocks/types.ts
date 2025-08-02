@@ -1,5 +1,5 @@
 import type { Block } from "@/lib/api"
-import { BlockType } from "@/database/schema"
+import type { BlockType } from "@/database/schema"
 
 type BlockButton = {
   label: string
@@ -97,6 +97,7 @@ export type TeamBlockContent = {
   columns?: 2 | 3 | 4
   showContactInfo?: boolean
   showSocialLinks?: boolean
+  fullWidthPhoto?: boolean
 }
 
 export type FAQItem = {

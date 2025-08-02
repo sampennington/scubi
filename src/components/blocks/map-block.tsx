@@ -1,5 +1,7 @@
 import type { MapBlockContent } from "./types"
 
+const apiKey = process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY
+
 export const MapBlock = ({ content }: { content: MapBlockContent }) => {
   const {
     title,
@@ -8,7 +10,6 @@ export const MapBlock = ({ content }: { content: MapBlockContent }) => {
     latitude,
     longitude,
     zoom = 15,
-    apiKey,
     height = 400
   } = content
 
