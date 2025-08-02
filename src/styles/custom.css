@@ -100,3 +100,24 @@ html {
 .font-body {
   font-family: var(--font-body, var(--font-sans));
 }
+
+/* Scoped font styles for ThemeProvider children */
+.site-preview h1,
+.site-preview h2,
+.site-preview h3,
+.site-preview h4,
+.site-preview h5,
+.site-preview h6 {
+  font-family: var(--font-heading, var(--font-sans));
+}
+
+.site-preview p,
+.site-preview span,
+.site-preview div,
+.site-preview li,
+.site-preview td,
+.site-preview th,
+.site-preview a,
+.site-preview button {
+  font-family: var(--font-body, var(--font-sans));
+}

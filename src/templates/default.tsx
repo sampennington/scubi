@@ -393,7 +393,7 @@ const exampleBlocks: Block[] = [
       backgroundImage: "https://picsum.photos/1200/400?random=13",
       alignment: "center"
     },
-    order: 1,
+    order: 10,
     updatedAt: new Date()
   },
   {

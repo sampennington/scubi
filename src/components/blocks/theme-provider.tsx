@@ -59,6 +59,7 @@ export function ThemeProvider({ children, theme }: ThemeProviderProps) {
 
   return (
     <div
+      className="site-preview"
       style={
         {
           "--primary": primaryColor,

@@ -2,7 +2,6 @@ import Image from "next/image"
 import type { HeroBlockContent } from "./types"
 import { Button } from "../ui/button"
 import { Calendar, Phone } from "lucide-react"
-import { H1, P, Span } from "../ui/copy-tags"
 
 export const HeroBlock = ({ content }: { content: HeroBlockContent }) => {
   return (
@@ -19,8 +18,10 @@ export const HeroBlock = ({ content }: { content: HeroBlockContent }) => {
 
         <div className="relative z-10 mx-auto max-w-7xl px-4">
           <div className="max-w-3xl text-white">
-            <H1 className="mb-6">{content.title}</H1>
-            <P className="mb-8">{content.text}</P>
+            <h1 className="mb-6 font-bold text-4xl md:text-5xl lg:text-6xl">
+              {content.title}
+            </h1>
+            <p className="mb-8 text-xl">{content.text}</p>
             <div className="flex flex-col gap-4 sm:flex-row">
               <Button size="lg" variant={content.primaryButton.variant}>
                 <Calendar className="mr-2 h-5 w-5" />
@@ -28,7 +29,7 @@ export const HeroBlock = ({ content }: { content: HeroBlockContent }) => {
               </Button>
               <Button size="lg" variant={content.secondaryButton.variant}>
                 <Phone className="mr-2 h-5 w-5" />
-                <Span>{content.secondaryButton.label}</Span>
+                {content.secondaryButton.label}
               </Button>
             </div>
           </div>
