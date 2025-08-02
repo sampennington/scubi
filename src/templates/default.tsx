@@ -6,7 +6,6 @@ import type { Block, Page } from "../lib/api"
 import { BlockRenderer } from "@/components/blocks/block-renderer"
 import { ThemeProvider } from "@/components/blocks/theme-provider"
 import type { SiteSettings } from "@/lib/api/types"
-import { Calendar, Phone } from "lucide-react"
 import { BlockType } from "@/database/schema"
 
 export const DiveShopSite = ({
@@ -33,8 +32,9 @@ export const DiveShopSite = ({
           siteSettings={siteSettings}
           pages={pages}
         />
+
         <main className="flex-1">
-          <BlockRenderer blocks={blocks} />
+          <BlockRenderer blocks={exampleBlocks} />
         </main>
 
         <Footer siteSettings={siteSettings} />
@@ -43,37 +43,33 @@ export const DiveShopSite = ({
   )
 }
 
-const blocks: Block[] = [
+const exampleBlocks: Block[] = [
   {
     id: "1",
-    updatedAt: new Date(),
     pageId: "1",
-    order: 1,
     type: BlockType.HERO,
     content: {
-      title: "Koh Tao Divers",
-      text: "Koh Taos original dive shop",
+      title: "Welcome to Coral Paradise Diving",
+      text: "Discover the underwater world with our professional diving courses and guided tours",
       image: heroImage,
       primaryButton: {
         label: "Book Now",
-        url: "/book",
-        variant: "secondary",
-        icon: <Calendar className="mr-2 h-5 w-5" />
+        url: "/booking",
+        variant: "secondary"
       },
       secondaryButton: {
-        label: "Call Us",
-        url: "/contact",
-        variant: "default",
-        icon: <Phone className="mr-2 h-5 w-5" />
+        label: "Learn More",
+        url: "/about",
+        variant: "outline"
       }
-    }
+    },
+    order: 1,
+    updatedAt: new Date()
   },
   {
     id: "2",
-    type: BlockType.MULTI_COLUMN,
-    updatedAt: new Date(),
     pageId: "1",
-    order: 2,
+    type: BlockType.MULTI_COLUMN,
     content: {
       title: "Our Services",
       description: "Everything you need for your diving adventure",
@@ -97,223 +93,446 @@ const blocks: Block[] = [
       columnsPerRow: 3,
       alignment: "center",
       showIcons: true
-    }
+    },
+    order: 2,
+    updatedAt: new Date()
+  },
+  {
+    id: "3",
+    pageId: "1",
+    type: BlockType.COURSES,
+    content: {
+      title: "Diving Courses",
+      description: "Professional certification courses for all levels",
+      courses: [
+        {
+          title: "Open Water Diver",
+          description: "Learn the basics of scuba diving",
+          duration: "3-4 days",
+          level: "beginner",
+          price: 299,
+          currency: "USD",
+          maxDepth: 18,
+          maxStudents: 4,
+          includes: [
+            "Equipment rental",
+            "Certification card",
+            "Training materials"
+          ],
+          image: "https://picsum.photos/400/200?random=1"
+        },
+        {
+          title: "Advanced Open Water",
+          description: "Expand your diving skills and experience",
+          duration: "2-3 days",
+          level: "intermediate",
+          price: 199,
+          currency: "USD",
+          maxDepth: 30,
+          maxStudents: 4,
+          includes: ["Deep diving", "Navigation", "Specialty dives"],
+          image: "https://picsum.photos/400/200?random=2"
+        },
+        {
+          title: "Rescue Diver",
+          description: "Learn to prevent and manage diving emergencies",
+          duration: "3-4 days",
+          level: "advanced",
+          price: 399,
+          currency: "USD",
+          maxDepth: 40,
+          maxStudents: 4,
+          includes: ["Emergency training", "Rescue scenarios", "First aid"],
+          image: "https://picsum.photos/400/200?random=3"
+        }
+      ],
+      layout: "grid",
+      columns: 3,
+      showPricing: true,
+      showLevels: true
+    },
+    order: 3,
+    updatedAt: new Date()
+  },
+  {
+    id: "4",
+    pageId: "1",
+    type: BlockType.MARINE_LIFE,
+    content: {
+      title: "Marine Life You'll See",
+      description: "Discover the incredible underwater creatures",
+      currentSeason: "summer",
+      items: [
+        {
+          name: "Sea Turtles",
+          description:
+            "Gentle giants of the sea, often found in shallow waters",
+          season: "year-round",
+          image: "https://picsum.photos/300/200?random=4",
+          depth: "5-20m",
+          difficulty: "easy"
+        },
+        {
+          name: "Tropical Fish",
+          description: "Colorful reef fish in vibrant coral gardens",
+          season: "year-round",
+          image: "https://picsum.photos/300/200?random=5",
+          depth: "3-15m",
+          difficulty: "easy"
+        },
+        {
+          name: "Manta Rays",
+          description: "Majestic rays gliding through the water",
+          season: "summer",
+          image: "https://picsum.photos/300/200?random=6",
+          depth: "10-30m",
+          difficulty: "moderate"
+        }
+      ],
+      layout: "grid",
+      columns: 3,
+      showSeasonalFilter: true
+    },
+    order: 4,
+    updatedAt: new Date()
+  },
+  {
+    id: "5",
+    pageId: "1",
+    type: BlockType.TESTIMONIALS,
+    content: {
+      title: "What Our Divers Say",
+      description: "Don't just take our word for it",
+      testimonials: [
+        {
+          name: "Sarah Johnson",
+          role: "Open Water Diver",
+          content:
+            "Amazing experience! The instructors were professional and made me feel safe throughout the entire course.",
+          rating: 5,
+          photo: "https://picsum.photos/100/100?random=7"
+        },
+        {
+          name: "Mike Chen",
+          role: "Advanced Diver",
+          content:
+            "The advanced course exceeded my expectations. I learned so much and had incredible dives.",
+          rating: 5,
+          photo: "https://picsum.photos/100/100?random=8"
+        },
+        {
+          name: "Emma Davis",
+          role: "Rescue Diver",
+          content:
+            "The rescue course was challenging but rewarding. I feel much more confident as a diver now.",
+          rating: 5,
+          photo: "https://picsum.photos/100/100?random=9"
+        }
+      ],
+      layout: "grid",
+      columns: 3,
+      showPhotos: true,
+      showRatings: true
+    },
+    order: 5,
+    updatedAt: new Date()
+  },
+  {
+    id: "6",
+    pageId: "1",
+    type: BlockType.TEAM,
+    content: {
+      title: "Our Expert Team",
+      description: "Meet our certified diving instructors",
+      members: [
+        {
+          name: "Captain Alex",
+          role: "Master Instructor",
+          bio: "PADI Master Instructor with 15+ years of experience",
+          photo: "https://picsum.photos/200/200?random=10",
+          email: "alex@coralparadise.com",
+          phone: "+1-555-0123"
+        },
+        {
+          name: "Maria Santos",
+          role: "Divemaster",
+          bio: "Experienced divemaster specializing in reef conservation",
+          photo: "https://picsum.photos/200/200?random=11",
+          email: "maria@coralparadise.com",
+          phone: "+1-555-0124"
+        },
+        {
+          name: "David Kim",
+          role: "Instructor",
+          bio: "PADI Instructor with expertise in underwater photography",
+          photo: "https://picsum.photos/200/200?random=12",
+          email: "david@coralparadise.com",
+          phone: "+1-555-0125"
+        }
+      ],
+      layout: "grid",
+      columns: 3,
+      showContactInfo: true,
+      showSocialLinks: false
+    },
+    order: 6,
+    updatedAt: new Date()
+  },
+  {
+    id: "7",
+    pageId: "1",
+    type: BlockType.FAQ,
+    content: {
+      title: "Frequently Asked Questions",
+      description: "Everything you need to know about diving with us",
+      items: [
+        {
+          question: "Do I need to know how to swim?",
+          answer:
+            "Yes, you should be comfortable in the water and able to swim at least 200 meters."
+        },
+        {
+          question: "What equipment do I need?",
+          answer:
+            "We provide all necessary equipment including wetsuits, BCDs, regulators, and tanks."
+        },
+        {
+          question: "How long does certification take?",
+          answer:
+            "Open Water certification typically takes 3-4 days, including classroom, pool, and open water dives."
+        },
+        {
+          question: "Is diving safe?",
+          answer:
+            "Yes, when done with proper training and following safety protocols. Our instructors are certified and experienced."
+        }
+      ],
+      layout: "accordion",
+      allowMultipleOpen: false
+    },
+    order: 7,
+    updatedAt: new Date()
+  },
+  {
+    id: "8",
+    pageId: "1",
+    type: BlockType.CONTACT_FORM,
+    content: {
+      title: "Get in Touch",
+      description: "Ready to start your diving adventure? Contact us!",
+      fields: [
+        {
+          name: "name",
+          type: "text",
+          label: "Full Name",
+          required: true,
+          placeholder: "Enter your full name"
+        },
+        {
+          name: "email",
+          type: "email",
+          label: "Email Address",
+          required: true,
+          placeholder: "Enter your email"
+        },
+        {
+          name: "phone",
+          type: "tel",
+          label: "Phone Number",
+          required: false,
+          placeholder: "Enter your phone number"
+        },
+        {
+          name: "course",
+          type: "select",
+          label: "Interested Course",
+          required: true,
+          options: [
+            "Open Water Diver",
+            "Advanced Open Water",
+            "Rescue Diver",
+            "Other"
+          ]
+        },
+        {
+          name: "message",
+          type: "textarea",
+          label: "Message",
+          required: false,
+          placeholder: "Tell us about your diving goals"
+        }
+      ],
+      submitButtonText: "Send Message",
+      successMessage: "Thank you! We'll get back to you soon.",
+      emailTo: "info@coralparadise.com"
+    },
+    order: 8,
+    updatedAt: new Date()
+  },
+  {
+    id: "9",
+    pageId: "1",
+    type: BlockType.CALL_TO_ACTION,
+    content: {
+      title: "Ready to Dive?",
+      description:
+        "Book your diving adventure today and explore the underwater world",
+      primaryButton: {
+        label: "Book Your Course",
+        url: "/booking",
+        variant: "secondary"
+      },
+      secondaryButton: {
+        label: "Contact Us",
+        url: "/contact",
+        variant: "outline"
+      },
+      backgroundImage: "https://picsum.photos/1200/400?random=13",
+      alignment: "center"
+    },
+    order: 9,
+    updatedAt: new Date()
+  },
+  {
+    id: "10",
+    pageId: "1",
+    type: BlockType.GALLERY,
+    content: {
+      title: "Underwater Gallery",
+      description: "Explore our stunning underwater photography",
+      images: [
+        {
+          src: "https://picsum.photos/400/300?random=14",
+          alt: "Coral reef",
+          caption: "Vibrant coral reef ecosystem"
+        },
+        {
+          src: "https://picsum.photos/400/300?random=15",
+          alt: "Sea turtle",
+          caption: "Gentle sea turtle swimming"
+        },
+        {
+          src: "https://picsum.photos/400/300?random=16",
+          alt: "Tropical fish",
+          caption: "Colorful tropical fish"
+        },
+        {
+          src: "https://picsum.photos/400/300?random=17",
+          alt: "Diving equipment",
+          caption: "Professional diving equipment"
+        },
+        {
+          src: "https://picsum.photos/400/300?random=18",
+          alt: "Underwater cave",
+          caption: "Mysterious underwater cave"
+        },
+        {
+          src: "https://picsum.photos/400/300?random=19",
+          alt: "Manta ray",
+          caption: "Majestic manta ray"
+        }
+      ],
+      layout: "grid",
+      columns: 3,
+      showCaptions: true
+    },
+    order: 10,
+    updatedAt: new Date()
+  },
+  {
+    id: "11",
+    pageId: "1",
+    type: BlockType.VIDEO,
+    content: {
+      title: "Diving Experience",
+      description: "Watch our diving adventures in action",
+      videoUrl: "https://www.youtube.com/watch?v=dQw4w9WgXcQ",
+      provider: "youtube",
+      autoplay: false,
+      controls: true,
+      width: 16,
+      height: 9
+    },
+    order: 11,
+    updatedAt: new Date()
+  },
+  {
+    id: "12",
+    pageId: "1",
+    type: BlockType.MAP,
+    content: {
+      title: "Find Us",
+      description: "Visit our dive center",
+      address: "123 Ocean Drive, Coral Bay, CA 90210",
+      latitude: 34.0522,
+      longitude: -118.2437,
+      zoom: 15,
+      apiKey: "YOUR_GOOGLE_MAPS_API_KEY",
+      height: 400
+    },
+    order: 12,
+    updatedAt: new Date()
+  },
+  {
+    id: "13",
+    pageId: "1",
+    type: BlockType.SOCIAL_FEED,
+    content: {
+      title: "Follow Our Adventures",
+      description: "See our latest diving photos and updates",
+      platform: "instagram",
+      username: "coralparadisediving",
+      postCount: 6,
+      showCaptions: true,
+      layout: "grid",
+      columns: 3
+    },
+    order: 13,
+    updatedAt: new Date()
+  },
+  {
+    id: "14",
+    pageId: "1",
+    type: BlockType.DIVIDER,
+    content: {
+      text: "Ready to start your journey?",
+      alignment: "center",
+      style: "solid",
+      color: "#3b82f6",
+      thickness: 2
+    },
+    order: 14,
+    updatedAt: new Date()
+  },
+  {
+    id: "15",
+    pageId: "1",
+    type: BlockType.TWO_COLUMN,
+    content: {
+      title: "Why Choose Us?",
+      description: "Discover what makes us different",
+      content: {
+        leftContent: {
+          type: "text",
+          title: "Expert Instructors",
+          content:
+            "Our certified instructors have years of experience and are passionate about teaching safe diving practices. We maintain small class sizes to ensure personalized attention and maximum safety."
+        },
+        rightContent: {
+          type: "image",
+          content: "https://picsum.photos/600/400?random=20",
+          title: "Professional Training"
+        },
+        layout: "text-image",
+        alignment: "center",
+        spacing: 8
+      },
+      background: "#f8fafc",
+      padding: 16
+    },
+    order: 15,
+    updatedAt: new Date()
   }
 ]
 
 export default DiveShopSite
-
-// const renderStars = (rating: number) => {
-//   return Array.from({ length: 5 }, (_, i) => (
-//     <Star
-//       key={i}
-//       className={`h-4 w-4 ${
-//         i < rating ? "fill-yellow-400 text-yellow-400" : "text-gray-300"
-//       }`}
-//     />
-//   ))
-// }
-
-// const renderHomePage = () => (
-//   <div>
-//     <section className="relative overflow-hidden py-20">
-//       <div className="absolute inset-0 z-0">
-//         <Image
-//           src={heroImage}
-//           alt="Underwater scene"
-//           className="h-full w-full object-cover"
-//         />
-//         <div className="absolute inset-0 bg-gradient-to-r from-primary/80 to-primary/40" />
-//       </div>
-
-//       <div className="container relative z-10 mx-auto px-4">
-//         <div className="max-w-3xl text-white">
-//           <h1 className="mb-6 font-bold text-5xl md:text-6xl">
-//             {sampleDiveShop.content.home.title}
-//           </h1>
-//           <p className="mb-8 text-white/90 text-xl md:text-2xl">
-//             {sampleDiveShop.content.home.subtitle}
-//           </p>
-//           <div className="flex flex-col gap-4 sm:flex-row">
-//             <Button size="lg" variant="secondary">
-//               <Calendar className="mr-2 h-5 w-5" />
-//               Book Now
-//             </Button>
-//             <Button
-//               size="lg"
-//               variant="outline"
-//               className="border-white text-white hover:bg-white hover:text-primary"
-//             >
-//               <Phone className="mr-2 h-5 w-5" />
-//               Call Us
-//             </Button>
-//           </div>
-//         </div>
-//       </div>
-//     </section>
-
-//     <About body={"Test"} />
-//     <Courses courses={courses} />
-
-//     {/* Reviews */}
-//     <section className="bg-background py-16">
-//       <div className="container mx-auto px-4">
-//         <div className="mb-12 text-center">
-//           <h2 className="mb-4 font-bold text-4xl">What Our Divers Say</h2>
-//           <p className="text-muted-foreground text-xl">
-//             Don't just take our word for it
-//           </p>
-//         </div>
-
-//         <div className="grid gap-8 md:grid-cols-3">
-//           {sampleDiveShop.reviews.map((review, index) => (
-//             <Card key={index} className="transition-shadow hover:shadow-lg">
-//               <CardHeader>
-//                 <div className="flex items-center gap-3">
-//                   <div className="flex h-12 w-12 items-center justify-center rounded-full bg-gradient-ocean font-semibold text-white">
-//                     {review.customer_name.charAt(0)}
-//                   </div>
-//                   <div>
-//                     <CardTitle className="text-lg">
-//                       {review.customer_name}
-//                     </CardTitle>
-//                     <div className="flex items-center gap-1">
-//                       {renderStars(review.rating)}
-//                     </div>
-//                   </div>
-//                 </div>
-//               </CardHeader>
-//               <CardContent>
-//                 <h4 className="mb-2 font-semibold">{review.title}</h4>
-//                 <p className="mb-3 text-muted-foreground">{review.content}</p>
-//                 <Badge variant="outline" className="text-xs">
-//                   {review.course_taken}
-//                 </Badge>
-//               </CardContent>
-//             </Card>
-//           ))}
-//         </div>
-//       </div>
-//     </section>
-//   </div>
-// )
-
-// const renderPage = () => {
-//   switch (currentPage) {
-//     case "home":
-//       return renderHomePage()
-//   case "about":
-//     return (
-//       <div className="container mx-auto px-4 py-16">
-//         <h1 className="text-4xl font-bold mb-8">About Us</h1>
-//         <div className="max-w-4xl">
-//           <p className="text-lg text-muted-foreground mb-6">
-//             Founded in 2008, Coral Paradise Diving has been dedicated to
-//             sharing the wonders of the underwater world with diving
-//             enthusiasts from around the globe.
-//           </p>
-//           <p className="text-lg text-muted-foreground">
-//             Our team of experienced instructors and dive masters are
-//             passionate about marine conservation and committed to providing
-//             safe, educational, and unforgettable diving experiences.
-//           </p>
-//         </div>
-//       </div>
-//     )
-//   case "courses":
-//     return (
-//       <div className="container mx-auto px-4 py-16">
-//         <h1 className="text-4xl font-bold mb-8">Our Courses</h1>
-//         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-//           {courses.map((course, index) => (
-//             <Card key={index} className="hover:shadow-lg transition-shadow">
-//               <CardHeader>
-//                 <div className="flex items-center justify-between">
-//                   <Badge variant="outline">
-//                     {course.certification_level}
-//                   </Badge>
-//                   <span className="text-2xl font-bold text-primary">
-//                     ${course.price}
-//                   </span>
-//                 </div>
-//                 <CardTitle className="text-xl">{course.title}</CardTitle>
-//                 <CardDescription>{course.description}</CardDescription>
-//               </CardHeader>
-//               <CardContent>
-//                 <div className="space-y-2 text-sm text-muted-foreground mb-4">
-//                   <div className="flex items-center gap-2">
-//                     <Calendar className="h-4 w-4" />
-//                     {course.duration_days} days
-//                   </div>
-//                   <div className="flex items-center gap-2">
-//                     <Waves className="h-4 w-4" />
-//                     Max depth: {course.max_depth_meters}m
-//                   </div>
-//                 </div>
-//                 <Button className="w-full">Book Course</Button>
-//               </CardContent>
-//             </Card>
-//           ))}
-//         </div>
-//       </div>
-//     )
-//   case "contact":
-//     return (
-//       <div className="container mx-auto px-4 py-16">
-//         <h1 className="text-4xl font-bold mb-8">Contact Us</h1>
-//         <div className="grid md:grid-cols-2 gap-12">
-//           <div>
-//             <h2 className="text-2xl font-semibold mb-6">Get in Touch</h2>
-//             <div className="space-y-4">
-//               <div className="flex items-center gap-3">
-//                 <Phone className="h-5 w-5 text-primary" />
-//                 <span>{displayData.content.home.contact_info.phone}</span>
-//               </div>
-//               <div className="flex items-center gap-3">
-//                 <Mail className="h-5 w-5 text-primary" />
-//                 <span>{displayData.content.home.contact_info.email}</span>
-//               </div>
-//               <div className="flex items-center gap-3">
-//                 <MapPin className="h-5 w-5 text-primary" />
-//                 <span>{displayData.content.home.contact_info.address}</span>
-//               </div>
-//             </div>
-//           </div>
-//           <Card>
-//             <CardHeader>
-//               <CardTitle>Send us a message</CardTitle>
-//             </CardHeader>
-//             <CardContent className="space-y-4">
-//               <div>
-//                 <label className="text-sm font-medium">Name</label>
-//                 <input className="w-full px-3 py-2 border border-border rounded-md mt-1" />
-//               </div>
-//               <div>
-//                 <label className="text-sm font-medium">Email</label>
-//                 <input
-//                   type="email"
-//                   className="w-full px-3 py-2 border border-border rounded-md mt-1"
-//                 />
-//               </div>
-//               <div>
-//                 <label className="text-sm font-medium">Message</label>
-//                 <textarea className="w-full px-3 py-2 border border-border rounded-md mt-1 h-24"></textarea>
-//               </div>
-//               <Button className="w-full">Send Message</Button>
-//             </CardContent>
-//           </Card>
-//         </div>
-//       </div>
-//     )
-// default:
-//   return (
-//     <div className="container mx-auto px-4 py-16">
-//       <h1 className="mb-8 font-bold text-4xl">
-//         {currentPage.charAt(0).toUpperCase() +
-//           currentPage.slice(1).replace("-", " ")}
-//       </h1>
-//       <p className="text-lg text-muted-foreground">
-//         This page is coming soon. Check back later for exciting content!
-//       </p>
-//     </div>
-//   )

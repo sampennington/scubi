@@ -8,12 +8,24 @@ import {
   unique
 } from "drizzle-orm/pg-core"
 
-// Block type enum for type safety
 export const BlockType = {
   HERO: "hero",
   TEXT: "text",
   IMAGE: "image",
-  MULTI_COLUMN: "multi-column"
+  MULTI_COLUMN: "multi-column",
+  GALLERY: "gallery",
+  TESTIMONIALS: "testimonials",
+  TEAM: "team",
+  FAQ: "faq",
+  CONTACT_FORM: "contact-form",
+  CALL_TO_ACTION: "call-to-action",
+  VIDEO: "video",
+  MAP: "map",
+  SOCIAL_FEED: "social-feed",
+  DIVIDER: "divider",
+  TWO_COLUMN: "two-column",
+  COURSES: "courses",
+  MARINE_LIFE: "marine-life"
 } as const
 
 export type BlockType = (typeof BlockType)[keyof typeof BlockType]
