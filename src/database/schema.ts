@@ -139,6 +139,9 @@ export const pages = pgTable(
       .notNull(),
     title: text("title").notNull(),
     slug: text("slug").notNull(), // e.g. "/", "/about"
+    parentId: text("parent_id"),
+    order: integer("order").default(0),
+    showInNav: boolean("show_in_nav").default(true),
     metaTitle: text("meta_title"),
     metaDescription: text("meta_description"),
     createdAt: timestamp("created_at").defaultNow().notNull(),

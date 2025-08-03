@@ -2,7 +2,7 @@
 import heroImage from "@/assets/hero-underwater.jpg"
 import { Nav } from "./nav"
 import { Footer } from "./footer"
-import type { Block, Page } from "../lib/api"
+import type { Block, NavigationItem, Page } from "../lib/api"
 import { BlockRenderer } from "@/components/blocks/block-renderer"
 import type { SiteSettings } from "@/lib/api/types"
 import { BlockType } from "@/database/schema"
@@ -17,7 +17,7 @@ export const DiveShopSite = ({
   blocks
 }: {
   currentPage: Page
-  pages: Page[]
+  pages: NavigationItem[]
   siteSettings: SiteSettings
   blocks: Block[]
 }) => {
@@ -39,15 +39,10 @@ export const DiveShopSite = ({
         }}
       >
         <div className="flex min-h-screen flex-col bg-background">
-          <Nav
-            setCurrentPage={() => {}}
-            currentPage={currentPage}
-            siteSettings={siteSettings}
-            pages={pages}
-          />
+          <Nav siteSettings={siteSettings} pages={pages} />
 
           <main className="flex-1">
-            <BlockRenderer blocks={exampleBlocks} />
+            <BlockRenderer blocks={blocks} />
           </main>
 
           <Footer siteSettings={siteSettings} />

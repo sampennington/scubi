@@ -1,4 +1,4 @@
-import type { Block, Page } from "@/lib/api"
+import type { Block, Page, NavigationItem } from "@/lib/api"
 import type { SiteSettings } from "@/lib/api/types"
 import { DiveShopSite } from "@/templates/default"
 
@@ -9,7 +9,7 @@ export default function Preview({
   siteSettings
 }: {
   page: Page
-  pages: Page[]
+  pages: NavigationItem[]
   blocks: Block[]
   siteSettings: SiteSettings
 }) {

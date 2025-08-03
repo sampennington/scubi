@@ -8,7 +8,7 @@ import { subscriptionApi } from "./subscriptions"
 
 export { shopApi, type Shop, type ShopWithMembers } from "./shops"
 export { memberApi } from "./members"
-export { pageApi, type Page } from "./pages"
+export { pageApi, type Page, type NavigationItem } from "./pages"
 export { blockApi, type Block } from "./blocks"
 export { templateApi } from "./templates"
 export { siteSettingsApi } from "./site-settings"

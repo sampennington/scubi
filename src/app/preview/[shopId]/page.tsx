@@ -11,7 +11,7 @@ export default async function PreviewPage({
 
   // Always show home page for root path
   const currentPage = await api.pages.getBySlug(shopId, "/")
-  const pages = await api.pages.getByShopId(shopId)
+  const pages = await api.pages.getNavigationTree(shopId)
 
   if (!currentPage) {
     return notFound()

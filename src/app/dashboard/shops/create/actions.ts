@@ -25,11 +25,12 @@ export async function createShop(data: { name: string; domain: string }) {
     })
 
     await api.members.add({ shopId: shop.id, userId: session.user.id })
-    await api.pages.create({
-      shopId: shop.id,
-      title: "Home",
-      slug: "/"
-    })
+    await api.pages.createExamplePages(shop.id)
+    // await api.pages.create({
+    //   shopId: shop.id,
+    //   title: "Home",
+    //   slug: "/"
+    // })
 
     revalidatePath("/dashboard/shops")
     return { success: true, shop }
