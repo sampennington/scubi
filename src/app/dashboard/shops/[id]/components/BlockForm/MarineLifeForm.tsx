@@ -21,9 +21,13 @@ interface MarineLifeFormData {
 
 interface MarineLifeFormProps {
   formData: MarineLifeFormData
-  updateField: (field: string, value: any) => void
-  updateArrayField: (field: string, index: number, value: any) => void
-  addArrayItem: (field: string, item: any) => void
+  updateField: (field: string, value: string) => void
+  updateArrayField: (
+    field: string,
+    index: number,
+    value: MarineLifeData
+  ) => void
+  addArrayItem: (field: string, item: MarineLifeData) => void
   removeArrayItem: (field: string, index: number) => void
   errors: Record<string, string>
 }

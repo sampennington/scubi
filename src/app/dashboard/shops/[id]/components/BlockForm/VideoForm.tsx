@@ -13,7 +13,7 @@ interface VideoFormData {
 
 interface VideoFormProps {
   formData: VideoFormData
-  updateField: (field: string, value: any) => void
+  updateField: (field: string, value: string) => void
   errors: Record<string, string>
 }
 

@@ -19,7 +19,7 @@ interface SocialFeedFormData {
 
 interface SocialFeedFormProps {
   formData: SocialFeedFormData
-  updateField: (field: string, value: any) => void
+  updateField: (field: string, value: string | number) => void
   errors: Record<string, string>
 }
 

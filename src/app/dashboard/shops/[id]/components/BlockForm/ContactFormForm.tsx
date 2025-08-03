@@ -12,7 +12,7 @@ interface ContactFormFormData {
 
 interface ContactFormFormProps {
   formData: ContactFormFormData
-  updateField: (field: string, value: any) => void
+  updateField: (field: string, value: string) => void
   errors: Record<string, string>
 }
 

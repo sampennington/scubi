@@ -21,7 +21,7 @@ interface CallToActionFormData {
 
 interface CallToActionFormProps {
   formData: CallToActionFormData
-  updateField: (field: string, value: any) => void
+  updateField: (field: string, value: string) => void
   errors: Record<string, string>
 }
 

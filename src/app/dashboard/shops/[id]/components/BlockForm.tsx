@@ -28,57 +28,49 @@ import {
   CoursesForm,
   MarineLifeForm
 } from "./BlockForm/index"
+import { ValidationError } from "./BlockForm/ValidationError"
+import {
+  validateBlockContent,
+  isHeroContent,
+  isTextContent,
+  isImageContent,
+  isDividerContent,
+  isMultiColumnContent,
+  isGalleryContent,
+  isTestimonialsContent,
+  isTeamContent,
+  isFAQContent,
+  isContactFormContent,
+  isCallToActionContent,
+  isVideoContent,
+  isMapContent,
+  isSocialFeedContent,
+  isTwoColumnContent,
+  isCoursesContent,
+  isMarineLifeContent
+} from "./BlockForm/schemas"
+import { getRequiredFields } from "./BlockForm/utils"
+
+interface Block {
+  id?: string
+  type: BlockType
+  content: Record<string, unknown>
+}
 
 interface BlockFormProps {
-  block: any
-  onSave: (blockData: any) => void
+  block: Block
+  onSave: (blockData: {
+    type: BlockType
+    content: Record<string, unknown>
+  }) => void
   onCancel: () => void
 }
 
 export function BlockForm({ block, onSave, onCancel }: BlockFormProps) {
-  const [formData, setFormData] = useState(block.content || {})
+  const [formData, setFormData] = useState<Record<string, unknown>>(
+    block.content || {}
+  )
   const [errors, setErrors] = useState<Record<string, string>>({})
-
-  const getRequiredFields = (blockType: string) => {
-    switch (blockType) {
-      case BlockType.HERO:
-        return ["title", "text", "image", "primaryButton"]
-      case BlockType.TEXT:
-        return ["text"]
-      case BlockType.IMAGE:
-        return ["src", "alt"]
-      case BlockType.MULTI_COLUMN:
-        return ["title", "columns"]
-      case BlockType.GALLERY:
-        return ["title", "images"]
-      case BlockType.TESTIMONIALS:
-        return ["title", "testimonials"]
-      case BlockType.TEAM:
-        return ["title", "members"]
-      case BlockType.FAQ:
-        return ["title", "items"]
-      case BlockType.CONTACT_FORM:
-        return ["title", "description", "email"]
-      case BlockType.CALL_TO_ACTION:
-        return ["title", "text", "buttonText", "buttonUrl"]
-      case BlockType.VIDEO:
-        return ["title", "description", "url"]
-      case BlockType.MAP:
-        return ["title", "address"]
-      case BlockType.SOCIAL_FEED:
-        return ["title", "platform", "username"]
-      case BlockType.DIVIDER:
-        return []
-      case BlockType.TWO_COLUMN:
-        return ["title", "leftContent", "rightContent"]
-      case BlockType.COURSES:
-        return ["title", "courses"]
-      case BlockType.MARINE_LIFE:
-        return ["title", "species"]
-      default:
-        return []
-    }
-  }
 
   const validateForm = () => {
     const requiredFields = getRequiredFields(block.type)
@@ -89,6 +81,7 @@ export function BlockForm({ block, onSave, onCancel }: BlockFormProps) {
         !formData[field] ||
         (Array.isArray(formData[field]) && formData[field].length === 0) ||
         (typeof formData[field] === "object" &&
+          formData[field] !== null &&
           Object.keys(formData[field]).length === 0)
       ) {
         newErrors[field] = "This field is required"
@@ -108,198 +101,273 @@ export function BlockForm({ block, onSave, onCancel }: BlockFormProps) {
     }
   }
 
-  const updateField = (field: string, value: any) => {
-    setFormData((prev: any) => ({ ...prev, [field]: value }))
+  const updateField = (field: string, value: unknown) => {
+    setFormData((prev) => ({ ...prev, [field]: value }))
     if (errors[field]) {
-      setErrors((prev: Record<string, string>) => ({ ...prev, [field]: "" }))
+      setErrors((prev) => ({ ...prev, [field]: "" }))
     }
   }
 
-  const updateArrayField = (field: string, index: number, value: any) => {
-    setFormData((prev: any) => ({
+  const updateArrayField = (field: string, index: number, value: unknown) => {
+    setFormData((prev) => ({
       ...prev,
-      [field]: prev[field].map((item: any, i: number) =>
-        i === index ? { ...item, ...value } : item
+      [field]: (prev[field] as unknown[]).map((item, i) =>
+        i === index
+          ? {
+              ...(item as Record<string, unknown>),
+              ...(value as Record<string, unknown>)
+            }
+          : item
       )
     }))
   }
 
-  const addArrayItem = (field: string, defaultItem: any) => {
-    setFormData((prev: any) => ({
+  const addArrayItem = (field: string, defaultItem: unknown) => {
+    setFormData((prev) => ({
       ...prev,
-      [field]: [...(prev[field] || []), defaultItem]
+      [field]: [...((prev[field] as unknown[]) || []), defaultItem]
     }))
   }
 
   const removeArrayItem = (field: string, index: number) => {
-    setFormData((prev: any) => ({
+    setFormData((prev) => ({
       ...prev,
-      [field]: prev[field].filter((_: any, i: number) => i !== index)
+      [field]: (prev[field] as unknown[]).filter((_, i) => i !== index)
     }))
   }
 
   const renderForm = () => {
+    const validationResult = validateBlockContent(block.type, formData)
+
+    if (!validationResult.success) {
+      const errorMessages = validationResult.error.errors.map(
+        (error) => `${error.path.join(".")}: ${error.message}`
+      )
+      return <ValidationError errors={errorMessages} />
+    }
+
     switch (block.type) {
       case BlockType.HERO:
-        return (
-          <HeroForm
-            formData={formData}
-            updateField={updateField}
-            errors={errors}
-          />
-        )
+        if (isHeroContent(validationResult.data)) {
+          return (
+            <HeroForm
+              formData={validationResult.data}
+              updateField={updateField}
+              errors={errors}
+            />
+          )
+        }
+        break
       case BlockType.TEXT:
-        return (
-          <TextForm
-            formData={formData}
-            updateField={updateField}
-            errors={errors}
-          />
-        )
+        if (isTextContent(validationResult.data)) {
+          return (
+            <TextForm
+              formData={validationResult.data}
+              updateField={updateField}
+              errors={errors}
+            />
+          )
+        }
+        break
       case BlockType.IMAGE:
-        return (
-          <ImageForm
-            formData={formData}
-            updateField={updateField}
-            errors={errors}
-          />
-        )
+        if (isImageContent(validationResult.data)) {
+          return (
+            <ImageForm
+              formData={validationResult.data}
+              updateField={updateField}
+              errors={errors}
+            />
+          )
+        }
+        break
       case BlockType.DIVIDER:
-        return <DividerForm formData={formData} updateField={updateField} />
+        if (isDividerContent(validationResult.data)) {
+          return (
+            <DividerForm
+              formData={validationResult.data}
+              updateField={updateField}
+            />
+          )
+        }
+        break
       case BlockType.MULTI_COLUMN:
-        return (
-          <MultiColumnForm
-            formData={formData}
-            updateField={updateField}
-            updateArrayField={updateArrayField}
-            addArrayItem={addArrayItem}
-            removeArrayItem={removeArrayItem}
-            errors={errors}
-          />
-        )
+        if (isMultiColumnContent(validationResult.data)) {
+          return (
+            <MultiColumnForm
+              formData={validationResult.data}
+              updateField={updateField}
+              updateArrayField={updateArrayField}
+              addArrayItem={addArrayItem}
+              removeArrayItem={removeArrayItem}
+              errors={errors}
+            />
+          )
+        }
+        break
       case BlockType.GALLERY:
-        return (
-          <GalleryForm
-            formData={formData}
-            updateField={updateField}
-            updateArrayField={updateArrayField}
-            addArrayItem={addArrayItem}
-            removeArrayItem={removeArrayItem}
-            errors={errors}
-          />
-        )
+        if (isGalleryContent(validationResult.data)) {
+          return (
+            <GalleryForm
+              formData={validationResult.data}
+              updateField={updateField}
+              updateArrayField={updateArrayField}
+              addArrayItem={addArrayItem}
+              removeArrayItem={removeArrayItem}
+              errors={errors}
+            />
+          )
+        }
+        break
       case BlockType.TESTIMONIALS:
-        return (
-          <TestimonialsForm
-            formData={formData}
-            updateField={updateField}
-            updateArrayField={updateArrayField}
-            addArrayItem={addArrayItem}
-            removeArrayItem={removeArrayItem}
-            errors={errors}
-          />
-        )
+        if (isTestimonialsContent(validationResult.data)) {
+          return (
+            <TestimonialsForm
+              formData={validationResult.data}
+              updateField={updateField}
+              updateArrayField={updateArrayField}
+              addArrayItem={addArrayItem}
+              removeArrayItem={removeArrayItem}
+              errors={errors}
+            />
+          )
+        }
+        break
       case BlockType.TEAM:
-        return (
-          <TeamForm
-            formData={formData}
-            updateField={updateField}
-            updateArrayField={updateArrayField}
-            addArrayItem={addArrayItem}
-            removeArrayItem={removeArrayItem}
-            errors={errors}
-          />
-        )
+        if (isTeamContent(validationResult.data)) {
+          return (
+            <TeamForm
+              formData={validationResult.data}
+              updateField={updateField}
+              updateArrayField={updateArrayField}
+              addArrayItem={addArrayItem}
+              removeArrayItem={removeArrayItem}
+              errors={errors}
+            />
+          )
+        }
+        break
       case BlockType.FAQ:
-        return (
-          <FAQForm
-            formData={formData}
-            updateField={updateField}
-            updateArrayField={updateArrayField}
-            addArrayItem={addArrayItem}
-            removeArrayItem={removeArrayItem}
-            errors={errors}
-          />
-        )
+        if (isFAQContent(validationResult.data)) {
+          return (
+            <FAQForm
+              formData={validationResult.data}
+              updateField={updateField}
+              updateArrayField={updateArrayField}
+              addArrayItem={addArrayItem}
+              removeArrayItem={removeArrayItem}
+              errors={errors}
+            />
+          )
+        }
+        break
       case BlockType.CONTACT_FORM:
-        return (
-          <ContactFormForm
-            formData={formData}
-            updateField={updateField}
-            errors={errors}
-          />
-        )
+        if (isContactFormContent(validationResult.data)) {
+          return (
+            <ContactFormForm
+              formData={validationResult.data}
+              updateField={updateField}
+              errors={errors}
+            />
+          )
+        }
+        break
       case BlockType.CALL_TO_ACTION:
-        return (
-          <CallToActionForm
-            formData={formData}
-            updateField={updateField}
-            errors={errors}
-          />
-        )
+        if (isCallToActionContent(validationResult.data)) {
+          return (
+            <CallToActionForm
+              formData={validationResult.data}
+              updateField={updateField}
+              errors={errors}
+            />
+          )
+        }
+        break
       case BlockType.VIDEO:
-        return (
-          <VideoForm
-            formData={formData}
-            updateField={updateField}
-            errors={errors}
-          />
-        )
+        if (isVideoContent(validationResult.data)) {
+          return (
+            <VideoForm
+              formData={validationResult.data}
+              updateField={updateField}
+              errors={errors}
+            />
+          )
+        }
+        break
       case BlockType.MAP:
-        return (
-          <MapForm
-            formData={formData}
-            updateField={updateField}
-            errors={errors}
-          />
-        )
+        if (isMapContent(validationResult.data)) {
+          return (
+            <MapForm
+              formData={validationResult.data}
+              updateField={updateField}
+              errors={errors}
+            />
+          )
+        }
+        break
       case BlockType.SOCIAL_FEED:
-        return (
-          <SocialFeedForm
-            formData={formData}
-            updateField={updateField}
-            errors={errors}
-          />
-        )
+        if (isSocialFeedContent(validationResult.data)) {
+          return (
+            <SocialFeedForm
+              formData={validationResult.data}
+              updateField={updateField}
+              errors={errors}
+            />
+          )
+        }
+        break
       case BlockType.TWO_COLUMN:
-        return (
-          <TwoColumnForm
-            formData={formData}
-            updateField={updateField}
-            errors={errors}
-          />
-        )
+        if (isTwoColumnContent(validationResult.data)) {
+          return (
+            <TwoColumnForm
+              formData={validationResult.data}
+              updateField={updateField}
+              errors={errors}
+            />
+          )
+        }
+        break
       case BlockType.COURSES:
-        return (
-          <CoursesForm
-            formData={formData}
-            updateField={updateField}
-            updateArrayField={updateArrayField}
-            addArrayItem={addArrayItem}
-            removeArrayItem={removeArrayItem}
-            errors={errors}
-          />
-        )
+        if (isCoursesContent(validationResult.data)) {
+          return (
+            <CoursesForm
+              formData={validationResult.data}
+              updateField={updateField}
+              updateArrayField={updateArrayField}
+              addArrayItem={addArrayItem}
+              removeArrayItem={removeArrayItem}
+              errors={errors}
+            />
+          )
+        }
+        break
       case BlockType.MARINE_LIFE:
-        return (
-          <MarineLifeForm
-            formData={formData}
-            updateField={updateField}
-            updateArrayField={updateArrayField}
-            addArrayItem={addArrayItem}
-            removeArrayItem={removeArrayItem}
-            errors={errors}
-          />
-        )
+        if (isMarineLifeContent(validationResult.data)) {
+          return (
+            <MarineLifeForm
+              formData={validationResult.data}
+              updateField={updateField}
+              updateArrayField={updateArrayField}
+              addArrayItem={addArrayItem}
+              removeArrayItem={removeArrayItem}
+              errors={errors}
+            />
+          )
+        }
+        break
       default:
         return (
-          <div className="text-center py-8">
+          <div className="py-8 text-center">
             <p className="text-muted-foreground">
               Form for {block.type} block type is not implemented yet.
             </p>
           </div>
         )
     }
+
+    // If we reach here, the type guard failed (shouldn't happen with proper validation)
+    return (
+      <ValidationError errors={["Unexpected data format"]} title="Type Error" />
+    )
   }
 
   return (

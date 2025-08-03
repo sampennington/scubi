@@ -14,7 +14,7 @@ interface MapFormData {
 
 interface MapFormProps {
   formData: MapFormData
-  updateField: (field: string, value: any) => void
+  updateField: (field: string, value: string | number | undefined) => void
   errors: Record<string, string>
 }
 
