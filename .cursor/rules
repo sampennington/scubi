@@ -1,0 +1,2 @@
+- Create separate React components, never inline render functions
+- Use `<ComponentName />` pattern, not `{items.map(renderItem)}`
