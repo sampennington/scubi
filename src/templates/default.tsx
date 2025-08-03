@@ -4,9 +4,11 @@ import { Nav } from "./nav"
 import { Footer } from "./footer"
 import type { Block, Page } from "../lib/api"
 import { BlockRenderer } from "@/components/blocks/block-renderer"
-import { ThemeProvider } from "@/components/blocks/theme-provider"
 import type { SiteSettings } from "@/lib/api/types"
 import { BlockType } from "@/database/schema"
+import { ThemeProvider } from "@/components/blocks/theme-provider"
+
+import { ThemeProvider as NextThemeProvider } from "next-themes"
 
 export const DiveShopSite = ({
   currentPage,
@@ -20,30 +22,38 @@ export const DiveShopSite = ({
   blocks: Block[]
 }) => {
   return (
-    <ThemeProvider
-      theme={{
-        primaryColor: siteSettings.primaryColor || "#3b82f6",
-        secondaryColor: siteSettings.secondaryColor || "#64748b",
-        accentColor: siteSettings.accentColor || "#f59e0b",
-        fontFamilyHeading: siteSettings.fontFamilyHeading || undefined,
-        fontFamilyBody: siteSettings.fontFamilyBody || undefined
-      }}
+    <NextThemeProvider
+      attribute="class"
+      defaultTheme="light"
+      enableSystem={false}
+      disableTransitionOnChange
+      forcedTheme="light"
     >
-      <div className="flex min-h-screen flex-col bg-background">
-        <Nav
-          setCurrentPage={() => {}}
-          currentPage={currentPage}
-          siteSettings={siteSettings}
-          pages={pages}
-        />
+      <ThemeProvider
+        theme={{
+          primaryColor: siteSettings.primaryColor || "#3b82f6",
+          secondaryColor: siteSettings.secondaryColor || "#64748b",
+          accentColor: siteSettings.accentColor || "#f59e0b",
+          fontFamilyHeading: siteSettings.fontFamilyHeading || undefined,
+          fontFamilyBody: siteSettings.fontFamilyBody || undefined
+        }}
+      >
+        <div className="flex min-h-screen flex-col bg-background">
+          <Nav
+            setCurrentPage={() => {}}
+            currentPage={currentPage}
+            siteSettings={siteSettings}
+            pages={pages}
+          />
 
-        <main className="flex-1">
-          <BlockRenderer blocks={exampleBlocks} />
-        </main>
+          <main className="flex-1">
+            <BlockRenderer blocks={exampleBlocks} />
+          </main>
 
-        <Footer siteSettings={siteSettings} />
-      </div>
-    </ThemeProvider>
+          <Footer siteSettings={siteSettings} />
+        </div>
+      </ThemeProvider>
+    </NextThemeProvider>
   )
 }
 

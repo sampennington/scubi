@@ -1,8 +1,7 @@
 "use client"
 import { Button } from "@/components/ui/button"
 import { ArrowLeftIcon } from "lucide-react"
-
-import { useRouter } from "next/navigation"
+import { useRouter, useSearchParams } from "next/navigation"
 
 export default function Layout({
   children
@@ -14,6 +13,12 @@ export default function Layout({
 
   const handleBack = () => {
     router.back()
+  }
+
+  const editMode = useSearchParams().get("edit")
+
+  if (!editMode) {
+    return children
   }
 
   return (
