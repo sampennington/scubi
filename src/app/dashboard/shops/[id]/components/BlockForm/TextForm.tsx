@@ -17,7 +17,7 @@ interface TextFormData {
 
 interface TextFormProps {
   formData: TextFormData
-  updateField: (field: string, value: any) => void
+  updateField: (field: string, value: string | undefined) => void
   errors: Record<string, string>
 }
 

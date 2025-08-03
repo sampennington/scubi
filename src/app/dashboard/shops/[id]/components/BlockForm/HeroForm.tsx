@@ -12,9 +12,9 @@ import {
 } from "@/components/ui/select"
 
 interface ButtonData {
-  label: string
-  url: string
-  variant: "secondary" | "outline"
+  label?: string
+  url?: string
+  variant?: "secondary" | "outline"
 }
 
 interface HeroFormData {
@@ -27,7 +27,7 @@ interface HeroFormData {
 
 interface HeroFormProps {
   formData: HeroFormData
-  updateField: (field: string, value: any) => void
+  updateField: (field: string, value: string | ButtonData) => void
   errors: Record<string, string>
 }
 
@@ -96,7 +96,7 @@ export function HeroForm({ formData, updateField, errors }: HeroFormProps) {
               onValueChange={(value) =>
                 updateField("primaryButton", {
                   ...formData.primaryButton,
-                  variant: value
+                  variant: value as "secondary" | "outline"
                 })
               }
             >
@@ -139,7 +139,7 @@ export function HeroForm({ formData, updateField, errors }: HeroFormProps) {
               onValueChange={(value) =>
                 updateField("secondaryButton", {
                   ...formData.secondaryButton,
-                  variant: value
+                  variant: value as "secondary" | "outline"
                 })
               }
             >

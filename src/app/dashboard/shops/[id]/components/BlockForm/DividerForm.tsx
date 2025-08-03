@@ -20,7 +20,7 @@ interface DividerFormData {
 
 interface DividerFormProps {
   formData: DividerFormData
-  updateField: (field: string, value: any) => void
+  updateField: (field: string, value: string | number | undefined) => void
 }
 
 export function DividerForm({ formData, updateField }: DividerFormProps) {

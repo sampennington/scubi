@@ -19,9 +19,9 @@ interface MultiColumnFormData {
 
 interface MultiColumnFormProps {
   formData: MultiColumnFormData
-  updateField: (field: string, value: any) => void
-  updateArrayField: (field: string, index: number, value: any) => void
-  addArrayItem: (field: string, item: any) => void
+  updateField: (field: string, value: string) => void
+  updateArrayField: (field: string, index: number, value: ColumnData) => void
+  addArrayItem: (field: string, item: ColumnData) => void
   removeArrayItem: (field: string, index: number) => void
   errors: Record<string, string>
 }

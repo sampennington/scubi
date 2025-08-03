@@ -18,9 +18,9 @@ interface GalleryFormData {
 
 interface GalleryFormProps {
   formData: GalleryFormData
-  updateField: (field: string, value: any) => void
-  updateArrayField: (field: string, index: number, value: any) => void
-  addArrayItem: (field: string, item: any) => void
+  updateField: (field: string, value: string) => void
+  updateArrayField: (field: string, index: number, value: ImageData) => void
+  addArrayItem: (field: string, item: ImageData) => void
   removeArrayItem: (field: string, index: number) => void
   errors: Record<string, string>
 }

@@ -11,7 +11,7 @@ interface ImageFormData {
 
 interface ImageFormProps {
   formData: ImageFormData
-  updateField: (field: string, value: any) => void
+  updateField: (field: string, value: string) => void
   errors: Record<string, string>
 }
 
