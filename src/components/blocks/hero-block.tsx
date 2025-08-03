@@ -2,6 +2,7 @@ import Image from "next/image"
 import type { HeroBlockContent } from "./types"
 import { Button } from "../ui/button"
 import { Calendar, Phone } from "lucide-react"
+import heroImage from "@/assets/hero-underwater.jpg"
 
 export const HeroBlock = ({ content }: { content: HeroBlockContent }) => {
   return (
@@ -9,9 +10,12 @@ export const HeroBlock = ({ content }: { content: HeroBlockContent }) => {
       <section className="relative w-full overflow-hidden py-20">
         <div className="absolute inset-0 z-0">
           <Image
-            src={content.image}
+            // src={content.image}
+            src={heroImage}
             alt="Underwater scene"
             className="h-full w-full object-cover"
+            width={1000}
+            height={1000}
           />
           <div className="absolute inset-0 bg-gradient-to-r from-primary/80 to-primary/40" />
         </div>

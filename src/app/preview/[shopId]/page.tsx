@@ -5,7 +5,7 @@ import Preview from "./preview"
 export default async function PreviewPage({
   params
 }: {
-  params: { shopId: string }
+  params: Promise<{ shopId: string }>
 }) {
   const { shopId } = await params
 
