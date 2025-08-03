@@ -1,17 +1,23 @@
 import { api } from "@/lib/api"
 import { notFound } from "next/navigation"
-import Preview from "./preview"
+import Preview from "../preview"
 
 export default async function PreviewPage({
   params
 }: {
-  params: { shopId: string; slug: string }
+  params: { shopId: string; slug?: string[] }
 }) {
   const { shopId, slug } = await params
+  console.log("slug", slug)
 
-  const isHome = slug === "home"
+  // Handle both undefined slug (root path) and empty array
+  const currentPath = slug && slug.length > 0 ? `/${slug.join("/")}` : "/"
+  const isHome = currentPath === "/"
 
-  const currentPage = await api.pages.getBySlug(shopId, isHome ? "/" : slug)
+  const currentPage = await api.pages.getBySlug(
+    shopId,
+    isHome ? "/" : currentPath
+  )
   const pages = await api.pages.getByShopId(shopId)
 
   if (!currentPage) {

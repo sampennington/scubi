@@ -13,6 +13,20 @@ const nextConfig: NextConfig = {
         hostname: "picsum.photos"
       }
     ]
+  },
+  async rewrites() {
+    return [
+      {
+        source: "/:path*",
+        destination: "/preview/:path*",
+        has: [
+          {
+            type: "host",
+            value: "(?<shopId>[^.]+)\.yourdomain\.com"
+          }
+        ]
+      }
+    ]
   }
 }
 

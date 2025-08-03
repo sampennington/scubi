@@ -11,11 +11,13 @@ import { BlockType } from "@/database/schema"
 export const DiveShopSite = ({
   currentPage,
   pages,
-  siteSettings
+  siteSettings,
+  blocks
 }: {
   currentPage: Page
   pages: Page[]
   siteSettings: SiteSettings
+  blocks: Block[]
 }) => {
   return (
     <ThemeProvider
@@ -390,8 +392,10 @@ const exampleBlocks: Block[] = [
         url: "/contact",
         variant: "outline"
       },
-      backgroundImage: "https://picsum.photos/1200/400?random=13",
-      alignment: "center"
+      backgroundImage: "https://picsum.photos/1200/400?random=3",
+      alignment: "center",
+      backgroundColor: "#f8fafc",
+      textColor: "#ffffff"
     },
     order: 10,
     updatedAt: new Date()

@@ -2,19 +2,17 @@
 
 import { Button } from "@/components/ui/button"
 import { ExternalLink } from "lucide-react"
-import { useRouter } from "next/navigation"
+import { getPreviewUrl } from "@/lib/utils"
 
 export const PreviewButton = ({ shopId }: { shopId: string }) => {
-  const router = useRouter()
-
-  const goToPreview = () => {
-    router.push(`/preview/${shopId}/home`)
-  }
+  const previewUrl = getPreviewUrl(shopId)
 
   return (
-    <Button variant="secondary" onClick={goToPreview}>
-      <ExternalLink className="mr-2 h-4 w-4" />
-      Preview
+    <Button variant="secondary" asChild>
+      <a href={previewUrl} target="_blank" rel="noopener noreferrer">
+        <ExternalLink className="mr-2 h-4 w-4" />
+        Preview
+      </a>
     </Button>
   )
 }

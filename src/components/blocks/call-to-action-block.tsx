@@ -45,9 +45,7 @@ export const CallToActionBlock = ({
             {title}
           </h2>
 
-          {description && (
-            <p className="mb-8 text-xl text-muted-foreground">{description}</p>
-          )}
+          {description && <p className="mb-8 text-xl ">{description}</p>}
 
           <div
             className={`flex gap-4 ${alignment === "center" ? "justify-center" : alignment === "right" ? "justify-end" : "justify-start"}`}

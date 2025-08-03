@@ -1,4 +1,6 @@
 import { api } from "@/lib/api"
+import { notFound } from "next/navigation"
+import Preview from "./preview"
 
 export default async function PreviewPage({
   params
@@ -7,15 +9,27 @@ export default async function PreviewPage({
 }) {
   const { shopId } = await params
 
+  // Always show home page for root path
+  const currentPage = await api.pages.getBySlug(shopId, "/")
   const pages = await api.pages.getByShopId(shopId)
 
+  if (!currentPage) {
+    return notFound()
+  }
+
+  const blocks = await api.blocks.getByPageId(currentPage.id)
+  const siteSettings = await api.siteSettings.getByShopId(shopId)
+
+  if (!siteSettings) {
+    return <div>No site settings found, please create one</div>
+  }
+
   return (
-    <html lang="en">
-      <body>
-        <div className="flex flex-col gap-4">
-          <h1 className="text-2xl font-bold">Preview</h1>
-        </div>
-      </body>
-    </html>
+    <Preview
+      page={currentPage}
+      pages={pages}
+      blocks={blocks}
+      siteSettings={siteSettings}
+    />
   )
 }
