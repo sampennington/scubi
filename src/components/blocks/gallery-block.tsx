@@ -33,7 +33,7 @@ export const GalleryBlock = ({ content }: { content: GalleryBlockContent }) => {
 
         {layout === "grid" && (
           <div className={`grid gap-4 ${gridCols[columns]}`}>
-            {images.map((image, index) => (
+            {(images || []).map((image, index) => (
               <div
                 key={index}
                 className="group relative overflow-hidden rounded-lg"
@@ -58,7 +58,7 @@ export const GalleryBlock = ({ content }: { content: GalleryBlockContent }) => {
         {layout === "carousel" && (
           <div className="relative">
             <div className="flex gap-4 overflow-x-auto pb-4">
-              {images.map((image, index) => (
+              {(images || []).map((image, index) => (
                 <div key={index} className="flex-shrink-0">
                   <div className="group relative overflow-hidden rounded-lg">
                     <Image
@@ -82,7 +82,7 @@ export const GalleryBlock = ({ content }: { content: GalleryBlockContent }) => {
 
         {layout === "masonry" && (
           <div className="columns-1 gap-4 md:columns-2 lg:columns-3">
-            {images.map((image, index) => (
+            {(images || []).map((image, index) => (
               <div key={index} className="mb-4 break-inside-avoid">
                 <div className="group relative overflow-hidden rounded-lg">
                   <Image

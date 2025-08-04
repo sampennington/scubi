@@ -6,7 +6,6 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import { Plus, GripVertical, Trash2, Edit } from "lucide-react"
 import { BlockType } from "@/database/schema"
-import { BlockSelector } from "./BlockSelector"
 import { BlockForm } from "./BlockForm"
 import { DragDropContext, Droppable, Draggable } from "@hello-pangea/dnd"
 import {
@@ -16,6 +15,8 @@ import {
   deleteBlock,
   reorderBlocks
 } from "../actions"
+import { BlockSelector } from "./BlockSelector"
+import { getDefaultContent } from "./BlockForm/utils"
 
 interface PageEditorProps {
   pageId: string
@@ -54,7 +55,10 @@ export function PageEditor({ pageId, pageTitle }: PageEditorProps) {
     })
   }
 
-  const handleSaveBlock = async (blockData: any) => {
+  const handleSaveBlock = async (blockData: {
+    type: string
+    content: Record<string, unknown>
+  }) => {
     try {
       if (editingBlock.id) {
         // Update existing block
@@ -117,231 +121,6 @@ export function PageEditor({ pageId, pageTitle }: PageEditorProps) {
     }
   }
 
-  const getDefaultContent = (blockType: string) => {
-    switch (blockType) {
-      case BlockType.HERO:
-        return {
-          title: "Welcome to our site",
-          text: "Discover amazing experiences with us",
-          image: "/demo-img.png",
-          primaryButton: {
-            label: "Get Started",
-            url: "#",
-            variant: "secondary"
-          },
-          secondaryButton: { label: "Learn More", url: "#", variant: "outline" }
-        }
-      case BlockType.TEXT:
-        return { text: "Enter your text here", alignment: "left" }
-      case BlockType.IMAGE:
-        return { src: "/demo-img.png", alt: "Image description" }
-      case BlockType.MULTI_COLUMN:
-        return {
-          title: "Our Services",
-          description: "What we offer",
-          columns: [
-            { heading: "Service 1", body: "Description of service 1" },
-            { heading: "Service 2", body: "Description of service 2" },
-            { heading: "Service 3", body: "Description of service 3" }
-          ],
-          columnsPerRow: 3,
-          alignment: "center",
-          showIcons: true
-        }
-      case BlockType.GALLERY:
-        return {
-          title: "Our Gallery",
-          description: "Check out our latest photos",
-          images: [
-            { src: "/demo-img.png", alt: "Gallery image 1" },
-            { src: "/demo-img.png", alt: "Gallery image 2" },
-            { src: "/demo-img.png", alt: "Gallery image 3" }
-          ],
-          layout: "grid",
-          columns: 3,
-          showCaptions: false
-        }
-      case BlockType.TESTIMONIALS:
-        return {
-          title: "What Our Customers Say",
-          description: "Read testimonials from our satisfied customers",
-          testimonials: [
-            {
-              name: "John Doe",
-              role: "Customer",
-              company: "ABC Company",
-              content: "Amazing experience! Highly recommended.",
-              rating: 5,
-              photo: "/demo-img.png"
-            }
-          ],
-          layout: "grid",
-          columns: 3,
-          showPhotos: true,
-          showRatings: true
-        }
-      case BlockType.TEAM:
-        return {
-          title: "Our Team",
-          description: "Meet the people behind our success",
-          members: [
-            {
-              name: "Jane Smith",
-              role: "Founder & CEO",
-              bio: "Passionate about creating amazing experiences.",
-              photo: "/demo-img.png",
-              email: "jane@example.com",
-              phone: "+1-555-0123"
-            }
-          ],
-          layout: "grid",
-          columns: 3,
-          showContactInfo: false,
-          showSocialLinks: false,
-          fullWidthPhoto: false
-        }
-      case BlockType.FAQ:
-        return {
-          title: "Frequently Asked Questions",
-          description: "Find answers to common questions",
-          items: [
-            {
-              question: "What services do you offer?",
-              answer:
-                "We offer a wide range of diving services including training, equipment rental, and guided tours."
-            }
-          ],
-          layout: "accordion",
-          allowMultipleOpen: false
-        }
-      case BlockType.CONTACT_FORM:
-        return {
-          title: "Contact Us",
-          description: "Get in touch with us",
-          fields: [
-            { name: "name", label: "Name", type: "text", required: true },
-            { name: "email", label: "Email", type: "email", required: true },
-            {
-              name: "message",
-              label: "Message",
-              type: "textarea",
-              required: true
-            }
-          ],
-          submitButtonText: "Send Message",
-          successMessage: "Thank you for your message!",
-          emailTo: "contact@example.com"
-        }
-      case BlockType.CALL_TO_ACTION:
-        return {
-          title: "Ready to Get Started?",
-          description: "Join us for an amazing adventure",
-          primaryButton: { label: "Book Now", url: "#", variant: "secondary" },
-          secondaryButton: {
-            label: "Learn More",
-            url: "#",
-            variant: "outline"
-          },
-          alignment: "center"
-        }
-      case BlockType.VIDEO:
-        return {
-          title: "Watch Our Video",
-          description: "See what we're all about",
-          videoUrl: "https://www.youtube.com/watch?v=dQw4w9WgXcQ",
-          provider: "youtube",
-          autoplay: false,
-          controls: true
-        }
-      case BlockType.MAP:
-        return {
-          title: "Find Us",
-          description: "Visit our location",
-          address: "123 Main St, City, State 12345",
-          zoom: 15,
-          height: 400,
-          showMarker: true
-        }
-      case BlockType.SOCIAL_FEED:
-        return {
-          title: "Follow Us",
-          description: "Stay updated with our latest posts",
-          platform: "instagram",
-          username: "yourusername",
-          postCount: 9,
-          layout: "grid",
-          columns: 3,
-          showCaptions: true
-        }
-      case BlockType.DIVIDER:
-        return {
-          text: "Section Divider",
-          alignment: "center",
-          style: "solid",
-          thickness: 1
-        }
-      case BlockType.TWO_COLUMN:
-        return {
-          title: "Two Column Layout",
-          description: "Content in two columns",
-          content: {
-            leftContent: {
-              type: "text",
-              title: "Left Column",
-              content: "This is the left column content."
-            },
-            rightContent: {
-              type: "text",
-              title: "Right Column",
-              content: "This is the right column content."
-            },
-            layout: "text-text",
-            alignment: "top",
-            spacing: 0
-          }
-        }
-      case BlockType.COURSES:
-        return {
-          title: "Our Courses",
-          description: "Learn from the best",
-          courses: [
-            {
-              title: "Open Water Course",
-              description: "Learn the basics of scuba diving",
-              duration: "3-4 days",
-              level: "beginner",
-              price: 299,
-              currency: "USD"
-            }
-          ],
-          layout: "grid",
-          columns: 2,
-          showPricing: true,
-          showLevels: true
-        }
-      case BlockType.MARINE_LIFE:
-        return {
-          title: "Marine Life",
-          description: "Discover underwater creatures",
-          items: [
-            {
-              name: "Sea Turtle",
-              description: "Gentle giants of the sea",
-              season: "year-round",
-              difficulty: "easy",
-              depth: "5-30m"
-            }
-          ],
-          currentSeason: "summer",
-          layout: "grid",
-          columns: 3,
-          showSeasonalFilter: true
-        }
-      default:
-        return {}
-    }
-  }
-
   const getBlockTypeLabel = (type: string) => {
     return type
       .split("-")
@@ -352,7 +131,7 @@ export function PageEditor({ pageId, pageTitle }: PageEditorProps) {
   if (loading) {
     return <div>Loading blocks...</div>
   }
-
+  console.log({ blocks })
   return (
     <div className="space-y-6">
       <div className="flex items-center justify-between">
@@ -479,7 +258,7 @@ export function PageEditor({ pageId, pageTitle }: PageEditorProps) {
       {blocks.length === 0 && (
         <Card>
           <CardContent className="flex flex-col items-center justify-center py-12">
-            <p className="text-muted-foreground mb-4">No blocks added yet</p>
+            <p className="mb-4 text-muted-foreground">No blocks added yet</p>
             <Button onClick={() => setShowBlockSelector(true)}>
               <Plus className="mr-2 h-4 w-4" />
               Add Your First Block

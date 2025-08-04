@@ -20,7 +20,7 @@ export const HeroContentSchema = z.object({
   text: z.string().min(1, "Text is required"),
   image: z.string().url("Must be a valid URL"),
   primaryButton: ButtonSchema,
-  secondaryButton: ButtonSchema.optional()
+  secondaryButton: ButtonSchema
 })
 
 export const TextContentSchema = z.object({
@@ -327,13 +327,19 @@ export function validateBlockContent(
   if (result.success) {
     return { success: true, data: result.data }
   } else {
+    // Check if the error has the expected structure
+    const error = result.error as {
+      errors?: Array<{ path: (string | number)[]; message: string }>
+    }
+
     return {
       success: false,
       error: {
-        errors: (result.error as any).errors.map((err: any) => ({
-          path: err.path,
-          message: err.message
-        }))
+        errors:
+          error.errors?.map((err) => ({
+            path: err.path.map((p) => String(p)),
+            message: err.message
+          })) || []
       }
     }
   }

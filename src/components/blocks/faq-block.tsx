@@ -8,7 +8,7 @@ export const FAQBlock = ({ content }: { content: FAQBlockContent }) => {
   const {
     title,
     description,
-    items,
+    items = [],
     layout = "accordion",
     allowMultipleOpen = false
   } = content
@@ -43,7 +43,7 @@ export const FAQBlock = ({ content }: { content: FAQBlockContent }) => {
 
         {layout === "accordion" && (
           <div className="mx-auto max-w-3xl space-y-4">
-            {items.map((item, index) => (
+            {(items || []).map((item, index) => (
               <div key={index} className="rounded-lg border bg-card">
                 <button
                   type="button"
@@ -70,7 +70,7 @@ export const FAQBlock = ({ content }: { content: FAQBlockContent }) => {
 
         {layout === "list" && (
           <div className="mx-auto max-w-4xl space-y-8">
-            {items.map((item, index) => (
+            {(items || []).map((item, index) => (
               <div key={index} className="rounded-lg bg-card p-6">
                 <h3 className="mb-3 font-semibold text-xl">{item.question}</h3>
                 <p className="text-muted-foreground">{item.answer}</p>

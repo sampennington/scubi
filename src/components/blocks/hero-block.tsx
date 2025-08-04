@@ -1,10 +1,11 @@
 import Image from "next/image"
-import type { HeroBlockContent } from "./types"
 import { Button } from "../ui/button"
 import { Calendar, Phone } from "lucide-react"
 import heroImage from "@/assets/hero-underwater.jpg"
+import type { HeroContent } from "@/app/dashboard/shops/[id]/components/BlockForm/schemas"
 
-export const HeroBlock = ({ content }: { content: HeroBlockContent }) => {
+export const HeroBlock = ({ content }: { content: HeroContent }) => {
+  console.log({ content })
   return (
     <>
       <section className="relative w-full overflow-hidden py-20">
