@@ -2,10 +2,19 @@ import Image from "next/image"
 import { Button } from "../ui/button"
 import type { CallToActionContent } from "@/app/dashboard/shops/[id]/components/BlockForm/schemas"
 
+const defaultContent: CallToActionContent = {
+  title: "Set your call to action title here",
+  primaryButton: {
+    label: "Get Started",
+    url: "#",
+    variant: "secondary"
+  }
+}
+
 export const CallToActionBlock = ({
-  content
+  content = defaultContent
 }: {
-  content: CallToActionContent
+  content?: CallToActionContent
 }) => {
   const {
     title,

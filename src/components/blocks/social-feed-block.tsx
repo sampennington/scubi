@@ -1,10 +1,16 @@
 import Image from "next/image"
 import type { SocialFeedContent } from "@/app/dashboard/shops/[id]/components/BlockForm/schemas"
 
+const defaultContent: SocialFeedContent = {
+  title: "Set your social feed title here",
+  platform: "instagram",
+  username: "yourusername"
+}
+
 export const SocialFeedBlock = ({
-  content
+  content = defaultContent
 }: {
-  content: SocialFeedContent
+  content?: SocialFeedContent
 }) => {
   const {
     title,

@@ -13,10 +13,20 @@ import {
 } from "../ui/select"
 import type { ContactFormContent } from "@/app/dashboard/shops/[id]/components/BlockForm/schemas"
 
+const defaultContent: ContactFormContent = {
+  title: "Contact Us",
+  description: "Get in touch with us",
+  fields: [
+    { name: "name", type: "text", label: "Name", required: true },
+    { name: "email", type: "email", label: "Email", required: true },
+    { name: "message", type: "textarea", label: "Message", required: true }
+  ]
+}
+
 export const ContactFormBlock = ({
-  content
+  content = defaultContent
 }: {
-  content: ContactFormContent
+  content?: ContactFormContent
 }) => {
   const {
     title,

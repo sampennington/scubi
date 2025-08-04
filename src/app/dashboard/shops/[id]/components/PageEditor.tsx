@@ -131,7 +131,7 @@ export function PageEditor({ pageId, pageTitle }: PageEditorProps) {
   if (loading) {
     return <div>Loading blocks...</div>
   }
-  console.log({ blocks })
+
   return (
     <div className="space-y-6">
       <div className="flex items-center justify-between">

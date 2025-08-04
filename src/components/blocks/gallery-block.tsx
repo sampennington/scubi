@@ -1,7 +1,20 @@
 import Image from "next/image"
 import type { GalleryContent } from "@/app/dashboard/shops/[id]/components/BlockForm/schemas"
 
-export const GalleryBlock = ({ content }: { content: GalleryContent }) => {
+const defaultContent: GalleryContent = {
+  title: "Set your gallery title here",
+  description: "Set your gallery description here",
+  images: [],
+  layout: "grid",
+  columns: "3",
+  showCaptions: false
+}
+
+export const GalleryBlock = ({
+  content = defaultContent
+}: {
+  content?: GalleryContent
+}) => {
   const {
     title,
     description,

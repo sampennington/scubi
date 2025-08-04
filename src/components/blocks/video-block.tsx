@@ -1,5 +1,11 @@
 import type { VideoContent } from "@/app/dashboard/shops/[id]/components/BlockForm/schemas"
 
+const defaultContent: VideoContent = {
+  title: "Set your video title here",
+  videoUrl: "https://www.youtube.com/watch?v=dQw4w9WgXcQ",
+  provider: "youtube"
+}
+
 const getVideoEmbedUrl = (
   url: string,
   provider: string,
@@ -24,7 +30,11 @@ const getVideoEmbedUrl = (
   return url
 }
 
-export const VideoBlock = ({ content }: { content: VideoContent }) => {
+export const VideoBlock = ({
+  content = defaultContent
+}: {
+  content?: VideoContent
+}) => {
   const {
     title,
     description,

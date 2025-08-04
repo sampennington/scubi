@@ -3,7 +3,22 @@ import { Mail, Phone, Linkedin, Twitter, Instagram } from "lucide-react"
 import { Card, CardContent, CardHeader } from "../ui/card"
 import type { TeamContent } from "@/app/dashboard/shops/[id]/components/BlockForm/schemas"
 
-export const TeamBlock = ({ content }: { content: TeamContent }) => {
+const defaultContent: TeamContent = {
+  title: "Set your team title here",
+  description: "Set your team description here",
+  members: [],
+  layout: "grid",
+  columns: "3",
+  showContactInfo: false,
+  showSocialLinks: false,
+  fullWidthPhoto: false
+}
+
+export const TeamBlock = ({
+  content = defaultContent
+}: {
+  content?: TeamContent
+}) => {
   const {
     title,
     description,

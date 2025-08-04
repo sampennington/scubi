@@ -1,7 +1,27 @@
 import Image from "next/image"
 import type { TwoColumnContent } from "@/app/dashboard/shops/[id]/components/BlockForm/schemas"
 
-export const TwoColumnBlock = ({ content }: { content: TwoColumnContent }) => {
+const defaultContent: TwoColumnContent = {
+  title: "Set your two column title here",
+  content: {
+    leftContent: {
+      type: "text",
+      content: "Left column content",
+      title: "Left Title"
+    },
+    rightContent: {
+      type: "text",
+      content: "Right column content",
+      title: "Right Title"
+    }
+  }
+}
+
+export const TwoColumnBlock = ({
+  content = defaultContent
+}: {
+  content?: TwoColumnContent
+}) => {
   const {
     title,
     description,

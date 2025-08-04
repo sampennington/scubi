@@ -4,7 +4,21 @@ import { useState } from "react"
 import { ChevronDown, ChevronUp } from "lucide-react"
 import type { FAQContent } from "@/app/dashboard/shops/[id]/components/BlockForm/schemas"
 
-export const FAQBlock = ({ content }: { content: FAQContent }) => {
+const defaultContent: FAQContent = {
+  title: "Set your FAQ title here",
+  items: [
+    {
+      question: "Frequently asked question?",
+      answer: "This is the answer to the question."
+    }
+  ]
+}
+
+export const FAQBlock = ({
+  content = defaultContent
+}: {
+  content?: FAQContent
+}) => {
   const {
     title,
     description,

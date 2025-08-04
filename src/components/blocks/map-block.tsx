@@ -2,7 +2,16 @@ import type { MapContent } from "@/app/dashboard/shops/[id]/components/BlockForm
 
 const apiKey = process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY
 
-export const MapBlock = ({ content }: { content: MapContent }) => {
+const defaultContent: MapContent = {
+  title: "Set your map title here",
+  address: "123 Main St, City, State 12345"
+}
+
+export const MapBlock = ({
+  content = defaultContent
+}: {
+  content?: MapContent
+}) => {
   const {
     title,
     description,

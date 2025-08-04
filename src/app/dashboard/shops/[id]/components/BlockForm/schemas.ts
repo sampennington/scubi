@@ -5,7 +5,7 @@ import { BlockType } from "@/database/schema"
 const BlockButtonSchema = z.object({
   label: z.string(),
   url: z.string(),
-  variant: z.enum(["secondary", "outline"])
+  variant: z.enum(["default", "secondary", "outline"])
 })
 
 // Individual block type schemas

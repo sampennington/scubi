@@ -2,6 +2,16 @@ import Image from "next/image"
 import { Star } from "lucide-react"
 import type { TestimonialsContent } from "@/app/dashboard/shops/[id]/components/BlockForm/schemas"
 
+const defaultContent: TestimonialsContent = {
+  title: "Set your testimonials title here",
+  description: "Set your testimonials description here",
+  testimonials: [],
+  layout: "grid",
+  columns: "3",
+  showPhotos: true,
+  showRatings: true
+}
+
 const renderStars = (rating: number) => {
   return Array.from({ length: 5 }, (_, i) => (
     <Star
@@ -14,9 +24,9 @@ const renderStars = (rating: number) => {
 }
 
 export const TestimonialsBlock = ({
-  content
+  content = defaultContent
 }: {
-  content: TestimonialsContent
+  content?: TestimonialsContent
 }) => {
   const {
     title,

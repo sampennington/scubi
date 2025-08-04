@@ -55,119 +55,120 @@ function BlockWithValidation({ block }: { block: Block }) {
       if (isHeroContent(block.content)) {
         return <HeroBlock key={block.id} content={block.content} />
       }
-      break
+
+      return <HeroBlock key={block.id} />
     }
 
     case BlockType.TEXT: {
       if (isTextContent(block.content)) {
         return <TextBlock key={block.id} content={block.content} />
       }
-      break
+      return <TextBlock key={block.id} />
     }
 
     case BlockType.IMAGE: {
       if (isImageContent(block.content)) {
         return <ImageBlock key={block.id} content={block.content} />
       }
-      break
+      return <ImageBlock key={block.id} />
     }
 
     case BlockType.MULTI_COLUMN: {
       if (isMultiColumnContent(block.content)) {
         return <MultiColumnBlock key={block.id} content={block.content} />
       }
-      break
+      return <MultiColumnBlock key={block.id} />
     }
 
     case BlockType.GALLERY: {
       if (isGalleryContent(block.content)) {
         return <GalleryBlock key={block.id} content={block.content} />
       }
-      break
+      return <GalleryBlock key={block.id} />
     }
 
     case BlockType.TESTIMONIALS: {
       if (isTestimonialsContent(block.content)) {
         return <TestimonialsBlock key={block.id} content={block.content} />
       }
-      break
+      return <TestimonialsBlock key={block.id} />
     }
 
     case BlockType.TEAM: {
       if (isTeamContent(block.content)) {
         return <TeamBlock key={block.id} content={block.content} />
       }
-      break
+      return <TeamBlock key={block.id} />
     }
 
     case BlockType.FAQ: {
       if (isFAQContent(block.content)) {
         return <FAQBlock key={block.id} content={block.content} />
       }
-      break
+      return <FAQBlock key={block.id} />
     }
 
     case BlockType.CONTACT_FORM: {
       if (isContactFormContent(block.content)) {
         return <ContactFormBlock key={block.id} content={block.content} />
       }
-      break
+      return <ContactFormBlock key={block.id} />
     }
 
     case BlockType.CALL_TO_ACTION: {
       if (isCallToActionContent(block.content)) {
         return <CallToActionBlock key={block.id} content={block.content} />
       }
-      break
+      return <CallToActionBlock key={block.id} />
     }
 
     case BlockType.VIDEO: {
       if (isVideoContent(block.content)) {
         return <VideoBlock key={block.id} content={block.content} />
       }
-      break
+      return <VideoBlock key={block.id} />
     }
 
     case BlockType.MAP: {
       if (isMapContent(block.content)) {
         return <MapBlock key={block.id} content={block.content} />
       }
-      break
+      return <MapBlock key={block.id} />
     }
 
     case BlockType.SOCIAL_FEED: {
       if (isSocialFeedContent(block.content)) {
         return <SocialFeedBlock key={block.id} content={block.content} />
       }
-      break
+      return <SocialFeedBlock key={block.id} />
     }
 
     case BlockType.DIVIDER: {
       if (isDividerContent(block.content)) {
         return <DividerBlock key={block.id} content={block.content} />
       }
-      break
+      return <DividerBlock key={block.id} />
     }
 
     case BlockType.TWO_COLUMN: {
       if (isTwoColumnContent(block.content)) {
         return <TwoColumnBlock key={block.id} content={block.content} />
       }
-      break
+      return <TwoColumnBlock key={block.id} />
     }
 
     case BlockType.COURSES: {
       if (isCoursesContent(block.content)) {
         return <CoursesBlock key={block.id} content={block.content} />
       }
-      break
+      return <CoursesBlock key={block.id} />
     }
 
     case BlockType.MARINE_LIFE: {
       if (isMarineLifeContent(block.content)) {
         return <MarineLifeBlock key={block.id} content={block.content} />
       }
-      break
+      return <MarineLifeBlock key={block.id} />
     }
 
     default:

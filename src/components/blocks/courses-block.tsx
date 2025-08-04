@@ -4,6 +4,19 @@ import { Button } from "../ui/button"
 import { Calendar, Users, Waves } from "lucide-react"
 import type { CoursesContent } from "@/app/dashboard/shops/[id]/components/BlockForm/schemas"
 
+const defaultContent: CoursesContent = {
+  title: "Set your courses title here",
+  courses: [
+    {
+      title: "Sample Course",
+      description: "Course description",
+      duration: "2 hours",
+      level: "beginner",
+      price: 99
+    }
+  ]
+}
+
 const getLevelColor = (level: string) => {
   switch (level) {
     case "beginner":
@@ -17,7 +30,11 @@ const getLevelColor = (level: string) => {
   }
 }
 
-export const CoursesBlock = ({ content }: { content: CoursesContent }) => {
+export const CoursesBlock = ({
+  content = defaultContent
+}: {
+  content?: CoursesContent
+}) => {
   const {
     title,
     description,

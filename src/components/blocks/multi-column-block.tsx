@@ -2,6 +2,15 @@ import type { LucideIcon, LucideProps } from "lucide-react"
 import * as Icons from "lucide-react"
 import type { MultiColumnContent } from "@/app/dashboard/shops/[id]/components/BlockForm/schemas"
 
+const defaultContent: MultiColumnContent = {
+  title: "Set your multi column title here",
+  description: "Set your multi column description here",
+  columns: [],
+  columnsPerRow: "3",
+  alignment: "center",
+  showIcons: true
+}
+
 const getIconComponent = (iconName: string): LucideIcon | null => {
   const IconComponent = Icons[iconName as keyof typeof Icons] as LucideIcon
   return IconComponent || null
@@ -18,9 +27,9 @@ const Icon = ({ name, ...props }: { name: string } & LucideProps) => {
 }
 
 export const MultiColumnBlock = ({
-  content
+  content = defaultContent
 }: {
-  content: MultiColumnContent
+  content?: MultiColumnContent
 }) => {
   const {
     title,

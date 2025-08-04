@@ -3,6 +3,18 @@ import { Badge } from "../ui/badge"
 import { Calendar, Waves } from "lucide-react"
 import type { MarineLifeContent } from "@/app/dashboard/shops/[id]/components/BlockForm/schemas"
 
+const defaultContent: MarineLifeContent = {
+  title: "Set your marine life title here",
+  items: [
+    {
+      name: "Sample Marine Life",
+      description: "Description of marine life",
+      season: "year-round",
+      difficulty: "easy"
+    }
+  ]
+}
+
 const getDifficultyColor = (difficulty: string) => {
   switch (difficulty) {
     case "easy":
@@ -34,9 +46,9 @@ const getSeasonColor = (season: string) => {
 }
 
 export const MarineLifeBlock = ({
-  content
+  content = defaultContent
 }: {
-  content: MarineLifeContent
+  content?: MarineLifeContent
 }) => {
   const {
     title,
@@ -45,7 +57,7 @@ export const MarineLifeBlock = ({
     currentSeason,
     layout = "grid",
     columns = 3,
-    showSeasonalFilter = true
+    showSeasonalFilter = false
   } = content
 
   const gridCols = {
