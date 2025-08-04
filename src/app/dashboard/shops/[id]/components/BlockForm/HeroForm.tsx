@@ -11,17 +11,14 @@ import {
   SelectValue
 } from "@/components/ui/select"
 import { BlockImageUpload } from "@/components/ui/block-image-upload"
-import { HeroContent } from "@/lib/validations/block"
-
-interface ButtonData {
-  label?: string
-  url?: string
-  variant?: "secondary" | "outline"
-}
+import type { HeroContent } from "./schemas"
 
 interface HeroFormProps {
   formData: HeroContent
-  updateField: (field: string, value: string | ButtonData) => void
+  updateField: (
+    field: string,
+    value: string | HeroContent["primaryButton"]
+  ) => void
   errors: Record<string, string>
 }
 

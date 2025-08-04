@@ -3,9 +3,8 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { api } from "@/lib/api"
 import { notFound } from "next/navigation"
 import { GeneralSettings } from "./components/tabs/GeneralSettings"
-
-import { PreviewButton } from "../../components/PreviewButton"
 import { PageEditor } from "./components/PageEditor"
+import { PreviewButton } from "../../components/PreviewButton"
 
 export default async function ShopPage({
   params
