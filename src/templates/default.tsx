@@ -7,6 +7,7 @@ import { BlockRenderer } from "@/components/blocks/block-renderer"
 import type { SiteSettings } from "@/lib/api/types"
 import { BlockType } from "@/database/schema"
 import { ThemeProvider } from "@/components/blocks/theme-provider"
+import { Favicon } from "@/components/ui/favicon"
 
 import { ThemeProvider as NextThemeProvider } from "next-themes"
 
@@ -29,6 +30,10 @@ export const DiveShopSite = ({
       disableTransitionOnChange
       forcedTheme="light"
     >
+      <Favicon
+        faviconUrl={siteSettings.faviconUrl || undefined}
+        siteName={siteSettings.name}
+      />
       <ThemeProvider
         theme={{
           primaryColor: siteSettings.primaryColor || "#3b82f6",

@@ -9,6 +9,7 @@ import { ColorPicker } from "@/components/ui/color-picker"
 import { FontPicker } from "@/components/ui/font-picker"
 import { SettingsSection } from "./SettingsSection"
 import { LogoUpload } from "@/components/ui/logo-upload"
+import { FaviconUpload } from "@/components/ui/favicon-upload"
 
 export const GeneralSettings = ({
   shopId,
@@ -31,7 +32,8 @@ export const GeneralSettings = ({
       accentColor: siteSettings?.accentColor || "#f59e0b",
       fontFamilyHeading: siteSettings?.fontFamilyHeading || "",
       fontFamilyBody: siteSettings?.fontFamilyBody || "",
-      logoUrl: siteSettings?.logoUrl || ""
+      logoUrl: siteSettings?.logoUrl || "",
+      faviconUrl: siteSettings?.faviconUrl || ""
     }
   })
 
@@ -58,11 +60,18 @@ export const GeneralSettings = ({
         </div>
 
         <SettingsSection title="Branding">
-          <LogoUpload
-            value={form.watch("logoUrl")}
-            onChange={(url) => form.setValue("logoUrl", url)}
-            onRemove={() => form.setValue("logoUrl", "")}
-          />
+          <div className="space-y-6">
+            <LogoUpload
+              value={form.watch("logoUrl")}
+              onChange={(url) => form.setValue("logoUrl", url)}
+              onRemove={() => form.setValue("logoUrl", "")}
+            />
+            <FaviconUpload
+              value={form.watch("faviconUrl")}
+              onChange={(url) => form.setValue("faviconUrl", url)}
+              onRemove={() => form.setValue("faviconUrl", "")}
+            />
+          </div>
         </SettingsSection>
 
         <SettingsSection title="Contact Details">
