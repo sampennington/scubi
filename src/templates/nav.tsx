@@ -11,17 +11,17 @@ export const Nav = ({
   siteSettings: SiteSettings
 }) => {
   return (
-    <nav className="sticky top-0 z-50 border-border/40 border-b bg-background/95 backdrop-blur-sm">
-      <div className="container mx-auto px-4 py-4">
+    <nav className="sticky top-0 z-50 flex h-16 items-center border-border/40 border-b bg-background/95 backdrop-blur-sm">
+      <div className="container relative mx-auto px-4 py-4">
         <div className="flex items-center justify-between">
           <div className="flex items-center">
             {siteSettings.logoUrl ? (
               <Image
                 src={siteSettings.logoUrl}
                 alt={siteSettings.name}
-                className="w-auto object-contain "
-                width={150}
-                height={50}
+                className=" left-20 max-h-16 w-auto object-contain"
+                width={120}
+                height={40}
               />
             ) : (
               <div className="font-bold text-2xl text-primary">

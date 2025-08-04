@@ -111,7 +111,7 @@ export const BlockImageUpload = ({
             loadingText="Uploading image..."
             uploadText="Click to upload"
             dragText="or drag and drop"
-            fileTypeText="PNG, JPG, SVG up to 4MB"
+            fileTypeText="PNG, JPG, SVG up to 16MB"
           />
         </div>
       )}
