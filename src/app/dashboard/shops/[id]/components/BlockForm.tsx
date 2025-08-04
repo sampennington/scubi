@@ -48,7 +48,7 @@ import {
   isCoursesContent,
   isMarineLifeContent
 } from "./BlockForm/schemas"
-import { getRequiredFields } from "./BlockForm/utils"
+import { getDefaultContent, getRequiredFields } from "./BlockForm/utils"
 import { defaultMultiColumnContent } from "@/components/blocks/default-data"
 import type { Block } from "@/lib/api"
 
@@ -62,13 +62,17 @@ interface BlockFormProps {
 }
 
 export function BlockForm({ block, onSave, onCancel }: BlockFormProps) {
-  const [formData, setFormData] = useState<Record<string, unknown>>({})
+  const defaultState = block.content || getDefaultContent(block.type)
+
+  const [formData, setFormData] = useState<Record<string, unknown>>(
+    defaultState as Record<string, unknown>
+  )
+
   const [errors, setErrors] = useState<Record<string, string>>({})
 
   const validateForm = () => {
     const requiredFields = getRequiredFields(block.type)
     const newErrors: Record<string, string> = {}
-
     requiredFields.forEach((field) => {
       if (
         !formData[field] ||
@@ -170,7 +174,6 @@ export function BlockForm({ block, onSave, onCancel }: BlockFormProps) {
         }
         break
       case BlockType.MULTI_COLUMN:
-        console.log(formData)
         return (
           <MultiColumnForm
             formData={

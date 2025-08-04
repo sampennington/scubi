@@ -5,6 +5,7 @@ import { Label } from "@/components/ui/label"
 import { Textarea } from "@/components/ui/textarea"
 import { Button } from "@/components/ui/button"
 import { Plus, Trash2 } from "lucide-react"
+import { IconSelector } from "@/components/ui/icon-selector"
 
 interface ColumnData {
   icon?: string
@@ -38,7 +39,6 @@ export function MultiColumnForm({
   removeArrayItem,
   errors
 }: MultiColumnFormProps) {
-  console.log(formData)
   return (
     <div className="space-y-4">
       <div>
@@ -97,18 +97,16 @@ export function MultiColumnForm({
               </Button>
             </div>
 
-            <div>
-              <Label>Icon (optional)</Label>
-              <Input
-                value={column.icon || ""}
-                onChange={(e) =>
-                  updateArrayField("columns", index, {
-                    ...column,
-                    icon: e.target.value
-                  })
-                }
-              />
-            </div>
+            <IconSelector
+              value={column.icon}
+              onChange={(value) =>
+                updateArrayField("columns", index, {
+                  ...column,
+                  icon: value
+                })
+              }
+              placeholder="Select an icon..."
+            />
 
             <div>
               <Label>Heading (optional)</Label>

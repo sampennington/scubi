@@ -38,11 +38,9 @@ import {
 } from "@/app/dashboard/shops/[id]/components/BlockForm/schemas"
 
 export const BlockRenderer = ({ blocks }: { blocks: Block[] }) => {
-  const sortedBlocks = blocks.sort((a, b) => (a.order || 99) - (b.order || 99))
-
   return (
     <div className="flex w-full flex-col">
-      {sortedBlocks.map((block) => (
+      {blocks.map((block) => (
         <BlockWithValidation key={block.id} block={block} />
       ))}
     </div>

@@ -1,21 +1,124 @@
-import type { LucideIcon, LucideProps } from "lucide-react"
-import * as Icons from "lucide-react"
 import type { MultiColumnContent } from "@/app/dashboard/shops/[id]/components/BlockForm/schemas"
 import { defaultMultiColumnContent } from "./default-data"
+import * as Icons from "lucide-react"
 
-const getIconComponent = (iconName: string): LucideIcon | null => {
-  const IconComponent = Icons[iconName as keyof typeof Icons] as LucideIcon
+// Icon mapping for Lucide React icons
+const ICONS = {
+  // Business & Services
+  briefcase: Icons.Briefcase,
+  building: Icons.Building,
+  "chart-line": Icons.TrendingUp,
+  users: Icons.Users,
+  "user-check": Icons.UserCheck,
+  award: Icons.Award,
+  star: Icons.Star,
+  heart: Icons.Heart,
+  "thumbs-up": Icons.ThumbsUp,
+
+  // Technology
+  laptop: Icons.Laptop,
+  smartphone: Icons.Smartphone,
+  wifi: Icons.Wifi,
+  shield: Icons.Shield,
+  lock: Icons.Lock,
+  key: Icons.Key,
+  gear: Icons.Settings,
+  code: Icons.Code,
+
+  // Communication
+  "message-circle": Icons.MessageCircle,
+  phone: Icons.Phone,
+  mail: Icons.Mail,
+  send: Icons.Send,
+  share: Icons.Share,
+  link: Icons.Link,
+
+  // Actions & Navigation
+  "arrow-right": Icons.ArrowRight,
+  "arrow-up": Icons.ArrowUp,
+  check: Icons.Check,
+  plus: Icons.Plus,
+  minus: Icons.Minus,
+  x: Icons.X,
+  search: Icons.Search,
+  filter: Icons.Filter,
+
+  // Nature & Environment
+  leaf: Icons.Leaf,
+  tree: Icons.Trees,
+  sun: Icons.Sun,
+  moon: Icons.Moon,
+  cloud: Icons.Cloud,
+  rain: Icons.CloudRain,
+  snow: Icons.CloudSnow,
+
+  // Travel & Location
+  "map-pin": Icons.MapPin,
+  globe: Icons.Globe,
+  compass: Icons.Compass,
+  plane: Icons.Plane,
+  car: Icons.Car,
+  bike: Icons.Bike,
+  walk: Icons.User,
+
+  // Time & Calendar
+  clock: Icons.Clock,
+  calendar: Icons.Calendar,
+  timer: Icons.Timer,
+  hourglass: Icons.Hourglass,
+
+  // Money & Finance
+  "dollar-sign": Icons.DollarSign,
+  "credit-card": Icons.CreditCard,
+  "piggy-bank": Icons.PiggyBank,
+  "trending-up": Icons.TrendingUp,
+  "trending-down": Icons.TrendingDown,
+
+  // Education & Learning
+  book: Icons.Book,
+  "graduation-cap": Icons.GraduationCap,
+  lightbulb: Icons.Lightbulb,
+  brain: Icons.Brain,
+  pencil: Icons.Pencil,
+
+  // Health & Wellness
+  "heart-pulse": Icons.Heart,
+  activity: Icons.Activity,
+  target: Icons.Target,
+  zap: Icons.Zap,
+  battery: Icons.Battery,
+
+  // Food & Dining
+  utensils: Icons.Utensils,
+  coffee: Icons.Coffee,
+  wine: Icons.Wine,
+  pizza: Icons.Pizza,
+  hamburger: Icons.Hamburger,
+
+  // Entertainment
+  music: Icons.Music,
+  video: Icons.Video,
+  camera: Icons.Camera,
+  gamepad: Icons.Gamepad2,
+  trophy: Icons.Trophy,
+
+  // Tools & Equipment
+  wrench: Icons.Wrench,
+  hammer: Icons.Hammer,
+  ruler: Icons.Ruler,
+  scissors: Icons.Scissors,
+
+  // Safety & Security
+  "alert-triangle": Icons.AlertTriangle,
+  info: Icons.Info,
+  "help-circle": Icons.HelpCircle,
+  "check-circle": Icons.CheckCircle,
+  "x-circle": Icons.XCircle
+} as const
+
+const getIcon = (iconName: string) => {
+  const IconComponent = ICONS[iconName as keyof typeof ICONS]
   return IconComponent || null
-}
-
-const Icon = ({ name, ...props }: { name: string } & LucideProps) => {
-  const IconComponent = getIconComponent(name)
-
-  if (!IconComponent) {
-    return null
-  }
-
-  return <IconComponent {...props} />
 }
 
 export const MultiColumnBlock = ({
@@ -68,7 +171,12 @@ export const MultiColumnBlock = ({
               {showIcons && column.icon && (
                 <div className="mb-4 flex justify-center">
                   <div className="flex h-16 w-16 items-center justify-center rounded-full bg-primary/10">
-                    <Icon name={column.icon} className="h-8 w-8 text-primary" />
+                    {(() => {
+                      const IconComponent = getIcon(column.icon)
+                      return IconComponent ? (
+                        <IconComponent className="h-8 w-8 text-primary" />
+                      ) : null
+                    })()}
                   </div>
                 </div>
               )}
