@@ -3,16 +3,10 @@
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Textarea } from "@/components/ui/textarea"
-
-interface VideoFormData {
-  title: string
-  description: string
-  url: string
-  thumbnail?: string
-}
+import type { VideoContent } from "./schemas"
 
 interface VideoFormProps {
-  formData: VideoFormData
+  formData: VideoContent
   updateField: (field: string, value: string) => void
   errors: Record<string, string>
 }
@@ -48,7 +42,7 @@ export function VideoForm({ formData, updateField, errors }: VideoFormProps) {
         <Label htmlFor="url">Video URL *</Label>
         <Input
           id="url"
-          value={formData.url || ""}
+          value={formData.videoUrl || ""}
           onChange={(e) => updateField("url", e.target.value)}
           className={errors.url ? "border-red-500" : ""}
           placeholder="https://www.youtube.com/watch?v=..."
@@ -58,11 +52,11 @@ export function VideoForm({ formData, updateField, errors }: VideoFormProps) {
 
       <div>
         <Label htmlFor="thumbnail">Thumbnail URL (optional)</Label>
-        <Input
+        {/* <Input
           id="thumbnail"
-          value={formData.thumbnail || ""}
+          value={formData. || ""}
           onChange={(e) => updateField("thumbnail", e.target.value)}
-        />
+        /> */}
       </div>
     </div>
   )

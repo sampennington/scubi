@@ -3,17 +3,10 @@
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Textarea } from "@/components/ui/textarea"
-
-interface TwoColumnFormData {
-  title: string
-  leftContent: string
-  rightContent: string
-  leftImage?: string
-  rightImage?: string
-}
+import type { TwoColumnContent } from "./schemas"
 
 interface TwoColumnFormProps {
-  formData: TwoColumnFormData
+  formData: TwoColumnContent
   updateField: (field: string, value: string) => void
   errors: Record<string, string>
 }

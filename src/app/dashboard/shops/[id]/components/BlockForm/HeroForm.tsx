@@ -10,6 +10,8 @@ import {
   SelectTrigger,
   SelectValue
 } from "@/components/ui/select"
+import { BlockImageUpload } from "@/components/ui/block-image-upload"
+import { HeroContent } from "@/lib/validations/block"
 
 interface ButtonData {
   label?: string
@@ -17,16 +19,8 @@ interface ButtonData {
   variant?: "secondary" | "outline"
 }
 
-interface HeroFormData {
-  title: string
-  text: string
-  image: string
-  primaryButton: ButtonData
-  secondaryButton?: ButtonData
-}
-
 interface HeroFormProps {
-  formData: HeroFormData
+  formData: HeroContent
   updateField: (field: string, value: string | ButtonData) => void
   errors: Record<string, string>
 }
@@ -56,16 +50,15 @@ export function HeroForm({ formData, updateField, errors }: HeroFormProps) {
         {errors.text && <p className="text-red-500 text-sm">{errors.text}</p>}
       </div>
 
-      <div>
-        <Label htmlFor="image">Image URL *</Label>
-        <Input
-          id="image"
-          value={formData.image || ""}
-          onChange={(e) => updateField("image", e.target.value)}
-          className={errors.image ? "border-red-500" : ""}
-        />
-        {errors.image && <p className="text-red-500 text-sm">{errors.image}</p>}
-      </div>
+      <BlockImageUpload
+        value={formData.image}
+        onChange={(url) => updateField("image", url)}
+        onRemove={() => updateField("image", "")}
+        label="Hero Background Image *"
+        size="lg"
+        className={errors.image ? "border-red-500" : ""}
+      />
+      {errors.image && <p className="text-red-500 text-sm">{errors.image}</p>}
 
       <div className="grid grid-cols-2 gap-4">
         <div>

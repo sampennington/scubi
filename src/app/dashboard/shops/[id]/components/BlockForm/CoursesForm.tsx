@@ -5,26 +5,17 @@ import { Label } from "@/components/ui/label"
 import { Textarea } from "@/components/ui/textarea"
 import { Button } from "@/components/ui/button"
 import { Plus, Trash2 } from "lucide-react"
-
-interface CourseData {
-  title: string
-  description: string
-  duration: string
-  price: string
-  image: string
-  instructor: string
-}
-
-interface CoursesFormData {
-  title: string
-  courses: CourseData[]
-}
+import type { CoursesContent } from "./schemas"
 
 interface CoursesFormProps {
-  formData: CoursesFormData
+  formData: CoursesContent
   updateField: (field: string, value: string) => void
-  updateArrayField: (field: string, index: number, value: CourseData) => void
-  addArrayItem: (field: string, item: CourseData) => void
+  updateArrayField: (
+    field: string,
+    index: number,
+    value: CoursesContent["courses"][number]
+  ) => void
+  addArrayItem: (field: string, item: CoursesContent["courses"][number]) => void
   removeArrayItem: (field: string, index: number) => void
   errors: Record<string, string>
 }
@@ -62,9 +53,9 @@ export function CoursesForm({
                 title: "",
                 description: "",
                 duration: "",
-                price: "",
+                price: 0,
                 image: "",
-                instructor: ""
+                level: "beginner"
               })
             }
           >
@@ -134,25 +125,12 @@ export function CoursesForm({
                   onChange={(e) =>
                     updateArrayField("courses", index, {
                       ...course,
-                      price: e.target.value
+                      price: Number(e.target.value)
                     })
                   }
                   placeholder="e.g., $99"
                 />
               </div>
-            </div>
-
-            <div>
-              <Label>Instructor *</Label>
-              <Input
-                value={course.instructor || ""}
-                onChange={(e) =>
-                  updateArrayField("courses", index, {
-                    ...course,
-                    instructor: e.target.value
-                  })
-                }
-              />
             </div>
 
             <div>

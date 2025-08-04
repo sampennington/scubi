@@ -5,29 +5,20 @@ import { Label } from "@/components/ui/label"
 import { Textarea } from "@/components/ui/textarea"
 import { Button } from "@/components/ui/button"
 import { Plus, Trash2 } from "lucide-react"
-
-interface MarineLifeData {
-  name: string
-  description: string
-  habitat: string
-  image: string
-  scientificName?: string
-}
-
-interface MarineLifeFormData {
-  title: string
-  species: MarineLifeData[]
-}
+import type { MarineLifeContent } from "./schemas"
 
 interface MarineLifeFormProps {
-  formData: MarineLifeFormData
+  formData: MarineLifeContent
   updateField: (field: string, value: string) => void
   updateArrayField: (
     field: string,
     index: number,
-    value: MarineLifeData
+    value: MarineLifeContent["items"][number]
   ) => void
-  addArrayItem: (field: string, item: MarineLifeData) => void
+  addArrayItem: (
+    field: string,
+    item: MarineLifeContent["items"][number]
+  ) => void
   removeArrayItem: (field: string, index: number) => void
   errors: Record<string, string>
 }
@@ -64,9 +55,8 @@ export function MarineLifeForm({
               addArrayItem("species", {
                 name: "",
                 description: "",
-                habitat: "",
                 image: "",
-                scientificName: ""
+                season: "year-round"
               })
             }
           >
@@ -75,7 +65,7 @@ export function MarineLifeForm({
           </Button>
         </div>
 
-        {formData.species?.map((species, index) => (
+        {formData.items?.map((species, index) => (
           <div key={index} className="border rounded-lg p-4 space-y-4">
             <div className="flex items-center justify-between">
               <h4 className="font-medium">Species {index + 1}</h4>
@@ -103,19 +93,6 @@ export function MarineLifeForm({
             </div>
 
             <div>
-              <Label>Scientific Name (optional)</Label>
-              <Input
-                value={species.scientificName || ""}
-                onChange={(e) =>
-                  updateArrayField("species", index, {
-                    ...species,
-                    scientificName: e.target.value
-                  })
-                }
-              />
-            </div>
-
-            <div>
               <Label>Description *</Label>
               <Textarea
                 value={species.description || ""}
@@ -123,19 +100,6 @@ export function MarineLifeForm({
                   updateArrayField("species", index, {
                     ...species,
                     description: e.target.value
-                  })
-                }
-              />
-            </div>
-
-            <div>
-              <Label>Habitat *</Label>
-              <Input
-                value={species.habitat || ""}
-                onChange={(e) =>
-                  updateArrayField("species", index, {
-                    ...species,
-                    habitat: e.target.value
                   })
                 }
               />
@@ -156,7 +120,7 @@ export function MarineLifeForm({
           </div>
         ))}
 
-        {(!formData.species || formData.species.length === 0) && (
+        {(!formData.items || formData.items.length === 0) && (
           <p className="text-muted-foreground text-sm">
             No species added yet. Click "Add Species" to get started.
           </p>

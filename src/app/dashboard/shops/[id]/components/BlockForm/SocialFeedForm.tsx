@@ -9,16 +9,10 @@ import {
   SelectTrigger,
   SelectValue
 } from "@/components/ui/select"
-
-interface SocialFeedFormData {
-  title: string
-  platform: "instagram" | "twitter" | "facebook"
-  username: string
-  postCount: number
-}
+import type { SocialFeedContent } from "./schemas"
 
 interface SocialFeedFormProps {
-  formData: SocialFeedFormData
+  formData: SocialFeedContent
   updateField: (field: string, value: string | number) => void
   errors: Record<string, string>
 }

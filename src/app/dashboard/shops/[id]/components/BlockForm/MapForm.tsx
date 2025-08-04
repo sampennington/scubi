@@ -3,17 +3,10 @@
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Textarea } from "@/components/ui/textarea"
-
-interface MapFormData {
-  title: string
-  address: string
-  description?: string
-  latitude?: number
-  longitude?: number
-}
+import type { MapContent } from "./schemas"
 
 interface MapFormProps {
-  formData: MapFormData
+  formData: MapContent
   updateField: (field: string, value: string | number | undefined) => void
   errors: Record<string, string>
 }

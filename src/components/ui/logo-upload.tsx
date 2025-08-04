@@ -51,7 +51,7 @@ export const LogoUpload = ({
       {value ? (
         <div className="grid grid-cols-2 gap-4">
           {/* Logo Preview */}
-          <div className="flex items-center justify-center p-4 border rounded-lg bg-muted/20">
+          <div className="flex items-center justify-center rounded-lg border bg-muted/20 p-4">
             <div className="group relative">
               <Image
                 src={value}
@@ -64,7 +64,7 @@ export const LogoUpload = ({
                 type="button"
                 variant="destructive"
                 size="sm"
-                className="absolute -top-2 -right-2 h-6 w-6 p-0 opacity-0 transition-opacity duration-200 group-hover:opacity-100"
+                className="-top-2 -right-2 absolute h-6 w-6 p-0 opacity-0 transition-opacity duration-200 group-hover:opacity-100"
                 onClick={onRemove}
               >
                 <X className="h-3 w-3" />
@@ -74,7 +74,7 @@ export const LogoUpload = ({
 
           {/* Upload New Logo */}
           <div className="flex flex-col">
-            <div className="text-xs text-muted-foreground mb-2">
+            <div className="mb-2 text-muted-foreground text-xs">
               Upload a new logo:
             </div>
             <UploadButton

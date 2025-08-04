@@ -5,28 +5,20 @@ import { Label } from "@/components/ui/label"
 import { Textarea } from "@/components/ui/textarea"
 import { Button } from "@/components/ui/button"
 import { Plus, Trash2 } from "lucide-react"
-
-interface TestimonialData {
-  name: string
-  role: string
-  content: string
-  image?: string
-}
-
-interface TestimonialsFormData {
-  title: string
-  testimonials: TestimonialData[]
-}
+import type { TestimonialsContent } from "./schemas"
 
 interface TestimonialsFormProps {
-  formData: TestimonialsFormData
+  formData: TestimonialsContent
   updateField: (field: string, value: string) => void
   updateArrayField: (
     field: string,
     index: number,
-    value: TestimonialData
+    value: TestimonialsContent["testimonials"][number]
   ) => void
-  addArrayItem: (field: string, item: TestimonialData) => void
+  addArrayItem: (
+    field: string,
+    item: TestimonialsContent["testimonials"][number]
+  ) => void
   removeArrayItem: (field: string, index: number) => void
   errors: Record<string, string>
 }
@@ -129,11 +121,11 @@ export function TestimonialsForm({
             <div>
               <Label>Image URL (optional)</Label>
               <Input
-                value={testimonial.image || ""}
+                value={testimonial.photo || ""}
                 onChange={(e) =>
                   updateArrayField("testimonials", index, {
                     ...testimonial,
-                    image: e.target.value
+                    photo: e.target.value
                   })
                 }
               />

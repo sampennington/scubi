@@ -10,17 +10,10 @@ import {
   SelectTrigger,
   SelectValue
 } from "@/components/ui/select"
-
-interface CallToActionFormData {
-  title: string
-  text: string
-  buttonText: string
-  buttonUrl: string
-  variant: "default" | "secondary" | "outline"
-}
+import type { CallToActionContent } from "./schemas"
 
 interface CallToActionFormProps {
-  formData: CallToActionFormData
+  formData: CallToActionContent
   updateField: (field: string, value: string) => void
   errors: Record<string, string>
 }
@@ -47,7 +40,7 @@ export function CallToActionForm({
         <Label htmlFor="text">Text *</Label>
         <Textarea
           id="text"
-          value={formData.text || ""}
+          value={formData.description || ""}
           onChange={(e) => updateField("text", e.target.value)}
           className={errors.text ? "border-red-500" : ""}
         />
@@ -58,7 +51,7 @@ export function CallToActionForm({
         <Label htmlFor="buttonText">Button Text *</Label>
         <Input
           id="buttonText"
-          value={formData.buttonText || ""}
+          value={formData.primaryButton.label || ""}
           onChange={(e) => updateField("buttonText", e.target.value)}
           className={errors.buttonText ? "border-red-500" : ""}
         />
@@ -71,7 +64,7 @@ export function CallToActionForm({
         <Label htmlFor="buttonUrl">Button URL *</Label>
         <Input
           id="buttonUrl"
-          value={formData.buttonUrl || ""}
+          value={formData.primaryButton?.url || ""}
           onChange={(e) => updateField("buttonUrl", e.target.value)}
           className={errors.buttonUrl ? "border-red-500" : ""}
         />
@@ -83,7 +76,7 @@ export function CallToActionForm({
       <div>
         <Label>Button Variant</Label>
         <Select
-          value={formData.variant || "default"}
+          value={formData.primaryButton.variant || "default"}
           onValueChange={(value) => updateField("variant", value)}
         >
           <SelectTrigger>

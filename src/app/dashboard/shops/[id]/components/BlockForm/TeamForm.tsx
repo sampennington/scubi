@@ -5,26 +5,17 @@ import { Label } from "@/components/ui/label"
 import { Textarea } from "@/components/ui/textarea"
 import { Button } from "@/components/ui/button"
 import { Plus, Trash2 } from "lucide-react"
-
-interface MemberData {
-  name: string
-  role: string
-  bio: string
-  image: string
-  email?: string
-  linkedin?: string
-}
-
-interface TeamFormData {
-  title: string
-  members: MemberData[]
-}
+import type { TeamContent } from "./schemas"
 
 interface TeamFormProps {
-  formData: TeamFormData
+  formData: TeamContent
   updateField: (field: string, value: string) => void
-  updateArrayField: (field: string, index: number, value: MemberData) => void
-  addArrayItem: (field: string, item: MemberData) => void
+  updateArrayField: (
+    field: string,
+    index: number,
+    value: TeamContent["members"][number]
+  ) => void
+  addArrayItem: (field: string, item: TeamContent["members"][number]) => void
   removeArrayItem: (field: string, index: number) => void
   errors: Record<string, string>
 }
@@ -128,7 +119,7 @@ export function TeamForm({
 
             <div>
               <Label>Image URL *</Label>
-              <Input
+              {/* <Input
                 value={member.image || ""}
                 onChange={(e) =>
                   updateArrayField("members", index, {
@@ -136,34 +127,7 @@ export function TeamForm({
                     image: e.target.value
                   })
                 }
-              />
-            </div>
-
-            <div className="grid grid-cols-2 gap-4">
-              <div>
-                <Label>Email (optional)</Label>
-                <Input
-                  value={member.email || ""}
-                  onChange={(e) =>
-                    updateArrayField("members", index, {
-                      ...member,
-                      email: e.target.value
-                    })
-                  }
-                />
-              </div>
-              <div>
-                <Label>LinkedIn (optional)</Label>
-                <Input
-                  value={member.linkedin || ""}
-                  onChange={(e) =>
-                    updateArrayField("members", index, {
-                      ...member,
-                      linkedin: e.target.value
-                    })
-                  }
-                />
-              </div>
+              /> */}
             </div>
           </div>
         ))}

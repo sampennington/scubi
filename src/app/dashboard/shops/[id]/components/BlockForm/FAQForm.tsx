@@ -5,22 +5,17 @@ import { Label } from "@/components/ui/label"
 import { Textarea } from "@/components/ui/textarea"
 import { Button } from "@/components/ui/button"
 import { Plus, Trash2 } from "lucide-react"
-
-interface FAQItemData {
-  question: string
-  answer: string
-}
-
-interface FAQFormData {
-  title: string
-  items: FAQItemData[]
-}
+import type { FAQContent } from "./schemas"
 
 interface FAQFormProps {
-  formData: FAQFormData
+  formData: FAQContent
   updateField: (field: string, value: string) => void
-  updateArrayField: (field: string, index: number, value: FAQItemData) => void
-  addArrayItem: (field: string, item: FAQItemData) => void
+  updateArrayField: (
+    field: string,
+    index: number,
+    value: FAQContent["items"][number]
+  ) => void
+  addArrayItem: (field: string, item: FAQContent["items"][number]) => void
   removeArrayItem: (field: string, index: number) => void
   errors: Record<string, string>
 }

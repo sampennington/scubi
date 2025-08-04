@@ -3,15 +3,10 @@
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Textarea } from "@/components/ui/textarea"
-
-interface ContactFormFormData {
-  title: string
-  description: string
-  email: string
-}
+import type { ContactFormContent } from "./schemas"
 
 interface ContactFormFormProps {
-  formData: ContactFormFormData
+  formData: ContactFormContent
   updateField: (field: string, value: string) => void
   errors: Record<string, string>
 }
@@ -52,7 +47,7 @@ export function ContactFormForm({
         <Input
           id="email"
           type="email"
-          value={formData.email || ""}
+          value={formData.emailTo || ""}
           onChange={(e) => updateField("email", e.target.value)}
           className={errors.email ? "border-red-500" : ""}
         />
