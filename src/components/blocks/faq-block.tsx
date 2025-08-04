@@ -2,9 +2,9 @@
 
 import { useState } from "react"
 import { ChevronDown, ChevronUp } from "lucide-react"
-import type { FAQBlockContent } from "./types"
+import type { FAQContent } from "@/app/dashboard/shops/[id]/components/BlockForm/schemas"
 
-export const FAQBlock = ({ content }: { content: FAQBlockContent }) => {
+export const FAQBlock = ({ content }: { content: FAQContent }) => {
   const {
     title,
     description,

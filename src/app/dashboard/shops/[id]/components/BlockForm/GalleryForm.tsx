@@ -2,6 +2,7 @@
 
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
+import { Textarea } from "@/components/ui/textarea"
 import { Button } from "@/components/ui/button"
 import { Plus, Trash2 } from "lucide-react"
 
@@ -12,8 +13,12 @@ interface ImageData {
 }
 
 interface GalleryFormData {
-  title: string
+  title?: string
+  description?: string
   images: ImageData[]
+  layout?: "grid" | "carousel" | "masonry"
+  columns?: "2" | "3" | "4"
+  showCaptions?: boolean
 }
 
 interface GalleryFormProps {
@@ -36,7 +41,7 @@ export function GalleryForm({
   return (
     <div className="space-y-4">
       <div>
-        <Label htmlFor="title">Title *</Label>
+        <Label htmlFor="title">Title (optional)</Label>
         <Input
           id="title"
           value={formData.title || ""}
@@ -44,6 +49,19 @@ export function GalleryForm({
           className={errors.title ? "border-red-500" : ""}
         />
         {errors.title && <p className="text-red-500 text-sm">{errors.title}</p>}
+      </div>
+
+      <div>
+        <Label htmlFor="description">Description (optional)</Label>
+        <Textarea
+          id="description"
+          value={formData.description || ""}
+          onChange={(e) => updateField("description", e.target.value)}
+          className={errors.description ? "border-red-500" : ""}
+        />
+        {errors.description && (
+          <p className="text-red-500 text-sm">{errors.description}</p>
+        )}
       </div>
 
       <div>
@@ -90,7 +108,15 @@ export function GalleryForm({
                     src: e.target.value
                   })
                 }
+                className={
+                  errors[`images.${index}.src`] ? "border-red-500" : ""
+                }
               />
+              {errors[`images.${index}.src`] && (
+                <p className="text-red-500 text-sm">
+                  {errors[`images.${index}.src`]}
+                </p>
+              )}
             </div>
 
             <div>
@@ -103,7 +129,15 @@ export function GalleryForm({
                     alt: e.target.value
                   })
                 }
+                className={
+                  errors[`images.${index}.alt`] ? "border-red-500" : ""
+                }
               />
+              {errors[`images.${index}.alt`] && (
+                <p className="text-red-500 text-sm">
+                  {errors[`images.${index}.alt`]}
+                </p>
+              )}
             </div>
 
             <div>

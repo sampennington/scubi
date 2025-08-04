@@ -1,7 +1,7 @@
 import Image from "next/image"
-import type { GalleryBlockContent } from "./types"
+import type { GalleryContent } from "@/app/dashboard/shops/[id]/components/BlockForm/schemas"
 
-export const GalleryBlock = ({ content }: { content: GalleryBlockContent }) => {
+export const GalleryBlock = ({ content }: { content: GalleryContent }) => {
   const {
     title,
     description,

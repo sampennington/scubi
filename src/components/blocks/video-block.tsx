@@ -1,4 +1,4 @@
-import type { VideoBlockContent } from "./types"
+import type { VideoContent } from "@/app/dashboard/shops/[id]/components/BlockForm/schemas"
 
 const getVideoEmbedUrl = (
   url: string,
@@ -24,7 +24,7 @@ const getVideoEmbedUrl = (
   return url
 }
 
-export const VideoBlock = ({ content }: { content: VideoBlockContent }) => {
+export const VideoBlock = ({ content }: { content: VideoContent }) => {
   const {
     title,
     description,

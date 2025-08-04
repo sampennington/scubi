@@ -1,6 +1,6 @@
-import type { DividerBlockContent } from "./types"
+import type { DividerContent } from "@/app/dashboard/shops/[id]/components/BlockForm/schemas"
 
-export const DividerBlock = ({ content }: { content: DividerBlockContent }) => {
+export const DividerBlock = ({ content }: { content: DividerContent }) => {
   const {
     text,
     alignment = "center",

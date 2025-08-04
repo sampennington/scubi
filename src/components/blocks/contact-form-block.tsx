@@ -11,12 +11,12 @@ import {
   SelectTrigger,
   SelectValue
 } from "../ui/select"
-import type { ContactFormBlockContent, ContactFormField } from "./types"
+import type { ContactFormContent } from "@/app/dashboard/shops/[id]/components/BlockForm/schemas"
 
 export const ContactFormBlock = ({
   content
 }: {
-  content: ContactFormBlockContent
+  content: ContactFormContent
 }) => {
   const {
     title,
@@ -127,7 +127,7 @@ const Field = ({
   handleInputChange,
   formData
 }: {
-  field: ContactFormField
+  field: ContactFormContent["fields"][0]
   handleInputChange: (name: string, value: string) => void
   formData: Record<string, string>
 }) => {

@@ -7,14 +7,18 @@ import { Button } from "@/components/ui/button"
 import { Plus, Trash2 } from "lucide-react"
 
 interface ColumnData {
-  title: string
-  content: string
-  image?: string
+  icon?: string
+  heading?: string
+  body: string
 }
 
 interface MultiColumnFormData {
-  title: string
+  title?: string
+  description?: string
   columns: ColumnData[]
+  columnsPerRow?: "1" | "2" | "3" | "4"
+  alignment?: "left" | "center" | "right"
+  showIcons?: boolean
 }
 
 interface MultiColumnFormProps {
@@ -37,7 +41,7 @@ export function MultiColumnForm({
   return (
     <div className="space-y-4">
       <div>
-        <Label htmlFor="title">Title *</Label>
+        <Label htmlFor="title">Title (optional)</Label>
         <Input
           id="title"
           value={formData.title || ""}
@@ -45,6 +49,19 @@ export function MultiColumnForm({
           className={errors.title ? "border-red-500" : ""}
         />
         {errors.title && <p className="text-red-500 text-sm">{errors.title}</p>}
+      </div>
+
+      <div>
+        <Label htmlFor="description">Description (optional)</Label>
+        <Textarea
+          id="description"
+          value={formData.description || ""}
+          onChange={(e) => updateField("description", e.target.value)}
+          className={errors.description ? "border-red-500" : ""}
+        />
+        {errors.description && (
+          <p className="text-red-500 text-sm">{errors.description}</p>
+        )}
       </div>
 
       <div>
@@ -56,9 +73,7 @@ export function MultiColumnForm({
             size="sm"
             onClick={() =>
               addArrayItem("columns", {
-                title: "",
-                content: "",
-                image: ""
+                body: ""
               })
             }
           >
@@ -82,42 +97,50 @@ export function MultiColumnForm({
             </div>
 
             <div>
-              <Label>Title *</Label>
+              <Label>Icon (optional)</Label>
               <Input
-                value={column.title || ""}
+                value={column.icon || ""}
                 onChange={(e) =>
                   updateArrayField("columns", index, {
                     ...column,
-                    title: e.target.value
+                    icon: e.target.value
                   })
                 }
               />
             </div>
 
             <div>
-              <Label>Content *</Label>
+              <Label>Heading (optional)</Label>
+              <Input
+                value={column.heading || ""}
+                onChange={(e) =>
+                  updateArrayField("columns", index, {
+                    ...column,
+                    heading: e.target.value
+                  })
+                }
+              />
+            </div>
+
+            <div>
+              <Label>Body *</Label>
               <Textarea
-                value={column.content || ""}
+                value={column.body || ""}
                 onChange={(e) =>
                   updateArrayField("columns", index, {
                     ...column,
-                    content: e.target.value
+                    body: e.target.value
                   })
                 }
-              />
-            </div>
-
-            <div>
-              <Label>Image URL (optional)</Label>
-              <Input
-                value={column.image || ""}
-                onChange={(e) =>
-                  updateArrayField("columns", index, {
-                    ...column,
-                    image: e.target.value
-                  })
+                className={
+                  errors[`columns.${index}.body`] ? "border-red-500" : ""
                 }
               />
+              {errors[`columns.${index}.body`] && (
+                <p className="text-red-500 text-sm">
+                  {errors[`columns.${index}.body`]}
+                </p>
+              )}
             </div>
           </div>
         ))}

@@ -1,7 +1,7 @@
 import Image from "next/image"
 import { Badge } from "../ui/badge"
 import { Calendar, Waves } from "lucide-react"
-import type { MarineLifeBlockContent } from "./types"
+import type { MarineLifeContent } from "@/app/dashboard/shops/[id]/components/BlockForm/schemas"
 
 const getDifficultyColor = (difficulty: string) => {
   switch (difficulty) {
@@ -36,7 +36,7 @@ const getSeasonColor = (season: string) => {
 export const MarineLifeBlock = ({
   content
 }: {
-  content: MarineLifeBlockContent
+  content: MarineLifeContent
 }) => {
   const {
     title,

@@ -1,6 +1,6 @@
 import Image from "next/image"
 import { Star } from "lucide-react"
-import type { TestimonialsBlockContent } from "./types"
+import type { TestimonialsContent } from "@/app/dashboard/shops/[id]/components/BlockForm/schemas"
 
 const renderStars = (rating: number) => {
   return Array.from({ length: 5 }, (_, i) => (
@@ -16,7 +16,7 @@ const renderStars = (rating: number) => {
 export const TestimonialsBlock = ({
   content
 }: {
-  content: TestimonialsBlockContent
+  content: TestimonialsContent
 }) => {
   const {
     title,
@@ -53,7 +53,7 @@ export const TestimonialsBlock = ({
               <div key={index} className="rounded-lg bg-card p-6 shadow-lg">
                 {showRatings && (
                   <div className="mb-4 flex items-center gap-1">
-                    {renderStars(testimonial.rating)}
+                    {renderStars(parseInt(testimonial.rating))}
                   </div>
                 )}
 
@@ -97,7 +97,7 @@ export const TestimonialsBlock = ({
                   <div className="w-80 rounded-lg bg-card p-6 shadow-lg">
                     {showRatings && (
                       <div className="mb-4 flex items-center gap-1">
-                        {renderStars(testimonial.rating)}
+                        {renderStars(parseInt(testimonial.rating))}
                       </div>
                     )}
 

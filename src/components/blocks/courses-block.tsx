@@ -2,7 +2,7 @@ import Image from "next/image"
 import { Badge } from "../ui/badge"
 import { Button } from "../ui/button"
 import { Calendar, Users, Waves } from "lucide-react"
-import type { CoursesBlockContent } from "./types"
+import type { CoursesContent } from "@/app/dashboard/shops/[id]/components/BlockForm/schemas"
 
 const getLevelColor = (level: string) => {
   switch (level) {
@@ -17,7 +17,7 @@ const getLevelColor = (level: string) => {
   }
 }
 
-export const CoursesBlock = ({ content }: { content: CoursesBlockContent }) => {
+export const CoursesBlock = ({ content }: { content: CoursesContent }) => {
   const {
     title,
     description,
@@ -28,7 +28,7 @@ export const CoursesBlock = ({ content }: { content: CoursesBlockContent }) => {
     showLevels = true
   } = content
 
-  const gridCols = {
+  const gridCols: Record<number, string> = {
     2: "grid-cols-1 md:grid-cols-2",
     3: "grid-cols-1 md:grid-cols-2 lg:grid-cols-3"
   }

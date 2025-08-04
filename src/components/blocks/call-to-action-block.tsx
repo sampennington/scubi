@@ -1,11 +1,11 @@
 import Image from "next/image"
 import { Button } from "../ui/button"
-import type { CallToActionBlockContent } from "./types"
+import type { CallToActionContent } from "@/app/dashboard/shops/[id]/components/BlockForm/schemas"
 
 export const CallToActionBlock = ({
   content
 }: {
-  content: CallToActionBlockContent
+  content: CallToActionContent
 }) => {
   const {
     title,

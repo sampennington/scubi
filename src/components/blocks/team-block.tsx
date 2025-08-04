@@ -1,9 +1,9 @@
 import Image from "next/image"
 import { Mail, Phone, Linkedin, Twitter, Instagram } from "lucide-react"
 import { Card, CardContent, CardHeader } from "../ui/card"
-import type { TeamBlockContent } from "./types"
+import type { TeamContent } from "@/app/dashboard/shops/[id]/components/BlockForm/schemas"
 
-export const TeamBlock = ({ content }: { content: TeamBlockContent }) => {
+export const TeamBlock = ({ content }: { content: TeamContent }) => {
   const {
     title,
     description,

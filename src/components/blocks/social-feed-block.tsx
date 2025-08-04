@@ -1,10 +1,10 @@
 import Image from "next/image"
-import type { SocialFeedBlockContent } from "./types"
+import type { SocialFeedContent } from "@/app/dashboard/shops/[id]/components/BlockForm/schemas"
 
 export const SocialFeedBlock = ({
   content
 }: {
-  content: SocialFeedBlockContent
+  content: SocialFeedContent
 }) => {
   const {
     title,

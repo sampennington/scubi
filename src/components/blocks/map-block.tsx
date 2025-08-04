@@ -1,8 +1,8 @@
-import type { MapBlockContent } from "./types"
+import type { MapContent } from "@/app/dashboard/shops/[id]/components/BlockForm/schemas"
 
 const apiKey = process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY
 
-export const MapBlock = ({ content }: { content: MapBlockContent }) => {
+export const MapBlock = ({ content }: { content: MapContent }) => {
   const {
     title,
     description,

@@ -2,168 +2,256 @@ import { z } from "zod"
 import { BlockType } from "@/database/schema"
 
 // Base schemas for reusable components
-const ButtonSchema = z.object({
-  label: z.string().min(1, "Button label is required"),
-  url: z.string().url("Must be a valid URL"),
-  variant: z.enum(["secondary", "outline"]).optional()
-})
-
-const ImageDataSchema = z.object({
-  src: z.string().url("Must be a valid URL"),
-  alt: z.string().min(1, "Alt text is required"),
-  caption: z.string().optional()
+const BlockButtonSchema = z.object({
+  label: z.string(),
+  url: z.string(),
+  variant: z.enum(["secondary", "outline"])
 })
 
 // Individual block type schemas
 export const HeroContentSchema = z.object({
-  title: z.string().min(1, "Title is required"),
-  text: z.string().min(1, "Text is required"),
-  image: z.string().url("Must be a valid URL"),
-  primaryButton: ButtonSchema,
-  secondaryButton: ButtonSchema
+  title: z.string(),
+  text: z.string(),
+  image: z.string(),
+  primaryButton: BlockButtonSchema,
+  secondaryButton: BlockButtonSchema
 })
 
 export const TextContentSchema = z.object({
-  text: z.string().min(1, "Text is required")
+  text: z.string(),
+  alignment: z.enum(["left", "center", "right"]).optional()
 })
 
 export const ImageContentSchema = z.object({
-  src: z.string().url("Must be a valid URL"),
-  alt: z.string().min(1, "Alt text is required"),
+  src: z.string(),
+  alt: z.string(),
   caption: z.string().optional()
 })
 
-export const DividerContentSchema = z.object({
-  style: z.enum(["solid", "dashed", "dotted"]).optional(),
-  color: z.string().optional(),
-  thickness: z.number().min(1).max(10).optional()
-})
-
-export const ColumnDataSchema = z.object({
-  title: z.string().min(1, "Column title is required"),
-  content: z.string().min(1, "Column content is required"),
-  image: z.string().url("Must be a valid URL").optional()
+export const ColumnContentSchema = z.object({
+  icon: z.string().optional(),
+  heading: z.string().optional(),
+  body: z.string()
 })
 
 export const MultiColumnContentSchema = z.object({
-  title: z.string().min(1, "Title is required"),
-  columns: z.array(ColumnDataSchema).min(1, "At least one column is required")
+  title: z.string().optional(),
+  description: z.string().optional(),
+  columns: z.array(ColumnContentSchema),
+  columnsPerRow: z.enum(["1", "2", "3", "4"]).optional(),
+  alignment: z.enum(["left", "center", "right"]).optional(),
+  showIcons: z.boolean().optional()
+})
+
+export const GalleryImageSchema = z.object({
+  src: z.string(),
+  alt: z.string(),
+  caption: z.string().optional()
 })
 
 export const GalleryContentSchema = z.object({
-  title: z.string().min(1, "Title is required"),
-  images: z.array(ImageDataSchema).min(1, "At least one image is required")
+  title: z.string().optional(),
+  description: z.string().optional(),
+  images: z.array(GalleryImageSchema),
+  layout: z.enum(["grid", "carousel", "masonry"]).optional(),
+  columns: z.enum(["2", "3", "4"]).optional(),
+  showCaptions: z.boolean().optional()
 })
 
-export const TestimonialDataSchema = z.object({
-  name: z.string().min(1, "Name is required"),
-  role: z.string().min(1, "Role is required"),
-  content: z.string().min(1, "Testimonial content is required"),
-  avatar: z.string().url("Must be a valid URL").optional()
+export const TestimonialSchema = z.object({
+  name: z.string(),
+  role: z.string().optional(),
+  company: z.string().optional(),
+  content: z.string(),
+  rating: z.enum(["1", "2", "3", "4", "5"]),
+  photo: z.string().optional()
 })
 
 export const TestimonialsContentSchema = z.object({
-  title: z.string().min(1, "Title is required"),
-  testimonials: z
-    .array(TestimonialDataSchema)
-    .min(1, "At least one testimonial is required")
+  title: z.string().optional(),
+  description: z.string().optional(),
+  testimonials: z.array(TestimonialSchema),
+  layout: z.enum(["grid", "carousel"]).optional(),
+  columns: z.enum(["2", "3"]).optional(),
+  showPhotos: z.boolean().optional(),
+  showRatings: z.boolean().optional()
 })
 
-export const MemberDataSchema = z.object({
-  name: z.string().min(1, "Name is required"),
-  role: z.string().min(1, "Role is required"),
-  bio: z.string().min(1, "Bio is required"),
-  image: z.string().url("Must be a valid URL"),
-  email: z.string().email("Must be a valid email").optional(),
-  linkedin: z.string().url("Must be a valid URL").optional()
+export const TeamMemberSchema = z.object({
+  name: z.string(),
+  role: z.string(),
+  bio: z.string(),
+  photo: z.string(),
+  email: z.string().optional(),
+  phone: z.string().optional(),
+  socialLinks: z
+    .object({
+      linkedin: z.string().optional(),
+      twitter: z.string().optional(),
+      instagram: z.string().optional()
+    })
+    .optional()
 })
 
 export const TeamContentSchema = z.object({
-  title: z.string().min(1, "Title is required"),
-  members: z.array(MemberDataSchema).min(1, "At least one member is required")
+  title: z.string().optional(),
+  description: z.string().optional(),
+  members: z.array(TeamMemberSchema),
+  layout: z.enum(["grid", "list"]).optional(),
+  columns: z.enum(["2", "3", "4"]).optional(),
+  showContactInfo: z.boolean().optional(),
+  showSocialLinks: z.boolean().optional(),
+  fullWidthPhoto: z.boolean().optional()
 })
 
-export const FAQItemDataSchema = z.object({
-  question: z.string().min(1, "Question is required"),
-  answer: z.string().min(1, "Answer is required")
+export const FAQItemSchema = z.object({
+  question: z.string(),
+  answer: z.string()
 })
 
 export const FAQContentSchema = z.object({
-  title: z.string().min(1, "Title is required"),
-  items: z.array(FAQItemDataSchema).min(1, "At least one FAQ item is required")
+  title: z.string().optional(),
+  description: z.string().optional(),
+  items: z.array(FAQItemSchema),
+  layout: z.enum(["accordion", "list"]).optional(),
+  allowMultipleOpen: z.boolean().optional()
+})
+
+export const ContactFormFieldSchema = z.object({
+  name: z.string(),
+  type: z.enum(["text", "email", "tel", "textarea", "select"]),
+  label: z.string(),
+  required: z.boolean().optional(),
+  placeholder: z.string().optional(),
+  options: z.array(z.string()).optional()
 })
 
 export const ContactFormContentSchema = z.object({
-  title: z.string().min(1, "Title is required"),
-  description: z.string().min(1, "Description is required"),
-  email: z.string().email("Must be a valid email")
+  title: z.string().optional(),
+  description: z.string().optional(),
+  fields: z.array(ContactFormFieldSchema),
+  submitButtonText: z.string().optional(),
+  successMessage: z.string().optional(),
+  emailTo: z.string().optional()
 })
 
 export const CallToActionContentSchema = z.object({
-  title: z.string().min(1, "Title is required"),
-  text: z.string().min(1, "Text is required"),
-  buttonText: z.string().min(1, "Button text is required"),
-  buttonUrl: z.string().url("Must be a valid URL"),
-  variant: z.enum(["default", "secondary", "outline"]).default("default")
+  title: z.string(),
+  description: z.string().optional(),
+  primaryButton: BlockButtonSchema,
+  secondaryButton: BlockButtonSchema.optional(),
+  backgroundImage: z.string().optional(),
+  backgroundColor: z.string().optional(),
+  textColor: z.string().optional(),
+  alignment: z.enum(["left", "center", "right"]).optional()
 })
 
 export const VideoContentSchema = z.object({
-  title: z.string().min(1, "Title is required"),
-  description: z.string().min(1, "Description is required"),
-  url: z.string().url("Must be a valid video URL"),
-  thumbnail: z.string().url("Must be a valid URL").optional()
+  title: z.string().optional(),
+  description: z.string().optional(),
+  videoUrl: z.string(),
+  provider: z.enum(["youtube", "vimeo", "custom"]),
+  autoplay: z.boolean().optional(),
+  controls: z.boolean().optional(),
+  width: z.number().optional(),
+  height: z.number().optional()
 })
 
 export const MapContentSchema = z.object({
-  title: z.string().min(1, "Title is required"),
-  address: z.string().min(1, "Address is required"),
+  title: z.string().optional(),
   description: z.string().optional(),
-  latitude: z.number().min(-90).max(90).optional(),
-  longitude: z.number().min(-180).max(180).optional()
+  address: z.string(),
+  latitude: z.number().optional(),
+  longitude: z.number().optional(),
+  zoom: z.number().optional(),
+  apiKey: z.string().optional(),
+  showMarker: z.boolean().optional(),
+  height: z.number().optional()
 })
 
 export const SocialFeedContentSchema = z.object({
-  title: z.string().min(1, "Title is required"),
+  title: z.string().optional(),
+  description: z.string().optional(),
   platform: z.enum(["instagram", "twitter", "facebook"]),
-  username: z.string().min(1, "Username is required"),
-  postCount: z.number().min(1).max(20).default(6)
+  username: z.string(),
+  postCount: z.number().optional(),
+  showCaptions: z.boolean().optional(),
+  layout: z.enum(["grid", "carousel"]).optional(),
+  columns: z.enum(["3", "4", "6"]).optional()
+})
+
+export const DividerContentSchema = z.object({
+  text: z.string().optional(),
+  alignment: z.enum(["left", "center", "right"]).optional(),
+  style: z.enum(["solid", "dashed", "dotted"]).optional(),
+  color: z.string().optional(),
+  thickness: z.number().optional()
 })
 
 export const TwoColumnContentSchema = z.object({
-  title: z.string().min(1, "Title is required"),
-  leftContent: z.string().min(1, "Left content is required"),
-  rightContent: z.string().min(1, "Right content is required"),
-  leftImage: z.string().url("Must be a valid URL").optional(),
-  rightImage: z.string().url("Must be a valid URL").optional()
+  leftContent: z.object({
+    type: z.enum(["text", "image", "video"]),
+    content: z.string(),
+    title: z.string().optional()
+  }),
+  rightContent: z.object({
+    type: z.enum(["text", "image", "video"]),
+    content: z.string(),
+    title: z.string().optional()
+  }),
+  layout: z.enum(["text-image", "image-text", "text-text"]).optional(),
+  alignment: z.enum(["top", "center", "bottom"]).optional(),
+  spacing: z.number().optional()
 })
 
-export const CourseDataSchema = z.object({
-  title: z.string().min(1, "Course title is required"),
-  description: z.string().min(1, "Course description is required"),
-  duration: z.string().min(1, "Duration is required"),
-  price: z.string().min(1, "Price is required"),
-  image: z.string().url("Must be a valid URL"),
-  instructor: z.string().min(1, "Instructor is required")
+export const TwoColumnBlockContentSchema = z.object({
+  title: z.string().optional(),
+  description: z.string().optional(),
+  content: TwoColumnContentSchema,
+  background: z.string().optional(),
+  padding: z.number().optional()
+})
+
+export const CourseSchema = z.object({
+  title: z.string(),
+  description: z.string(),
+  duration: z.string(),
+  level: z.enum(["beginner", "intermediate", "advanced"]),
+  price: z.number(),
+  currency: z.string().optional(),
+  maxDepth: z.number().optional(),
+  maxStudents: z.number().optional(),
+  includes: z.array(z.string()).optional(),
+  image: z.string().optional()
 })
 
 export const CoursesContentSchema = z.object({
-  title: z.string().min(1, "Title is required"),
-  courses: z.array(CourseDataSchema).min(1, "At least one course is required")
+  title: z.string().optional(),
+  description: z.string().optional(),
+  courses: z.array(CourseSchema),
+  layout: z.enum(["grid", "list"]).optional(),
+  columns: z.enum(["2", "3"]).optional(),
+  showPricing: z.boolean().optional(),
+  showLevels: z.boolean().optional()
 })
 
-export const MarineLifeDataSchema = z.object({
-  name: z.string().min(1, "Species name is required"),
-  description: z.string().min(1, "Description is required"),
-  habitat: z.string().min(1, "Habitat is required"),
-  image: z.string().url("Must be a valid URL"),
-  scientificName: z.string().optional()
+export const MarineLifeItemSchema = z.object({
+  name: z.string(),
+  description: z.string(),
+  season: z.enum(["year-round", "spring", "summer", "fall", "winter"]),
+  image: z.string().optional(),
+  depth: z.string().optional(),
+  difficulty: z.enum(["easy", "moderate", "challenging"]).optional()
 })
 
 export const MarineLifeContentSchema = z.object({
-  title: z.string().min(1, "Title is required"),
-  species: z
-    .array(MarineLifeDataSchema)
-    .min(1, "At least one species is required")
+  title: z.string().optional(),
+  description: z.string().optional(),
+  items: z.array(MarineLifeItemSchema),
+  currentSeason: z.enum(["spring", "summer", "fall", "winter"]).optional(),
+  layout: z.enum(["grid", "list"]).optional(),
+  columns: z.enum(["2", "3", "4"]).optional(),
+  showSeasonalFilter: z.boolean().optional()
 })
 
 // Schema map for easy lookup
@@ -182,7 +270,7 @@ export const BlockSchemas = {
   [BlockType.VIDEO]: VideoContentSchema,
   [BlockType.MAP]: MapContentSchema,
   [BlockType.SOCIAL_FEED]: SocialFeedContentSchema,
-  [BlockType.TWO_COLUMN]: TwoColumnContentSchema,
+  [BlockType.TWO_COLUMN]: TwoColumnBlockContentSchema,
   [BlockType.COURSES]: CoursesContentSchema,
   [BlockType.MARINE_LIFE]: MarineLifeContentSchema
 } as const
@@ -202,7 +290,7 @@ export type CallToActionContent = z.infer<typeof CallToActionContentSchema>
 export type VideoContent = z.infer<typeof VideoContentSchema>
 export type MapContent = z.infer<typeof MapContentSchema>
 export type SocialFeedContent = z.infer<typeof SocialFeedContentSchema>
-export type TwoColumnContent = z.infer<typeof TwoColumnContentSchema>
+export type TwoColumnContent = z.infer<typeof TwoColumnBlockContentSchema>
 export type CoursesContent = z.infer<typeof CoursesContentSchema>
 export type MarineLifeContent = z.infer<typeof MarineLifeContentSchema>
 
@@ -272,7 +360,7 @@ export function isSocialFeedContent(data: unknown): data is SocialFeedContent {
 }
 
 export function isTwoColumnContent(data: unknown): data is TwoColumnContent {
-  return TwoColumnContentSchema.safeParse(data).success
+  return TwoColumnBlockContentSchema.safeParse(data).success
 }
 
 export function isCoursesContent(data: unknown): data is CoursesContent {
