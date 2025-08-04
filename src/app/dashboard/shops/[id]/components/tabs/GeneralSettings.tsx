@@ -8,6 +8,7 @@ import { Button } from "@/components/ui/button"
 import { ColorPicker } from "@/components/ui/color-picker"
 import { FontPicker } from "@/components/ui/font-picker"
 import { SettingsSection } from "./SettingsSection"
+import { LogoUpload } from "@/components/ui/logo-upload"
 
 export const GeneralSettings = ({
   shopId,
@@ -29,7 +30,8 @@ export const GeneralSettings = ({
       secondaryColor: siteSettings?.secondaryColor || "#64748b",
       accentColor: siteSettings?.accentColor || "#f59e0b",
       fontFamilyHeading: siteSettings?.fontFamilyHeading || "",
-      fontFamilyBody: siteSettings?.fontFamilyBody || ""
+      fontFamilyBody: siteSettings?.fontFamilyBody || "",
+      logoUrl: siteSettings?.logoUrl || ""
     }
   })
 
@@ -54,6 +56,14 @@ export const GeneralSettings = ({
             <div className="flex flex-col gap-2" />
           </div>
         </div>
+
+        <SettingsSection title="Branding">
+          <LogoUpload
+            value={form.watch("logoUrl")}
+            onChange={(url) => form.setValue("logoUrl", url)}
+            onRemove={() => form.setValue("logoUrl", "")}
+          />
+        </SettingsSection>
 
         <SettingsSection title="Contact Details">
           <FormInput

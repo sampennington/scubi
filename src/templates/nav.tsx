@@ -1,6 +1,7 @@
 import { Facebook, Instagram, MessageCircle } from "lucide-react"
 import type { SiteSettings } from "@/lib/api/types"
 import type { NavigationItem } from "@/lib/api"
+import Image from "next/image"
 
 export const Nav = ({
   pages,
@@ -13,8 +14,20 @@ export const Nav = ({
     <nav className="sticky top-0 z-50 border-border/40 border-b bg-background/95 backdrop-blur-sm">
       <div className="container mx-auto px-4 py-4">
         <div className="flex items-center justify-between">
-          <div className="font-bold text-2xl text-primary">
-            {siteSettings.name}
+          <div className="flex items-center">
+            {siteSettings.logoUrl ? (
+              <Image
+                src={siteSettings.logoUrl}
+                alt={siteSettings.name}
+                className="w-auto object-contain "
+                width={150}
+                height={50}
+              />
+            ) : (
+              <div className="font-bold text-2xl text-primary">
+                {siteSettings.name}
+              </div>
+            )}
           </div>
           <div className="hidden items-center gap-6 md:flex">
             {pages.map((page) => (
