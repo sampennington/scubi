@@ -44,7 +44,9 @@ export const TwoColumnBlock = ({
   }
 
   const renderContent = (
-    content: TwoColumnContent["leftContent"] | TwoColumnContent["rightContent"]
+    content:
+      | TwoColumnContent["content"]["leftContent"]
+      | TwoColumnContent["content"]["rightContent"]
   ) => {
     switch (content.type) {
       case "image":

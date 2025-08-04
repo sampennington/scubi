@@ -94,6 +94,7 @@ export function HeroForm({ formData, updateField, errors }: HeroFormProps) {
                 <SelectValue />
               </SelectTrigger>
               <SelectContent>
+                <SelectItem value="primary">Primary</SelectItem>
                 <SelectItem value="secondary">Secondary</SelectItem>
                 <SelectItem value="outline">Outline</SelectItem>
               </SelectContent>

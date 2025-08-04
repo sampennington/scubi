@@ -5,7 +5,7 @@ import { BlockType } from "@/database/schema"
 const BlockButtonSchema = z.object({
   label: z.string(),
   url: z.string(),
-  variant: z.enum(["default", "secondary", "outline"])
+  variant: z.enum(["default", "cta", "secondary", "outline", "invert"])
 })
 
 // Individual block type schemas
@@ -369,66 +369,4 @@ export function isCoursesContent(data: unknown): data is CoursesContent {
 
 export function isMarineLifeContent(data: unknown): data is MarineLifeContent {
   return MarineLifeContentSchema.safeParse(data).success
-}
-
-// Helper function to validate block content with proper typing
-export function validateBlockContent(
-  blockType: string,
-  content: Record<string, unknown>
-):
-  | {
-      success: true
-      data:
-        | HeroContent
-        | TextContent
-        | ImageContent
-        | DividerContent
-        | MultiColumnContent
-        | GalleryContent
-        | TestimonialsContent
-        | TeamContent
-        | FAQContent
-        | ContactFormContent
-        | CallToActionContent
-        | VideoContent
-        | MapContent
-        | SocialFeedContent
-        | TwoColumnContent
-        | CoursesContent
-        | MarineLifeContent
-    }
-  | {
-      success: false
-      error: { errors: Array<{ path: string[]; message: string }> }
-    } {
-  const schema = BlockSchemas[blockType as keyof typeof BlockSchemas]
-  if (!schema) {
-    return {
-      success: false,
-      error: {
-        errors: [{ path: [], message: `Unknown block type: ${blockType}` }]
-      }
-    }
-  }
-
-  const result = schema.safeParse(content)
-  if (result.success) {
-    return { success: true, data: result.data }
-  } else {
-    // Check if the error has the expected structure
-    const error = result.error as {
-      errors?: Array<{ path: (string | number)[]; message: string }>
-    }
-
-    return {
-      success: false,
-      error: {
-        errors:
-          error.errors?.map((err) => ({
-            path: err.path.map((p) => String(p)),
-            message: err.message
-          })) || []
-      }
-    }
-  }
 }

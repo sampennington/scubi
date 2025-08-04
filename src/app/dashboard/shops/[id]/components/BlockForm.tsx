@@ -30,7 +30,6 @@ import {
 } from "./BlockForm/index"
 import { ValidationError } from "./BlockForm/ValidationError"
 import {
-  validateBlockContent,
   isHeroContent,
   isTextContent,
   isImageContent,
@@ -50,12 +49,8 @@ import {
   isMarineLifeContent
 } from "./BlockForm/schemas"
 import { getRequiredFields } from "./BlockForm/utils"
-
-interface Block {
-  id?: string
-  type: BlockType
-  content: Record<string, unknown>
-}
+import { defaultMultiColumnContent } from "@/components/blocks/default-data"
+import type { Block } from "@/lib/api"
 
 interface BlockFormProps {
   block: Block
@@ -67,9 +62,7 @@ interface BlockFormProps {
 }
 
 export function BlockForm({ block, onSave, onCancel }: BlockFormProps) {
-  const [formData, setFormData] = useState<Record<string, unknown>>(
-    block.content || {}
-  )
+  const [formData, setFormData] = useState<Record<string, unknown>>({})
   const [errors, setErrors] = useState<Record<string, string>>({})
 
   const validateForm = () => {
@@ -95,7 +88,7 @@ export function BlockForm({ block, onSave, onCancel }: BlockFormProps) {
   const handleSave = () => {
     if (validateForm()) {
       onSave({
-        type: block.type,
+        type: block.type as BlockType,
         content: formData
       })
     }
@@ -137,21 +130,12 @@ export function BlockForm({ block, onSave, onCancel }: BlockFormProps) {
   }
 
   const renderForm = () => {
-    const validationResult = validateBlockContent(block.type, formData)
-
-    if (!validationResult.success) {
-      const errorMessages = validationResult.error.errors.map(
-        (error) => `${error.path.join(".")}: ${error.message}`
-      )
-      return <ValidationError errors={errorMessages} />
-    }
-
     switch (block.type) {
       case BlockType.HERO:
-        if (isHeroContent(validationResult.data)) {
+        if (isHeroContent(formData)) {
           return (
             <HeroForm
-              formData={validationResult.data}
+              formData={formData}
               updateField={updateField}
               errors={errors}
             />
@@ -159,10 +143,10 @@ export function BlockForm({ block, onSave, onCancel }: BlockFormProps) {
         }
         break
       case BlockType.TEXT:
-        if (isTextContent(validationResult.data)) {
+        if (isTextContent(formData)) {
           return (
             <TextForm
-              formData={validationResult.data}
+              formData={formData}
               updateField={updateField}
               errors={errors}
             />
@@ -170,10 +154,10 @@ export function BlockForm({ block, onSave, onCancel }: BlockFormProps) {
         }
         break
       case BlockType.IMAGE:
-        if (isImageContent(validationResult.data)) {
+        if (isImageContent(formData)) {
           return (
             <ImageForm
-              formData={validationResult.data}
+              formData={formData}
               updateField={updateField}
               errors={errors}
             />
@@ -181,34 +165,32 @@ export function BlockForm({ block, onSave, onCancel }: BlockFormProps) {
         }
         break
       case BlockType.DIVIDER:
-        if (isDividerContent(validationResult.data)) {
-          return (
-            <DividerForm
-              formData={validationResult.data}
-              updateField={updateField}
-            />
-          )
+        if (isDividerContent(formData)) {
+          return <DividerForm formData={formData} updateField={updateField} />
         }
         break
       case BlockType.MULTI_COLUMN:
-        if (isMultiColumnContent(validationResult.data)) {
-          return (
-            <MultiColumnForm
-              formData={validationResult.data}
-              updateField={updateField}
-              updateArrayField={updateArrayField}
-              addArrayItem={addArrayItem}
-              removeArrayItem={removeArrayItem}
-              errors={errors}
-            />
-          )
-        }
-        break
+        console.log(formData)
+        return (
+          <MultiColumnForm
+            formData={
+              isMultiColumnContent(formData)
+                ? formData
+                : defaultMultiColumnContent
+            }
+            updateField={updateField}
+            updateArrayField={updateArrayField}
+            addArrayItem={addArrayItem}
+            removeArrayItem={removeArrayItem}
+            errors={errors}
+          />
+        )
+
       case BlockType.GALLERY:
-        if (isGalleryContent(validationResult.data)) {
+        if (isGalleryContent(formData)) {
           return (
             <GalleryForm
-              formData={validationResult.data}
+              formData={formData}
               updateField={updateField}
               updateArrayField={updateArrayField}
               addArrayItem={addArrayItem}
@@ -219,10 +201,10 @@ export function BlockForm({ block, onSave, onCancel }: BlockFormProps) {
         }
         break
       case BlockType.TESTIMONIALS:
-        if (isTestimonialsContent(validationResult.data)) {
+        if (isTestimonialsContent(formData)) {
           return (
             <TestimonialsForm
-              formData={validationResult.data}
+              formData={formData}
               updateField={updateField}
               updateArrayField={updateArrayField}
               addArrayItem={addArrayItem}
@@ -233,10 +215,10 @@ export function BlockForm({ block, onSave, onCancel }: BlockFormProps) {
         }
         break
       case BlockType.TEAM:
-        if (isTeamContent(validationResult.data)) {
+        if (isTeamContent(formData)) {
           return (
             <TeamForm
-              formData={validationResult.data}
+              formData={formData}
               updateField={updateField}
               updateArrayField={updateArrayField}
               addArrayItem={addArrayItem}
@@ -247,10 +229,10 @@ export function BlockForm({ block, onSave, onCancel }: BlockFormProps) {
         }
         break
       case BlockType.FAQ:
-        if (isFAQContent(validationResult.data)) {
+        if (isFAQContent(formData)) {
           return (
             <FAQForm
-              formData={validationResult.data}
+              formData={formData}
               updateField={updateField}
               updateArrayField={updateArrayField}
               addArrayItem={addArrayItem}
@@ -261,10 +243,10 @@ export function BlockForm({ block, onSave, onCancel }: BlockFormProps) {
         }
         break
       case BlockType.CONTACT_FORM:
-        if (isContactFormContent(validationResult.data)) {
+        if (isContactFormContent(formData)) {
           return (
             <ContactFormForm
-              formData={validationResult.data}
+              formData={formData}
               updateField={updateField}
               errors={errors}
             />
@@ -272,10 +254,10 @@ export function BlockForm({ block, onSave, onCancel }: BlockFormProps) {
         }
         break
       case BlockType.CALL_TO_ACTION:
-        if (isCallToActionContent(validationResult.data)) {
+        if (isCallToActionContent(formData)) {
           return (
             <CallToActionForm
-              formData={validationResult.data}
+              formData={formData}
               updateField={updateField}
               errors={errors}
             />
@@ -283,10 +265,10 @@ export function BlockForm({ block, onSave, onCancel }: BlockFormProps) {
         }
         break
       case BlockType.VIDEO:
-        if (isVideoContent(validationResult.data)) {
+        if (isVideoContent(formData)) {
           return (
             <VideoForm
-              formData={validationResult.data}
+              formData={formData}
               updateField={updateField}
               errors={errors}
             />
@@ -294,10 +276,10 @@ export function BlockForm({ block, onSave, onCancel }: BlockFormProps) {
         }
         break
       case BlockType.MAP:
-        if (isMapContent(validationResult.data)) {
+        if (isMapContent(formData)) {
           return (
             <MapForm
-              formData={validationResult.data}
+              formData={formData}
               updateField={updateField}
               errors={errors}
             />
@@ -305,10 +287,10 @@ export function BlockForm({ block, onSave, onCancel }: BlockFormProps) {
         }
         break
       case BlockType.SOCIAL_FEED:
-        if (isSocialFeedContent(validationResult.data)) {
+        if (isSocialFeedContent(formData)) {
           return (
             <SocialFeedForm
-              formData={validationResult.data}
+              formData={formData}
               updateField={updateField}
               errors={errors}
             />
@@ -316,10 +298,10 @@ export function BlockForm({ block, onSave, onCancel }: BlockFormProps) {
         }
         break
       case BlockType.TWO_COLUMN:
-        if (isTwoColumnContent(validationResult.data)) {
+        if (isTwoColumnContent(formData)) {
           return (
             <TwoColumnForm
-              formData={validationResult.data}
+              formData={formData}
               updateField={updateField}
               errors={errors}
             />
@@ -327,10 +309,10 @@ export function BlockForm({ block, onSave, onCancel }: BlockFormProps) {
         }
         break
       case BlockType.COURSES:
-        if (isCoursesContent(validationResult.data)) {
+        if (isCoursesContent(formData)) {
           return (
             <CoursesForm
-              formData={validationResult.data}
+              formData={formData}
               updateField={updateField}
               updateArrayField={updateArrayField}
               addArrayItem={addArrayItem}
@@ -341,10 +323,10 @@ export function BlockForm({ block, onSave, onCancel }: BlockFormProps) {
         }
         break
       case BlockType.MARINE_LIFE:
-        if (isMarineLifeContent(validationResult.data)) {
+        if (isMarineLifeContent(formData)) {
           return (
             <MarineLifeForm
-              formData={validationResult.data}
+              formData={formData}
               updateField={updateField}
               updateArrayField={updateArrayField}
               addArrayItem={addArrayItem}

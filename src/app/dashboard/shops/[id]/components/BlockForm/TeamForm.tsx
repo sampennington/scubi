@@ -53,9 +53,14 @@ export function TeamForm({
                 name: "",
                 role: "",
                 bio: "",
-                image: "",
+                photo: "",
                 email: "",
-                linkedin: ""
+                phone: "",
+                socialLinks: {
+                  linkedin: "",
+                  twitter: "",
+                  instagram: ""
+                }
               })
             }
           >
@@ -118,16 +123,16 @@ export function TeamForm({
             </div>
 
             <div>
-              <Label>Image URL *</Label>
-              {/* <Input
-                value={member.image || ""}
+              <Label>Photo URL *</Label>
+              <Input
+                value={member.photo || ""}
                 onChange={(e) =>
                   updateArrayField("members", index, {
                     ...member,
-                    image: e.target.value
+                    photo: e.target.value
                   })
                 }
-              /> */}
+              />
             </div>
           </div>
         ))}

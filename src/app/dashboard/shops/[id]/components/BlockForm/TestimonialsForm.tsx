@@ -56,7 +56,7 @@ export function TestimonialsForm({
                 name: "",
                 role: "",
                 content: "",
-                image: ""
+                rating: "5"
               })
             }
           >

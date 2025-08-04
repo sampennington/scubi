@@ -16,7 +16,7 @@ const defaultContent: HeroContent = {
   secondaryButton: {
     label: "Set your secondary button here",
     url: "",
-    variant: "outline"
+    variant: "invert"
   }
 }
 

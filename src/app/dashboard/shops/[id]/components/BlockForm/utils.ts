@@ -1,4 +1,43 @@
 import { BlockType } from "@/database/schema"
+import {
+  defaultHeroContent,
+  defaultTextContent,
+  defaultImageContent,
+  defaultDividerContent,
+  defaultMultiColumnContent,
+  defaultGalleryContent,
+  defaultTestimonialsContent,
+  defaultTeamContent,
+  defaultFAQContent,
+  defaultContactFormContent,
+  defaultCallToActionContent,
+  defaultVideoContent,
+  defaultMapContent,
+  defaultSocialFeedContent,
+  defaultTwoColumnContent,
+  defaultCoursesContent,
+  defaultMarineLifeContent
+} from "@/components/blocks/default-data"
+import {
+  isMultiColumnContent,
+  isHeroContent,
+  isImageContent,
+  isTextContent,
+  isGalleryContent,
+  isTestimonialsContent,
+  isTeamContent,
+  isFAQContent,
+  isContactFormContent,
+  isCallToActionContent,
+  isVideoContent,
+  isMapContent,
+  isSocialFeedContent,
+  isTwoColumnContent,
+  isCoursesContent,
+  isMarineLifeContent,
+  isDividerContent
+} from "./schemas"
+import { Block } from "@/lib/api"
 
 export function getRequiredFields(blockType: string) {
   switch (blockType) {
@@ -44,213 +83,125 @@ export function getRequiredFields(blockType: string) {
 export const getDefaultContent = (blockType: string) => {
   switch (blockType) {
     case BlockType.HERO:
-      return {
-        title: "Welcome to our site",
-        text: "Discover amazing experiences with us",
-        image: "/demo-img.png",
-        primaryButton: {
-          label: "Get Started",
-          url: "#",
-          variant: "secondary"
-        },
-        secondaryButton: {
-          label: "Learn More",
-          url: "#",
-          variant: "outline"
-        }
-      }
+      return defaultHeroContent
     case BlockType.TEXT:
-      return { text: "Enter your text here" }
+      return defaultTextContent
     case BlockType.IMAGE:
-      return {
-        src: "/demo-img.png",
-        alt: "Image description",
-        caption: "Optional caption"
-      }
+      return defaultImageContent
     case BlockType.DIVIDER:
-      return {
-        style: "solid",
-        color: "#000000",
-        thickness: 1
-      }
+      return defaultDividerContent
     case BlockType.MULTI_COLUMN:
-      return {
-        title: "Our Services",
-        columns: [
-          {
-            title: "Service 1",
-            content: "Description of service 1"
-          },
-          {
-            title: "Service 2",
-            content: "Description of service 2"
-          },
-          {
-            title: "Service 3",
-            content: "Description of service 3"
-          }
-        ]
-      }
+      return defaultMultiColumnContent
     case BlockType.GALLERY:
-      return {
-        title: "Our Gallery",
-        images: [
-          {
-            src: "/demo-img.png",
-            alt: "Gallery image 1",
-            caption: "Image 1"
-          },
-          {
-            src: "/demo-img.png",
-            alt: "Gallery image 2",
-            caption: "Image 2"
-          },
-          {
-            src: "/demo-img.png",
-            alt: "Gallery image 3",
-            caption: "Image 3"
-          }
-        ]
-      }
+      return defaultGalleryContent
     case BlockType.TESTIMONIALS:
-      return {
-        title: "What Our Customers Say",
-        testimonials: [
-          {
-            name: "John Doe",
-            role: "Customer",
-            content: "Amazing experience! Highly recommended.",
-            avatar: "/demo-img.png"
-          }
-        ]
-      }
+      return defaultTestimonialsContent
     case BlockType.TEAM:
-      return {
-        title: "Our Team",
-        members: [
-          {
-            name: "Jane Smith",
-            role: "Founder & CEO",
-            bio: "Passionate about creating amazing experiences.",
-            image: "/demo-img.png",
-            email: "jane@example.com"
-          }
-        ]
-      }
+      return defaultTeamContent
     case BlockType.FAQ:
-      return {
-        title: "Frequently Asked Questions",
-        items: [
-          {
-            question: "What services do you offer?",
-            answer:
-              "We offer a wide range of diving services including training, equipment rental, and guided tours."
-          }
-        ]
-      }
+      return defaultFAQContent
     case BlockType.CONTACT_FORM:
-      return {
-        title: "Contact Us",
-        description: "Get in touch with us",
-        email: "contact@example.com"
-      }
+      return defaultContactFormContent
     case BlockType.CALL_TO_ACTION:
-      return {
-        title: "Ready to Get Started?",
-        description: "Join us for an amazing adventure",
-        primaryButton: {
-          label: "Book Now",
-          url: "#",
-          variant: "secondary"
-        },
-        secondaryButton: {
-          label: "Learn More",
-          url: "#",
-          variant: "outline"
-        }
-      }
+      return defaultCallToActionContent
     case BlockType.VIDEO:
-      return {
-        title: "Watch Our Video",
-        description: "See what we're all about",
-        videoUrl: "https://www.youtube.com/watch?v=dQw4w9WgXcQ",
-        provider: "youtube",
-        autoplay: false,
-        controls: true
-      }
+      return defaultVideoContent
     case BlockType.MAP:
-      return {
-        title: "Find Us",
-        description: "Visit our location",
-        address: "123 Main St, City, State 12345",
-        zoom: 15,
-        height: 400,
-        showMarker: true
-      }
+      return defaultMapContent
     case BlockType.SOCIAL_FEED:
-      return {
-        title: "Follow Us",
-        description: "Stay updated with our latest posts",
-        platform: "instagram",
-        username: "yourusername",
-        postCount: 9,
-        layout: "grid",
-        columns: 3,
-        showCaptions: true
-      }
+      return defaultSocialFeedContent
     case BlockType.TWO_COLUMN:
-      return {
-        title: "Two Column Layout",
-        description: "Content in two columns",
-        leftContent: {
-          type: "text",
-          title: "Left Column",
-          content: "This is the left column content."
-        },
-        rightContent: {
-          type: "text",
-          title: "Right Column",
-          content: "This is the right column content."
-        },
-        layout: "text-text",
-        alignment: "top",
-        spacing: 0
-      }
+      return defaultTwoColumnContent
     case BlockType.COURSES:
-      return {
-        title: "Our Courses",
-        description: "Learn from the best",
-        courses: [
-          {
-            title: "Open Water Course",
-            description: "Learn the basics of scuba diving",
-            duration: "3-4 days",
-            level: "beginner",
-            price: 299,
-            currency: "USD",
-            instructor: "John Doe"
-          }
-        ],
-        layout: "grid",
-        columns: 2,
-        showPricing: true,
-        showLevels: true
-      }
+      return defaultCoursesContent
     case BlockType.MARINE_LIFE:
-      return {
-        title: "Marine Life",
-        description: "Discover underwater creatures",
-        species: [
-          {
-            name: "Sea Turtle",
-            description: "Gentle giants of the sea",
-            habitat: "Coral reefs",
-            image: "/demo-img.png",
-            scientificName: "Chelonia mydas"
-          }
-        ]
-      }
+      return defaultMarineLifeContent
     default:
       return {}
+  }
+}
+
+export const getBlockPreview = (block: Block): string => {
+  const { type, content } = block
+  if (typeof content !== "object" || content === null) {
+    return "No content"
+  }
+
+  switch (type) {
+    case BlockType.TEXT:
+      return isTextContent(content) ? content.text : "No text"
+
+    case BlockType.HERO:
+      return isHeroContent(content) ? content.title : "No title"
+
+    case BlockType.IMAGE:
+      return isImageContent(content) ? content.alt : "No alt text"
+
+    case BlockType.MULTI_COLUMN:
+      return isMultiColumnContent(content)
+        ? `${content.columns?.length || 0} columns`
+        : "No columns"
+
+    case BlockType.GALLERY:
+      return isGalleryContent(content)
+        ? `${content.images?.length || 0} images`
+        : "No images"
+
+    case BlockType.TESTIMONIALS:
+      return isTestimonialsContent(content)
+        ? `${content.testimonials?.length || 0} testimonials`
+        : "No testimonials"
+
+    case BlockType.TEAM:
+      return isTeamContent(content)
+        ? `${content.members?.length || 0} members`
+        : "No members"
+
+    case BlockType.FAQ:
+      return isFAQContent(content)
+        ? `${content.items?.length || 0} items`
+        : "No items"
+
+    case BlockType.CONTACT_FORM:
+      return isContactFormContent(content)
+        ? `${content.fields?.length || 0} fields`
+        : "No fields"
+
+    case BlockType.CALL_TO_ACTION:
+      return isCallToActionContent(content) ? content.title : "No title"
+
+    case BlockType.VIDEO:
+      return isVideoContent(content)
+        ? `Video: ${content.videoUrl || "No URL"}`
+        : "No video URL"
+
+    case BlockType.MAP:
+      return isMapContent(content)
+        ? `Map: ${content.address || "No address"}`
+        : "No address"
+
+    case BlockType.SOCIAL_FEED:
+      return isSocialFeedContent(content)
+        ? `${content.platform || "Unknown"}: ${content.username || "No username"}`
+        : "No platform or username"
+
+    case BlockType.DIVIDER:
+      return isDividerContent(content) ? content.text || "Divider" : "No text"
+
+    case BlockType.TWO_COLUMN:
+      return isTwoColumnContent(content) ? "Two column layout" : "No layout"
+
+    case BlockType.COURSES:
+      return isCoursesContent(content)
+        ? `${content.courses?.length || 0} courses`
+        : "No courses"
+
+    case BlockType.MARINE_LIFE:
+      return isMarineLifeContent(content)
+        ? `${content.items?.length || 0} items`
+        : "No items"
+
+    default:
+      return "No preview available"
   }
 }

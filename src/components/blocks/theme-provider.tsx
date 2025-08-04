@@ -56,7 +56,8 @@ export function ThemeProvider({ children, theme }: ThemeProviderProps) {
     }
     return `"${fontFamily}", system-ui, sans-serif`
   }
-
+  console.log({ primaryColor, secondaryColor, accentColor })
+  const ctaColor = null
   return (
     <div
       className="site-preview"
@@ -65,6 +66,7 @@ export function ThemeProvider({ children, theme }: ThemeProviderProps) {
           "--primary": primaryColor,
           "--secondary": secondaryColor,
           "--accent": accentColor,
+          // "--cta": ctaColor || primaryColor,
           "--font-heading": getFontStyle(fontFamilyHeading || "Inter"),
           "--font-body": getFontStyle(fontFamilyBody || "Inter")
         } as React.CSSProperties

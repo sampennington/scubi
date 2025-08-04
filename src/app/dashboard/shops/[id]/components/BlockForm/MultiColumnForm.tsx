@@ -38,6 +38,7 @@ export function MultiColumnForm({
   removeArrayItem,
   errors
 }: MultiColumnFormProps) {
+  console.log(formData)
   return (
     <div className="space-y-4">
       <div>
@@ -77,13 +78,13 @@ export function MultiColumnForm({
               })
             }
           >
-            <Plus className="h-4 w-4 mr-2" />
+            <Plus className="mr-2 h-4 w-4" />
             Add Column
           </Button>
         </div>
 
         {formData.columns?.map((column, index) => (
-          <div key={index} className="border rounded-lg p-4 space-y-4">
+          <div key={index} className="space-y-4 rounded-lg border p-4">
             <div className="flex items-center justify-between">
               <h4 className="font-medium">Column {index + 1}</h4>
               <Button

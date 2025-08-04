@@ -5,9 +5,13 @@ import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import { Plus, GripVertical, Trash2, Edit } from "lucide-react"
-import { BlockType } from "@/database/schema"
 import { BlockForm } from "./BlockForm"
-import { DragDropContext, Droppable, Draggable } from "@hello-pangea/dnd"
+import {
+  DragDropContext,
+  Droppable,
+  Draggable,
+  type DropResult
+} from "@hello-pangea/dnd"
 import {
   getBlocksByPageId,
   createBlock,
@@ -16,7 +20,8 @@ import {
   reorderBlocks
 } from "../actions"
 import { BlockSelector } from "./BlockSelector"
-import { getDefaultContent } from "./BlockForm/utils"
+import { getBlockPreview, getDefaultContent } from "./BlockForm/utils"
+import type { Block } from "@/lib/api"
 
 interface PageEditorProps {
   pageId: string
@@ -24,10 +29,10 @@ interface PageEditorProps {
 }
 
 export function PageEditor({ pageId, pageTitle }: PageEditorProps) {
-  const [blocks, setBlocks] = useState<any[]>([])
+  const [blocks, setBlocks] = useState<Block[]>([])
   const [loading, setLoading] = useState(true)
   const [showBlockSelector, setShowBlockSelector] = useState(false)
-  const [editingBlock, setEditingBlock] = useState<any>(null)
+  const [editingBlock, setEditingBlock] = useState<Block | null>(null)
   const [showBlockForm, setShowBlockForm] = useState(false)
 
   const loadBlocks = useCallback(async () => {
@@ -51,7 +56,11 @@ export function PageEditor({ pageId, pageTitle }: PageEditorProps) {
     setShowBlockForm(true)
     setEditingBlock({
       type: blockType,
-      content: getDefaultContent(blockType)
+      content: getDefaultContent(blockType),
+      pageId,
+      id: "",
+      updatedAt: new Date(),
+      order: null
     })
   }
 
@@ -60,7 +69,7 @@ export function PageEditor({ pageId, pageTitle }: PageEditorProps) {
     content: Record<string, unknown>
   }) => {
     try {
-      if (editingBlock.id) {
+      if (editingBlock?.id) {
         // Update existing block
         const result = await updateBlock(editingBlock.id, {
           type: blockData.type,
@@ -104,7 +113,7 @@ export function PageEditor({ pageId, pageTitle }: PageEditorProps) {
     }
   }
 
-  const handleDragEnd = async (dragResult: any) => {
+  const handleDragEnd = async (dragResult: DropResult) => {
     if (!dragResult.destination) return
 
     const items = Array.from(blocks)
@@ -172,7 +181,7 @@ export function PageEditor({ pageId, pageTitle }: PageEditorProps) {
                             </CardTitle>
                             <Badge variant="secondary">{block.type}</Badge>
                           </div>
-                          <div className="flex space-x-2 opacity-0 group-hover:opacity-100 transition-opacity">
+                          <div className="flex space-x-2 opacity-0 transition-opacity group-hover:opacity-100">
                             <Button
                               variant="ghost"
                               size="sm"
@@ -193,55 +202,8 @@ export function PageEditor({ pageId, pageTitle }: PageEditorProps) {
                           </div>
                         </CardHeader>
                         <CardContent>
-                          <div className="text-sm text-muted-foreground">
-                            {block.type === BlockType.TEXT &&
-                              block.content.text}
-                            {block.type === BlockType.HERO &&
-                              block.content.title}
-                            {block.type === BlockType.IMAGE &&
-                              `Image: ${block.content.alt}`}
-                            {block.type === BlockType.MULTI_COLUMN &&
-                              `${block.content.columns?.length || 0} columns`}
-                            {block.type === BlockType.GALLERY &&
-                              `${block.content.images?.length || 0} images`}
-                            {block.type === BlockType.TESTIMONIALS &&
-                              `${block.content.testimonials?.length || 0} testimonials`}
-                            {block.type === BlockType.TEAM &&
-                              `${block.content.members?.length || 0} members`}
-                            {block.type === BlockType.FAQ &&
-                              `${block.content.items?.length || 0} items`}
-                            {block.type === BlockType.CONTACT_FORM &&
-                              `${block.content.fields?.length || 0} fields`}
-                            {block.type === BlockType.CALL_TO_ACTION &&
-                              block.content.title}
-                            {block.type === BlockType.VIDEO &&
-                              `Video: ${block.content.videoUrl}`}
-                            {block.type === BlockType.MAP &&
-                              `Map: ${block.content.address}`}
-                            {block.type === BlockType.SOCIAL_FEED &&
-                              `${block.content.platform}: ${block.content.username}`}
-                            {block.type === BlockType.DIVIDER &&
-                              (block.content.text || "Divider")}
-                            {block.type === BlockType.TWO_COLUMN &&
-                              "Two column layout"}
-                            {block.type === BlockType.COURSES &&
-                              `${block.content.courses?.length || 0} courses`}
-                            {block.type === BlockType.MARINE_LIFE &&
-                              `${block.content.items?.length || 0} items`}
-                            {!block.content.text &&
-                              !block.content.title &&
-                              !block.content.alt &&
-                              !block.content.columns &&
-                              !block.content.images &&
-                              !block.content.testimonials &&
-                              !block.content.members &&
-                              !block.content.items &&
-                              !block.content.fields &&
-                              !block.content.videoUrl &&
-                              !block.content.address &&
-                              !block.content.platform &&
-                              !block.content.courses &&
-                              "No preview available"}
+                          <div className="text-muted-foreground text-sm">
+                            {getBlockPreview(block)}
                           </div>
                         </CardContent>
                       </Card>
