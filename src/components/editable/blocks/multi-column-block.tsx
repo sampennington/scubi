@@ -1,6 +1,12 @@
 import type { MultiColumnContent } from "@/app/dashboard/shops/[id]/components/BlockForm/schemas"
-import { defaultMultiColumnContent } from "./default-data"
+import { defaultMultiColumnContent } from "@/components/blocks/default-data"
 import * as Icons from "lucide-react"
+
+import {
+  BlockEditProvider,
+  useBlockEdit
+} from "@/components/ui/block-edit-context"
+import { E } from "@/components/ui/edit-with-context"
 
 // Icon mapping for Lucide React icons
 const ICONS = {
@@ -121,25 +127,22 @@ const getIcon = (iconName: string) => {
   return IconComponent || null
 }
 
-export const MultiColumnBlock = ({
-  content = defaultMultiColumnContent
-}: {
-  content?: MultiColumnContent
-}) => {
+const MultiColumnBlockContent = () => {
+  const { isSaving, content } = useBlockEdit<MultiColumnContent>()
   const {
     title,
     description,
     columns,
-    columnsPerRow = 3,
+    columnsPerRow = "3",
     alignment = "center",
     showIcons = true
   } = content
 
   const gridCols = {
-    1: "grid-cols-1",
-    2: "grid-cols-1 md:grid-cols-2",
-    3: "grid-cols-1 md:grid-cols-2 lg:grid-cols-3",
-    4: "grid-cols-1 md:grid-cols-2 lg:grid-cols-4"
+    "1": "grid-cols-1",
+    "2": "grid-cols-1 md:grid-cols-2",
+    "3": "grid-cols-1 md:grid-cols-2 lg:grid-cols-3",
+    "4": "grid-cols-1 md:grid-cols-2 lg:grid-cols-4"
   }
 
   const textAlignment = {
@@ -154,10 +157,20 @@ export const MultiColumnBlock = ({
         {(title || description) && (
           <div className={`mb-12 ${textAlignment[alignment]}`}>
             {title && (
-              <h2 className="mb-4 font-bold text-3xl md:text-4xl">{title}</h2>
+              <E.h2
+                fieldPath="title"
+                className="mb-4 font-bold text-3xl md:text-4xl"
+              >
+                {title}
+              </E.h2>
             )}
             {description && (
-              <p className="text-lg text-muted-foreground">{description}</p>
+              <E.p
+                fieldPath="description"
+                className="text-lg text-muted-foreground"
+              >
+                {description}
+              </E.p>
             )}
           </div>
         )}
@@ -182,14 +195,48 @@ export const MultiColumnBlock = ({
               )}
 
               {column.heading && (
-                <h3 className="mb-3 font-semibold text-xl">{column.heading}</h3>
+                <E.h3
+                  fieldPath={`columns[${index}].heading`}
+                  className="mb-3 font-semibold text-xl"
+                >
+                  {column.heading}
+                </E.h3>
               )}
 
-              <p className="text-muted-foreground">{column.body}</p>
+              <E.p
+                fieldPath={`columns[${index}].body`}
+                className="text-muted-foreground"
+              >
+                {column.body}
+              </E.p>
             </div>
           ))}
         </div>
+
+        {isSaving && (
+          <div className="absolute top-4 right-4 rounded bg-black/50 px-2 py-1 text-sm text-white">
+            Saving...
+          </div>
+        )}
       </div>
     </section>
+  )
+}
+
+export const MultiColumnBlock = ({
+  content = defaultMultiColumnContent,
+  blockId
+}: {
+  content?: MultiColumnContent
+  blockId?: string
+}) => {
+  return (
+    <BlockEditProvider<MultiColumnContent>
+      blockId={blockId}
+      initialContent={content}
+      type="multi-column"
+    >
+      <MultiColumnBlockContent />
+    </BlockEditProvider>
   )
 }

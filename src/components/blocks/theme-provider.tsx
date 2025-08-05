@@ -56,8 +56,7 @@ export function ThemeProvider({ children, theme }: ThemeProviderProps) {
     }
     return `"${fontFamily}", system-ui, sans-serif`
   }
-  console.log({ primaryColor, secondaryColor, accentColor })
-  const ctaColor = null
+
   return (
     <div
       className="site-preview"

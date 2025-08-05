@@ -21,6 +21,71 @@ export const E = {
     )
   },
 
+  h2: ({
+    fieldPath,
+    children,
+    ...props
+  }: { fieldPath: string } & ComponentProps<typeof Edit.h2>) => {
+    const { handleEdit } = useBlockEdit()
+    return (
+      <Edit.h2 {...props} onSave={(value) => handleEdit(fieldPath, value)}>
+        {children}
+      </Edit.h2>
+    )
+  },
+
+  h3: ({
+    fieldPath,
+    children,
+    ...props
+  }: { fieldPath: string } & ComponentProps<typeof Edit.h3>) => {
+    const { handleEdit } = useBlockEdit()
+    return (
+      <Edit.h3 {...props} onSave={(value) => handleEdit(fieldPath, value)}>
+        {children}
+      </Edit.h3>
+    )
+  },
+
+  h4: ({
+    fieldPath,
+    children,
+    ...props
+  }: { fieldPath: string } & ComponentProps<typeof Edit.h4>) => {
+    const { handleEdit } = useBlockEdit()
+    return (
+      <Edit.h4 {...props} onSave={(value) => handleEdit(fieldPath, value)}>
+        {children}
+      </Edit.h4>
+    )
+  },
+
+  h5: ({
+    fieldPath,
+    children,
+    ...props
+  }: { fieldPath: string } & ComponentProps<typeof Edit.h5>) => {
+    const { handleEdit } = useBlockEdit()
+    return (
+      <Edit.h5 {...props} onSave={(value) => handleEdit(fieldPath, value)}>
+        {children}
+      </Edit.h5>
+    )
+  },
+
+  h6: ({
+    fieldPath,
+    children,
+    ...props
+  }: { fieldPath: string } & ComponentProps<typeof Edit.h6>) => {
+    const { handleEdit } = useBlockEdit()
+    return (
+      <Edit.h6 {...props} onSave={(value) => handleEdit(fieldPath, value)}>
+        {children}
+      </Edit.h6>
+    )
+  },
+
   p: ({
     fieldPath,
     children,

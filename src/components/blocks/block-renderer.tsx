@@ -2,8 +2,8 @@ import type { Block } from "@/lib/api"
 import { BlockType } from "@/database/schema"
 import { TextBlock } from "./text-block"
 import { ImageBlock } from "./image-block"
-import { HeroBlock } from "../editable/hero-block"
-import { MultiColumnBlock } from "./multi-column-block"
+import { HeroBlock } from "../editable/blocks/hero-block"
+import { MultiColumnBlock } from "../editable/blocks/multi-column-block"
 import { GalleryBlock } from "./gallery-block"
 import { TestimonialsBlock } from "./testimonials-block"
 import { TeamBlock } from "./team-block"
@@ -63,6 +63,19 @@ function BlockWithValidation({ block }: { block: Block }) {
       return <HeroBlock key={block.id} />
     }
 
+    case BlockType.MULTI_COLUMN: {
+      if (isMultiColumnContent(block.content)) {
+        return (
+          <MultiColumnBlock
+            key={block.id}
+            content={block.content}
+            blockId={block.id}
+          />
+        )
+      }
+      return <MultiColumnBlock key={block.id} />
+    }
+
     case BlockType.TEXT: {
       if (isTextContent(block.content)) {
         return <TextBlock key={block.id} content={block.content} />
@@ -75,13 +88,6 @@ function BlockWithValidation({ block }: { block: Block }) {
         return <ImageBlock key={block.id} content={block.content} />
       }
       return <ImageBlock key={block.id} />
-    }
-
-    case BlockType.MULTI_COLUMN: {
-      if (isMultiColumnContent(block.content)) {
-        return <MultiColumnBlock key={block.id} content={block.content} />
-      }
-      return <MultiColumnBlock key={block.id} />
     }
 
     case BlockType.GALLERY: {

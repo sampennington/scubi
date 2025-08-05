@@ -32,7 +32,6 @@ export default function SubscriptionButton({
         const loadingToast = toast.loading("Updating subscription...")
 
         const result = await updateExistingSubscription(subId, plan.priceId)
-        console.log({ result })
 
         toast.dismiss(loadingToast)
 

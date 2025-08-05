@@ -306,7 +306,6 @@ export type MarineLifeContent = z.infer<typeof MarineLifeContentSchema>
 
 // Type guard functions for each block type
 export function isHeroContent(data: unknown): data is HeroContent {
-  console.log("isHeroContent", HeroContentSchema.safeParse(data))
   return HeroContentSchema.safeParse(data).success
 }
 
@@ -380,4 +379,24 @@ export function isCoursesContent(data: unknown): data is CoursesContent {
 
 export function isMarineLifeContent(data: unknown): data is MarineLifeContent {
   return MarineLifeContentSchema.safeParse(data).success
+}
+
+export const typeGuardMap = {
+  [BlockType.HERO]: isHeroContent,
+  [BlockType.TEXT]: isTextContent,
+  [BlockType.IMAGE]: isImageContent,
+  [BlockType.DIVIDER]: isDividerContent,
+  [BlockType.MULTI_COLUMN]: isMultiColumnContent,
+  [BlockType.GALLERY]: isGalleryContent,
+  [BlockType.TESTIMONIALS]: isTestimonialsContent,
+  [BlockType.TEAM]: isTeamContent,
+  [BlockType.FAQ]: isFAQContent,
+  [BlockType.CONTACT_FORM]: isContactFormContent,
+  [BlockType.CALL_TO_ACTION]: isCallToActionContent,
+  [BlockType.VIDEO]: isVideoContent,
+  [BlockType.MAP]: isMapContent,
+  [BlockType.SOCIAL_FEED]: isSocialFeedContent,
+  [BlockType.TWO_COLUMN]: isTwoColumnContent,
+  [BlockType.COURSES]: isCoursesContent,
+  [BlockType.MARINE_LIFE]: isMarineLifeContent
 }

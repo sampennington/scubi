@@ -92,7 +92,11 @@ export const HeroBlock = ({
   blockId?: string
 }) => {
   return (
-    <BlockEditProvider<HeroContent> blockId={blockId} initialContent={content}>
+    <BlockEditProvider<HeroContent>
+      blockId={blockId}
+      initialContent={content}
+      type="hero"
+    >
       <HeroBlockContent />
     </BlockEditProvider>
   )

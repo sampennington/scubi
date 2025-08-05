@@ -6,6 +6,8 @@ import { auth } from "@/lib/auth"
 import { headers } from "next/headers"
 import type { SiteSettings } from "@/lib/api/types"
 import type { Page } from "@/lib/api"
+import { typeGuardMap } from "./components/BlockForm/schemas"
+import type { BlockType } from "@/database/schema"
 
 export async function getBlocksByPageId(pageId: string) {
   try {
@@ -35,13 +37,26 @@ export async function createBlock(data: {
 export async function updateBlock(
   id: string,
   data: {
-    type?: string
+    type?: BlockType
     content?: Record<string, unknown>
     order?: number
   }
 ) {
+  if (!data.type) {
+    console.log("Block type is required", data)
+    return { success: false, error: "Block type is required" }
+  }
+
   try {
+    const isTypeValid = typeGuardMap[data.type](data.content)
+
+    if (!isTypeValid) {
+      console.log("Invalid block type and/or content", data)
+      return { success: false, error: "Invalid block type and/or content" }
+    }
+
     const block = await api.blocks.update(id, data)
+
     revalidatePath(`/dashboard/shops/${id}`)
     return { success: true, block }
   } catch (error) {

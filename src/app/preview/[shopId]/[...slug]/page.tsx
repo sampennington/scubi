@@ -8,7 +8,6 @@ export default async function PreviewPage({
   params: Promise<{ shopId: string; slug?: string[] }>
 }) {
   const { shopId, slug } = await params
-  console.log("slug", slug)
 
   // Handle both undefined slug (root path) and empty array
   const currentPath = slug && slug.length > 0 ? `/${slug.join("/")}` : "/"

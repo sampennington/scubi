@@ -1,7 +1,9 @@
 "use client"
 
 import { updateBlock } from "@/app/dashboard/shops/[id]/actions"
+import type { BlockType } from "@/database/schema"
 import { createContext, useContext, useState, type ReactNode } from "react"
+import { setProperty } from "dot-prop"
 
 interface BlockEditContextType<T = Record<string, unknown>> {
   handleEdit: (fieldPath: string, value: string) => Promise<void>
@@ -17,39 +19,27 @@ interface BlockEditProviderProps<T = Record<string, unknown>> {
   blockId?: string
   initialContent: T
   onContentChange?: (content: T) => void
+  type: BlockType
 }
 
 export const BlockEditProvider = <T extends Record<string, unknown>>({
   children,
   blockId,
   initialContent,
-  onContentChange
+  onContentChange,
+  type
 }: BlockEditProviderProps<T>) => {
   const [localContent, setLocalContent] = useState<T>(initialContent)
   const [isSaving, setIsSaving] = useState(false)
 
-  const setNestedValue = (obj: T, path: string, value: unknown): T => {
-    const keys = path.split(".")
-    const newObj = { ...obj } as Record<string, unknown>
-    let current = newObj
-
-    for (let i = 0; i < keys.length - 1; i++) {
-      current = current[keys[i]] = {
-        ...(current[keys[i]] as Record<string, unknown>)
-      }
-    }
-
-    current[keys[keys.length - 1]] = value
-    return newObj as T
-  }
-
   const handleEdit = async (fieldPath: string, value: string) => {
+    console.log("handleEdit", fieldPath, value, blockId)
     if (!blockId) {
       return
     }
 
     // Optimistic update
-    const updatedContent = setNestedValue(localContent, fieldPath, value)
+    const updatedContent = setProperty(localContent, fieldPath, value)
     setLocalContent(updatedContent)
 
     // Notify parent of content change
@@ -61,12 +51,12 @@ export const BlockEditProvider = <T extends Record<string, unknown>>({
       setIsSaving(true)
       await updateBlock(blockId, {
         content: updatedContent,
-        type: "hero"
+        type
       })
     } catch (error) {
       // Revert on error
       setLocalContent((prev) =>
-        setNestedValue(
+        setProperty(
           prev,
           fieldPath,
           (initialContent as Record<string, unknown>)[fieldPath]
@@ -78,9 +68,9 @@ export const BlockEditProvider = <T extends Record<string, unknown>>({
     }
   }
 
-  if (!blockId) {
-    return children
-  }
+  // if (!blockId) {
+  //   return children
+  // }
 
   return (
     <BlockEditContext.Provider
