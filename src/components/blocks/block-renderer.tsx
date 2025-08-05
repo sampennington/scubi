@@ -51,7 +51,13 @@ function BlockWithValidation({ block }: { block: Block }) {
   switch (block.type) {
     case BlockType.HERO: {
       if (isHeroContent(block.content)) {
-        return <HeroBlock key={block.id} content={block.content} />
+        return (
+          <HeroBlock
+            key={block.id}
+            content={block.content}
+            blockId={block.id}
+          />
+        )
       }
 
       return <HeroBlock key={block.id} />

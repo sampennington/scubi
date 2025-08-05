@@ -23,11 +23,10 @@ export const HeroSection = () => {
 
           <div className="mx-auto max-w-screen-md text-center font-bold text-4xl md:text-6xl">
             <h1>
-              Experience the
+              Scubi
               <span className="bg-gradient-to-r from-[#da5319] to-primary bg-clip-text px-2 text-transparent">
-                Indie SaaS
+                Site
               </span>
-              Boilerplate
             </h1>
           </div>
 

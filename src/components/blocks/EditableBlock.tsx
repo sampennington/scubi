@@ -1,0 +1,252 @@
+/** biome-ignore-all lint/a11y/noStaticElementInteractions: <explanation> */
+"use client"
+
+import { useState, useRef, useEffect } from "react"
+import { Input } from "@/components/ui/input"
+import { Textarea } from "@/components/ui/textarea"
+
+interface EditableBlockProps {
+  children: React.ReactNode
+  value: string
+  onSave: (value: string) => void
+  type?: "text" | "textarea"
+  className?: string
+  placeholder?: string
+  multiline?: boolean
+  maxLength?: number
+}
+
+export const EditableBlock = ({
+  children,
+  value,
+  onSave,
+  type = "text",
+  className = "",
+  placeholder = "Enter text...",
+  multiline = false,
+  maxLength
+}: EditableBlockProps) => {
+  const [isEditing, setIsEditing] = useState(false)
+  const [editValue, setEditValue] = useState(value)
+  const [isHovered, setIsHovered] = useState(false)
+  const [computedStyles, setComputedStyles] = useState<React.CSSProperties>({})
+  const inputRef = useRef<HTMLInputElement>(null)
+  const textareaRef = useRef<HTMLTextAreaElement>(null)
+  const containerRef = useRef<HTMLDivElement>(null)
+  const childRef = useRef<HTMLDivElement>(null)
+
+  // Update edit value when prop value changes
+  useEffect(() => {
+    setEditValue(value)
+  }, [value])
+
+  // Extract computed styles from the child element
+  useEffect(() => {
+    if (childRef.current) {
+      const childElement = childRef.current.firstElementChild as HTMLElement
+      if (childElement) {
+        const styles = window.getComputedStyle(childElement)
+        setComputedStyles({
+          fontSize: styles.fontSize,
+          fontWeight: styles.fontWeight,
+          color: styles.color,
+          lineHeight: styles.lineHeight,
+          fontFamily: styles.fontFamily,
+          textAlign: styles.textAlign as React.CSSProperties["textAlign"],
+          letterSpacing: styles.letterSpacing,
+          textTransform:
+            styles.textTransform as React.CSSProperties["textTransform"],
+          textDecoration: styles.textDecoration,
+          backgroundColor: styles.backgroundColor,
+          padding: styles.padding,
+          margin: styles.margin,
+          border: styles.border,
+          borderRadius: styles.borderRadius,
+          width: styles.width,
+          height: styles.height,
+          display: styles.display,
+          position: styles.position as React.CSSProperties["position"],
+          top: styles.top,
+          left: styles.left,
+          right: styles.right,
+          bottom: styles.bottom,
+          zIndex: styles.zIndex,
+          overflow: styles.overflow,
+          whiteSpace: styles.whiteSpace,
+          wordBreak: styles.wordBreak as React.CSSProperties["wordBreak"],
+          textOverflow: styles.textOverflow
+        })
+      }
+    }
+  }, [])
+
+  // Focus input when editing starts
+  useEffect(() => {
+    if (isEditing) {
+      if (type === "textarea" && textareaRef.current) {
+        textareaRef.current.focus()
+        textareaRef.current.select()
+      } else if (inputRef.current) {
+        inputRef.current.focus()
+        inputRef.current.select()
+      }
+    }
+  }, [isEditing, type])
+
+  const handleMouseEnter = () => {
+    setIsHovered(true)
+  }
+
+  const handleMouseLeave = () => {
+    setIsHovered(false)
+  }
+
+  const handleClick = () => {
+    setIsEditing(true)
+  }
+
+  const handleSave = () => {
+    if (editValue.trim() !== value) {
+      onSave(editValue.trim())
+    }
+    setIsEditing(false)
+  }
+
+  const handleCancel = () => {
+    setEditValue(value)
+    setIsEditing(false)
+  }
+
+  const handleKeyDown = (e: React.KeyboardEvent) => {
+    if (e.key === "Enter" && !multiline) {
+      e.preventDefault()
+      handleSave()
+    } else if (e.key === "Escape") {
+      e.preventDefault()
+      handleCancel()
+    }
+  }
+
+  const handleBlur = () => {
+    // Small delay to allow for click events on save/cancel buttons
+    setTimeout(() => {
+      if (!containerRef.current?.contains(document.activeElement)) {
+        handleSave()
+      }
+    }, 100)
+  }
+
+  // Show edit interface when hovering or editing
+  const showEditInterface = isHovered || isEditing
+
+  return (
+    <div
+      ref={containerRef}
+      className={`relative ${className}`}
+      onMouseEnter={handleMouseEnter}
+      onMouseLeave={handleMouseLeave}
+      onClick={handleClick}
+      onKeyDown={(e) => {
+        if (e.key === "Enter") {
+          e.preventDefault()
+          handleClick()
+        }
+      }}
+      // biome-ignore lint/a11y/useKeyWithClickEvents: <explanation>
+      // biome-ignore lint/a11y/noNoninteractiveTabindex: <explanation>
+      tabIndex={0}
+      // biome-ignore lint: This div needs to contain complex content
+    >
+      {/* Hidden child element for style extraction */}
+      <div
+        ref={childRef}
+        style={{
+          visibility: "hidden",
+          position: "absolute",
+          pointerEvents: "none",
+          zIndex: -1
+        }}
+      >
+        {children}
+      </div>
+
+      {/* Original content - hidden when editing */}
+      <div
+        className={`transition-opacity duration-200 ${
+          isEditing ? "opacity-0 pointer-events-none" : "opacity-100"
+        }`}
+        style={{ visibility: isEditing ? "hidden" : "visible" }}
+      >
+        {children}
+      </div>
+
+      {/* Edit interface - shown when hovering or editing */}
+      {showEditInterface && (
+        <div
+          className={`absolute inset-0 z-10 transition-opacity duration-200 ${
+            isEditing ? "opacity-100" : "opacity-0"
+          }`}
+          style={{ visibility: showEditInterface ? "visible" : "hidden" }}
+        >
+          {type === "textarea" ? (
+            <Textarea
+              ref={textareaRef}
+              value={editValue}
+              onChange={(e) => setEditValue(e.target.value)}
+              onKeyDown={handleKeyDown}
+              onBlur={handleBlur}
+              placeholder={placeholder}
+              maxLength={maxLength}
+              className="resize-none border-0 bg-transparent p-0"
+              style={{
+                ...computedStyles,
+                width: "100%",
+                height: "100%",
+                outline: "none",
+                boxShadow: "none"
+              }}
+            />
+          ) : (
+            <Input
+              ref={inputRef}
+              value={editValue}
+              onChange={(e) => setEditValue(e.target.value)}
+              onKeyDown={handleKeyDown}
+              onBlur={handleBlur}
+              placeholder={placeholder}
+              maxLength={maxLength}
+              className="border-0 bg-transparent p-0"
+              style={{
+                ...computedStyles,
+                width: "100%",
+                height: "100%",
+                outline: "none",
+                boxShadow: "none"
+              }}
+            />
+          )}
+
+          {/* Edit controls - only show when actively editing */}
+          {isEditing && (
+            <div className="-top-8 absolute right-0 flex gap-1">
+              <button
+                type="button"
+                onClick={handleSave}
+                className="rounded bg-green-500 px-2 py-1 text-white text-xs hover:bg-green-600"
+              >
+                Save
+              </button>
+              <button
+                type="button"
+                onClick={handleCancel}
+                className="rounded bg-gray-500 px-2 py-1 text-white text-xs hover:bg-gray-600"
+              >
+                Cancel
+              </button>
+            </div>
+          )}
+        </div>
+      )}
+    </div>
+  )
+}
