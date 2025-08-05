@@ -1,34 +1,22 @@
 "use server"
 
-import { api } from "@/lib/api"
-import { revalidatePath } from "next/cache"
+import type { BlockType } from "@/database/schema"
+import {
+  createBlock as createBlockShared,
+  updateBlock as updateBlockShared,
+  deleteBlock as deleteBlockShared,
+  reorderBlocks as reorderBlocksShared
+} from "@/lib/actions/blocks"
 
 export async function updateBlock(
   blockId: string,
-  data: { type: string; content: Record<string, unknown> }
+  data: { type: BlockType; content: Record<string, unknown> }
 ) {
-  try {
-    const updatedBlock = await api.blocks.update(blockId, {
-      type: data.type,
-      content: data.content
-    })
-    revalidatePath(`/preview/[shopId]`)
-    return { success: true, data: updatedBlock }
-  } catch (error) {
-    console.error("Failed to update block:", error)
-    return { success: false, error: "Failed to update block" }
-  }
+  return updateBlockShared(blockId, data, [`/preview/[shopId]`])
 }
 
 export async function deleteBlock(blockId: string) {
-  try {
-    const success = await api.blocks.delete(blockId)
-    revalidatePath(`/preview/[shopId]`)
-    return { success }
-  } catch (error) {
-    console.error("Failed to delete block:", error)
-    return { success: false, error: "Failed to delete block" }
-  }
+  return deleteBlockShared(blockId, [`/preview/[shopId]`])
 }
 
 export async function createBlock(data: {
@@ -37,23 +25,9 @@ export async function createBlock(data: {
   content: Record<string, unknown>
   order: number
 }) {
-  try {
-    const newBlock = await api.blocks.create(data)
-    revalidatePath(`/preview/[shopId]`)
-    return { success: true, data: newBlock }
-  } catch (error) {
-    console.error("Failed to create block:", error)
-    return { success: false, error: "Failed to create block" }
-  }
+  return createBlockShared(data, [`/preview/[shopId]`])
 }
 
 export async function reorderBlocks(blockIds: string[]) {
-  try {
-    await api.blocks.reorder(blockIds)
-    revalidatePath(`/preview/[shopId]`)
-    return { success: true }
-  } catch (error) {
-    console.error("Failed to reorder blocks:", error)
-    return { success: false, error: "Failed to reorder blocks" }
-  }
+  return reorderBlocksShared(blockIds, [`/preview/[shopId]`])
 }

@@ -22,6 +22,7 @@ import {
 import { BlockSelector } from "./BlockSelector"
 import { getBlockPreview, getDefaultContent } from "./BlockForm/utils"
 import type { Block } from "@/lib/api"
+import { BlockType } from "@/database/schema"
 
 interface PageEditorProps {
   pageId: string
@@ -65,7 +66,7 @@ export function PageEditor({ pageId, pageTitle }: PageEditorProps) {
   }
 
   const handleSaveBlock = async (blockData: {
-    type: string
+    type: BlockType
     content: Record<string, unknown>
   }) => {
     try {
@@ -85,7 +86,7 @@ export function PageEditor({ pageId, pageTitle }: PageEditorProps) {
           pageId,
           type: blockData.type,
           content: blockData.content,
-          order: blocks.length
+          order: blocks.length + 1
         })
         if (!result.success) {
           console.error("Error creating block:", result.error)

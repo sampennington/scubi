@@ -33,8 +33,8 @@ export const BlockEditProvider = <T extends Record<string, unknown>>({
   const [isSaving, setIsSaving] = useState(false)
 
   const handleEdit = async (fieldPath: string, value: string) => {
-    console.log("handleEdit", fieldPath, value, blockId)
     if (!blockId) {
+      console.warn("No blockId")
       return
     }
 

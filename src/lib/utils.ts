@@ -11,7 +11,6 @@ export function generateId(): string {
 
 export function getPreviewUrl(shopId: string): string {
   const isDevelopment = process.env.NODE_ENV === "development"
-  console.log("isDevelopment", isDevelopment, process.env.NEXT_PUBLIC_APP_URL)
   const domain = process.env.NEXT_PUBLIC_APP_URL?.replace("http://", "")
 
   const protocol = isDevelopment ? "http" : "https"

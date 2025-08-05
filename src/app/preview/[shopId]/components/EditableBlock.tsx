@@ -69,7 +69,7 @@ export function EditableBlock({
   }
 
   const handleSaveBlock = async (blockData: {
-    type: string
+    type: BlockType
     content: Record<string, unknown>
   }) => {
     try {
@@ -77,12 +77,13 @@ export function EditableBlock({
         type: blockData.type,
         content: blockData.content
       })
-      if (result.success && result.data) {
-        onUpdate(result.data)
-        setShowEditForm(false)
-      } else {
-        alert(result.error || "Failed to update block")
-      }
+      console.log({ result })
+      // if (result.success && result.data) {
+      //   onUpdate(result.data)
+      //   setShowEditForm(false)
+      // } else {
+      //   alert(result.error || "Failed to update block")
+      // }
     } catch (error) {
       console.error("Failed to update block:", error)
       alert("Failed to update block")

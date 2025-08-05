@@ -6,7 +6,7 @@ import { HeroBlock } from "../editable/blocks/hero-block"
 import { MultiColumnBlock } from "../editable/blocks/multi-column-block"
 import { GalleryBlock } from "./gallery-block"
 import { TestimonialsBlock } from "./testimonials-block"
-import { TeamBlock } from "./team-block"
+import { TeamBlock } from "../editable/blocks/team-block"
 import { FAQBlock } from "./faq-block"
 import { ContactFormBlock } from "./contact-form-block"
 import { CallToActionBlock } from "./call-to-action-block"
@@ -38,6 +38,7 @@ import {
 } from "@/app/dashboard/shops/[id]/components/BlockForm/schemas"
 
 export const BlockRenderer = ({ blocks }: { blocks: Block[] }) => {
+  console.log({ blocks })
   return (
     <div className="flex w-full flex-col">
       {blocks.map((block) => (
@@ -76,6 +77,20 @@ function BlockWithValidation({ block }: { block: Block }) {
       return <MultiColumnBlock key={block.id} />
     }
 
+    case BlockType.TEAM: {
+      if (isTeamContent(block.content)) {
+        return (
+          <TeamBlock
+            key={block.id}
+            content={block.content}
+            blockId={block.id}
+          />
+        )
+      }
+      return <TeamBlock key={block.id} />
+    }
+
+    // Non editable blocks
     case BlockType.TEXT: {
       if (isTextContent(block.content)) {
         return <TextBlock key={block.id} content={block.content} />
@@ -102,13 +117,6 @@ function BlockWithValidation({ block }: { block: Block }) {
         return <TestimonialsBlock key={block.id} content={block.content} />
       }
       return <TestimonialsBlock key={block.id} />
-    }
-
-    case BlockType.TEAM: {
-      if (isTeamContent(block.content)) {
-        return <TeamBlock key={block.id} content={block.content} />
-      }
-      return <TeamBlock key={block.id} />
     }
 
     case BlockType.FAQ: {
