@@ -56,13 +56,13 @@ export function TwoColumnForm({
           )}
         </div>
       </div>
-      {/* 
+
       <div className="grid grid-cols-2 gap-4">
         <div>
           <Label htmlFor="leftImage">Left Column Image URL (optional)</Label>
           <Input
             id="leftImage"
-            value={formData.content.leftContent. || ""}
+            // value={formData.content.leftContent.content}
             onChange={(e) => updateField("leftImage", e.target.value)}
           />
         </div>
@@ -71,11 +71,11 @@ export function TwoColumnForm({
           <Label htmlFor="rightImage">Right Column Image URL (optional)</Label>
           <Input
             id="rightImage"
-            value={formData.content.rightContent.image || ""}
+            // value={formData.content.rightContent.image}
             onChange={(e) => updateField("rightImage", e.target.value)}
           />
         </div>
-      </div> */}
+      </div>
     </div>
   )
 }

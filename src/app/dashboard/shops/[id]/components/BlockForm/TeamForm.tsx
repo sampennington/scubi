@@ -5,6 +5,7 @@ import { Label } from "@/components/ui/label"
 import { Textarea } from "@/components/ui/textarea"
 import { Button } from "@/components/ui/button"
 import { Plus, Trash2 } from "lucide-react"
+import { BlockImageUpload } from "@/components/ui/block-image-upload"
 import type { TeamContent } from "./schemas"
 
 interface TeamFormProps {
@@ -31,7 +32,7 @@ export function TeamForm({
   return (
     <div className="space-y-4">
       <div>
-        <Label htmlFor="title">Title *</Label>
+        <Label htmlFor="title">Title (optional)</Label>
         <Input
           id="title"
           value={formData.title || ""}
@@ -39,6 +40,19 @@ export function TeamForm({
           className={errors.title ? "border-red-500" : ""}
         />
         {errors.title && <p className="text-red-500 text-sm">{errors.title}</p>}
+      </div>
+
+      <div>
+        <Label htmlFor="description">Description (optional)</Label>
+        <Textarea
+          id="description"
+          value={formData.description || ""}
+          onChange={(e) => updateField("description", e.target.value)}
+          className={errors.description ? "border-red-500" : ""}
+        />
+        {errors.description && (
+          <p className="text-red-500 text-sm">{errors.description}</p>
+        )}
       </div>
 
       <div>
@@ -64,7 +78,7 @@ export function TeamForm({
               })
             }
           >
-            <Plus className="h-4 w-4 mr-2" />
+            <Plus className="mr-2 h-4 w-4" />
             Add Member
           </Button>
         </div>
@@ -122,14 +136,45 @@ export function TeamForm({
               />
             </div>
 
+            <BlockImageUpload
+              value={member.photo}
+              onChange={(url) =>
+                updateArrayField("members", index, {
+                  ...member,
+                  photo: url
+                })
+              }
+              onRemove={() =>
+                updateArrayField("members", index, {
+                  ...member,
+                  photo: ""
+                })
+              }
+              label="Member Photo"
+              size="md"
+            />
+
             <div>
-              <Label>Photo URL *</Label>
+              <Label>Email (optional)</Label>
               <Input
-                value={member.photo || ""}
+                value={member.email || ""}
                 onChange={(e) =>
                   updateArrayField("members", index, {
                     ...member,
-                    photo: e.target.value
+                    email: e.target.value
+                  })
+                }
+              />
+            </div>
+
+            <div>
+              <Label>Phone (optional)</Label>
+              <Input
+                value={member.phone || ""}
+                onChange={(e) =>
+                  updateArrayField("members", index, {
+                    ...member,
+                    phone: e.target.value
                   })
                 }
               />
