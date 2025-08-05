@@ -1,4 +1,3 @@
-import Image from "next/image"
 import { Mail, Phone, Linkedin, Twitter, Instagram } from "lucide-react"
 import { Card, CardContent, CardHeader } from "../../ui/card"
 import type { TeamContent } from "@/app/dashboard/shops/[id]/components/BlockForm/schemas"
@@ -8,6 +7,7 @@ import {
   useBlockEdit
 } from "@/components/ui/block-edit-context"
 import { E } from "@/components/ui/edit-with-context"
+import { EditableImage } from "@/components/ui/editable-image"
 
 const defaultContent: TeamContent = {
   title: "Set your team title here",
@@ -71,21 +71,26 @@ const TeamBlockContent = () => {
                   <div className="mb-3 flex justify-center">
                     {fullWidthPhoto ? (
                       <div className="relative h-48 w-full overflow-hidden rounded-lg">
-                        <Image
+                        <EditableImage
+                          fieldPath={`members[${index}].photo`}
                           src={member.photo}
                           alt={member.name}
-                          fill
-                          className="object-cover"
+                          width={400}
+                          height={300}
+                          className="h-full w-full"
+                          aspectRatio="video"
                         />
                       </div>
                     ) : (
                       <div className="relative h-32 w-32 overflow-hidden rounded-full">
-                        <Image
+                        <EditableImage
+                          fieldPath={`members[${index}].photo`}
                           src={member.photo}
                           alt={member.name}
                           width={128}
                           height={128}
-                          className="h-full w-full object-cover"
+                          className="h-full w-full"
+                          aspectRatio="square"
                         />
                       </div>
                     )}
@@ -188,21 +193,26 @@ const TeamBlockContent = () => {
                   <div className="flex-shrink-0">
                     {fullWidthPhoto ? (
                       <div className="relative h-24 w-32 overflow-hidden rounded-lg">
-                        <Image
+                        <EditableImage
+                          fieldPath={`members[${index}].photo`}
                           src={member.photo}
                           alt={member.name}
-                          fill
-                          className="object-cover"
+                          width={128}
+                          height={96}
+                          className="h-full w-full"
+                          aspectRatio="video"
                         />
                       </div>
                     ) : (
                       <div className="relative h-20 w-20 overflow-hidden rounded-full">
-                        <Image
+                        <EditableImage
+                          fieldPath={`members[${index}].photo`}
                           src={member.photo}
                           alt={member.name}
                           width={80}
                           height={80}
-                          className="h-full w-full object-cover"
+                          className="h-full w-full"
+                          aspectRatio="square"
                         />
                       </div>
                     )}

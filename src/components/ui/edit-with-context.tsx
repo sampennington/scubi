@@ -5,6 +5,7 @@ import { useBlockEdit } from "./block-edit-context"
 import type { ComponentProps, ReactNode } from "react"
 import type { BlockButton } from "@/app/dashboard/shops/[id]/components/BlockForm/schemas"
 import { EditableButton } from "../editable"
+import Image from "next/image"
 
 // Enhanced Edit components that use context - shorter syntax
 export const E = {
@@ -161,6 +162,25 @@ export const E = {
       >
         {children}
       </EditableButton>
+    )
+  },
+
+  image: ({
+    fieldPath,
+    src,
+    alt,
+    width,
+    height,
+    ...props
+  }: {
+    fieldPath: string
+    src: string
+    alt: string
+    width?: number
+    height?: number
+  } & ComponentProps<"img">) => {
+    return (
+      <Image {...props} src={src} alt={alt} width={width} height={height} />
     )
   }
 }
