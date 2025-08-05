@@ -27,45 +27,44 @@ const plans: PlanProps[] = [
     title: "Free",
     popular: 0,
     price: 0,
-    description:
-      "Perfect for getting started with basic features and exploring our platform.",
-    buttonText: "Start Free Trial",
+    description: "Start free. Only pay when you're ready to launch.",
+    buttonText: "Start Free",
     benefitList: [
-      "1 team member",
-      "1 GB storage",
-      "Up to 2 pages",
+      "Basic website builder",
+      "Mobile-optimized design",
+      "SEO optimization",
       "Community support",
-      "AI assistance"
+      "Free templates"
+    ]
+  },
+  {
+    title: "Professional",
+    popular: 1,
+    price: 29,
+    description:
+      "Perfect for dive shops ready to launch their professional online presence.",
+    buttonText: "Get Started",
+    benefitList: [
+      "Everything in Free",
+      "Custom domain connection",
+      "Priority support",
+      "Advanced analytics",
+      "Booking integration"
     ]
   },
   {
     title: "Premium",
-    popular: 1,
-    price: 45,
-    description:
-      "Ideal for growing teams that need advanced features and priority support.",
-    buttonText: "Get started",
-    benefitList: [
-      "4 team member",
-      "8 GB storage",
-      "Up to 6 pages",
-      "Priority support",
-      "AI assistance"
-    ]
-  },
-  {
-    title: "Enterprise",
     popular: 0,
-    price: 120,
+    price: 49,
     description:
-      "Comprehensive solution for large organizations with extensive customization needs.",
+      "For established dive businesses needing advanced features and customization.",
     buttonText: "Contact Us",
     benefitList: [
-      "10 team member",
-      "20 GB storage",
-      "Up to 10 pages",
+      "Everything in Professional",
+      "Multiple pages",
+      "Advanced SEO tools",
       "Phone & email support",
-      "AI assistance"
+      "Custom branding"
     ]
   }
 ]
@@ -74,15 +73,16 @@ export const PricingSection = () => {
   return (
     <section id="pricing" className="container mx-auto px-4 py-24 sm:py-32">
       <h2 className="mb-2 text-center text-lg text-primary tracking-wider">
-        Pricing
+        Affordable Pricing
       </h2>
 
       <h2 className="mb-4 text-center font-bold text-3xl md:text-4xl">
-        Get unlimited access
+        Start free. Only pay when you're ready to launch.
       </h2>
 
       <h3 className="mx-auto pb-14 text-center text-muted-foreground text-xl md:w-1/2">
-        Choose the perfect plan that fits your needs and budget.
+        Hosting, support, and updates included. Connect your own domain. Monthly
+        or annual plans available.
       </h3>
 
       <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-3 lg:gap-4">

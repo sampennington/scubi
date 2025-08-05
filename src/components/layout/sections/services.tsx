@@ -16,27 +16,28 @@ interface ServiceProps {
 }
 const serviceList: ServiceProps[] = [
   {
-    title: "Authentication System",
+    title: "PADI, SSI, and RAID dive shops",
     description:
-      "Complete auth system with email and social login support. Includes session management and user roles.",
+      "Established dive centers looking to modernize their online presence and attract more customers.",
     pro: 0
   },
   {
-    title: "Dashboard & UI Kit",
+    title: "New or independent instructors",
     description:
-      "Ready-to-use dashboard layout and beautiful UI components. Dark mode included.",
+      "Individual instructors starting their own dive business who need a professional website quickly.",
     pro: 0
   },
   {
-    title: "File Upload System",
+    title: "Liveaboards and dive resorts",
     description:
-      "Secure file uploads with UploadThing integration for user content and avatars.",
+      "Dive resorts and liveaboard operators needing to showcase their unique experiences and booking capabilities.",
     pro: 0
   },
   {
-    title: "Payment Integration",
-    description: "Stripe payment integration for your SaaS subscriptions.",
-    pro: 1
+    title: "Anyone starting or improving their scuba business online",
+    description:
+      "New dive businesses or those looking to upgrade from basic social media presence.",
+    pro: 0
   }
 ]
 
@@ -44,15 +45,16 @@ export const ServicesSection = () => {
   return (
     <section id="services" className="container mx-auto px-4 py-24 sm:py-32">
       <h2 className="mb-2 text-center text-lg text-primary tracking-wider">
-        Core Features
+        Who Scubi Is For
       </h2>
 
       <h2 className="mb-4 text-center font-bold text-3xl md:text-4xl">
-        Built-in Functionality
+        Perfect for Every Type of Dive Business
       </h2>
       <h3 className="mx-auto mb-8 text-center text-muted-foreground text-xl md:w-1/2">
-        Start with a solid foundation. Our starter includes essential features
-        that every modern SaaS needs, saving you weeks of development time.
+        Whether you're an established dive shop or just starting out, Scubi
+        helps you create a professional online presence that brings in more
+        divers.
       </h3>
       <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3" />
 

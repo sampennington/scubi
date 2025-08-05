@@ -17,39 +17,39 @@ interface FeaturesProps {
 const featureList: FeaturesProps[] = [
   {
     icon: <RiShieldKeyholeLine size={24} className="text-primary" />,
-    title: "Better Auth",
+    title: "AI-Powered Builder",
     description:
-      "Complete authentication with social logins, email verification, and session management built-in."
+      "Scubi.site is an AI-powered website builder made specifically for scuba diving businesses."
   },
   {
     icon: <RiDashboard3Line size={24} className="text-primary" />,
-    title: "Modern UI Kit",
+    title: "Instant Site Generation",
     description:
-      "Beautiful, accessible components powered by shadcn/ui. Dark mode included."
+      "If you already have a website or Facebook page, Scubi scans your content and automatically generates a sleek new site — in minutes."
   },
   {
     icon: <RiUploadCloud2Line size={24} className="text-primary" />,
-    title: "File Uploads",
+    title: "Simple Setup",
     description:
-      "Secure file upload system with UploadThing integration, perfect for user avatars and content."
+      "No site yet? No problem. Scubi guides you through a simple setup: just answer a few quick questions about your business."
   },
   {
     icon: <RiDatabase2Line size={24} className="text-primary" />,
-    title: "Type-Safe DB",
+    title: "No Tech Skills Needed",
     description:
-      "PostgreSQL database with Drizzle ORM for type-safe queries and easy schema management."
+      "No copy-pasting. No downtime. No technical knowledge required to create a professional dive shop website."
   },
   {
     icon: <RiFireFill size={24} className="text-primary" />,
-    title: "Performance",
+    title: "Easy Booking & Contact",
     description:
-      "Built on Next.js for lightning-fast page loads, SEO optimization, and the best developer experience."
+      "Make it simple for customers to reach out or reserve a course with integrated booking and contact options."
   },
   {
     icon: <RiStackLine size={24} className="text-primary" />,
-    title: "Monorepo Ready",
+    title: "Professional Templates",
     description:
-      "Turborepo setup for clean code organization and efficient builds as your project grows."
+      "Already have images and a logo? Great. Just starting out? We've got free templates and placeholders."
   }
 ]
 
@@ -57,17 +57,17 @@ export const FeaturesSection = () => {
   return (
     <section id="features" className="container mx-auto px-4 py-24 sm:py-32">
       <h2 className="mb-2 text-center text-lg text-primary tracking-wider">
-        Features
+        What Is Scubi?
       </h2>
 
       <h2 className="mb-4 text-center font-bold text-3xl md:text-4xl">
-        Everything You Need
+        Built for Busy Dive Shop Owners
       </h2>
 
       <h3 className="mx-auto mb-8 text-center text-muted-foreground text-xl md:w-1/2">
-        Launch your SaaS faster with our carefully chosen tech stack and
-        pre-built features. Focus on your unique value proposition, not
-        boilerplate.
+        We built Scubi.site for busy dive shop owners, instructors, and new dive
+        businesses who want a professional online presence — without the hassle
+        or cost of hiring a web designer.
       </h3>
 
       <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">

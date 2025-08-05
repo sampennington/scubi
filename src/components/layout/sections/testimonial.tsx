@@ -28,56 +28,55 @@ const reviewList: ReviewProps[] = [
   {
     image:
       "https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?q=80&w=580&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-    name: "John Doe",
-    userName: "Product Manager",
+    name: "Leah",
+    userName: "Dive Instructor – Koh Tao",
     comment:
-      "Wow this is awesome!. This Starter Kit lets me change colors, fonts and images to match my brand identity. ",
+      "I had no idea how to build a website. Scubi did it in minutes. It looks amazing and I didn't have to lift a finger.",
     rating: 5.0
   },
   {
     image:
       "https://images.unsplash.com/photo-1658281097220-eb7672eed00b?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8NDN8fHByb2ZpbGUlMjBwaG90b3xlbnwwfDJ8MHx8fDA%3D",
-    name: "Sophia Collins",
-    userName: "Cybersecurity Analyst",
+    name: "Carlos",
+    userName: "Dive Shop Owner – Belize",
     comment:
-      "The security implementation is top-notch. Built-in authentication and proper data validation give me confidence in the platform. ",
-    rating: 4.8
+      "I used to rely on Facebook. Now I have a proper dive shop website, and I'm getting more direct bookings every week.",
+    rating: 5.0
   },
-
   {
     image:
       "https://images.unsplash.com/photo-1618018352910-72bdafdc82a6?q=80&w=580&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-    name: "Adam Johnson",
-    userName: "Chief Technology Officer",
+    name: "Sarah",
+    userName: "PADI Instructor – Bali",
     comment:
-      "Perfect architecture and clean code structure. Our development team was able to scale quickly without technical debt issues.",
+      "Perfect for busy dive instructors like me. I can focus on teaching while Scubi handles my online presence.",
     rating: 4.9
   },
   {
     image:
       "https://images.unsplash.com/photo-1584999734482-0361aecad844?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTV8fHByb2ZpbGV8ZW58MHwyfDB8fHww",
-    name: "Ethan Parker",
-    userName: "Data Scientist",
+    name: "Mike",
+    userName: "Liveaboard Owner – Maldives",
     comment:
-      "The analytics integration capabilities are excellent. Easy to implement tracking and gather meaningful insights from user behavior.",
+      "The mobile optimization is incredible. Our guests can easily book trips from their phones while on vacation.",
     rating: 5.0
   },
   {
     image:
       "https://images.unsplash.com/photo-1586297135537-94bc9ba060aa?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mjh8fHByb2ZpbGUlMjBwaG90b3xlbnwwfDJ8MHx8fDA%3D",
-    name: "Ava Mitchell",
-    userName: "IT Project Manager",
+    name: "Emma",
+    userName: "New Dive Business – Australia",
     comment:
-      "Streamlined our deployment process significantly. The documentation and setup guide helped our team deliver projects faster.",
+      "Starting from scratch was so easy. Scubi guided me through everything and my site looks professional from day one.",
     rating: 5.0
   },
   {
     image:
       "https://images.unsplash.com/photo-1623517006691-00db997b4c58?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTUwfHxwcm9maWxlJTIwcGhvdG98ZW58MHwyfDB8fHww",
-    name: "Isabella Reed",
-    userName: "DevOps Engineer",
+    name: "David",
+    userName: "Dive Resort Manager – Philippines",
     comment:
-      "Amazing CI/CD integration and containerization support. The deployment pipeline configurations saved us weeks of setup time.",
+      "The SEO optimization is working perfectly. We're ranking higher for local dive searches than ever before.",
     rating: 4.9
   }
 ]
@@ -90,11 +89,11 @@ export const TestimonialSection = () => {
     >
       <div className="mb-8 text-center">
         <h2 className="mb-2 text-center text-lg text-primary tracking-wider">
-          Testimonials
+          What Dive Shop Owners Say
         </h2>
 
         <h2 className="mb-4 text-center font-bold text-3xl md:text-4xl">
-          Hear What Our 1000+ Clients Say
+          Real Stories from Real Dive Businesses
         </h2>
       </div>
 

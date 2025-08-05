@@ -1,12 +1,10 @@
 "use client"
 import { ArrowRight, Lock } from "lucide-react"
-import { RiGithubFill } from "@remixicon/react"
 import Image from "next/image"
 import Link from "next/link"
 import { useTheme } from "next-themes"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
-import { site } from "@/config/site"
 
 export const HeroSection = () => {
   const { theme } = useTheme()
@@ -16,29 +14,31 @@ export const HeroSection = () => {
         <div className="space-y-8 text-center">
           <Badge variant="outline" className="rounded-2xl py-2 text-sm">
             <span className="mr-2 text-primary">
-              <Badge>New</Badge>
+              <Badge>🤿</Badge>
             </span>
-            <span> Launch your SaaS now! </span>
+            <span> Built for Dive Shop Owners </span>
           </Badge>
 
           <div className="mx-auto max-w-screen-md text-center font-bold text-4xl md:text-6xl">
             <h1>
-              Scubi
+              Turn Your Dive Shop's Website into a
               <span className="bg-gradient-to-r from-[#da5319] to-primary bg-clip-text px-2 text-transparent">
-                Site
+                Modern Booking Machine
               </span>
+              — Automatically
             </h1>
           </div>
 
           <p className="mx-auto max-w-screen-sm text-muted-foreground text-xl">
-            {`A complete SaaS starter with authentication, beautiful UI components, 
-            and everything you need to launch your platform quickly and efficiently.`}
+            Just paste your current website link — or start from scratch.{" "}
+            <strong>Scubi</strong> instantly builds a faster, better-looking,
+            mobile-friendly site — designed to bring in more divers.
           </p>
 
           <div className="flex flex-col items-center space-y-4 md:flex-row md:justify-center md:space-x-4 md:space-y-0">
             <Button asChild size="lg" className="group/arrow rounded-full">
               <Link href="/auth/sign-up">
-                Get Started
+                Paste Your Website URL → Get Started Free
                 <ArrowRight className="ml-2 size-5 transition-transform group-hover/arrow:translate-x-1" />
               </Link>
             </Button>
@@ -49,14 +49,7 @@ export const HeroSection = () => {
               size="lg"
               className="rounded-full"
             >
-              <Link
-                href={site.links.github}
-                target="_blank"
-                className="flex items-center gap-2"
-              >
-                <RiGithubFill className="size-5 fill-foreground" />
-                GitHub repository
-              </Link>
+              <Link href="/auth/sign-up">Start Fresh Without a Website</Link>
             </Button>
           </div>
         </div>
@@ -78,7 +71,7 @@ export const HeroSection = () => {
                 <div className="flex h-6 items-center justify-center rounded-md bg-secondary/50 px-3">
                   <Lock className="mr-1.5 size-3 text-muted-foreground" />
                   <div className="text-muted-foreground text-xs">
-                    {site.url}
+                    scubi.site
                   </div>
                 </div>
               </div>
@@ -90,7 +83,7 @@ export const HeroSection = () => {
             height={1200}
             className="relative mx-auto flex w-full max-w-5xl items-center rounded-b-lg "
             src={theme === "light" ? "/dash-light.png" : "/dash.png"}
-            alt="dashboard"
+            alt="Scubi dive shop website builder"
           />
 
           <div className="absolute bottom-0 left-0 h-20 w-full rounded-lg bg-gradient-to-b from-background/0 via-background/50 to-background md:h-28" />

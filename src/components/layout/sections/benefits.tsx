@@ -10,28 +10,28 @@ interface BenefitsProps {
 
 const benefitList: BenefitsProps[] = [
   {
-    icon: "Rocket",
-    title: "Launch Faster",
+    icon: "Smartphone",
+    title: "Mobile-Optimized Design",
     description:
-      "Skip weeks of setup and boilerplate. Get a production-ready foundation with authentication, UI, and core features already built."
+      "Look great on every device — whether it's a phone, tablet, or laptop. Your dive shop website will be perfectly responsive."
   },
   {
-    icon: "Code",
-    title: "Modern Stack",
+    icon: "Navigation",
+    title: "Clear Navigation",
     description:
-      "Built with Next.js, TypeScript, and industry-leading tools. Your startup deserves a tech stack that scales with your growth."
+      "Show your courses, prices, location, and contact details clearly and professionally. Easy for customers to find what they need."
   },
   {
-    icon: "Palette",
-    title: "Beautiful Design",
+    icon: "Search",
+    title: "Get Found on Google",
     description:
-      "Polished UI components from shadcn/ui give your SaaS a professional look from day one. Fully customizable to match your brand."
+      "Your site is SEO-optimized from the start — perfect for search terms like 'dive shop in [your location]'."
   },
   {
-    icon: "Shield",
-    title: "Production Ready",
+    icon: "Image",
+    title: "Use Your Photos & Branding",
     description:
-      "Enterprise-grade authentication, type-safe database queries, and file upload capabilities. Everything you need to go live confidently."
+      "Already have images and a logo? Great. Just starting out? We've got free templates and placeholders."
   }
 ]
 
@@ -40,15 +40,17 @@ export const BenefitsSection = () => {
     <section id="benefits" className="container mx-auto px-4 py-24 sm:py-32">
       <div className="grid place-items-center lg:grid-cols-2 lg:gap-24">
         <div>
-          <h2 className="mb-2 text-lg text-primary tracking-wider">Benefits</h2>
+          <h2 className="mb-2 text-lg text-primary tracking-wider">
+            Why Upgrade
+          </h2>
 
           <h2 className="mb-4 font-bold text-3xl md:text-4xl">
-            Why Choose This Starter
+            Why Upgrade (or Start) Your Dive Shop Website?
           </h2>
           <p className="mb-8 text-muted-foreground text-xl">
-            Stop wasting time on infrastructure. Get a battle-tested foundation
-            that lets you focus on what matters - building your unique features
-            and growing your business.
+            Running a dive center is hard work. Between dive trips, gear
+            servicing, and training students, your website is the last thing you
+            want to worry about. That's where Scubi comes in.
           </p>
         </div>
 
