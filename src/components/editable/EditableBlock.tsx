@@ -227,7 +227,7 @@ export const EditableBlock = ({
           )}
 
           {/* Edit controls - only show when actively editing */}
-          {isEditing && (
+          {/* {isEditing && (
             <div className="-top-8 absolute right-0 flex gap-1">
               <button
                 type="button"
@@ -244,7 +244,7 @@ export const EditableBlock = ({
                 Cancel
               </button>
             </div>
-          )}
+          )} */}
         </div>
       )}
     </div>

@@ -1,6 +1,6 @@
 "use client"
 
-import { EditableBlock } from "@/components/blocks/EditableBlock"
+import { EditableBlock } from "@/components/editable/EditableBlock"
 import type { ComponentProps, JSX } from "react"
 
 interface EditElementProps {

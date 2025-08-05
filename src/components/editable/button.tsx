@@ -1,22 +1,15 @@
 "use client"
 
-import { Edit } from "../edit"
-import { useBlockEdit } from "../block-edit-context"
+import { Edit } from "../ui/edit"
+import { useBlockEdit } from "../ui/block-edit-context"
 import type { ReactNode } from "react"
+import type { BlockButton } from "@/app/dashboard/shops/[id]/components/BlockForm/schemas"
 
 interface EditableButtonProps {
   fieldPath: string
   children: string
   icon?: ReactNode
-  variant?:
-    | "default"
-    | "destructive"
-    | "outline"
-    | "secondary"
-    | "ghost"
-    | "link"
-    | "invert"
-    | "cta"
+  variant?: BlockButton["variant"]
   size?: "default" | "sm" | "lg" | "icon"
   className?: string
   disabled?: boolean
@@ -72,7 +65,6 @@ export const EditableButton = ({
       className={`${getButtonStyles(variant, size)} ${className}`}
       {...props}
     >
-      {/* Icon - for now just render it, icon editing will be implemented later */}
       {icon && icon}
 
       <Edit.span onSave={(value) => handleEdit(fieldPath, value)}>

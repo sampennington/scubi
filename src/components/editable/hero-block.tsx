@@ -84,50 +84,6 @@ const HeroBlockContent = () => {
   )
 }
 
-const HeroBlockPreview = ({ content }: { content: HeroContent }) => {
-  return (
-    <section className="relative w-full overflow-hidden py-20">
-      <div className="absolute inset-0 z-0">
-        <Image
-          src={content.image}
-          alt="Underwater scene"
-          className="h-full w-full object-cover"
-          width={1000}
-          height={1000}
-        />
-        <div className="absolute inset-0 bg-gradient-to-r from-primary/80 to-primary/40" />
-      </div>
-
-      <div className="relative z-10 mx-auto max-w-7xl px-4">
-        <div className="max-w-3xl text-white">
-          <h1 className="mb-6 font-bold text-4xl md:text-5xl lg:text-6xl">
-            {content.title}
-          </h1>
-
-          <p className="mb-8 text-xl">{content.text}</p>
-
-          <div className="flex flex-col gap-4 sm:flex-row">
-            <button
-              type="button"
-              className="inline-flex h-11 items-center justify-center rounded-md rounded-md bg-secondary px-8 font-medium text-secondary-foreground ring-offset-background transition-colors hover:bg-secondary/80 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50"
-            >
-              <Calendar className="mr-2 h-5 w-5" />
-              {content.primaryButton.label}
-            </button>
-            <button
-              type="button"
-              className="inline-flex h-11 items-center justify-center rounded-md rounded-md bg-white px-8 font-medium text-black ring-offset-background transition-colors hover:bg-gray-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50"
-            >
-              <Phone className="mr-2 h-5 w-5" />
-              {content.secondaryButton.label}
-            </button>
-          </div>
-        </div>
-      </div>
-    </section>
-  )
-}
-
 export const HeroBlock = ({
   content = defaultContent,
   blockId
@@ -135,10 +91,6 @@ export const HeroBlock = ({
   content?: HeroContent
   blockId?: string
 }) => {
-  if (!blockId) {
-    return <HeroBlockPreview content={content} />
-  }
-
   return (
     <BlockEditProvider<HeroContent> blockId={blockId} initialContent={content}>
       <HeroBlockContent />

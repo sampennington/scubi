@@ -3,7 +3,8 @@
 import { Edit } from "./edit"
 import { useBlockEdit } from "./block-edit-context"
 import type { ComponentProps, ReactNode } from "react"
-import { EditableButton } from "./editable"
+import type { BlockButton } from "@/app/dashboard/shops/[id]/components/BlockForm/schemas"
+import { EditableButton } from "../editable"
 
 // Enhanced Edit components that use context - shorter syntax
 export const E = {
@@ -74,15 +75,7 @@ export const E = {
     fieldPath: string
     children: string
     icon?: ReactNode
-    variant?:
-      | "default"
-      | "destructive"
-      | "outline"
-      | "secondary"
-      | "ghost"
-      | "link"
-      | "invert"
-      | "cta"
+    variant?: BlockButton["variant"]
     size?: "default" | "sm" | "lg" | "icon"
     className?: string
     disabled?: boolean
