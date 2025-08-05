@@ -8,7 +8,7 @@ import { GalleryBlock } from "./gallery-block"
 import { TestimonialsBlock } from "./testimonials-block"
 import { TeamBlock } from "../editable/blocks/team-block"
 import { FAQBlock } from "./faq-block"
-import { ContactFormBlock } from "./contact-form-block"
+import { ContactFormBlock } from "../editable/blocks/contact-form-block"
 import { CallToActionBlock } from "./call-to-action-block"
 import { VideoBlock } from "./video-block"
 import { MapBlock } from "./map-block"
@@ -90,6 +90,19 @@ function BlockWithValidation({ block }: { block: Block }) {
       return <TeamBlock key={block.id} />
     }
 
+    case BlockType.CONTACT_FORM: {
+      if (isContactFormContent(block.content)) {
+        return (
+          <ContactFormBlock
+            key={block.id}
+            content={block.content}
+            blockId={block.id}
+          />
+        )
+      }
+      return <ContactFormBlock key={block.id} />
+    }
+
     // Non editable blocks
     case BlockType.TEXT: {
       if (isTextContent(block.content)) {
@@ -124,13 +137,6 @@ function BlockWithValidation({ block }: { block: Block }) {
         return <FAQBlock key={block.id} content={block.content} />
       }
       return <FAQBlock key={block.id} />
-    }
-
-    case BlockType.CONTACT_FORM: {
-      if (isContactFormContent(block.content)) {
-        return <ContactFormBlock key={block.id} content={block.content} />
-      }
-      return <ContactFormBlock key={block.id} />
     }
 
     case BlockType.CALL_TO_ACTION: {
