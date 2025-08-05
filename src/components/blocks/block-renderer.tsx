@@ -15,7 +15,7 @@ import { MapBlock } from "./map-block"
 import { SocialFeedBlock } from "./social-feed-block"
 import { DividerBlock } from "./divider-block"
 import { TwoColumnBlock } from "./two-column-block"
-import { CoursesBlock } from "./courses-block"
+import { CoursesBlock } from "../editable/blocks/courses-block"
 import { MarineLifeBlock } from "./marine-life-block"
 import {
   isHeroContent,
@@ -103,6 +103,19 @@ function BlockWithValidation({ block }: { block: Block }) {
       return <ContactFormBlock key={block.id} />
     }
 
+    case BlockType.COURSES: {
+      if (isCoursesContent(block.content)) {
+        return (
+          <CoursesBlock
+            key={block.id}
+            content={block.content}
+            blockId={block.id}
+          />
+        )
+      }
+      return <CoursesBlock key={block.id} />
+    }
+
     // Non editable blocks
     case BlockType.TEXT: {
       if (isTextContent(block.content)) {
@@ -179,13 +192,6 @@ function BlockWithValidation({ block }: { block: Block }) {
         return <TwoColumnBlock key={block.id} content={block.content} />
       }
       return <TwoColumnBlock key={block.id} />
-    }
-
-    case BlockType.COURSES: {
-      if (isCoursesContent(block.content)) {
-        return <CoursesBlock key={block.id} content={block.content} />
-      }
-      return <CoursesBlock key={block.id} />
     }
 
     case BlockType.MARINE_LIFE: {

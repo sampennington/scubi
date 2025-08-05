@@ -69,22 +69,36 @@ export const EditableImage = ({
   return (
     <div
       className={cn(
-        "relative group",
+        "group relative",
         aspectRatioClasses[aspectRatio],
         className
       )}
     >
-      <E.image
-        fieldPath={fieldPath}
-        src={src || fallbackSrc}
-        alt={alt}
-        width={width}
-        height={height}
-        className={cn(
-          "object-cover transition-all duration-200",
-          aspectRatioClasses[aspectRatio]
-        )}
-      />
+      {src && src !== fallbackSrc ? (
+        <E.image
+          fieldPath={fieldPath}
+          src={src}
+          alt={alt}
+          width={width}
+          height={height}
+          className={cn(
+            "h-full w-full object-cover transition-all duration-200",
+            aspectRatioClasses[aspectRatio]
+          )}
+        />
+      ) : (
+        <div
+          className={cn(
+            "flex h-full w-full items-center justify-center rounded-lg border-2 border-muted-foreground/25 border-dashed bg-muted/20",
+            aspectRatioClasses[aspectRatio]
+          )}
+        >
+          <div className="text-center text-muted-foreground">
+            <Upload className="mx-auto mb-2 h-8 w-8" />
+            <p className="text-sm">No image</p>
+          </div>
+        </div>
+      )}
 
       {showUploadButton && isMounted && (
         <button

@@ -6,7 +6,10 @@ import { createContext, useContext, useState, type ReactNode } from "react"
 import { setProperty } from "dot-prop"
 
 interface BlockEditContextType<T = Record<string, unknown>> {
-  handleEdit: (fieldPath: string, value: string) => Promise<void>
+  handleEdit: (
+    fieldPath: string,
+    value: string | number | boolean | object | Array<unknown>
+  ) => Promise<void>
   isSaving: boolean
   blockId?: string
   content: T
@@ -32,7 +35,10 @@ export const BlockEditProvider = <T extends Record<string, unknown>>({
   const [localContent, setLocalContent] = useState<T>(initialContent)
   const [isSaving, setIsSaving] = useState(false)
 
-  const handleEdit = async (fieldPath: string, value: string) => {
+  const handleEdit = async (
+    fieldPath: string,
+    value: string | number | boolean | object | Array<unknown>
+  ) => {
     if (!blockId) {
       console.warn("No blockId")
       return

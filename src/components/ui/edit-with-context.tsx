@@ -1,5 +1,6 @@
 "use client"
 
+import { useState } from "react"
 import { Edit } from "./edit"
 import { useBlockEdit } from "./block-edit-context"
 import type { ComponentProps, ReactNode } from "react"
@@ -179,8 +180,22 @@ export const E = {
     width?: number
     height?: number
   } & ComponentProps<"img">) => {
+    const [imageError, setImageError] = useState(false)
+
+    // Don't render the image if there's no valid src or if there was an error
+    if (!src || src === "" || imageError) {
+      return null
+    }
+
     return (
-      <Image {...props} src={src} alt={alt} width={width} height={height} />
+      <Image
+        {...props}
+        src={src}
+        alt={alt}
+        width={width}
+        height={height}
+        onError={() => setImageError(true)}
+      />
     )
   }
 }
