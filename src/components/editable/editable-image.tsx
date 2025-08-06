@@ -77,16 +77,14 @@ export const EditableImage = ({
       )}
     >
       {src && src !== fallbackSrc ? (
-        <Image
+        <NoEditImage
           src={src}
           alt={alt}
           width={width}
           height={height}
+          className={cn(aspectRatioClasses[aspectRatio])}
+          aspectRatio={aspectRatio}
           onError={onError}
-          className={cn(
-            "h-full w-full object-cover transition-all duration-200",
-            aspectRatioClasses[aspectRatio]
-          )}
         />
       ) : (
         <div
@@ -139,5 +137,36 @@ export const EditableImage = ({
         disabled={isUploading}
       />
     </div>
+  )
+}
+
+export const NoEditImage = ({
+  src,
+  alt,
+  width,
+  height,
+  aspectRatio,
+  onError
+}: {
+  src: string
+  alt: string
+  width: number
+  height: number
+  className: string
+  aspectRatio: "square" | "video" | "auto"
+  onError?: () => void
+}) => {
+  return (
+    <Image
+      src={src}
+      alt={alt}
+      width={width}
+      height={height}
+      onError={onError}
+      className={cn(
+        "h-full w-full object-cover transition-all duration-200",
+        aspectRatioClasses[aspectRatio]
+      )}
+    />
   )
 }

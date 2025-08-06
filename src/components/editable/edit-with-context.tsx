@@ -6,9 +6,8 @@ import { useBlockEdit } from "./block-edit-context"
 import type { ComponentProps, ReactNode } from "react"
 import type { BlockButton } from "@/app/dashboard/shops/[id]/components/BlockForm/schemas"
 import { EditableButton } from "."
-import Image from "next/image"
 import { Button } from "../ui/button"
-import { EditableImage } from "./editable-image"
+import { EditableImage, NoEditImage } from "./editable-image"
 
 export const E = {
   h1: ({
@@ -241,7 +240,16 @@ export const E = {
     }
 
     if (!isEditMode) {
-      return <Image src={src} alt={alt} width={width} height={height} />
+      return (
+        <NoEditImage
+          src={src}
+          alt={alt}
+          width={width || 400}
+          height={height || 300}
+          className={props.className || ""}
+          aspectRatio={props.aspectRatio || "auto"}
+        />
+      )
     }
 
     return (

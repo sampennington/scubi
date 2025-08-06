@@ -1,6 +1,7 @@
 import { api } from "@/lib/api"
 import { notFound } from "next/navigation"
 import Preview from "./preview"
+import { checkShopOwnership } from "@/lib/actions/shop-ownership"
 
 export default async function PreviewPage({
   params
@@ -12,6 +13,7 @@ export default async function PreviewPage({
   // Always show home page for root path
   const currentPage = await api.pages.getBySlug(shopId, "/")
   const pages = await api.pages.getNavigationTree(shopId)
+  const isShopOwner = await checkShopOwnership(shopId)
 
   if (!currentPage) {
     return notFound()
@@ -30,6 +32,7 @@ export default async function PreviewPage({
       pages={pages}
       blocks={blocks}
       siteSettings={siteSettings}
+      isShopOwner={isShopOwner}
     />
   )
 }

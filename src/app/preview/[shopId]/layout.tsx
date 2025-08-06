@@ -1,22 +1,24 @@
-import { BlockEditProvider } from "@/components/ui/block-edit-context"
 import { PreviewControls } from "./preview-controls"
+import { checkShopOwnership } from "@/lib/actions/shop-ownership"
 
 export default async function Layout({
   children,
   params
 }: {
   children: React.ReactNode
-  params: { shopId: string }
+  params: Promise<{ shopId: string }>
 }) {
   const { shopId } = await params
+  const isShopOwner = await checkShopOwnership(shopId)
+  console.log({ isShopOwner })
+  if (!isShopOwner) {
+    return children
+  }
+
   return (
-    <BlockEditProvider
-      blockId="preview-controls"
-      initialContent={{}}
-      type="text"
-    >
+    <>
       <PreviewControls shopId={shopId} />
       {children}
-    </BlockEditProvider>
+    </>
   )
 }
