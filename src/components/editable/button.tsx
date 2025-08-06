@@ -1,7 +1,7 @@
 "use client"
 
 import { Edit } from "../ui/edit"
-import { useBlockEdit } from "../ui/block-edit-context"
+import { useBlockEdit } from "./block-edit-context"
 import type { ReactNode } from "react"
 import type { BlockButton } from "@/app/dashboard/shops/[id]/components/BlockForm/schemas"
 

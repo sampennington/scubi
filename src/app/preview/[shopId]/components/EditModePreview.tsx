@@ -130,12 +130,12 @@ export function EditModePreview({
         order: newOrder
       })
 
-      if (result.success && result.data) {
+      if (result.success && result.block) {
         const newBlocks = [...blocks]
         if (insertIndex !== undefined) {
-          newBlocks.splice(insertIndex + 1, 0, result.data)
+          newBlocks.splice(insertIndex + 1, 0, result.block)
         } else {
-          newBlocks.push(result.data)
+          newBlocks.push(result.block)
         }
 
         setBlocks(newBlocks)

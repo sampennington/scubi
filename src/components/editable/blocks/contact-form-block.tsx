@@ -16,8 +16,8 @@ import type { ContactFormContent } from "@/app/dashboard/shops/[id]/components/B
 import {
   BlockEditProvider,
   useBlockEdit
-} from "@/components/ui/block-edit-context"
-import { E } from "@/components/ui/edit-with-context"
+} from "@/components/editable/block-edit-context"
+import { E } from "@/components/editable/edit-with-context"
 
 const defaultContent: ContactFormContent = {
   title: "Contact Us",

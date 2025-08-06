@@ -5,8 +5,8 @@ import * as Icons from "lucide-react"
 import {
   BlockEditProvider,
   useBlockEdit
-} from "@/components/ui/block-edit-context"
-import { E } from "@/components/ui/edit-with-context"
+} from "@/components/editable/block-edit-context"
+import { E } from "@/components/editable/edit-with-context"
 
 // Icon mapping for Lucide React icons
 const ICONS = {

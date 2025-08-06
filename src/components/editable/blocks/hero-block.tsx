@@ -6,8 +6,8 @@ import type { HeroContent } from "@/app/dashboard/shops/[id]/components/BlockFor
 import {
   BlockEditProvider,
   useBlockEdit
-} from "@/components/ui/block-edit-context"
-import { E } from "@/components/ui/edit-with-context"
+} from "@/components/editable/block-edit-context"
+import { E } from "@/components/editable/edit-with-context"
 
 const defaultContent: HeroContent = {
   title: "Set your title here",

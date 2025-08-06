@@ -5,9 +5,9 @@ import type { TeamContent } from "@/app/dashboard/shops/[id]/components/BlockFor
 import {
   BlockEditProvider,
   useBlockEdit
-} from "@/components/ui/block-edit-context"
-import { E } from "@/components/ui/edit-with-context"
-import { EditableImage } from "@/components/ui/editable-image"
+} from "@/components/editable/block-edit-context"
+import { E } from "@/components/editable/edit-with-context"
+import { EditableImage } from "@/components/editable/editable-image"
 
 const defaultContent: TeamContent = {
   title: "Set your team title here",
@@ -71,7 +71,7 @@ const TeamBlockContent = () => {
                   <div className="mb-3 flex justify-center">
                     {fullWidthPhoto ? (
                       <div className="relative h-48 w-full overflow-hidden rounded-lg">
-                        <EditableImage
+                        <E.image
                           fieldPath={`members[${index}].photo`}
                           src={member.photo}
                           alt={member.name}
@@ -83,7 +83,7 @@ const TeamBlockContent = () => {
                       </div>
                     ) : (
                       <div className="relative h-32 w-32 overflow-hidden rounded-full">
-                        <EditableImage
+                        <E.image
                           fieldPath={`members[${index}].photo`}
                           src={member.photo}
                           alt={member.name}

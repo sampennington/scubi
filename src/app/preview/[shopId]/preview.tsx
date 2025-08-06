@@ -5,29 +5,31 @@ import type { Block, Page, NavigationItem } from "@/lib/api"
 import type { SiteSettings } from "@/lib/api/types"
 import { DiveShopSite } from "@/templates/default"
 import { EditModePreview } from "./components/EditModePreview"
-import { useSearchParams } from "next/navigation"
+import { useBlockEdit } from "@/components/editable/block-edit-context"
 
 export default function Preview({
   page,
   pages,
   blocks: initialBlocks,
-  siteSettings
+  siteSettings,
+  isShopOwner
 }: {
   page: Page
   pages: NavigationItem[]
   blocks: Block[]
   siteSettings: SiteSettings
+  isShopOwner: boolean
 }) {
-  const searchParams = useSearchParams()
-  const editMode = searchParams.get("edit") === "true"
+  const { isEditMode } = useBlockEdit()
   const [blocks, setBlocks] = useState<Block[]>(initialBlocks)
 
-  // Update blocks when initialBlocks change (e.g., from server)
   useEffect(() => {
     setBlocks(initialBlocks)
   }, [initialBlocks])
 
-  if (editMode) {
+  console.log({ isShopOwner, isEditMode })
+
+  if (isShopOwner && isEditMode) {
     return (
       <EditModePreview
         blocks={blocks}

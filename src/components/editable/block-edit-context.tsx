@@ -2,8 +2,15 @@
 
 import { updateBlock } from "@/app/dashboard/shops/[id]/actions"
 import type { BlockType } from "@/database/schema"
-import { createContext, useContext, useState, type ReactNode } from "react"
+import {
+  createContext,
+  useContext,
+  useState,
+  useEffect,
+  type ReactNode
+} from "react"
 import { setProperty } from "dot-prop"
+import { useSearchParams } from "next/navigation"
 
 interface BlockEditContextType<T = Record<string, unknown>> {
   handleEdit: (
@@ -13,6 +20,8 @@ interface BlockEditContextType<T = Record<string, unknown>> {
   isSaving: boolean
   blockId?: string
   content: T
+  isEditMode: boolean
+  setEditMode: (enabled: boolean) => void
 }
 
 const BlockEditContext = createContext<BlockEditContextType | null>(null)
@@ -34,13 +43,34 @@ export const BlockEditProvider = <T extends Record<string, unknown>>({
 }: BlockEditProviderProps<T>) => {
   const [localContent, setLocalContent] = useState<T>(initialContent)
   const [isSaving, setIsSaving] = useState(false)
+  const searchParams = useSearchParams()
+  const [isEditMode, setIsEditMode] = useState(false)
+
+  // Initialize edit mode from URL params
+  useEffect(() => {
+    const editParam = searchParams.get("edit")
+    setIsEditMode(editParam === "true")
+  }, [searchParams])
+
+  const setEditMode = (enabled: boolean) => {
+    setIsEditMode(enabled)
+
+    // Update URL without navigation
+    const newUrl = new URL(window.location.href)
+    if (enabled) {
+      newUrl.searchParams.set("edit", "true")
+    } else {
+      newUrl.searchParams.delete("edit")
+    }
+    window.history.replaceState({}, "", newUrl.toString())
+  }
 
   const handleEdit = async (
     fieldPath: string,
     value: string | number | boolean | object | Array<unknown>
   ) => {
-    if (!blockId) {
-      console.warn("No blockId")
+    if (!blockId || !isEditMode) {
+      console.warn("No blockId or not in edit mode")
       return
     }
 
@@ -74,13 +104,16 @@ export const BlockEditProvider = <T extends Record<string, unknown>>({
     }
   }
 
-  // if (!blockId) {
-  //   return children
-  // }
-
   return (
     <BlockEditContext.Provider
-      value={{ handleEdit, isSaving, blockId, content: localContent }}
+      value={{
+        handleEdit,
+        isSaving,
+        blockId,
+        content: localContent,
+        isEditMode,
+        setEditMode
+      }}
     >
       {children}
     </BlockEditContext.Provider>
@@ -91,7 +124,15 @@ export const useBlockEdit = <T = Record<string, unknown>>() => {
   const context = useContext(BlockEditContext)
 
   if (!context) {
-    throw new Error("useBlockEdit must be used within a BlockEditProvider")
+    console.warn("useBlockEdit must be used within a BlockEditProvider")
+    return {
+      setEditMode: () => null,
+      handleEdit: () => null,
+      isEditMode: false,
+      isSaving: false,
+      blockId: undefined,
+      content: {} as T
+    }
   }
 
   return context as BlockEditContextType<T>

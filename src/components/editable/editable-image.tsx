@@ -4,8 +4,8 @@ import { useState, useEffect } from "react"
 import { Upload } from "lucide-react"
 import { useUploadThing } from "@/lib/uploadthing"
 import { useBlockEdit } from "./block-edit-context"
-import { E } from "./edit-with-context"
 import { cn } from "@/lib/utils"
+import Image from "next/image"
 
 interface EditableImageProps {
   fieldPath: string
@@ -17,6 +17,13 @@ interface EditableImageProps {
   fallbackSrc?: string
   showUploadButton?: boolean
   aspectRatio?: "square" | "video" | "auto"
+  onError?: () => void
+}
+
+const aspectRatioClasses = {
+  square: "aspect-square",
+  video: "aspect-video",
+  auto: ""
 }
 
 export const EditableImage = ({
@@ -28,7 +35,8 @@ export const EditableImage = ({
   height = 128,
   fallbackSrc = "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='128' height='128' viewBox='0 0 128 128'%3E%3Crect width='128' height='128' fill='%23f3f4f6'/%3E%3Cpath d='M64 32c-17.673 0-32 14.327-32 32s14.327 32 32 32 32-14.327 32-32-14.327-32-32-32zm0 48c-8.837 0-16-7.163-16-16s7.163-16 16-16 16 7.163 16 16-7.163 16-16 16z' fill='%23d1d5db'/%3E%3C/svg%3E",
   showUploadButton = true,
-  aspectRatio = "square"
+  aspectRatio = "square",
+  onError
 }: EditableImageProps) => {
   const { handleEdit } = useBlockEdit()
   const { startUpload, isUploading } = useUploadThing("blockImageUploader")
@@ -60,12 +68,6 @@ export const EditableImage = ({
     }
   }
 
-  const aspectRatioClasses = {
-    square: "aspect-square",
-    video: "aspect-video",
-    auto: ""
-  }
-
   return (
     <div
       className={cn(
@@ -75,12 +77,12 @@ export const EditableImage = ({
       )}
     >
       {src && src !== fallbackSrc ? (
-        <E.image
-          fieldPath={fieldPath}
+        <Image
           src={src}
           alt={alt}
           width={width}
           height={height}
+          onError={onError}
           className={cn(
             "h-full w-full object-cover transition-all duration-200",
             aspectRatioClasses[aspectRatio]

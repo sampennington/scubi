@@ -6,8 +6,8 @@ import type { CoursesContent } from "@/app/dashboard/shops/[id]/components/Block
 import {
   BlockEditProvider,
   useBlockEdit
-} from "@/components/ui/block-edit-context"
-import { E } from "@/components/ui/edit-with-context"
+} from "@/components/editable/block-edit-context"
+import { E } from "@/components/editable/edit-with-context"
 
 const defaultContent: CoursesContent = {
   title: "Set your courses title here",

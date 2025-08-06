@@ -1,21 +1,27 @@
 "use client"
 
 import { useState } from "react"
-import { Edit } from "./edit"
+import { Edit } from "../ui/edit"
 import { useBlockEdit } from "./block-edit-context"
 import type { ComponentProps, ReactNode } from "react"
 import type { BlockButton } from "@/app/dashboard/shops/[id]/components/BlockForm/schemas"
-import { EditableButton } from "../editable"
+import { EditableButton } from "."
 import Image from "next/image"
+import { Button } from "../ui/button"
+import { EditableImage } from "./editable-image"
 
-// Enhanced Edit components that use context - shorter syntax
 export const E = {
   h1: ({
     fieldPath,
     children,
     ...props
   }: { fieldPath: string } & ComponentProps<typeof Edit.h1>) => {
-    const { handleEdit } = useBlockEdit()
+    const { handleEdit, isEditMode } = useBlockEdit()
+    console.log({ isEditMode })
+    if (!isEditMode) {
+      return <h1 {...props}>{children}</h1>
+    }
+
     return (
       <Edit.h1 {...props} onSave={(value) => handleEdit(fieldPath, value)}>
         {children}
@@ -28,7 +34,12 @@ export const E = {
     children,
     ...props
   }: { fieldPath: string } & ComponentProps<typeof Edit.h2>) => {
-    const { handleEdit } = useBlockEdit()
+    const { handleEdit, isEditMode } = useBlockEdit()
+
+    if (!isEditMode) {
+      return <h2 {...props}>{children}</h2>
+    }
+
     return (
       <Edit.h2 {...props} onSave={(value) => handleEdit(fieldPath, value)}>
         {children}
@@ -41,7 +52,12 @@ export const E = {
     children,
     ...props
   }: { fieldPath: string } & ComponentProps<typeof Edit.h3>) => {
-    const { handleEdit } = useBlockEdit()
+    const { handleEdit, isEditMode } = useBlockEdit()
+
+    if (!isEditMode) {
+      return <h3 {...props}>{children}</h3>
+    }
+
     return (
       <Edit.h3 {...props} onSave={(value) => handleEdit(fieldPath, value)}>
         {children}
@@ -54,7 +70,12 @@ export const E = {
     children,
     ...props
   }: { fieldPath: string } & ComponentProps<typeof Edit.h4>) => {
-    const { handleEdit } = useBlockEdit()
+    const { handleEdit, isEditMode } = useBlockEdit()
+
+    if (!isEditMode) {
+      return <h4 {...props}>{children}</h4>
+    }
+
     return (
       <Edit.h4 {...props} onSave={(value) => handleEdit(fieldPath, value)}>
         {children}
@@ -67,7 +88,12 @@ export const E = {
     children,
     ...props
   }: { fieldPath: string } & ComponentProps<typeof Edit.h5>) => {
-    const { handleEdit } = useBlockEdit()
+    const { handleEdit, isEditMode } = useBlockEdit()
+
+    if (!isEditMode) {
+      return <h5 {...props}>{children}</h5>
+    }
+
     return (
       <Edit.h5 {...props} onSave={(value) => handleEdit(fieldPath, value)}>
         {children}
@@ -80,7 +106,12 @@ export const E = {
     children,
     ...props
   }: { fieldPath: string } & ComponentProps<typeof Edit.h6>) => {
-    const { handleEdit } = useBlockEdit()
+    const { handleEdit, isEditMode } = useBlockEdit()
+
+    if (!isEditMode) {
+      return <h6 {...props}>{children}</h6>
+    }
+
     return (
       <Edit.h6 {...props} onSave={(value) => handleEdit(fieldPath, value)}>
         {children}
@@ -93,7 +124,12 @@ export const E = {
     children,
     ...props
   }: { fieldPath: string } & ComponentProps<typeof Edit.p>) => {
-    const { handleEdit } = useBlockEdit()
+    const { handleEdit, isEditMode } = useBlockEdit()
+
+    if (!isEditMode) {
+      return <p {...props}>{children}</p>
+    }
+
     return (
       <Edit.p {...props} onSave={(value) => handleEdit(fieldPath, value)}>
         {children}
@@ -106,7 +142,12 @@ export const E = {
     children,
     ...props
   }: { fieldPath: string } & ComponentProps<typeof Edit.span>) => {
-    const { handleEdit } = useBlockEdit()
+    const { handleEdit, isEditMode } = useBlockEdit()
+
+    if (!isEditMode) {
+      return <span {...props}>{children}</span>
+    }
+
     return (
       <Edit.span {...props} onSave={(value) => handleEdit(fieldPath, value)}>
         {children}
@@ -119,7 +160,12 @@ export const E = {
     children,
     ...props
   }: { fieldPath: string } & ComponentProps<typeof Edit.div>) => {
-    const { handleEdit } = useBlockEdit()
+    const { handleEdit, isEditMode } = useBlockEdit()
+
+    if (!isEditMode) {
+      return <div {...props}>{children}</div>
+    }
+
     return (
       <Edit.div {...props} onSave={(value) => handleEdit(fieldPath, value)}>
         {children}
@@ -149,6 +195,12 @@ export const E = {
     type?: "button" | "submit" | "reset"
     onClick?: () => void
   }) => {
+    const { isEditMode } = useBlockEdit()
+
+    if (!isEditMode) {
+      return <Button {...props}>{children}</Button>
+    }
+
     return (
       <EditableButton
         fieldPath={fieldPath}
@@ -179,17 +231,23 @@ export const E = {
     alt: string
     width?: number
     height?: number
+    aspectRatio?: "square" | "video" | "auto"
   } & ComponentProps<"img">) => {
+    const { isEditMode } = useBlockEdit()
     const [imageError, setImageError] = useState(false)
 
-    // Don't render the image if there's no valid src or if there was an error
     if (!src || src === "" || imageError) {
       return null
     }
 
+    if (!isEditMode) {
+      return <Image src={src} alt={alt} width={width} height={height} />
+    }
+
     return (
-      <Image
+      <EditableImage
         {...props}
+        fieldPath={fieldPath}
         src={src}
         alt={alt}
         width={width}

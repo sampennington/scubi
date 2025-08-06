@@ -38,7 +38,6 @@ import {
 } from "@/app/dashboard/shops/[id]/components/BlockForm/schemas"
 
 export const BlockRenderer = ({ blocks }: { blocks: Block[] }) => {
-  console.log({ blocks })
   return (
     <div className="flex w-full flex-col">
       {blocks.map((block) => (

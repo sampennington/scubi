@@ -173,7 +173,7 @@ export const EditableBlock = ({
       {/* Original content - hidden when editing */}
       <div
         className={`transition-opacity duration-200 ${
-          isEditing ? "opacity-0 pointer-events-none" : "opacity-100"
+          isEditing ? "pointer-events-none opacity-0" : "opacity-100"
         }`}
         style={{ visibility: isEditing ? "hidden" : "visible" }}
       >
