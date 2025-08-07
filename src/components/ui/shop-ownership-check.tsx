@@ -1,17 +1,15 @@
 "use client"
 
+import type React from "react"
 import { useEffect, useState } from "react"
 import { checkShopOwnership } from "@/lib/actions/shop-ownership"
 
-interface ShopOwnershipCheckProps {
+interface ShopOwnerProps {
   shopId: string
-  children: (isOwner: boolean) => React.ReactNode
+  children: React.ReactNode
 }
 
-export const ShopOwnershipCheck = ({
-  shopId,
-  children
-}: ShopOwnershipCheckProps) => {
+export const ShopOwner: React.FC<ShopOwnerProps> = ({ shopId, children }) => {
   const [isOwner, setIsOwner] = useState(false)
   const [isLoading, setIsLoading] = useState(true)
 
@@ -31,9 +29,9 @@ export const ShopOwnershipCheck = ({
     checkOwnership()
   }, [shopId])
 
-  if (isLoading) {
-    return null // Don't show anything while loading
+  if (isLoading || !isOwner) {
+    return null
   }
 
-  return <>{children(isOwner)}</>
+  return children
 }

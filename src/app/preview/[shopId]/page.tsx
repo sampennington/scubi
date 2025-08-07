@@ -1,7 +1,7 @@
 import { api } from "@/lib/api"
 import { notFound } from "next/navigation"
-import Preview from "./preview"
 import { checkShopOwnership } from "@/lib/actions/shop-ownership"
+import DiveShopSite from "@/templates/default"
 
 export default async function PreviewPage({
   params
@@ -27,12 +27,11 @@ export default async function PreviewPage({
   }
 
   return (
-    <Preview
-      page={currentPage}
+    <DiveShopSite
+      currentPage={currentPage}
       pages={pages}
-      blocks={blocks}
       siteSettings={siteSettings}
-      isShopOwner={isShopOwner}
+      blocks={blocks}
     />
   )
 }

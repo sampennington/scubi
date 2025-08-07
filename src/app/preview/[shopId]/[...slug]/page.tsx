@@ -1,6 +1,6 @@
 import { api } from "@/lib/api"
+import DiveShopSite from "@/templates/default"
 import { notFound } from "next/navigation"
-import Preview from "../preview"
 
 export default async function PreviewPage({
   params
@@ -31,8 +31,8 @@ export default async function PreviewPage({
   }
 
   return (
-    <Preview
-      page={currentPage}
+    <DiveShopSite
+      currentPage={currentPage}
       pages={pages}
       blocks={blocks}
       siteSettings={siteSettings}

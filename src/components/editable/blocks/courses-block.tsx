@@ -8,6 +8,7 @@ import {
   useBlockEdit
 } from "@/components/editable/block-edit-context"
 import { E } from "@/components/editable/edit-with-context"
+import { ShopOwner } from "@/components/ui/shop-ownership-check"
 
 const defaultContent: CoursesContent = {
   title: "Set your courses title here",
@@ -194,16 +195,18 @@ const CoursesBlockContent = () => {
         )}
 
         {/* Add Course Button */}
-        <div className="mt-8 text-center">
-          <Button
-            onClick={addNewCourse}
-            variant="outline"
-            className="flex items-center gap-2"
-          >
-            <Plus className="h-4 w-4" />
-            Add Course
-          </Button>
-        </div>
+        <ShopOwner shopId={shopId}>
+          <div className="mt-8 text-center">
+            <Button
+              onClick={addNewCourse}
+              variant="outline"
+              className="flex items-center gap-2"
+            >
+              <Plus className="h-4 w-4" />
+              Add Course
+            </Button>
+          </div>
+        </ShopOwner>
 
         {layout === "list" && (
           <div className="space-y-6">
