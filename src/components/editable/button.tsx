@@ -66,7 +66,6 @@ export const EditableButton = ({
       {...props}
     >
       {icon && icon}
-
       <Edit.span onSave={(value) => handleEdit(fieldPath, value)}>
         {children}
       </Edit.span>

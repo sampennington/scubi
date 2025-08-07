@@ -197,7 +197,20 @@ export const E = {
     const { isEditMode } = useBlockEdit()
 
     if (!isEditMode) {
-      return <Button {...props}>{children}</Button>
+      return (
+        <Button
+          icon={icon}
+          variant={variant}
+          size={size}
+          className={className}
+          disabled={disabled}
+          type={type}
+          onClick={onClick}
+          {...props}
+        >
+          {children}
+        </Button>
+      )
     }
 
     return (

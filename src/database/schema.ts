@@ -5,7 +5,8 @@ import {
   boolean,
   integer,
   jsonb,
-  unique
+  unique,
+  primaryKey
 } from "drizzle-orm/pg-core"
 
 export const BlockType = {
@@ -120,15 +121,21 @@ export const shops = pgTable("shops", {
   createdAt: timestamp("created_at").defaultNow().notNull()
 })
 
-export const shopMembers = pgTable("shop_members", {
-  userId: text("user_id")
-    .references(() => users.id, { onDelete: "cascade" })
-    .notNull(),
-  shopId: text("shop_id")
-    .references(() => shops.id, { onDelete: "cascade" })
-    .notNull(),
-  role: text("role").default("editor") // 'admin', 'editor', 'viewer'
-})
+export const shopMembers = pgTable(
+  "shop_members",
+  {
+    userId: text("user_id")
+      .references(() => users.id, { onDelete: "cascade" })
+      .notNull(),
+    shopId: text("shop_id")
+      .references(() => shops.id, { onDelete: "cascade" })
+      .notNull(),
+    role: text("role").default("editor") // 'admin', 'editor', 'viewer'
+  },
+  (table) => ({
+    pk: primaryKey({ columns: [table.userId, table.shopId] })
+  })
+)
 
 export const pages = pgTable(
   "pages",
