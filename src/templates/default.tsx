@@ -9,10 +9,6 @@ import { Favicon } from "@/components/ui/favicon"
 
 import { ThemeProvider as NextThemeProvider } from "next-themes"
 
-type User = {
-  isShopOwner: boolean
-}
-
 export const DiveShopSite = ({
   pages,
   siteSettings,

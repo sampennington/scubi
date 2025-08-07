@@ -9,6 +9,7 @@ import {
 } from "@/components/editable/block-edit-context"
 import { E } from "@/components/editable/edit-with-context"
 import { ShopOwner } from "@/components/ui/shop-ownership-check"
+import { useTemplate } from "@/components/template-context"
 
 const defaultContent: CoursesContent = {
   title: "Set your courses title here",
@@ -44,6 +45,8 @@ const getLevelColor = (level: string) => {
 
 const CoursesBlockContent = () => {
   const { content, handleEdit } = useBlockEdit<CoursesContent>()
+  const { shopId } = useTemplate()
+
   const {
     title,
     description,

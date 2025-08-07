@@ -49,9 +49,6 @@ export const ContactFormBlock = ({
     e.preventDefault()
     setIsSubmitting(true)
 
-    // TODO: Send form data to server
-    console.log(`Sending form data to ${emailTo}`)
-
     setIsSubmitting(false)
     setIsSubmitted(true)
 
