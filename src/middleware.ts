@@ -3,6 +3,18 @@ import { type NextRequest, NextResponse } from "next/server"
 export async function middleware(request: NextRequest) {
   const hostname = request.headers.get("host") || ""
 
+  // Skip middleware for static assets and API routes to improve performance
+  const pathname = request.nextUrl.pathname
+  if (
+    pathname.startsWith("/_next/") ||
+    pathname.startsWith("/api/") ||
+    pathname.startsWith("/favicon.ico") ||
+    pathname.startsWith("/manifest.webmanifest") ||
+    pathname.includes(".")
+  ) {
+    return NextResponse.next()
+  }
+
   // Handle subdomain routing for site previews
   // Production: shopname.yourdomain.com
   // Development: shopname.scubi.local:3000
@@ -29,13 +41,22 @@ export async function middleware(request: NextRequest) {
   // Use getSession in your RSC to protect a route via SSR or useAuthenticate client side
   const sessionCookie = request.cookies.get("scubi_session_token")
 
+  console.log("Middleware path:", request.nextUrl.pathname)
+  console.log("Session cookie found:", !!sessionCookie)
+  console.log(
+    "All cookies:",
+    request.cookies.getAll().map((c) => c.name)
+  )
+
   if (!sessionCookie) {
     const redirectTo = request.nextUrl.pathname + request.nextUrl.search
+    console.log("No session, redirecting to:", redirectTo)
     return NextResponse.redirect(
       new URL(`/auth/sign-in?redirectTo=${redirectTo}`, request.url)
     )
   }
 
+  console.log("Session found, allowing access")
   return NextResponse.next()
 }
 

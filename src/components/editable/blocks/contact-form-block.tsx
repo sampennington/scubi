@@ -121,14 +121,16 @@ const ContactFormBlockContent = () => {
                   htmlFor={field.name}
                   className="mb-2 block font-medium text-sm"
                 >
-                  <E.span fieldPath={`fields[${index}].label`}>
+                  <E.span
+                    fieldPath={`fields[${index}].label`}
+                    className="inline"
+                  >
                     {field.label}
                   </E.span>
                   {field.required && <span className="text-red-500"> *</span>}
                 </label>
                 <Field
                   field={field}
-                  fieldIndex={index}
                   handleInputChange={handleInputChange}
                   formData={formData}
                 />
@@ -171,12 +173,10 @@ const SuccessMessage = ({ successMessage }: { successMessage: string }) => {
 
 const Field = ({
   field,
-  fieldIndex,
   handleInputChange,
   formData
 }: {
   field: ContactFormContent["fields"][0]
-  fieldIndex: number
   handleInputChange: (name: string, value: string) => void
   formData: Record<string, string>
 }) => {

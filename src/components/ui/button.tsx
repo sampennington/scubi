@@ -57,7 +57,6 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
           ref={ref}
           {...props}
         >
-          {icon && icon}
           {children}
         </Comp>
       </>

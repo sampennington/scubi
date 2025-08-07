@@ -208,6 +208,7 @@ export const E = {
           onClick={onClick}
           {...props}
         >
+          {icon && icon}
           {children}
         </Button>
       )
