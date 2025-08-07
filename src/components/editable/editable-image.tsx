@@ -68,6 +68,7 @@ export const EditableImage = ({
     }
   }
 
+  console.log({ src, fallbackSrc })
   return (
     <div
       className={cn(
@@ -156,6 +157,10 @@ export const NoEditImage = ({
   aspectRatio: "square" | "video" | "auto"
   onError?: () => void
 }) => {
+  if (!src) {
+    return null
+  }
+
   return (
     <Image
       src={src}

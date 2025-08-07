@@ -249,8 +249,8 @@ export const E = {
     const { isEditMode } = useBlockEdit()
     const [imageError, setImageError] = useState(false)
 
-    if (!src || src === "" || imageError) {
-      return null
+    if (imageError) {
+      console.log(imageError)
     }
 
     if (!isEditMode) {

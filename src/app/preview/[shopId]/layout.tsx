@@ -10,7 +10,7 @@ export default async function Layout({
 }) {
   const { shopId } = await params
   const isShopOwner = await checkShopOwnership(shopId)
-  console.log({ isShopOwner })
+
   if (!isShopOwner) {
     return children
   }

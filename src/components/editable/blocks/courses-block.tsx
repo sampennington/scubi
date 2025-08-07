@@ -45,6 +45,7 @@ const getLevelColor = (level: string) => {
 
 const CoursesBlockContent = () => {
   const { content, handleEdit } = useBlockEdit<CoursesContent>()
+
   const { shopId } = useTemplate()
 
   const {
@@ -197,7 +198,6 @@ const CoursesBlockContent = () => {
           </div>
         )}
 
-        {/* Add Course Button */}
         <ShopOwner shopId={shopId}>
           <div className="mt-8 text-center">
             <Button
@@ -218,7 +218,7 @@ const CoursesBlockContent = () => {
                 key={index}
                 className="flex gap-6 rounded-lg border bg-card p-6"
               >
-                <div className="flex-shrink-0 h-32 w-48 overflow-hidden rounded-lg">
+                <div className="h-32 w-48 flex-shrink-0 overflow-hidden rounded-lg">
                   <E.image
                     fieldPath={`courses[${index}].image`}
                     src={course.image || ""}

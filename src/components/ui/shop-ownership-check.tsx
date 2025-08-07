@@ -5,11 +5,11 @@ import { useEffect, useState } from "react"
 import { checkShopOwnership } from "@/lib/actions/shop-ownership"
 
 interface ShopOwnerProps {
-  shopId: string
   children: React.ReactNode
+  shopId: string
 }
 
-export const ShopOwner: React.FC<ShopOwnerProps> = ({ shopId, children }) => {
+export const ShopOwner: React.FC<ShopOwnerProps> = ({ children, shopId }) => {
   const [isOwner, setIsOwner] = useState(false)
   const [isLoading, setIsLoading] = useState(true)
 

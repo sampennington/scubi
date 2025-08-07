@@ -1,11 +1,13 @@
 "use server"
 
 import { api } from "@/lib/api"
-import { authClient } from "../auth-client"
+import { headers } from "next/headers"
+import { auth } from "../auth"
 
 export async function checkShopOwnership(shopId: string): Promise<boolean> {
   try {
-    const { data: session } = await authClient.getSession()
+    const session = await auth.api.getSession({ headers: await headers() })
+
     if (!session?.user) {
       return false
     }
