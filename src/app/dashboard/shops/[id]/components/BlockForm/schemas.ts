@@ -239,7 +239,7 @@ export const CoursesContentSchema = z.object({
   description: z.string().optional(),
   courses: z.array(CourseSchema),
   layout: z.enum(["grid", "list"]).optional(),
-  columns: z.enum(["2", "3"]).optional(),
+  columns: z.enum(["2", "3", "4"]).optional(),
   showPricing: z.boolean().optional(),
   showLevels: z.boolean().optional()
 })

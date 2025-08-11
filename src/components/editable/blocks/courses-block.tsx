@@ -10,6 +10,7 @@ import {
 import { E } from "@/components/editable/edit-with-context"
 import { ShopOwner } from "@/components/ui/shop-ownership-check"
 import { useTemplate } from "@/components/template-context"
+import { CoursesSettingsPanel } from "./courses-settings-panel"
 
 const defaultContent: CoursesContent = {
   title: "Set your courses title here",
@@ -77,11 +78,13 @@ const CoursesBlockContent = () => {
 
   const gridCols: Record<number, string> = {
     2: "grid-cols-1 md:grid-cols-2",
-    3: "grid-cols-1 md:grid-cols-2 lg:grid-cols-3"
+    3: "grid-cols-1 md:grid-cols-2 lg:grid-cols-3",
+    4: "grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4"
   }
 
   return (
-    <section className="py-16">
+    <section className="group relative py-16">
+      <CoursesSettingsPanel />
       <div className="container mx-auto px-4">
         {(title || description) && (
           <div className="mb-12 text-center">
