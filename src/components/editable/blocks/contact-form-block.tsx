@@ -18,6 +18,7 @@ import {
   useBlockEdit
 } from "@/components/editable/block-edit-context"
 import { E } from "@/components/editable/edit-with-context"
+import { ContactFormSettingsPanel } from "./contact-form-settings-panel"
 
 const defaultContent: ContactFormContent = {
   title: "Contact Us",
@@ -90,7 +91,8 @@ const ContactFormBlockContent = () => {
   }
 
   return (
-    <section className="py-16">
+    <section className="py-16 group relative">
+      <ContactFormSettingsPanel />
       <div className="container mx-auto px-4">
         <div className="mx-auto max-w-2xl">
           {(title || description) && (

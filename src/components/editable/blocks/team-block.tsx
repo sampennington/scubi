@@ -8,6 +8,7 @@ import {
 } from "@/components/editable/block-edit-context"
 import { E } from "@/components/editable/edit-with-context"
 import { EditableImage } from "@/components/editable/editable-image"
+import { TeamSettingsPanel } from "./team-settings-panel"
 
 const defaultContent: TeamContent = {
   title: "Set your team title here",
@@ -36,11 +37,12 @@ const TeamBlockContent = () => {
   const gridCols = {
     2: "grid-cols-1 md:grid-cols-2",
     3: "grid-cols-1 md:grid-cols-2 lg:grid-cols-3",
-    4: "grid-cols-1 md:grid-cols-2 lg:grid-cols-4"
+    4: "grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4"
   }
 
   return (
-    <section className="py-16">
+    <section className="py-16 group relative">
+      <TeamSettingsPanel />
       <div className="container mx-auto px-4">
         {(title || description) && (
           <div className="mb-12 text-center">

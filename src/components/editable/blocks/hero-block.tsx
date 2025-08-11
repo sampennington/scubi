@@ -8,6 +8,7 @@ import {
   useBlockEdit
 } from "@/components/editable/block-edit-context"
 import { E } from "@/components/editable/edit-with-context"
+import { HeroSettingsPanel } from "./hero-settings-panel"
 
 const defaultContent: HeroContent = {
   title: "Set your title here",
@@ -29,7 +30,8 @@ const HeroBlockContent = () => {
   const { isSaving, content } = useBlockEdit<HeroContent>()
 
   return (
-    <section className="relative w-full overflow-hidden py-20">
+    <section className="relative w-full overflow-hidden py-20 group">
+      <HeroSettingsPanel />
       <div className="absolute inset-0 z-0">
         <Image
           src={content.image}

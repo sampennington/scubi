@@ -7,6 +7,7 @@ import {
   useBlockEdit
 } from "@/components/editable/block-edit-context"
 import { E } from "@/components/editable/edit-with-context"
+import { MultiColumnSettingsPanel } from "./multi-column-settings-panel"
 
 // Icon mapping for Lucide React icons
 const ICONS = {
@@ -128,7 +129,7 @@ const getIcon = (iconName: string) => {
 }
 
 const MultiColumnBlockContent = () => {
-  const { isSaving, content } = useBlockEdit<MultiColumnContent>()
+  const { content } = useBlockEdit<MultiColumnContent>()
   const {
     title,
     description,
@@ -142,20 +143,21 @@ const MultiColumnBlockContent = () => {
     "1": "grid-cols-1",
     "2": "grid-cols-1 md:grid-cols-2",
     "3": "grid-cols-1 md:grid-cols-2 lg:grid-cols-3",
-    "4": "grid-cols-1 md:grid-cols-2 lg:grid-cols-4"
+    "4": "grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4"
   }
 
-  const textAlignment = {
+  const textAlign = {
     left: "text-left",
     center: "text-center",
     right: "text-right"
   }
 
   return (
-    <section className="py-16">
+    <section className="py-16 group relative">
+      <MultiColumnSettingsPanel />
       <div className="container mx-auto px-4">
         {(title || description) && (
-          <div className={`mb-12 ${textAlignment[alignment]}`}>
+          <div className={`mb-12 ${textAlign[alignment]}`}>
             {title && (
               <E.h2
                 fieldPath="title"
@@ -179,7 +181,7 @@ const MultiColumnBlockContent = () => {
           {columns.map((column, index) => (
             <div
               key={index}
-              className={`flex flex-col ${textAlignment[alignment]}`}
+              className={`flex flex-col ${textAlign[alignment]}`}
             >
               {showIcons && column.icon && (
                 <div className="mb-4 flex justify-center">
@@ -212,12 +214,6 @@ const MultiColumnBlockContent = () => {
             </div>
           ))}
         </div>
-
-        {isSaving && (
-          <div className="absolute top-4 right-4 rounded bg-black/50 px-2 py-1 text-sm text-white">
-            Saving...
-          </div>
-        )}
       </div>
     </section>
   )
