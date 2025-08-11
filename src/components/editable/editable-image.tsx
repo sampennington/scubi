@@ -68,7 +68,6 @@ export const EditableImage = ({
     }
   }
 
-  console.log({ src, fallbackSrc })
   return (
     <div
       className={cn(

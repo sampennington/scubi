@@ -19,7 +19,6 @@ export const HeroSettingsPanel = () => {
   const {
     title = "",
     text = "",
-    image = "",
     primaryButton = { label: "", url: "", variant: "default" },
     secondaryButton = { label: "", url: "", variant: "secondary" }
   } = content
