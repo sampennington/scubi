@@ -16,6 +16,12 @@ import {
 import { useBlockEdit } from "../block-edit-context"
 import type { CoursesContent } from "@/app/dashboard/shops/[id]/components/BlockForm/schemas"
 import { Switch } from "@/components/ui/switch"
+import {
+  DragDropContext,
+  Droppable,
+  Draggable,
+  type DropResult
+} from "@hello-pangea/dnd"
 
 export const CoursesSettingsPanel = () => {
   const { content, handleEdit } = useBlockEdit<CoursesContent>()
@@ -44,6 +50,16 @@ export const CoursesSettingsPanel = () => {
     }
     const updatedCourses = [...courses, newCourse]
     handleEdit("courses", updatedCourses)
+  }
+
+  const handleDragEnd = (result: DropResult) => {
+    if (!result.destination) return
+
+    const items = Array.from(courses)
+    const [reorderedItem] = items.splice(result.source.index, 1)
+    items.splice(result.destination.index, 0, reorderedItem)
+
+    handleEdit("courses", items)
   }
 
   return (
@@ -112,7 +128,7 @@ export const CoursesSettingsPanel = () => {
 
       <SettingsSection title="Course Management">
         <div className="flex items-center justify-between">
-          <span className="text-sm font-medium">
+          <span className="font-medium text-sm">
             Courses ({courses.length})
           </span>
           <Button
@@ -125,42 +141,63 @@ export const CoursesSettingsPanel = () => {
           </Button>
         </div>
 
-        <div className="max-h-64 space-y-3 overflow-y-auto">
-          {courses.map((course, index) => (
-            <div
-              key={index}
-              className="flex items-center justify-between rounded-lg border bg-muted/50 p-3"
-            >
-              <div className="min-w-0 flex-1">
-                <div className="truncate font-medium text-sm">
-                  {course.title}
-                </div>
-                <div className="truncate text-muted-foreground text-xs">
-                  {course.duration} • {course.level}
-                </div>
+        <DragDropContext onDragEnd={handleDragEnd}>
+          <Droppable droppableId="courses">
+            {(provided) => (
+              <div
+                {...provided.droppableProps}
+                ref={provided.innerRef}
+                className="max-h-64 space-y-3 overflow-y-auto"
+              >
+                {courses.map((course, index) => (
+                  <Draggable
+                    key={`${course.title}-${index}`}
+                    draggableId={`${course.title}-${index}`}
+                    index={index}
+                  >
+                    {(provided, snapshot) => (
+                      <div
+                        ref={provided.innerRef}
+                        {...provided.draggableProps}
+                        className={`flex items-center justify-between rounded-lg border bg-muted/50 p-3 transition-colors ${
+                          snapshot.isDragging ? "bg-muted/80 shadow-lg" : ""
+                        }`}
+                      >
+                        <div className="min-w-0 flex-1">
+                          <div className="truncate font-medium text-sm">
+                            {course.title}
+                          </div>
+                          <div className="truncate text-muted-foreground text-xs">
+                            {course.duration} • {course.level}
+                          </div>
+                        </div>
+                        <div className="ml-2 flex items-center gap-2">
+                          <div
+                            {...provided.dragHandleProps}
+                            className="cursor-grab active:cursor-grabbing"
+                            title="Drag to reorder"
+                          >
+                            <Move className="h-3 w-3 text-muted-foreground hover:text-foreground" />
+                          </div>
+                          <Button
+                            variant="ghost"
+                            size="sm"
+                            className="h-6 w-6 p-0 text-destructive hover:text-destructive"
+                            onClick={() => removeCourse(index)}
+                            title="Remove course"
+                          >
+                            <Trash2 className="h-3 w-3" />
+                          </Button>
+                        </div>
+                      </div>
+                    )}
+                  </Draggable>
+                ))}
+                {provided.placeholder}
               </div>
-              <div className="ml-2 flex items-center gap-2">
-                <Button
-                  variant="ghost"
-                  size="sm"
-                  className="h-6 w-6 p-0 text-muted-foreground hover:text-foreground"
-                  title="Drag to reorder"
-                >
-                  <Move className="h-3 w-3" />
-                </Button>
-                <Button
-                  variant="ghost"
-                  size="sm"
-                  className="h-6 w-6 p-0 text-destructive hover:text-destructive"
-                  onClick={() => removeCourse(index)}
-                  title="Remove course"
-                >
-                  <Trash2 className="h-3 w-3" />
-                </Button>
-              </div>
-            </div>
-          ))}
-        </div>
+            )}
+          </Droppable>
+        </DragDropContext>
       </SettingsSection>
     </BlockSettingsPanel>
   )

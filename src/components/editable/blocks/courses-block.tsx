@@ -83,7 +83,7 @@ const CoursesBlockContent = () => {
   }
 
   return (
-    <section className="group relative py-16">
+    <section className="group relative rounded-xl py-16 transition-all duration-200 hover:bg-muted/5 hover:shadow-lg">
       <CoursesSettingsPanel />
       <div className="container mx-auto px-4">
         {(title || description) && (

@@ -1,13 +1,8 @@
+import type React from "react"
 import { useState } from "react"
-import { Settings } from "lucide-react"
+import { Settings, X } from "lucide-react"
 import { Button } from "../ui/button"
-import {
-  Sheet,
-  SheetContent,
-  SheetHeader,
-  SheetTitle,
-  SheetTrigger
-} from "../ui/sheet"
+import * as DialogPrimitive from "@radix-ui/react-dialog"
 import { cn } from "@/lib/utils"
 
 interface BlockSettingsPanelProps {
@@ -24,31 +19,60 @@ export const BlockSettingsPanel = ({
   const [isOpen, setIsOpen] = useState(false)
 
   return (
-    <Sheet open={isOpen} onOpenChange={setIsOpen}>
-      <SheetTrigger asChild>
+    <DialogPrimitive.Root open={isOpen} onOpenChange={setIsOpen}>
+      <DialogPrimitive.Trigger asChild>
         <Button
           variant="ghost"
           size="sm"
           className={cn(
-            "absolute top-2 right-2 h-8 w-8 p-0 opacity-0 transition-opacity group-hover:opacity-100",
-            "border bg-background/80 shadow-sm backdrop-blur-sm hover:bg-background",
+            "absolute top-3 right-3 h-10 w-10 p-0 opacity-0 transition-all duration-200 group-hover:opacity-100",
+            "border-2 border-border bg-background/90 shadow-lg backdrop-blur-sm hover:scale-110 hover:bg-background",
+            "hover:border-primary/50 hover:shadow-xl",
             className
           )}
         >
-          <Settings className="h-4 w-4" />
+          <Settings className="h-5 w-5 text-muted-foreground transition-colors hover:text-primary" />
           <span className="sr-only">Block Settings</span>
         </Button>
-      </SheetTrigger>
-      <SheetContent side="right" className="w-96 sm:w-[500px]">
-        <SheetHeader>
-          <SheetTitle className="flex items-center gap-2">
-            <Settings className="h-5 w-5" />
+      </DialogPrimitive.Trigger>
+
+      <DialogPrimitive.Portal>
+        <DialogPrimitive.Overlay className="data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 fixed inset-0 z-50 bg-black/20 data-[state=closed]:animate-out data-[state=open]:animate-in" />
+        <DialogPrimitive.Content
+          className={cn(
+            "fixed top-0 right-0 z-50 h-full w-96 bg-background p-6 shadow-xl transition-all duration-300",
+            "data-[state=closed]:animate-out data-[state=open]:animate-in",
+            "data-[state=closed]:slide-out-to-right data-[state=open]:slide-in-from-right",
+            "border-border border-l",
+            "sm:w-[500px]",
+            className
+          )}
+        >
+          <DialogPrimitive.Title className="sr-only">
             {title}
-          </SheetTitle>
-        </SheetHeader>
-        <div className="mt-6 space-y-6">{children}</div>
-      </SheetContent>
-    </Sheet>
+          </DialogPrimitive.Title>
+
+          <div className="mb-6 flex items-center justify-between border-b pb-4">
+            <div className="flex items-center gap-2">
+              <Settings className="h-5 w-5" />
+              <h2 className="font-semibold text-lg">{title}</h2>
+            </div>
+            <DialogPrimitive.Close asChild>
+              <Button
+                variant="ghost"
+                size="sm"
+                className="h-8 w-8 p-0 hover:bg-muted"
+              >
+                <X className="h-4 w-4" />
+                <span className="sr-only">Close</span>
+              </Button>
+            </DialogPrimitive.Close>
+          </div>
+
+          <div className="space-y-6">{children}</div>
+        </DialogPrimitive.Content>
+      </DialogPrimitive.Portal>
+    </DialogPrimitive.Root>
   )
 }
 
