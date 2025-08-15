@@ -1,18 +1,10 @@
 "use client"
 
 import { useEffect } from "react"
-
-type Theme = {
-  primaryColor: string
-  secondaryColor: string
-  accentColor: string
-  fontFamilyHeading?: string
-  fontFamilyBody?: string
-}
+import { useSite } from "../site-context"
 
 interface ThemeProviderProps {
   children: React.ReactNode
-  theme: Theme
 }
 
 // Font loading utility
@@ -31,14 +23,15 @@ const loadGoogleFont = (fontFamily: string) => {
   document.head.appendChild(link)
 }
 
-export function ThemeProvider({ children, theme }: ThemeProviderProps) {
+export function ThemeProvider({ children }: ThemeProviderProps) {
+  const { siteSettings } = useSite()
   const {
     primaryColor,
     secondaryColor,
     accentColor,
     fontFamilyHeading,
     fontFamilyBody
-  } = theme
+  } = siteSettings
 
   // Load fonts when theme changes
   useEffect(() => {

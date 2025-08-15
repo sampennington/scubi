@@ -40,7 +40,7 @@
           "level": "info",
           "options": {}
         },
-        "useTemplate": {
+        "useSite": {
           "fix": "safe",
           "level": "info"
         }

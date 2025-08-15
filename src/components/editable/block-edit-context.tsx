@@ -20,8 +20,6 @@ interface BlockEditContextType<T = Record<string, unknown>> {
   isSaving: boolean
   blockId?: string
   content: T
-  isEditMode: boolean
-  setEditMode: (enabled: boolean) => void
 }
 
 const BlockEditContext = createContext<BlockEditContextType | null>(null)
@@ -52,18 +50,6 @@ export const BlockEditProvider = <T extends Record<string, unknown>>({
     setIsEditMode(editParam === "true")
   }, [searchParams])
 
-  const setEditMode = (enabled: boolean) => {
-    setIsEditMode(enabled)
-
-    // Update URL without navigation
-    const newUrl = new URL(window.location.href)
-    if (enabled) {
-      newUrl.searchParams.set("edit", "true")
-    } else {
-      newUrl.searchParams.delete("edit")
-    }
-    window.history.replaceState({}, "", newUrl.toString())
-  }
 
   const handleEdit = async (
     fieldPath: string,
@@ -74,11 +60,9 @@ export const BlockEditProvider = <T extends Record<string, unknown>>({
       return
     }
 
-    // Optimistic update
     const updatedContent = setProperty(localContent, fieldPath, value)
     setLocalContent(updatedContent)
 
-    // Notify parent of content change
     if (onContentChange) {
       onContentChange(updatedContent)
     }
@@ -90,7 +74,6 @@ export const BlockEditProvider = <T extends Record<string, unknown>>({
         type
       })
     } catch (error) {
-      // Revert on error
       setLocalContent((prev) =>
         setProperty(
           prev,
@@ -111,8 +94,6 @@ export const BlockEditProvider = <T extends Record<string, unknown>>({
         isSaving,
         blockId,
         content: localContent,
-        isEditMode,
-        setEditMode
       }}
     >
       {children}
@@ -126,9 +107,7 @@ export const useBlockEdit = <T = Record<string, unknown>>() => {
   if (!context) {
     console.warn("useBlockEdit must be used within a BlockEditProvider")
     return {
-      setEditMode: () => null,
       handleEdit: () => null,
-      isEditMode: false,
       isSaving: false,
       blockId: undefined,
       content: {} as T

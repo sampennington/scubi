@@ -1,4 +1,4 @@
-import { TemplateWrapper } from "@/components/template-wrapper"
+import { SiteWrapper } from "@/components/site-wrapper"
 
 export default async function PreviewPage({
   params
@@ -7,5 +7,5 @@ export default async function PreviewPage({
 }) {
   const { shopId, slug } = await params
 
-  return <TemplateWrapper shopId={shopId} slug={slug} />
+  return <SiteWrapper shopId={shopId} slug={slug} />
 }

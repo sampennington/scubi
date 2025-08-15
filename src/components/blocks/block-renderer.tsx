@@ -36,8 +36,10 @@ import {
   isCoursesContent,
   isMarineLifeContent
 } from "@/app/dashboard/shops/[id]/components/BlockForm/schemas"
+import { useSite } from "../site-context"
 
-export const BlockRenderer = ({ blocks }: { blocks: Block[] }) => {
+export const BlockRenderer = () => {
+  const { blocks } = useSite()
   return (
     <div className="flex w-full flex-col">
       {blocks.map((block) => (

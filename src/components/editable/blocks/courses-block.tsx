@@ -9,7 +9,7 @@ import {
 } from "@/components/editable/block-edit-context"
 import { E } from "@/components/editable/edit-with-context"
 import { ShopOwner } from "@/components/ui/shop-ownership-check"
-import { useTemplate } from "@/components/template-context"
+import { useSite } from "@/components/site-context"
 import { CoursesSettingsPanel } from "./courses-settings-panel"
 
 const defaultContent: CoursesContent = {
@@ -47,7 +47,7 @@ const getLevelColor = (level: string) => {
 const CoursesBlockContent = () => {
   const { content, handleEdit } = useBlockEdit<CoursesContent>()
 
-  const { shopId } = useTemplate()
+  const { shopId } = useSite()
 
   const {
     title,

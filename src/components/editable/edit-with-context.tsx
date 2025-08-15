@@ -8,6 +8,7 @@ import type { BlockButton } from "@/app/dashboard/shops/[id]/components/BlockFor
 import { EditableButton } from "."
 import { Button } from "../ui/button"
 import { EditableImage, NoEditImage } from "./editable-image"
+import { useSite } from "../site-context"
 
 export const E = {
   h1: ({
@@ -15,8 +16,9 @@ export const E = {
     children,
     ...props
   }: { fieldPath: string } & ComponentProps<typeof Edit.h1>) => {
-    const { handleEdit, isEditMode } = useBlockEdit()
-    console.log({ isEditMode })
+    const { handleEdit } = useBlockEdit()
+    const { isEditMode } = useSite()
+
     if (!isEditMode) {
       return <h1 {...props}>{children}</h1>
     }
@@ -33,8 +35,8 @@ export const E = {
     children,
     ...props
   }: { fieldPath: string } & ComponentProps<typeof Edit.h2>) => {
-    const { handleEdit, isEditMode } = useBlockEdit()
-
+    const { handleEdit } = useBlockEdit()
+    const { isEditMode } = useSite()
     if (!isEditMode) {
       return <h2 {...props}>{children}</h2>
     }
@@ -51,8 +53,8 @@ export const E = {
     children,
     ...props
   }: { fieldPath: string } & ComponentProps<typeof Edit.h3>) => {
-    const { handleEdit, isEditMode } = useBlockEdit()
-
+    const { handleEdit } = useBlockEdit()
+    const { isEditMode } = useSite()
     if (!isEditMode) {
       return <h3 {...props}>{children}</h3>
     }
@@ -69,8 +71,8 @@ export const E = {
     children,
     ...props
   }: { fieldPath: string } & ComponentProps<typeof Edit.h4>) => {
-    const { handleEdit, isEditMode } = useBlockEdit()
-
+    const { handleEdit } = useBlockEdit()
+    const { isEditMode } = useSite()
     if (!isEditMode) {
       return <h4 {...props}>{children}</h4>
     }
@@ -87,8 +89,8 @@ export const E = {
     children,
     ...props
   }: { fieldPath: string } & ComponentProps<typeof Edit.h5>) => {
-    const { handleEdit, isEditMode } = useBlockEdit()
-
+    const { handleEdit } = useBlockEdit()
+    const { isEditMode } = useSite()
     if (!isEditMode) {
       return <h5 {...props}>{children}</h5>
     }
@@ -105,8 +107,8 @@ export const E = {
     children,
     ...props
   }: { fieldPath: string } & ComponentProps<typeof Edit.h6>) => {
-    const { handleEdit, isEditMode } = useBlockEdit()
-
+    const { handleEdit } = useBlockEdit()
+    const { isEditMode } = useSite()
     if (!isEditMode) {
       return <h6 {...props}>{children}</h6>
     }
@@ -123,8 +125,8 @@ export const E = {
     children,
     ...props
   }: { fieldPath: string } & ComponentProps<typeof Edit.p>) => {
-    const { handleEdit, isEditMode } = useBlockEdit()
-
+    const { handleEdit } = useBlockEdit()
+    const { isEditMode } = useSite()
     if (!isEditMode) {
       return <p {...props}>{children}</p>
     }
@@ -141,7 +143,8 @@ export const E = {
     children,
     ...props
   }: { fieldPath: string } & ComponentProps<typeof Edit.span>) => {
-    const { handleEdit, isEditMode } = useBlockEdit()
+    const { handleEdit } = useBlockEdit()
+    const { isEditMode } = useSite()
 
     if (!isEditMode) {
       return <span {...props}>{children}</span>
@@ -159,8 +162,8 @@ export const E = {
     children,
     ...props
   }: { fieldPath: string } & ComponentProps<typeof Edit.div>) => {
-    const { handleEdit, isEditMode } = useBlockEdit()
-
+    const { handleEdit } = useBlockEdit()
+    const { isEditMode } = useSite()
     if (!isEditMode) {
       return <div {...props}>{children}</div>
     }
@@ -194,8 +197,7 @@ export const E = {
     type?: "button" | "submit" | "reset"
     onClick?: () => void
   }) => {
-    const { isEditMode } = useBlockEdit()
-
+    const { isEditMode } = useSite()
     if (!isEditMode) {
       return (
         <Button
@@ -245,7 +247,7 @@ export const E = {
     width?: number
     height?: number
   } & ComponentProps<"img">) => {
-    const { isEditMode } = useBlockEdit()
+    const { isEditMode } = useSite()
     const [imageError, setImageError] = useState(false)
 
     if (imageError) {

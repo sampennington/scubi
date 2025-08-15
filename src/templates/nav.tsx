@@ -1,15 +1,10 @@
 import { Facebook, Instagram, MessageCircle } from "lucide-react"
-import type { SiteSettings } from "@/lib/api/types"
 import type { NavigationItem } from "@/lib/api"
 import Image from "next/image"
+import { useSite } from "@/components/site-context"
 
-export const Nav = ({
-  pages,
-  siteSettings
-}: {
-  pages: NavigationItem[]
-  siteSettings: SiteSettings
-}) => {
+export const Nav = () => {
+  const { siteSettings, pages } = useSite()
   return (
     <nav className="sticky top-0 z-50 flex h-16 items-center border-border/40 border-b bg-background/95 backdrop-blur-sm">
       <div className="container relative mx-auto px-4 py-4">

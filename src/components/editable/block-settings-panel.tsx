@@ -5,8 +5,8 @@ import { Button } from "../ui/button"
 import * as DialogPrimitive from "@radix-ui/react-dialog"
 import { cn } from "@/lib/utils"
 import { ShopOwner } from "../ui/shop-ownership-check"
-import { useTemplate } from "../template-context"
 import { useBlockEdit } from "./block-edit-context"
+import { useSite } from "../site-context"
 
 interface BlockSettingsPanelProps {
   children: React.ReactNode
@@ -20,7 +20,7 @@ export const BlockSettingsPanel = ({
   className
 }: BlockSettingsPanelProps) => {
   const [isOpen, setIsOpen] = useState(false)
-  const { shopId } = useTemplate()
+  const { shopId } = useSite()
   const { isEditMode } = useBlockEdit()
 
   if (!isEditMode) {

@@ -1,24 +1,13 @@
 "use client"
 import { Nav } from "./nav"
 import { Footer } from "./footer"
-import type { Block, NavigationItem, Page } from "../lib/api"
 import { BlockRenderer } from "@/components/blocks/block-renderer"
-import type { SiteSettings } from "@/lib/api/types"
 import { ThemeProvider } from "@/components/blocks/theme-provider"
 import { Favicon } from "@/components/ui/favicon"
 
 import { ThemeProvider as NextThemeProvider } from "next-themes"
 
-export const DiveShopSite = ({
-  pages,
-  siteSettings,
-  blocks
-}: {
-  currentPage: Page
-  pages: NavigationItem[]
-  siteSettings: SiteSettings
-  blocks: Block[]
-}) => {
+export const DiveShopSite = () => {
   return (
     <NextThemeProvider
       attribute="class"
@@ -27,27 +16,14 @@ export const DiveShopSite = ({
       disableTransitionOnChange
       forcedTheme="light"
     >
-      <Favicon
-        faviconUrl={siteSettings.faviconUrl || undefined}
-        siteName={siteSettings.name}
-      />
-      <ThemeProvider
-        theme={{
-          primaryColor: siteSettings.primaryColor || "#3b82f6",
-          secondaryColor: siteSettings.secondaryColor || "#64748b",
-          accentColor: siteSettings.accentColor || "#f59e0b",
-          fontFamilyHeading: siteSettings.fontFamilyHeading || undefined,
-          fontFamilyBody: siteSettings.fontFamilyBody || undefined
-        }}
-      >
+      <Favicon />
+      <ThemeProvider>
         <div className="flex min-h-screen flex-col bg-background">
-          <Nav siteSettings={siteSettings} pages={pages} />
-
+          <Nav />
           <main className="flex-1">
-            <BlockRenderer blocks={blocks} />
+            <BlockRenderer />
           </main>
-
-          <Footer siteSettings={siteSettings} />
+          <Footer />
         </div>
       </ThemeProvider>
     </NextThemeProvider>
