@@ -58,29 +58,16 @@ export const EditableImage = ({
     }
   }
 
-
-
   return (
-    <div
-      className={cn(
-        "relative overflow-hidden object-cover",
-        className
-      )}
-    >
+    <div className={cn("relative overflow-hidden object-cover", className)}>
       {src ? (
-        <NoEditImage
-          src={src}
-          alt={alt}
-          width={width}
-          height={height}
-          onError={onError}
-        />
+        <NoEditImage src={src} alt={alt} width={width} height={height} onError={onError} />
       ) : (
         <button
           type="button"
           onClick={initiateUpload}
           className={cn(
-            "flex h-full w-full items-center justify-center rounded-lg border-2 border-muted-foreground/25 border-dashed bg-muted/20 transition-all duration-200 hover:bg-black/40",
+            "flex h-full w-full items-center justify-center rounded-lg border-2 border-muted-foreground/25 border-dashed bg-muted/20 transition-all duration-200 hover:bg-black/40"
           )}
         >
           <div className="text-center text-muted-foreground">
@@ -90,7 +77,7 @@ export const EditableImage = ({
         </button>
       )}
 
-      {showUploadButton && src && (
+      {showUploadButton && (
         <UploadEditButton
           isUploading={isUploading}
           fieldPath={fieldPath}
@@ -146,14 +133,21 @@ export const NoEditImage = ({
       width={width}
       height={height}
       onError={onError}
-      className={cn(
-        "h-full w-full object-cover transition-all duration-200",
-      )}
+      className={cn("h-full w-full object-cover transition-all duration-200")}
     />
   )
 }
 
-const UploadEditButton = ({ isUploading, onEditClick, initiateUpload }: { isUploading: boolean, fieldPath: string, onEditClick: () => void, initiateUpload: () => void }) => (
+const UploadEditButton = ({
+  isUploading,
+  onEditClick,
+  initiateUpload
+}: {
+  isUploading: boolean
+  fieldPath: string
+  onEditClick: () => void
+  initiateUpload: () => void
+}) => (
   <div
     className={cn(
       "absolute inset-0 flex items-center justify-center bg-black/50 opacity-0 transition-opacity duration-200 hover:opacity-100",

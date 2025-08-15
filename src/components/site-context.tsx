@@ -14,6 +14,7 @@ export interface SiteContextValue {
   siteSettings: SiteSettings
   currentPath: string
   isShopOwner: boolean
+  publishSite: () => void
 }
 
 const SiteContext = createContext<SiteContextValue | null>(null)
@@ -29,7 +30,16 @@ interface TemplateProviderProps {
   isShopOwner: boolean
 }
 
-export function TemplateProvider({ children, shopId, siteSettings, blocks, pages, currentPage, currentPath, isShopOwner }: TemplateProviderProps) {
+export function TemplateProvider({
+  children,
+  shopId,
+  siteSettings,
+  blocks,
+  pages,
+  currentPage,
+  currentPath,
+  isShopOwner
+}: TemplateProviderProps) {
   const [isEditMode, setIsEditMode] = useState(false)
 
   useEffect(() => {
@@ -52,7 +62,20 @@ export function TemplateProvider({ children, shopId, siteSettings, blocks, pages
   }
 
   return (
-    <SiteContext.Provider value={{ shopId, isEditMode, setEditMode, siteSettings, blocks, pages, currentPage, currentPath, isShopOwner }}>
+    <SiteContext.Provider
+      value={{
+        shopId,
+        isEditMode,
+        setEditMode,
+        siteSettings,
+        blocks,
+        pages,
+        currentPage,
+        currentPath,
+        isShopOwner,
+        publishSite: () => null
+      }}
+    >
       {children}
     </SiteContext.Provider>
   )
@@ -69,8 +92,7 @@ export function useSite() {
 export function usePageLookup() {
   const { pages } = useSite()
 
-  const getPageBySlug = (slug: string) =>
-    pages.find((page) => page.slug === slug)
+  const getPageBySlug = (slug: string) => pages.find((page) => page.slug === slug)
   const getPageById = (id: string) => pages.find((page) => page.id === id)
 
   return { getPageBySlug, getPageById }

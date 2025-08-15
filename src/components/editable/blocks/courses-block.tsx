@@ -69,11 +69,7 @@ const CoursesBlockContent = () => {
       currency: "USD"
     }
 
-    // Add the new course to the existing courses array
-    const updatedCourses = [...courses, newCourse]
-
-    // Update the courses array directly
-    handleEdit("courses", updatedCourses)
+    handleEdit("courses", [...courses, newCourse])
   }
 
   const gridCols: Record<number, string> = {

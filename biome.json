@@ -6,11 +6,12 @@
     "useIgnoreFile": true
   },
   "files": {
-    "includes": ["**", "!components/ui/**", "!migrations/**", "!**/*.css"]
+    "includes": ["**", "!migrations/**", "!**/*.css"]
   },
   "formatter": {
     "indentStyle": "space",
-    "indentWidth": 2
+    "indentWidth": 2,
+    "lineWidth": 100
   },
 
   "linter": {
@@ -40,7 +41,7 @@
           "level": "info",
           "options": {}
         },
-        "useSite": {
+        "useTemplate": {
           "fix": "safe",
           "level": "info"
         }

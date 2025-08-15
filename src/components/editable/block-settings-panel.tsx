@@ -5,7 +5,6 @@ import { Button } from "../ui/button"
 import * as DialogPrimitive from "@radix-ui/react-dialog"
 import { cn } from "@/lib/utils"
 import { ShopOwner } from "../ui/shop-ownership-check"
-import { useBlockEdit } from "./block-edit-context"
 import { useSite } from "../site-context"
 
 interface BlockSettingsPanelProps {
@@ -21,7 +20,7 @@ export const BlockSettingsPanel = ({
 }: BlockSettingsPanelProps) => {
   const [isOpen, setIsOpen] = useState(false)
   const { shopId } = useSite()
-  const { isEditMode } = useBlockEdit()
+  const { isEditMode } = useSite()
 
   if (!isEditMode) {
     return null
@@ -37,7 +36,7 @@ export const BlockSettingsPanel = ({
             className={cn(
               "absolute top-3 right-3 h-10 w-10 p-0 opacity-0 transition-all duration-200 group-hover:opacity-100",
               "border-2 border-border bg-background/90 shadow-lg backdrop-blur-sm hover:scale-110 hover:bg-background",
-              "z-50 hover:border-primary/50 hover:shadow-xl",
+              "z-500 hover:border-primary/50 hover:shadow-xl",
               className
             )}
           >
@@ -59,9 +58,7 @@ export const BlockSettingsPanel = ({
               className
             )}
           >
-            <DialogPrimitive.Title className="sr-only">
-              {title}
-            </DialogPrimitive.Title>
+            <DialogPrimitive.Title className="sr-only">{title}</DialogPrimitive.Title>
 
             <div className="-mt-4 -mx-4 sticky top-0 mb-6 flex flex-shrink-0 items-center justify-between border-b bg-background px-4 py-4 shadow-lg">
               <div className="flex items-center gap-2">
@@ -69,11 +66,7 @@ export const BlockSettingsPanel = ({
                 <h2 className="font-semibold text-lg">{title}</h2>
               </div>
               <DialogPrimitive.Close asChild>
-                <Button
-                  variant="ghost"
-                  size="sm"
-                  className="h-8 w-8 p-0 hover:bg-muted"
-                >
+                <Button variant="ghost" size="sm" className="h-8 w-8 p-0 hover:bg-muted">
                   <X className="h-4 w-4" />
                   <span className="sr-only">Close</span>
                 </Button>
@@ -81,7 +74,7 @@ export const BlockSettingsPanel = ({
             </div>
 
             <div className="flex-1">
-              <div className="space-y-6">{children}</div>
+              <div className="space-y-6 pb-20">{children}</div>
             </div>
           </DialogPrimitive.Content>
         </DialogPrimitive.Portal>
@@ -101,9 +94,7 @@ export const SettingsSection = ({
 }) => {
   return (
     <div className={cn("space-y-4", className)}>
-      <h3 className="font-medium text-muted-foreground text-sm uppercase tracking-wide">
-        {title}
-      </h3>
+      <h3 className="font-medium text-muted-foreground text-sm uppercase tracking-wide">{title}</h3>
       <div className="space-y-3">{children}</div>
     </div>
   )
@@ -125,9 +116,7 @@ export const SettingItem = ({
       <div className="font-medium text-sm leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">
         {label}
       </div>
-      {description && (
-        <p className="text-muted-foreground text-xs">{description}</p>
-      )}
+      {description && <p className="text-muted-foreground text-xs">{description}</p>}
       {children}
     </div>
   )
