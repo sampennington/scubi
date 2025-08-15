@@ -2,13 +2,14 @@
 
 import { useRouter } from "next/navigation"
 import { Button } from "@/components/ui/button"
-import { ArrowLeftIcon, EditIcon, EyeIcon } from "lucide-react"
-import { useBlockEdit } from "@/components/editable/block-edit-context"
+import { ArrowLeftIcon, EditIcon, EyeIcon, SaveIcon, SendIcon } from "lucide-react"
 import { ShopOwner } from "@/components/ui/shop-ownership-check"
+import { useSite } from "@/components/site-context"
+import { Switch } from "@/components/ui/switch"
 
 export function PreviewControls({ shopId }: { shopId: string }) {
   const router = useRouter()
-  const { isEditMode, setEditMode } = useBlockEdit()
+  const { isEditMode, setEditMode } = useSite()
 
   const handleBack = () => {
     router.back()
@@ -16,7 +17,7 @@ export function PreviewControls({ shopId }: { shopId: string }) {
 
   return (
     <ShopOwner shopId={shopId}>
-      <div className="absolute top-4 left-4 z-50 flex items-center gap-2">
+      <div className="fixed bottom-0 z-500 w-full flex items-center gap-2  backdrop-blur-sm p-3 rounded-lg border border-border">
         <Button
           variant="outline"
           size="sm"
@@ -27,24 +28,27 @@ export function PreviewControls({ shopId }: { shopId: string }) {
           Close Preview
         </Button>
 
-        <Button
-          variant={isEditMode ? "default" : "outline"}
-          size="sm"
-          onClick={() => setEditMode(!isEditMode)}
-          className="flex items-center gap-2"
-        >
-          {isEditMode ? (
-            <>
-              <EyeIcon className="h-4 w-4" />
-              Preview Mode
-            </>
-          ) : (
-            <>
-              <EditIcon className="h-4 w-4" />
-              Edit Mode
-            </>
-          )}
-        </Button>
+        <div className="flex items-center gap-2">
+          <span className="text-sm">Edit Mode</span>
+
+          <Switch
+            checked={isEditMode}
+            onCheckedChange={() => setEditMode(!isEditMode)}
+          />
+        </div>
+
+
+        <div className="flex items-center gap-2 ml-auto mr-4">
+          <Button variant="outline" size="sm" onClick={() => setEditMode(!isEditMode)} className="flex items-center gap-2">
+            <SaveIcon className="h-4 w-4" />
+            Save Draft
+          </Button>
+
+          <Button variant="primary" size="sm" onClick={() => setEditMode(!isEditMode)} className="flex items-center gap-2">
+            <SendIcon className="h-4 w-4" />
+            Publish
+          </Button>
+        </div>
       </div>
     </ShopOwner>
   )

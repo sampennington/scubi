@@ -34,7 +34,6 @@ export const TeamSettingsPanel = () => {
     columns = "3",
     showContactInfo = false,
     showSocialLinks = false,
-    fullWidthPhoto = false
   } = content
 
   const removeMember = (index: number) => {
@@ -198,9 +197,8 @@ export const TeamSettingsPanel = () => {
                       <div
                         ref={provided.innerRef}
                         {...provided.draggableProps}
-                        className={`flex items-center justify-between rounded-lg border bg-muted/50 p-3 transition-colors ${
-                          snapshot.isDragging ? "bg-muted/80 shadow-lg" : ""
-                        }`}
+                        className={`flex items-center justify-between rounded-lg border bg-muted/50 p-3 transition-colors ${snapshot.isDragging ? "bg-muted/80 shadow-lg" : ""
+                          }`}
                       >
                         <div className="min-w-0 flex-1">
                           <div className="truncate font-medium text-sm">

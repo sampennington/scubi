@@ -4,6 +4,7 @@ import { auth } from "@/lib/auth"
 import { headers } from "next/headers"
 import DiveShopSite from "@/templates/default"
 import { TemplateProvider } from "./site-context"
+import { PreviewControls } from "@/app/preview/[shopId]/preview-controls"
 
 interface SiteWrapperProps {
   shopId: string
@@ -35,8 +36,11 @@ export async function SiteWrapper({ shopId, slug }: SiteWrapperProps) {
   const isShopOwner = session?.user?.id === siteSettings.shopId
 
   return (
-    <TemplateProvider shopId={shopId} siteSettings={siteSettings} blocks={blocks} pages={pages} currentPage={currentPage} currentPath={currentPath} isShopOwner={isShopOwner} >
-      <DiveShopSite />
-    </TemplateProvider>
+    <div className="relative">
+      <TemplateProvider shopId={shopId} siteSettings={siteSettings} blocks={blocks} pages={pages} currentPage={currentPage} currentPath={currentPath} isShopOwner={isShopOwner} >
+        <PreviewControls shopId={shopId} />
+        <DiveShopSite />
+      </TemplateProvider>
+    </div>
   )
 }
