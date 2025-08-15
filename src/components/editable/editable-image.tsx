@@ -6,6 +6,7 @@ import { useUploadThing } from "@/lib/uploadthing"
 import { useBlockEdit } from "./block-edit-context"
 import { cn } from "@/lib/utils"
 import Image from "next/image"
+import { ImageCropperDialog } from "./ImageCropperDialog"
 
 interface EditableImageProps {
   fieldPath: string
@@ -30,7 +31,11 @@ export const EditableImage = ({
 }: EditableImageProps) => {
   const { handleEdit } = useBlockEdit()
   const { startUpload, isUploading } = useUploadThing("blockImageUploader")
-  const [isHovered, setIsHovered] = useState(false)
+  const [isCropperOpen, setIsCropperOpen] = useState(false)
+
+  const initiateUpload = () => {
+    document.getElementById(`file-input-${fieldPath}`)?.click()
+  }
 
   const handleFileUpload = async (file: File) => {
     try {
@@ -52,16 +57,15 @@ export const EditableImage = ({
       handleFileUpload(file)
     }
   }
-  console.log({ src: Boolean(src), fieldPath })
+
+
+
   return (
-    // biome-ignore lint/a11y/noStaticElementInteractions: I want a div here
     <div
       className={cn(
         "relative overflow-hidden object-cover",
         className
       )}
-      onMouseEnter={() => setIsHovered(true)}
-      onMouseLeave={() => setIsHovered(false)}
     >
       {src ? (
         <NoEditImage
@@ -74,9 +78,7 @@ export const EditableImage = ({
       ) : (
         <button
           type="button"
-          onClick={() => {
-            document.getElementById(`file-input-${fieldPath}`)?.click()
-          }}
+          onClick={initiateUpload}
           className={cn(
             "flex h-full w-full items-center justify-center rounded-lg border-2 border-muted-foreground/25 border-dashed bg-muted/20 transition-all duration-200 hover:bg-black/40",
           )}
@@ -89,7 +91,12 @@ export const EditableImage = ({
       )}
 
       {showUploadButton && src && (
-        <UploadEditButton isUploading={isUploading} isHovered={isHovered} fieldPath={fieldPath} />
+        <UploadEditButton
+          isUploading={isUploading}
+          fieldPath={fieldPath}
+          onEditClick={() => setIsCropperOpen(true)}
+          initiateUpload={initiateUpload}
+        />
       )}
 
       <input
@@ -99,6 +106,17 @@ export const EditableImage = ({
         onChange={handleFileSelect}
         className="hidden"
         disabled={isUploading}
+      />
+
+      <ImageCropperDialog
+        src={src}
+        isOpen={isCropperOpen}
+        onClose={() => setIsCropperOpen(false)}
+        onSave={(croppedImageUrl) => {
+          handleEdit(fieldPath, croppedImageUrl)
+          setIsCropperOpen(false)
+        }}
+        aspectRatio={width / height}
       />
     </div>
   )
@@ -135,11 +153,11 @@ export const NoEditImage = ({
   )
 }
 
-const UploadEditButton = ({ isUploading, isHovered, fieldPath }: { isUploading: boolean, isHovered: boolean, fieldPath: string }) => (
+const UploadEditButton = ({ isUploading, onEditClick, initiateUpload }: { isUploading: boolean, fieldPath: string, onEditClick: () => void, initiateUpload: () => void }) => (
   <div
     className={cn(
-      "absolute inset-0 flex items-center justify-center bg-black/50 opacity-0 transition-opacity duration-200",
-      (isHovered || isUploading) && "opacity-100"
+      "absolute inset-0 flex items-center justify-center bg-black/50 opacity-0 transition-opacity duration-200 hover:opacity-100",
+      isUploading && "opacity-100"
     )}
   >
     {isUploading ? (
@@ -152,10 +170,7 @@ const UploadEditButton = ({ isUploading, isHovered, fieldPath }: { isUploading: 
         <button
           type="button"
           className="flex flex-col items-center gap-2 rounded-lg bg-white/20 p-3 transition-colors hover:bg-white/30"
-          onClick={() => {
-            // TODO: Implement edit photo functionality
-            console.log("Edit photo clicked")
-          }}
+          onClick={onEditClick}
           disabled={isUploading}
         >
           <Pencil className="h-4 w-4 text-white" />
@@ -165,9 +180,7 @@ const UploadEditButton = ({ isUploading, isHovered, fieldPath }: { isUploading: 
         <button
           type="button"
           className="flex flex-col items-center gap-2 rounded-lg bg-white/20 p-3 transition-colors hover:bg-white/30"
-          onClick={() =>
-            document.getElementById(`file-input-${fieldPath}`)?.click()
-          }
+          onClick={initiateUpload}
           disabled={isUploading}
         >
           <Upload className="h-4 w-4 text-white" />

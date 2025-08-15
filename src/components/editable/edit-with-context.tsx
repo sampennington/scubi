@@ -244,7 +244,6 @@ export const E = {
     alt: string
     width?: number
     height?: number
-    aspectRatio?: "square" | "video" | "auto"
   } & ComponentProps<"img">) => {
     const { isEditMode } = useBlockEdit()
     const [imageError, setImageError] = useState(false)
@@ -260,8 +259,6 @@ export const E = {
           alt={alt}
           width={width || 400}
           height={height || 300}
-          className={props.className || ""}
-          aspectRatio={props.aspectRatio || "auto"}
         />
       )
     }
