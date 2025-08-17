@@ -6,23 +6,12 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import { Plus, GripVertical, Trash2, Edit } from "lucide-react"
 import { BlockForm } from "./BlockForm"
-import {
-  DragDropContext,
-  Droppable,
-  Draggable,
-  type DropResult
-} from "@hello-pangea/dnd"
-import {
-  getBlocksByPageId,
-  createBlock,
-  updateBlock,
-  deleteBlock,
-  reorderBlocks
-} from "../actions"
+import { DragDropContext, Droppable, Draggable, type DropResult } from "@hello-pangea/dnd"
+import { getBlocksByPageId, createBlock, updateBlock, deleteBlock, reorderBlocks } from "../actions"
 import { BlockSelector } from "./BlockSelector"
 import { getBlockPreview, getDefaultContent } from "./BlockForm/utils"
 import type { Block } from "@/lib/api"
-import { BlockType } from "@/database/schema"
+import type { BlockType } from "@/database/schema"
 
 interface PageEditorProps {
   pageId: string
@@ -155,19 +144,11 @@ export function PageEditor({ pageId, pageTitle }: PageEditorProps) {
       <DragDropContext onDragEnd={handleDragEnd}>
         <Droppable droppableId="blocks">
           {(provided) => (
-            <div
-              {...provided.droppableProps}
-              ref={provided.innerRef}
-              className="space-y-4"
-            >
+            <div {...provided.droppableProps} ref={provided.innerRef} className="space-y-4">
               {blocks.map((block, index) => (
                 <Draggable key={block.id} draggableId={block.id} index={index}>
                   {(provided) => (
-                    <div
-                      ref={provided.innerRef}
-                      {...provided.draggableProps}
-                      className="group"
-                    >
+                    <div ref={provided.innerRef} {...provided.draggableProps} className="group">
                       <Card>
                         <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
                           <div className="flex items-center space-x-2">
@@ -231,10 +212,7 @@ export function PageEditor({ pageId, pageTitle }: PageEditorProps) {
       )}
 
       {showBlockSelector && (
-        <BlockSelector
-          onSelect={handleAddBlock}
-          onClose={() => setShowBlockSelector(false)}
-        />
+        <BlockSelector onSelect={handleAddBlock} onClose={() => setShowBlockSelector(false)} />
       )}
 
       {showBlockForm && editingBlock && (

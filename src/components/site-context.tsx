@@ -8,6 +8,8 @@ export interface SiteContextValue {
   shopId: string
   isEditMode: boolean
   setEditMode: (enabled: boolean) => void
+  previewDimension: "mobile" | "tablet" | "desktop"
+  setPreviewDimension: (dimension: "mobile" | "tablet" | "desktop") => void
   currentPage: Page
   pages: NavigationItem[]
   blocks: Block[]
@@ -41,6 +43,9 @@ export function TemplateProvider({
   isShopOwner
 }: TemplateProviderProps) {
   const [isEditMode, setIsEditMode] = useState(false)
+  const [previewDimension, setPreviewDimension] = useState<"mobile" | "tablet" | "desktop">(
+    "desktop"
+  )
 
   useEffect(() => {
     const searchParams = new URLSearchParams(window.location.search)
@@ -67,6 +72,8 @@ export function TemplateProvider({
         shopId,
         isEditMode,
         setEditMode,
+        previewDimension,
+        setPreviewDimension,
         siteSettings,
         blocks,
         pages,

@@ -3,10 +3,7 @@ import { Button } from "../../ui/button"
 import { Calendar, Users, Waves, Plus } from "lucide-react"
 import type { CoursesContent } from "@/app/dashboard/shops/[id]/components/BlockForm/schemas"
 
-import {
-  BlockEditProvider,
-  useBlockEdit
-} from "@/components/editable/block-edit-context"
+import { BlockEditProvider, useBlockEdit } from "@/components/editable/block-edit-context"
 import { E } from "@/components/editable/edit-with-context"
 import { ShopOwner } from "@/components/ui/shop-ownership-check"
 import { useSite } from "@/components/site-context"
@@ -85,18 +82,12 @@ const CoursesBlockContent = () => {
         {(title || description) && (
           <div className="mb-12 text-center">
             {title && (
-              <E.h2
-                fieldPath="title"
-                className="mb-4 font-bold text-3xl md:text-4xl"
-              >
+              <E.h2 fieldPath="title" className="mb-4 font-bold text-3xl md:text-4xl">
                 {title}
               </E.h2>
             )}
             {description && (
-              <E.p
-                fieldPath="description"
-                className="text-lg text-muted-foreground"
-              >
+              <E.p fieldPath="description" className="text-lg text-muted-foreground">
                 {description}
               </E.p>
             )}
@@ -106,10 +97,7 @@ const CoursesBlockContent = () => {
         {layout === "grid" && (
           <div className={`grid gap-8 ${gridCols[columns]}`}>
             {courses.map((course, index) => (
-              <div
-                key={index}
-                className="rounded-lg border bg-card p-6 shadow-lg"
-              >
+              <div key={index} className="rounded-lg border bg-card p-6 shadow-lg">
                 <div className="mb-4 h-48 w-full overflow-hidden rounded-lg">
                   <E.image
                     fieldPath={`courses[${index}].image`}
@@ -123,28 +111,19 @@ const CoursesBlockContent = () => {
 
                 <div className="mb-4 flex items-center justify-between">
                   {showLevels && (
-                    <Badge className={getLevelColor(course.level)}>
-                      {course.level}
-                    </Badge>
+                    <Badge className={getLevelColor(course.level)}>{course.level}</Badge>
                   )}
                   {showPricing && (
                     <div className="text-right">
-                      <span className="font-bold text-2xl text-primary">
-                        ${course.price}
-                      </span>
+                      <span className="font-bold text-2xl text-primary">${course.price}</span>
                       {course.currency && course.currency !== "USD" && (
-                        <span className="text-muted-foreground text-sm">
-                          {course.currency}
-                        </span>
+                        <span className="text-muted-foreground text-sm">{course.currency}</span>
                       )}
                     </div>
                   )}
                 </div>
 
-                <E.h3
-                  fieldPath={`courses[${index}].title`}
-                  className="mb-2 font-semibold text-xl"
-                >
+                <E.h3 fieldPath={`courses[${index}].title`} className="mb-2 font-semibold text-xl">
                   {course.title}
                 </E.h3>
                 <E.p
@@ -157,9 +136,7 @@ const CoursesBlockContent = () => {
                 <div className="mb-4 space-y-2 text-muted-foreground text-sm">
                   <div className="flex items-center gap-2">
                     <Calendar className="h-4 w-4" />
-                    <E.span fieldPath={`courses[${index}].duration`}>
-                      {course.duration}
-                    </E.span>
+                    <E.span fieldPath={`courses[${index}].duration`}>{course.duration}</E.span>
                   </div>
 
                   {course.maxDepth && (
@@ -199,11 +176,7 @@ const CoursesBlockContent = () => {
 
         <ShopOwner shopId={shopId}>
           <div className="mt-8 text-center">
-            <Button
-              onClick={addNewCourse}
-              variant="outline"
-              className="flex items-center gap-2"
-            >
+            <Button onClick={addNewCourse} variant="outline" className="flex items-center gap-2">
               <Plus className="h-4 w-4" />
               Add Course
             </Button>
@@ -213,10 +186,7 @@ const CoursesBlockContent = () => {
         {layout === "list" && (
           <div className="space-y-6">
             {courses.map((course, index) => (
-              <div
-                key={index}
-                className="flex gap-6 rounded-lg border bg-card p-6"
-              >
+              <div key={index} className="flex gap-6 rounded-lg border bg-card p-6">
                 <div className="h-32 w-48 flex-shrink-0 overflow-hidden rounded-lg">
                   <E.image
                     fieldPath={`courses[${index}].image`}
@@ -230,21 +200,14 @@ const CoursesBlockContent = () => {
 
                 <div className="flex-1">
                   <div className="mb-2 flex items-center justify-between">
-                    <E.h3
-                      fieldPath={`courses[${index}].title`}
-                      className="font-semibold text-xl"
-                    >
+                    <E.h3 fieldPath={`courses[${index}].title`} className="font-semibold text-xl">
                       {course.title}
                     </E.h3>
                     {showPricing && (
                       <div className="text-right">
-                        <span className="font-bold text-2xl text-primary">
-                          ${course.price}
-                        </span>
+                        <span className="font-bold text-2xl text-primary">${course.price}</span>
                         {course.currency && course.currency !== "USD" && (
-                          <span className="text-muted-foreground text-sm">
-                            {course.currency}
-                          </span>
+                          <span className="text-muted-foreground text-sm">{course.currency}</span>
                         )}
                       </div>
                     )}
@@ -260,15 +223,11 @@ const CoursesBlockContent = () => {
                   <div className="mb-3 flex flex-wrap gap-4 text-muted-foreground text-sm">
                     <div className="flex items-center gap-2">
                       <Calendar className="h-4 w-4" />
-                      <E.span fieldPath={`courses[${index}].duration`}>
-                        {course.duration}
-                      </E.span>
+                      <E.span fieldPath={`courses[${index}].duration`}>{course.duration}</E.span>
                     </div>
 
                     {showLevels && (
-                      <Badge className={getLevelColor(course.level)}>
-                        {course.level}
-                      </Badge>
+                      <Badge className={getLevelColor(course.level)}>{course.level}</Badge>
                     )}
 
                     {course.maxDepth && (
@@ -305,11 +264,7 @@ export const CoursesBlock = ({
   blockId?: string
 }) => {
   return (
-    <BlockEditProvider<CoursesContent>
-      blockId={blockId}
-      initialContent={content}
-      type="courses"
-    >
+    <BlockEditProvider<CoursesContent> blockId={blockId} initialContent={content} type="courses">
       <CoursesBlockContent />
     </BlockEditProvider>
   )

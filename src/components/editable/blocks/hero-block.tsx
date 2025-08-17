@@ -30,7 +30,7 @@ const HeroBlockContent = () => {
   const { isSaving, content } = useBlockEdit<HeroContent>()
 
   return (
-    <section className="relative w-full overflow-hidden py-20 group">
+    <section className="group relative w-full overflow-hidden py-20">
       <HeroSettingsPanel />
       <div className="absolute inset-0 z-0">
         <Image
