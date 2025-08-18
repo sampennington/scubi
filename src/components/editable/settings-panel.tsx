@@ -1,26 +1,54 @@
 import type React from "react"
-import { useState } from "react"
-import { Settings, X } from "lucide-react"
+import { useState, useMemo } from "react"
+import { Settings, X, Trash2, GripVertical, Plus } from "lucide-react"
 import { Button } from "../ui/button"
 import * as DialogPrimitive from "@radix-ui/react-dialog"
 import { cn } from "@/lib/utils"
 import { ShopOwner } from "../ui/shop-ownership-check"
 import { useSite } from "../../app/preview/components/site-context"
+import { AddBlockModal } from "../../app/preview/components/add-block-modal"
+import { useBlockEdit } from "./context"
+import { deleteBlock as deleteBlockPreview } from "@/app/preview/[shopId]/actions"
 
 interface BlockSettingsPanelProps {
   children: React.ReactNode
   title?: string
   className?: string
+  blockId?: string
+  order?: number | null
+  onBlockAdded?: () => void
+  onDeleteBlock?: () => void
+  onDragStart?: () => void
 }
 
 export const BlockSettingsPanel = ({
   children,
   title = "Block Settings",
-  className
+  className,
+  onBlockAdded,
+  onDeleteBlock,
+  onDragStart
 }: BlockSettingsPanelProps) => {
   const [isOpen, setIsOpen] = useState(false)
-  const { shopId } = useSite()
-  const { isEditMode } = useSite()
+  const [isModalOpen, setIsModalOpen] = useState(false)
+  const { shopId, isEditMode, refreshBlocks } = useSite()
+  const { blockId, order } = useBlockEdit()
+
+  const handleBlockAdded = useMemo<() => void>(
+    () => onBlockAdded ?? (() => refreshBlocks()),
+    [onBlockAdded, refreshBlocks]
+  )
+
+  const handleDeleteClick = useMemo<() => void>(() => {
+    if (onDeleteBlock) return onDeleteBlock
+    return async () => {
+      if (!blockId) return
+      const ok = window.confirm("Delete this block?")
+      if (!ok) return
+      await deleteBlockPreview(blockId)
+      await refreshBlocks()
+    }
+  }, [onDeleteBlock, refreshBlocks, blockId])
 
   if (!isEditMode) {
     return null
@@ -29,21 +57,62 @@ export const BlockSettingsPanel = ({
   return (
     <ShopOwner shopId={shopId}>
       <DialogPrimitive.Root open={isOpen} onOpenChange={setIsOpen}>
-        <DialogPrimitive.Trigger asChild>
+        <div
+          className={cn(
+            "absolute top-4 right-4 z-50 flex items-center gap-1 rounded-lg border bg-background/95 p-1 opacity-0 shadow-lg backdrop-blur-sm transition-opacity duration-200 group-hover:opacity-100",
+            className
+          )}
+        >
           <Button
             variant="ghost"
             size="sm"
-            className={cn(
-              "absolute top-3 right-3 h-10 w-10 p-0 opacity-0 transition-all duration-200 group-hover:opacity-100",
-              "border-2 border-border bg-background/90 shadow-lg backdrop-blur-sm hover:scale-110 hover:bg-background",
-              "z-500 hover:border-primary/50 hover:shadow-xl",
-              className
-            )}
+            onClick={() => setIsModalOpen(true)}
+            className="h-8 w-8 p-0 hover:bg-accent"
+            title="Add block above"
           >
-            <Settings className="h-5 w-5 text-muted-foreground transition-colors hover:text-primary" />
-            <span className="sr-only">Block Settings</span>
+            <Plus className="h-4 w-4" />
           </Button>
-        </DialogPrimitive.Trigger>
+
+          <DialogPrimitive.Trigger asChild>
+            <Button
+              variant="ghost"
+              size="sm"
+              className="h-8 w-8 p-0 hover:bg-accent"
+              title="Block settings"
+            >
+              <Settings className="h-4 w-4" />
+            </Button>
+          </DialogPrimitive.Trigger>
+
+          {onDragStart && (
+            <Button
+              variant="ghost"
+              size="sm"
+              onMouseDown={onDragStart}
+              className="h-8 w-8 cursor-grab p-0 hover:bg-accent active:cursor-grabbing"
+              title="Drag to reorder"
+            >
+              <GripVertical className="h-4 w-4" />
+            </Button>
+          )}
+
+          <Button
+            variant="ghost"
+            size="sm"
+            onClick={handleDeleteClick}
+            className="h-8 w-8 p-0 hover:bg-destructive hover:text-destructive-foreground"
+            title="Delete block"
+          >
+            <Trash2 className="h-4 w-4" />
+          </Button>
+        </div>
+
+        <AddBlockModal
+          isOpen={isModalOpen}
+          onClose={() => setIsModalOpen(false)}
+          onBlockAdded={handleBlockAdded}
+          order={order}
+        />
 
         <DialogPrimitive.Portal>
           <DialogPrimitive.Overlay className="data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 fixed inset-0 z-50 bg-black/20 data-[state=closed]:animate-out data-[state=open]:animate-in" />

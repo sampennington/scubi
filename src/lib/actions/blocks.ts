@@ -5,6 +5,18 @@ import { revalidatePath } from "next/cache"
 import type { BlockType } from "@/database/schema"
 import { typeGuardMap } from "@/components/blocks/schemas"
 
+export async function getBlocks(pageId: string): Promise<{ success: boolean, error?: string, blocks?: Block[] }> {
+  try {
+    console.log('Getting blocks ', pageId)
+    const blocks = await api.blocks.getByPageId(pageId)
+
+    return { success: true, blocks }
+  } catch (error) {
+    console.error("Error getting blocks:", error)
+    return { success: false, error: "Failed to create block" }
+  }
+}
+
 export async function createBlock(
   data: {
     pageId: string
@@ -62,10 +74,11 @@ export async function updateBlock(
 
 export async function deleteBlock(id: string, revalidatePaths: string[] = []) {
   try {
+    console.log('Deleting block', id)
     await api.blocks.delete(id)
-
+    console.log('Deleted block', id)
     revalidatePaths.forEach((path) => revalidatePath(path))
-
+    console.log('Revalidated paths', revalidatePaths)
     return { success: true }
   } catch (error) {
     console.error("Error deleting block:", error)

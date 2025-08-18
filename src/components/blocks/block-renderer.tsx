@@ -44,9 +44,21 @@ import {
 } from "@/components/blocks/schemas"
 import { useSite } from "../../app/preview/components/site-context"
 import { defaultContent } from "./default-data"
+import { Loader2 } from "lucide-react"
 
 export const BlockRenderer = () => {
-  const { blocks } = useSite()
+  const { blocks, isLoadingLocalBlocks } = useSite()
+
+  if (isLoadingLocalBlocks) {
+    return (
+      <div className="flex min-h-[50vh] w-full items-center justify-center">
+        <div className="flex flex-col items-center gap-4">
+          <Loader2 className="h-8 w-8 animate-spin text-primary" />
+          <p className="text-muted-foreground text-sm">Loading...</p>
+        </div>
+      </div>
+    )
+  }
 
   if (blocks.length === 0) {
     return <EmptyPagePlaceholder />

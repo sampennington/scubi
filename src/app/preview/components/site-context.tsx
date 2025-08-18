@@ -19,6 +19,7 @@ export interface SiteContextValue {
   isShopOwner: boolean
   publishSite: () => void
   refreshBlocks: () => Promise<void>
+  isLoadingLocalBlocks: boolean
 }
 
 const SiteContext = createContext<SiteContextValue | null>(null)
@@ -43,6 +44,9 @@ export function TemplateProvider({
   isShopOwner
 }: TemplateProviderProps) {
   const [isEditMode, setIsEditMode] = useState(false)
+
+  const [isLoadingLocalBlocks, setIsLoadingLocalBlocks] = useState(false)
+
   const [blocks, setBlocks] = useState<Block[]>([])
   const [previewDimension, setPreviewDimension] = useState<"mobile" | "tablet" | "desktop">(
     "desktop"
@@ -55,11 +59,13 @@ export function TemplateProvider({
   }, [])
 
   const fetchBlocks = useCallback(async (pageId: string) => {
+    setIsLoadingLocalBlocks(true)
     const { blocks } = await getBlocks(pageId)
 
     if (blocks) {
       setBlocks(blocks)
     }
+    setIsLoadingLocalBlocks(false)
   }, [])
 
   useEffect(() => {
@@ -94,7 +100,8 @@ export function TemplateProvider({
         currentPath,
         isShopOwner,
         publishSite: () => null,
-        refreshBlocks: () => fetchBlocks(currentPage.id)
+        refreshBlocks: () => fetchBlocks(currentPage.id),
+        isLoadingLocalBlocks
       }}
     >
       {children}

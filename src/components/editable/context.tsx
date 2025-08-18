@@ -1,11 +1,10 @@
 "use client"
 
+import { createContext, useContext, useState, useEffect, type ReactNode } from "react"
+import { useSearchParams } from "next/navigation"
+import { setProperty } from "dot-prop"
 import { updateBlock } from "@/app/dashboard/shops/[id]/actions"
 import type { BlockType } from "@/database/schema"
-import { createContext, useContext, useState, useEffect, type ReactNode } from "react"
-import { setProperty } from "dot-prop"
-import { useSearchParams } from "next/navigation"
-import { AddBlockButton } from "@/app/preview/components/add-block-button"
 import type { Block } from "@/lib/api"
 
 interface BlockEditContextType<T = Record<string, unknown>> {
@@ -15,6 +14,7 @@ interface BlockEditContextType<T = Record<string, unknown>> {
   ) => Promise<void>
   isSaving: boolean
   blockId?: string
+  order: number | null
   content: T
 }
 
@@ -29,9 +29,9 @@ type BlockEditProviderProps<T = Record<string, unknown>> = Block & {
 
 export const BlockEditProvider = <T extends Record<string, unknown>>({
   children,
-  blockId,
   content,
   order,
+  id,
   onContentChange,
   type
 }: BlockEditProviderProps<T>) => {
@@ -40,7 +40,6 @@ export const BlockEditProvider = <T extends Record<string, unknown>>({
   const searchParams = useSearchParams()
   const [isEditMode, setIsEditMode] = useState(false)
 
-  // Initialize edit mode from URL params
   useEffect(() => {
     const editParam = searchParams.get("edit")
     setIsEditMode(editParam === "true")
@@ -50,7 +49,7 @@ export const BlockEditProvider = <T extends Record<string, unknown>>({
     fieldPath: string,
     value: string | number | boolean | object | Array<unknown>
   ) => {
-    if (!blockId || !isEditMode) {
+    if (!id || !isEditMode) {
       console.warn("No blockId or not in edit mode")
       return
     }
@@ -64,7 +63,7 @@ export const BlockEditProvider = <T extends Record<string, unknown>>({
 
     try {
       setIsSaving(true)
-      await updateBlock(blockId, {
+      await updateBlock(id, {
         content: updatedContent,
         type: type as BlockType
       })
@@ -83,13 +82,12 @@ export const BlockEditProvider = <T extends Record<string, unknown>>({
       value={{
         handleEdit,
         isSaving,
-        blockId,
+        blockId: id,
+        order,
         content: localContent
       }}
     >
-      {order === 0 && <AddBlockButton order={order} onBlockAdded={() => {}} />}
       {children}
-      <AddBlockButton order={order} onBlockAdded={() => {}} />
     </BlockEditContext.Provider>
   )
 }
@@ -103,6 +101,7 @@ export const useBlockEdit = <T = Record<string, unknown>>() => {
       handleEdit: () => null,
       isSaving: false,
       blockId: undefined,
+      order: null,
       content: {} as T
     }
   }
