@@ -25,7 +25,7 @@ export function Preview() {
 }
 
 function Viewport({ src, device, className = "" }: ViewportProps) {
-  const [isLoading, setIsLoading] = useState(true)
+  const [loadedSrc, setLoadedSrc] = useState<string | null>(null)
   const preset = useMemo(() => DEVICE_PRESETS.find((p) => p.id === device)!, [device])
   const vw = preset.w
   const vh = preset.h
@@ -37,6 +37,8 @@ function Viewport({ src, device, className = "" }: ViewportProps) {
 
     return 0.88
   }, [device])
+
+  const isLoading = loadedSrc !== src
 
   return (
     <div className={`relative grid h-full w-full place-items-center bg-neutral-100 ${className}`}>
@@ -56,13 +58,10 @@ function Viewport({ src, device, className = "" }: ViewportProps) {
         <iframe
           title="preview"
           src={src}
-          className="h-full w-full rounded-xl"
+          className={`h-full w-full rounded-xl ${isLoading ? "invisible" : ""}`}
           style={{ border: 0 }}
-          onLoadStart={() => {
-            setIsLoading(true)
-          }}
           onLoad={() => {
-            setIsLoading(false)
+            setLoadedSrc(src)
           }}
         />
       </div>
