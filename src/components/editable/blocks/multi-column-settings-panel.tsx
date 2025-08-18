@@ -1,27 +1,12 @@
 import { Trash2, Plus, Move } from "lucide-react"
 import { Button } from "../../ui/button"
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue
-} from "../../ui/select"
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "../../ui/select"
 import { Switch } from "../../ui/switch"
 import { Separator } from "../../ui/separator"
-import {
-  BlockSettingsPanel,
-  SettingsSection,
-  SettingItem
-} from "../block-settings-panel"
-import { useBlockEdit } from "../block-edit-context"
-import type { MultiColumnContent } from "@/app/dashboard/shops/[id]/components/BlockForm/schemas"
-import {
-  DragDropContext,
-  Droppable,
-  Draggable,
-  type DropResult
-} from "@hello-pangea/dnd"
+import { BlockSettingsPanel, SettingsSection, SettingItem } from "../settings-panel"
+import { useBlockEdit } from "../context"
+import type { MultiColumnContent } from "@/components/blocks/schemas"
+import { DragDropContext, Droppable, Draggable, type DropResult } from "@hello-pangea/dnd"
 
 export const MultiColumnSettingsPanel = () => {
   const { content, handleEdit } = useBlockEdit<MultiColumnContent>()
@@ -87,10 +72,7 @@ export const MultiColumnSettingsPanel = () => {
       <Separator />
 
       <SettingsSection title="Layout">
-        <SettingItem
-          label="Columns Per Row"
-          description="Number of columns displayed in each row"
-        >
+        <SettingItem label="Columns Per Row" description="Number of columns displayed in each row">
           <Select
             value={columnsPerRow}
             onValueChange={(value) => handleEdit("columnsPerRow", value)}
@@ -107,14 +89,8 @@ export const MultiColumnSettingsPanel = () => {
           </Select>
         </SettingItem>
 
-        <SettingItem
-          label="Alignment"
-          description="Text alignment for column content"
-        >
-          <Select
-            value={alignment}
-            onValueChange={(value) => handleEdit("alignment", value)}
-          >
+        <SettingItem label="Alignment" description="Text alignment for column content">
+          <Select value={alignment} onValueChange={(value) => handleEdit("alignment", value)}>
             <SelectTrigger>
               <SelectValue />
             </SelectTrigger>
@@ -142,14 +118,8 @@ export const MultiColumnSettingsPanel = () => {
 
       <SettingsSection title="Columns">
         <div className="flex items-center justify-between">
-          <span className="font-medium text-sm">
-            Columns ({columns.length})
-          </span>
-          <Button
-            onClick={addNewColumn}
-            size="sm"
-            className="flex items-center gap-2"
-          >
+          <span className="font-medium text-sm">Columns ({columns.length})</span>
+          <Button onClick={addNewColumn} size="sm" className="flex items-center gap-2">
             <Plus className="h-4 w-4" />
             Add Column
           </Button>

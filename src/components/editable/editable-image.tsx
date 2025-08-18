@@ -3,10 +3,10 @@
 import { useState } from "react"
 import { Upload, Pencil } from "lucide-react"
 import { useUploadThing } from "@/lib/uploadthing"
-import { useBlockEdit } from "./block-edit-context"
+import { useBlockEdit } from "./context"
 import { cn } from "@/lib/utils"
 import Image from "next/image"
-import { ImageCropperDialog } from "./ImageCropperDialog"
+import { ImageCropperDialog } from "./image-cropper"
 
 interface EditableImageProps {
   fieldPath: string

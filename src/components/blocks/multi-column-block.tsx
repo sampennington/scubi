@@ -1,4 +1,4 @@
-import type { MultiColumnContent } from "@/app/dashboard/shops/[id]/components/BlockForm/schemas"
+import type { MultiColumnContent } from "@/components/blocks/schemas"
 import { defaultMultiColumnContent } from "./default-data"
 import * as Icons from "lucide-react"
 
@@ -153,21 +153,14 @@ export const MultiColumnBlock = ({
       <div className="container mx-auto px-4">
         {(title || description) && (
           <div className={`mb-12 ${textAlignment[alignment]}`}>
-            {title && (
-              <h2 className="mb-4 font-bold text-3xl md:text-4xl">{title}</h2>
-            )}
-            {description && (
-              <p className="text-lg text-muted-foreground">{description}</p>
-            )}
+            {title && <h2 className="mb-4 font-bold text-3xl md:text-4xl">{title}</h2>}
+            {description && <p className="text-lg text-muted-foreground">{description}</p>}
           </div>
         )}
 
         <div className={`grid gap-8 ${gridCols[columnsPerRow]}`}>
           {columns.map((column, index) => (
-            <div
-              key={index}
-              className={`flex flex-col ${textAlignment[alignment]}`}
-            >
+            <div key={index} className={`flex flex-col ${textAlignment[alignment]}`}>
               {showIcons && column.icon && (
                 <div className="mb-4 flex justify-center">
                   <div className="flex h-16 w-16 items-center justify-center rounded-full bg-primary/10">
@@ -181,9 +174,7 @@ export const MultiColumnBlock = ({
                 </div>
               )}
 
-              {column.heading && (
-                <h3 className="mb-3 font-semibold text-xl">{column.heading}</h3>
-              )}
+              {column.heading && <h3 className="mb-3 font-semibold text-xl">{column.heading}</h3>}
 
               <p className="text-muted-foreground">{column.body}</p>
             </div>

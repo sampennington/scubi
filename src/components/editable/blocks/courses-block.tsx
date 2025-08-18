@@ -1,10 +1,10 @@
 import { Badge } from "../../ui/badge"
 import { Button } from "../../ui/button"
 import { Calendar, Users, Waves, Plus } from "lucide-react"
-import type { CoursesContent } from "@/app/dashboard/shops/[id]/components/BlockForm/schemas"
+import type { CoursesContent } from "@/components/blocks/schemas"
 
-import { BlockEditProvider, useBlockEdit } from "@/components/editable/block-edit-context"
-import { E } from "@/components/editable/edit-with-context"
+import { BlockEditProvider, useBlockEdit } from "@/components/editable/context"
+import { E } from "@/components/editable/editable"
 import { ShopOwner } from "@/components/ui/shop-ownership-check"
 import { useSite } from "@/app/preview/components/site-context"
 import { CoursesSettingsPanel } from "./courses-settings-panel"

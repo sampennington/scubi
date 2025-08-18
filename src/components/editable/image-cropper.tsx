@@ -1,10 +1,10 @@
 "use client"
 
 import { useState, useRef } from "react"
-import { Cropper } from "react-cropper"
+import { Cropper, type ReactCropperElement } from "react-cropper"
 import { X, Check, RotateCcw, RotateCw, ZoomIn, ZoomOut } from "lucide-react"
 import { Button } from "@/components/ui/button"
-import "cropperjs/dist/cropper.css";
+import "cropperjs/dist/cropper.css"
 
 interface ImageCropperDialogProps {
   src: string
@@ -21,7 +21,7 @@ export const ImageCropperDialog = ({
   onSave,
   aspectRatio = 1
 }: ImageCropperDialogProps) => {
-  const cropperRef = useRef<any>(null)
+  const cropperRef = useRef<ReactCropperElement>(null)
   const [rotation, setRotation] = useState(0)
   const [zoom, setZoom] = useState(1)
   const [isProcessing, setIsProcessing] = useState(false)
@@ -83,12 +83,7 @@ export const ImageCropperDialog = ({
       <div className="relative max-h-[90vh] max-w-[90vw] overflow-hidden rounded-lg bg-white shadow-2xl">
         <div className="flex items-center justify-between border-b p-4">
           <h3 className="text-lg font-semibold">Edit Image</h3>
-          <Button
-            variant="ghost"
-            size="sm"
-            onClick={onClose}
-            className="h-8 w-8 p-0"
-          >
+          <Button variant="ghost" size="sm" onClick={onClose} className="h-8 w-8 p-0">
             <X className="h-4 w-4" />
           </Button>
         </div>

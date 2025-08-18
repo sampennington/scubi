@@ -2,7 +2,7 @@
 
 import { useState } from "react"
 import { ChevronDown, ChevronUp } from "lucide-react"
-import type { FAQContent } from "@/app/dashboard/shops/[id]/components/BlockForm/schemas"
+import type { FAQContent } from "@/components/blocks/schemas"
 
 const defaultContent: FAQContent = {
   title: "Set your FAQ title here",
@@ -14,11 +14,7 @@ const defaultContent: FAQContent = {
   ]
 }
 
-export const FAQBlock = ({
-  content = defaultContent
-}: {
-  content?: FAQContent
-}) => {
+export const FAQBlock = ({ content = defaultContent }: { content?: FAQContent }) => {
   const {
     title,
     description,
@@ -32,9 +28,7 @@ export const FAQBlock = ({
   const toggleItem = (index: number) => {
     if (allowMultipleOpen) {
       setOpenItems((prev) =>
-        prev.includes(index)
-          ? prev.filter((i) => i !== index)
-          : [...prev, index]
+        prev.includes(index) ? prev.filter((i) => i !== index) : [...prev, index]
       )
     } else {
       setOpenItems((prev) => (prev.includes(index) ? [] : [index]))
@@ -46,12 +40,8 @@ export const FAQBlock = ({
       <div className="container mx-auto px-4">
         {(title || description) && (
           <div className="mb-12 text-center">
-            {title && (
-              <h2 className="mb-4 font-bold text-3xl md:text-4xl">{title}</h2>
-            )}
-            {description && (
-              <p className="text-lg text-muted-foreground">{description}</p>
-            )}
+            {title && <h2 className="mb-4 font-bold text-3xl md:text-4xl">{title}</h2>}
+            {description && <p className="text-lg text-muted-foreground">{description}</p>}
           </div>
         )}
 

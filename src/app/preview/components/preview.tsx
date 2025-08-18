@@ -19,9 +19,11 @@ export function Preview() {
     return <DiveShopSite />
   }
 
-  const src = `${window.location.origin}?device=${previewDimension}`
+  const url = new URL(window.location.href)
 
-  return <Viewport src={src} device={previewDimension} className="h-screen" />
+  url.searchParams.set("device", previewDimension)
+
+  return <Viewport src={url.toString()} device={previewDimension} className="h-screen" />
 }
 
 function Viewport({ src, device, className = "" }: ViewportProps) {

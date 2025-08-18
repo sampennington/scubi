@@ -1,20 +1,12 @@
-"use client"
 import { Card, CardDescription, CardTitle } from "./card"
 import { CardHeader } from "./card"
 import type { Shop } from "@/lib/api"
 import { Button } from "./button"
-import { ExternalLink, Pencil } from "lucide-react"
+import { Pencil } from "lucide-react"
 import Link from "next/link"
-import { useRouter } from "next/navigation"
 import { PreviewButton } from "@/app/dashboard/components/PreviewButton"
 
 export const ShopCard = ({ shop }: { shop: Shop }) => {
-  const router = useRouter()
-
-  const goToPreview = () => {
-    router.push(`/preview/${shop.id}/home`)
-  }
-
   return (
     <Card>
       <CardHeader>

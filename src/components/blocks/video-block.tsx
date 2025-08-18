@@ -1,4 +1,4 @@
-import type { VideoContent } from "@/app/dashboard/shops/[id]/components/BlockForm/schemas"
+import type { VideoContent } from "@/components/blocks/schemas"
 
 const defaultContent: VideoContent = {
   title: "Set your video title here",
@@ -6,15 +6,9 @@ const defaultContent: VideoContent = {
   provider: "youtube"
 }
 
-const getVideoEmbedUrl = (
-  url: string,
-  provider: string,
-  autoplay: boolean = false
-) => {
+const getVideoEmbedUrl = (url: string, provider: string, autoplay: boolean = false) => {
   if (provider === "youtube") {
-    const videoId = url.match(
-      /(?:youtube\.com\/watch\?v=|youtu\.be\/)([^&\n?#]+)/
-    )?.[1]
+    const videoId = url.match(/(?:youtube\.com\/watch\?v=|youtu\.be\/)([^&\n?#]+)/)?.[1]
     if (videoId) {
       return `https://www.youtube.com/embed/${videoId}?autoplay=${autoplay ? 1 : 0}&rel=0`
     }
@@ -30,11 +24,7 @@ const getVideoEmbedUrl = (
   return url
 }
 
-export const VideoBlock = ({
-  content = defaultContent
-}: {
-  content?: VideoContent
-}) => {
+export const VideoBlock = ({ content = defaultContent }: { content?: VideoContent }) => {
   const {
     title,
     description,
@@ -54,12 +44,8 @@ export const VideoBlock = ({
       <div className="container mx-auto px-4">
         {(title || description) && (
           <div className="mb-12 text-center">
-            {title && (
-              <h2 className="mb-4 font-bold text-3xl md:text-4xl">{title}</h2>
-            )}
-            {description && (
-              <p className="text-lg text-muted-foreground">{description}</p>
-            )}
+            {title && <h2 className="mb-4 font-bold text-3xl md:text-4xl">{title}</h2>}
+            {description && <p className="text-lg text-muted-foreground">{description}</p>}
           </div>
         )}
 

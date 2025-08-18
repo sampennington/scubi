@@ -1,5 +1,5 @@
 import Image from "next/image"
-import type { GalleryContent } from "@/app/dashboard/shops/[id]/components/BlockForm/schemas"
+import type { GalleryContent } from "@/components/blocks/schemas"
 
 const defaultContent: GalleryContent = {
   title: "Set your gallery title here",
@@ -10,19 +10,8 @@ const defaultContent: GalleryContent = {
   showCaptions: false
 }
 
-export const GalleryBlock = ({
-  content = defaultContent
-}: {
-  content?: GalleryContent
-}) => {
-  const {
-    title,
-    description,
-    images,
-    layout = "grid",
-    columns = 3,
-    showCaptions = false
-  } = content
+export const GalleryBlock = ({ content = defaultContent }: { content?: GalleryContent }) => {
+  const { title, description, images, layout = "grid", columns = 3, showCaptions = false } = content
 
   const gridCols = {
     2: "grid-cols-1 md:grid-cols-2",
@@ -35,22 +24,15 @@ export const GalleryBlock = ({
       <div className="container mx-auto px-4">
         {(title || description) && (
           <div className="mb-12 text-center">
-            {title && (
-              <h2 className="mb-4 font-bold text-3xl md:text-4xl">{title}</h2>
-            )}
-            {description && (
-              <p className="text-lg text-muted-foreground">{description}</p>
-            )}
+            {title && <h2 className="mb-4 font-bold text-3xl md:text-4xl">{title}</h2>}
+            {description && <p className="text-lg text-muted-foreground">{description}</p>}
           </div>
         )}
 
         {layout === "grid" && (
           <div className={`grid gap-4 ${gridCols[columns]}`}>
             {(images || []).map((image, index) => (
-              <div
-                key={index}
-                className="group relative overflow-hidden rounded-lg"
-              >
+              <div key={index} className="group relative overflow-hidden rounded-lg">
                 <Image
                   src={image.src}
                   alt={image.alt}

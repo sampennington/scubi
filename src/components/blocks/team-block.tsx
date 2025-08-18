@@ -1,7 +1,7 @@
 import Image from "next/image"
 import { Mail, Phone, Linkedin, Twitter, Instagram } from "lucide-react"
 import { Card, CardContent, CardHeader } from "../ui/card"
-import type { TeamContent } from "@/app/dashboard/shops/[id]/components/BlockForm/schemas"
+import type { TeamContent } from "@/components/blocks/schemas"
 
 const defaultContent: TeamContent = {
   title: "Set your team title here",
@@ -14,11 +14,7 @@ const defaultContent: TeamContent = {
   fullWidthPhoto: false
 }
 
-export const TeamBlock = ({
-  content = defaultContent
-}: {
-  content?: TeamContent
-}) => {
+export const TeamBlock = ({ content = defaultContent }: { content?: TeamContent }) => {
   const {
     title,
     description,
@@ -41,12 +37,8 @@ export const TeamBlock = ({
       <div className="container mx-auto px-4">
         {(title || description) && (
           <div className="mb-12 text-center">
-            {title && (
-              <h2 className="mb-4 font-bold text-3xl md:text-4xl">{title}</h2>
-            )}
-            {description && (
-              <p className="text-lg text-muted-foreground">{description}</p>
-            )}
+            {title && <h2 className="mb-4 font-bold text-3xl md:text-4xl">{title}</h2>}
+            {description && <p className="text-lg text-muted-foreground">{description}</p>}
           </div>
         )}
 
@@ -58,12 +50,7 @@ export const TeamBlock = ({
                   <div className="mb-3 flex justify-center">
                     {fullWidthPhoto ? (
                       <div className="relative h-48 w-full overflow-hidden rounded-lg">
-                        <Image
-                          src={member.photo}
-                          alt={member.name}
-                          fill
-                          className="object-cover"
-                        />
+                        <Image src={member.photo} alt={member.name} fill className="object-cover" />
                       </div>
                     ) : (
                       <div className="relative h-32 w-32 overflow-hidden rounded-full">
@@ -160,12 +147,7 @@ export const TeamBlock = ({
                   <div className="flex-shrink-0">
                     {fullWidthPhoto ? (
                       <div className="relative h-24 w-32 overflow-hidden rounded-lg">
-                        <Image
-                          src={member.photo}
-                          alt={member.name}
-                          fill
-                          className="object-cover"
-                        />
+                        <Image src={member.photo} alt={member.name} fill className="object-cover" />
                       </div>
                     ) : (
                       <div className="relative h-20 w-20 overflow-hidden rounded-full">

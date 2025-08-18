@@ -1,6 +1,6 @@
 import Image from "next/image"
 import { Star } from "lucide-react"
-import type { TestimonialsContent } from "@/app/dashboard/shops/[id]/components/BlockForm/schemas"
+import type { TestimonialsContent } from "@/components/blocks/schemas"
 
 const defaultContent: TestimonialsContent = {
   title: "Set your testimonials title here",
@@ -16,9 +16,7 @@ const renderStars = (rating: number) => {
   return Array.from({ length: 5 }, (_, i) => (
     <Star
       key={i}
-      className={`h-4 w-4 ${
-        i < rating ? "fill-yellow-400 text-yellow-400" : "text-gray-300"
-      }`}
+      className={`h-4 w-4 ${i < rating ? "fill-yellow-400 text-yellow-400" : "text-gray-300"}`}
     />
   ))
 }
@@ -48,12 +46,8 @@ export const TestimonialsBlock = ({
       <div className="container mx-auto px-4">
         {(title || description) && (
           <div className="mb-12 text-center">
-            {title && (
-              <h2 className="mb-4 font-bold text-3xl md:text-4xl">{title}</h2>
-            )}
-            {description && (
-              <p className="text-lg text-muted-foreground">{description}</p>
-            )}
+            {title && <h2 className="mb-4 font-bold text-3xl md:text-4xl">{title}</h2>}
+            {description && <p className="text-lg text-muted-foreground">{description}</p>}
           </div>
         )}
 
@@ -67,9 +61,7 @@ export const TestimonialsBlock = ({
                   </div>
                 )}
 
-                <p className="mb-6 text-muted-foreground">
-                  "{testimonial.content}"
-                </p>
+                <p className="mb-6 text-muted-foreground">"{testimonial.content}"</p>
 
                 <div className="flex items-center gap-4">
                   {showPhotos && testimonial.photo && (
@@ -111,9 +103,7 @@ export const TestimonialsBlock = ({
                       </div>
                     )}
 
-                    <p className="mb-6 text-muted-foreground">
-                      "{testimonial.content}"
-                    </p>
+                    <p className="mb-6 text-muted-foreground">"{testimonial.content}"</p>
 
                     <div className="flex items-center gap-4">
                       {showPhotos && testimonial.photo && (
@@ -133,8 +123,7 @@ export const TestimonialsBlock = ({
                         {testimonial.role && (
                           <p className="text-muted-foreground text-sm">
                             {testimonial.role}
-                            {testimonial.company &&
-                              ` at ${testimonial.company}`}
+                            {testimonial.company && ` at ${testimonial.company}`}
                           </p>
                         )}
                       </div>

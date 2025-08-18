@@ -1,4 +1,4 @@
-import type { DividerContent } from "@/app/dashboard/shops/[id]/components/BlockForm/schemas"
+import type { DividerContent } from "@/components/blocks/schemas"
 
 const defaultContent: DividerContent = {
   text: "Divider",
@@ -6,18 +6,8 @@ const defaultContent: DividerContent = {
   style: "solid"
 }
 
-export const DividerBlock = ({
-  content = defaultContent
-}: {
-  content?: DividerContent
-}) => {
-  const {
-    text,
-    alignment = "center",
-    style = "solid",
-    color,
-    thickness = 1
-  } = content
+export const DividerBlock = ({ content = defaultContent }: { content?: DividerContent }) => {
+  const { text, alignment = "center", style = "solid", color, thickness = 1 } = content
 
   const borderStyles = {
     solid: "border-solid",
@@ -34,9 +24,7 @@ export const DividerBlock = ({
   return (
     <section className="py-8">
       <div className="container mx-auto px-4">
-        <div
-          className={`flex items-center gap-4 ${alignmentClasses[alignment]}`}
-        >
+        <div className={`flex items-center gap-4 ${alignmentClasses[alignment]}`}>
           <div
             className={`flex-1 border-t ${borderStyles[style]}`}
             style={{
@@ -46,10 +34,7 @@ export const DividerBlock = ({
           />
 
           {text && (
-            <span
-              className="px-4 text-muted-foreground"
-              style={{ color: color || undefined }}
-            >
+            <span className="px-4 text-muted-foreground" style={{ color: color || undefined }}>
               {text}
             </span>
           )}

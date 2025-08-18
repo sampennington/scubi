@@ -35,7 +35,7 @@ import {
   isTwoColumnContent,
   isCoursesContent,
   isMarineLifeContent
-} from "@/app/dashboard/shops/[id]/components/BlockForm/schemas"
+} from "@/components/blocks/schemas"
 import { useSite } from "../../app/preview/components/site-context"
 
 export const BlockRenderer = () => {

@@ -3,7 +3,7 @@
 import { api, type Block } from "@/lib/api"
 import { revalidatePath } from "next/cache"
 import type { BlockType } from "@/database/schema"
-import { typeGuardMap } from "@/app/dashboard/shops/[id]/components/BlockForm/schemas"
+import { typeGuardMap } from "@/components/blocks/schemas"
 
 export async function createBlock(
   data: {

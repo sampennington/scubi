@@ -96,7 +96,6 @@ export const pageApi = {
     return (result.rowCount ?? 0) > 0
   },
 
-  // Helper function to create example pages with hierarchy
   async createExamplePages(shopId: string): Promise<void> {
     const homePage = await this.create({
       shopId,

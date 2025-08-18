@@ -1,12 +1,9 @@
 import { Mail, Phone, Linkedin, Twitter, Instagram } from "lucide-react"
 import { Card, CardContent, CardHeader } from "../../ui/card"
-import type { TeamContent } from "@/app/dashboard/shops/[id]/components/BlockForm/schemas"
+import type { TeamContent } from "@/components/blocks/schemas"
 
-import {
-  BlockEditProvider,
-  useBlockEdit
-} from "@/components/editable/block-edit-context"
-import { E } from "@/components/editable/edit-with-context"
+import { BlockEditProvider, useBlockEdit } from "@/components/editable/context"
+import { E } from "@/components/editable/editable"
 import { EditableImage } from "@/components/editable/editable-image"
 import { TeamSettingsPanel } from "./team-settings-panel"
 
@@ -47,18 +44,12 @@ const TeamBlockContent = () => {
         {(title || description) && (
           <div className="mb-12 text-center">
             {title && (
-              <E.h2
-                fieldPath="title"
-                className="mb-4 font-bold text-3xl md:text-4xl"
-              >
+              <E.h2 fieldPath="title" className="mb-4 font-bold text-3xl md:text-4xl">
                 {title}
               </E.h2>
             )}
             {description && (
-              <E.p
-                fieldPath="description"
-                className="text-lg text-muted-foreground"
-              >
+              <E.p fieldPath="description" className="text-lg text-muted-foreground">
                 {description}
               </E.p>
             )}
@@ -98,25 +89,16 @@ const TeamBlockContent = () => {
                     )}
                   </div>
 
-                  <E.h3
-                    fieldPath={`members[${index}].name`}
-                    className="mb-1 font-semibold text-xl"
-                  >
+                  <E.h3 fieldPath={`members[${index}].name`} className="mb-1 font-semibold text-xl">
                     {member.name}
                   </E.h3>
-                  <E.p
-                    fieldPath={`members[${index}].role`}
-                    className="text-muted-foreground"
-                  >
+                  <E.p fieldPath={`members[${index}].role`} className="text-muted-foreground">
                     {member.role}
                   </E.p>
                 </CardHeader>
 
                 <CardContent className="pt-0">
-                  <E.p
-                    fieldPath={`members[${index}].bio`}
-                    className="mb-3 text-muted-foreground"
-                  >
+                  <E.p fieldPath={`members[${index}].bio`} className="mb-3 text-muted-foreground">
                     {member.bio}
                   </E.p>
 
@@ -221,10 +203,7 @@ const TeamBlockContent = () => {
                   </div>
 
                   <div className="flex-1">
-                    <E.h3
-                      fieldPath={`members[${index}].name`}
-                      className="font-semibold text-xl"
-                    >
+                    <E.h3 fieldPath={`members[${index}].name`} className="font-semibold text-xl">
                       {member.name}
                     </E.h3>
                     <E.p
@@ -233,10 +212,7 @@ const TeamBlockContent = () => {
                     >
                       {member.role}
                     </E.p>
-                    <E.p
-                      fieldPath={`members[${index}].bio`}
-                      className="text-muted-foreground"
-                    >
+                    <E.p fieldPath={`members[${index}].bio`} className="text-muted-foreground">
                       {member.bio}
                     </E.p>
 
@@ -322,11 +298,7 @@ export const TeamBlock = ({
   blockId?: string
 }) => {
   return (
-    <BlockEditProvider<TeamContent>
-      blockId={blockId}
-      initialContent={content}
-      type="team"
-    >
+    <BlockEditProvider<TeamContent> blockId={blockId} initialContent={content} type="team">
       <TeamBlockContent />
     </BlockEditProvider>
   )

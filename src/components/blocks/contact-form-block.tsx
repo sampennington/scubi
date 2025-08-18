@@ -4,14 +4,8 @@ import { useState } from "react"
 import { Button } from "../ui/button"
 import { Input } from "../ui/input"
 import { Textarea } from "../ui/textarea"
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue
-} from "../ui/select"
-import type { ContactFormContent } from "@/app/dashboard/shops/[id]/components/BlockForm/schemas"
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "../ui/select"
+import type { ContactFormContent } from "@/components/blocks/schemas"
 
 const defaultContent: ContactFormContent = {
   title: "Contact Us",
@@ -68,39 +62,23 @@ export const ContactFormBlock = ({
         <div className="mx-auto max-w-2xl">
           {(title || description) && (
             <div className="mb-12 text-center">
-              {title && (
-                <h2 className="mb-4 font-bold text-3xl md:text-4xl">{title}</h2>
-              )}
-              {description && (
-                <p className="text-lg text-muted-foreground">{description}</p>
-              )}
+              {title && <h2 className="mb-4 font-bold text-3xl md:text-4xl">{title}</h2>}
+              {description && <p className="text-lg text-muted-foreground">{description}</p>}
             </div>
           )}
 
           <form onSubmit={handleSubmit} className="space-y-6">
             {fields.map((field) => (
               <div key={field.name}>
-                <label
-                  htmlFor={field.name}
-                  className="mb-2 block font-medium text-sm"
-                >
+                <label htmlFor={field.name} className="mb-2 block font-medium text-sm">
                   {field.label}
                   {field.required && <span className="text-red-500"> *</span>}
                 </label>
-                <Field
-                  field={field}
-                  handleInputChange={handleInputChange}
-                  formData={formData}
-                />
+                <Field field={field} handleInputChange={handleInputChange} formData={formData} />
               </div>
             ))}
 
-            <Button
-              type="submit"
-              disabled={isSubmitting}
-              className="w-full"
-              size="lg"
-            >
+            <Button type="submit" disabled={isSubmitting} className="w-full" size="lg">
               {isSubmitting ? "Sending..." : submitButtonText}
             </Button>
           </form>
@@ -119,9 +97,7 @@ const SuccessMessage = ({ successMessage }: { successMessage: string }) => {
             <h3 className="mb-4 text-2xl font-semibold text-green-800 dark:text-green-200">
               Success!
             </h3>
-            <p className="text-green-700 dark:text-green-300">
-              {successMessage}
-            </p>
+            <p className="text-green-700 dark:text-green-300">{successMessage}</p>
           </div>
         </div>
       </div>

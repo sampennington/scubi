@@ -1,5 +1,5 @@
 import Image from "next/image"
-import type { SocialFeedContent } from "@/app/dashboard/shops/[id]/components/BlockForm/schemas"
+import type { SocialFeedContent } from "@/components/blocks/schemas"
 
 const defaultContent: SocialFeedContent = {
   title: "Set your social feed title here",
@@ -7,11 +7,7 @@ const defaultContent: SocialFeedContent = {
   username: "yourusername"
 }
 
-export const SocialFeedBlock = ({
-  content = defaultContent
-}: {
-  content?: SocialFeedContent
-}) => {
+export const SocialFeedBlock = ({ content = defaultContent }: { content?: SocialFeedContent }) => {
   const {
     title,
     description,
@@ -41,22 +37,15 @@ export const SocialFeedBlock = ({
       <div className="container mx-auto px-4">
         {(title || description) && (
           <div className="mb-12 text-center">
-            {title && (
-              <h2 className="mb-4 font-bold text-3xl md:text-4xl">{title}</h2>
-            )}
-            {description && (
-              <p className="text-lg text-muted-foreground">{description}</p>
-            )}
+            {title && <h2 className="mb-4 font-bold text-3xl md:text-4xl">{title}</h2>}
+            {description && <p className="text-lg text-muted-foreground">{description}</p>}
           </div>
         )}
 
         {layout === "grid" && (
           <div className={`grid gap-4 ${gridCols[columns]}`}>
             {mockPosts.map((post) => (
-              <div
-                key={post.id}
-                className="group relative overflow-hidden rounded-lg"
-              >
+              <div key={post.id} className="group relative overflow-hidden rounded-lg">
                 <a href={post.url} target="_blank" rel="noopener noreferrer">
                   <Image
                     src={post.image}

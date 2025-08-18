@@ -1,4 +1,4 @@
-import type { MapContent } from "@/app/dashboard/shops/[id]/components/BlockForm/schemas"
+import type { MapContent } from "@/components/blocks/schemas"
 
 const apiKey = process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY
 
@@ -7,20 +7,8 @@ const defaultContent: MapContent = {
   address: "123 Main St, City, State 12345"
 }
 
-export const MapBlock = ({
-  content = defaultContent
-}: {
-  content?: MapContent
-}) => {
-  const {
-    title,
-    description,
-    address,
-    latitude,
-    longitude,
-    zoom = 15,
-    height = 400
-  } = content
+export const MapBlock = ({ content = defaultContent }: { content?: MapContent }) => {
+  const { title, description, address, latitude, longitude, zoom = 15, height = 400 } = content
 
   const mapUrl =
     latitude && longitude
@@ -32,20 +20,13 @@ export const MapBlock = ({
       <div className="container mx-auto px-4">
         {(title || description) && (
           <div className="mb-12 text-center">
-            {title && (
-              <h2 className="mb-4 font-bold text-3xl md:text-4xl">{title}</h2>
-            )}
-            {description && (
-              <p className="text-lg text-muted-foreground">{description}</p>
-            )}
+            {title && <h2 className="mb-4 font-bold text-3xl md:text-4xl">{title}</h2>}
+            {description && <p className="text-lg text-muted-foreground">{description}</p>}
           </div>
         )}
 
         <div className="mx-auto max-w-4xl">
-          <div
-            className="w-full overflow-hidden rounded-lg"
-            style={{ height: `${height}px` }}
-          >
+          <div className="w-full overflow-hidden rounded-lg" style={{ height: `${height}px` }}>
             {apiKey ? (
               <iframe
                 src={mapUrl}

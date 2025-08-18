@@ -1,7 +1,7 @@
 import Image from "next/image"
 import { Badge } from "../ui/badge"
 import { Calendar, Waves } from "lucide-react"
-import type { MarineLifeContent } from "@/app/dashboard/shops/[id]/components/BlockForm/schemas"
+import type { MarineLifeContent } from "@/components/blocks/schemas"
 
 const defaultContent: MarineLifeContent = {
   title: "Set your marine life title here",
@@ -45,11 +45,7 @@ const getSeasonColor = (season: string) => {
   }
 }
 
-export const MarineLifeBlock = ({
-  content = defaultContent
-}: {
-  content?: MarineLifeContent
-}) => {
+export const MarineLifeBlock = ({ content = defaultContent }: { content?: MarineLifeContent }) => {
   const {
     title,
     description,
@@ -67,9 +63,7 @@ export const MarineLifeBlock = ({
   }
 
   const filteredItems = currentSeason
-    ? items.filter(
-        (item) => item.season === currentSeason || item.season === "year-round"
-      )
+    ? items.filter((item) => item.season === currentSeason || item.season === "year-round")
     : items
 
   return (
@@ -77,18 +71,13 @@ export const MarineLifeBlock = ({
       <div className="container mx-auto px-4">
         {(title || description) && (
           <div className="mb-12 text-center">
-            {title && (
-              <h2 className="mb-4 font-bold text-3xl md:text-4xl">{title}</h2>
-            )}
-            {description && (
-              <p className="text-lg text-muted-foreground">{description}</p>
-            )}
+            {title && <h2 className="mb-4 font-bold text-3xl md:text-4xl">{title}</h2>}
+            {description && <p className="text-lg text-muted-foreground">{description}</p>}
             {showSeasonalFilter && currentSeason && (
               <div className="mt-4">
                 <Badge className={getSeasonColor(currentSeason)}>
                   <Calendar className="mr-1 h-3 w-3" />
-                  {currentSeason.charAt(0).toUpperCase() +
-                    currentSeason.slice(1)}
+                  {currentSeason.charAt(0).toUpperCase() + currentSeason.slice(1)}
                 </Badge>
               </div>
             )}
@@ -98,10 +87,7 @@ export const MarineLifeBlock = ({
         {layout === "grid" && (
           <div className={`grid gap-6 ${gridCols[columns]}`}>
             {filteredItems.map((item, index) => (
-              <div
-                key={index}
-                className="rounded-lg border bg-card p-4 shadow-lg"
-              >
+              <div key={index} className="rounded-lg border bg-card p-4 shadow-lg">
                 {item.image && (
                   <div className="mb-4">
                     <Image
@@ -121,9 +107,7 @@ export const MarineLifeBlock = ({
                   </Badge>
                 </div>
 
-                <p className="mb-3 text-sm text-muted-foreground">
-                  {item.description}
-                </p>
+                <p className="mb-3 text-sm text-muted-foreground">{item.description}</p>
 
                 <div className="flex flex-wrap gap-2 text-xs text-muted-foreground">
                   {item.depth && (
@@ -134,9 +118,7 @@ export const MarineLifeBlock = ({
                   )}
 
                   {item.difficulty && (
-                    <Badge className={getDifficultyColor(item.difficulty)}>
-                      {item.difficulty}
-                    </Badge>
+                    <Badge className={getDifficultyColor(item.difficulty)}>{item.difficulty}</Badge>
                   )}
                 </div>
               </div>
@@ -147,10 +129,7 @@ export const MarineLifeBlock = ({
         {layout === "list" && (
           <div className="space-y-4">
             {filteredItems.map((item, index) => (
-              <div
-                key={index}
-                className="flex gap-4 rounded-lg border bg-card p-4"
-              >
+              <div key={index} className="flex gap-4 rounded-lg border bg-card p-4">
                 {item.image && (
                   <div className="flex-shrink-0">
                     <Image
@@ -167,15 +146,11 @@ export const MarineLifeBlock = ({
                   <div className="mb-2 flex items-center justify-between">
                     <h3 className="font-semibold">{item.name}</h3>
                     <Badge className={getSeasonColor(item.season)}>
-                      {item.season === "year-round"
-                        ? "Year-round"
-                        : item.season}
+                      {item.season === "year-round" ? "Year-round" : item.season}
                     </Badge>
                   </div>
 
-                  <p className="mb-2 text-muted-foreground text-sm">
-                    {item.description}
-                  </p>
+                  <p className="mb-2 text-muted-foreground text-sm">{item.description}</p>
 
                   <div className="flex flex-wrap gap-2 text-muted-foreground text-xs">
                     {item.depth && (
@@ -199,9 +174,7 @@ export const MarineLifeBlock = ({
 
         {filteredItems.length === 0 && (
           <div className="py-12 text-center">
-            <p className="text-muted-foreground">
-              No marine life found for the current season.
-            </p>
+            <p className="text-muted-foreground">No marine life found for the current season.</p>
           </div>
         )}
       </div>

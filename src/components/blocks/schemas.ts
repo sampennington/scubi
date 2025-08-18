@@ -1,7 +1,6 @@
 import { z } from "zod"
 import { BlockType } from "@/database/schema"
 
-// Base schemas for reusable components
 export const BlockButtonSchema = z.object({
   label: z.string(),
   url: z.string(),
@@ -17,7 +16,6 @@ export const BlockButtonSchema = z.object({
   ])
 })
 
-// Individual block type schemas
 export const HeroContentSchema = z.object({
   title: z.string(),
   text: z.string(),
@@ -263,7 +261,6 @@ export const MarineLifeContentSchema = z.object({
   showSeasonalFilter: z.boolean().optional()
 })
 
-// Schema map for easy lookup
 export const BlockSchemas = {
   [BlockType.HERO]: HeroContentSchema,
   [BlockType.TEXT]: TextContentSchema,
@@ -284,7 +281,6 @@ export const BlockSchemas = {
   [BlockType.MARINE_LIFE]: MarineLifeContentSchema
 } as const
 
-// Type exports for use in components
 export type BlockButton = z.infer<typeof BlockButtonSchema>
 export type HeroContent = z.infer<typeof HeroContentSchema>
 export type TextContent = z.infer<typeof TextContentSchema>
@@ -304,7 +300,6 @@ export type TwoColumnContent = z.infer<typeof TwoColumnBlockContentSchema>
 export type CoursesContent = z.infer<typeof CoursesContentSchema>
 export type MarineLifeContent = z.infer<typeof MarineLifeContentSchema>
 
-// Type guard functions for each block type
 export function isHeroContent(data: unknown): data is HeroContent {
   return HeroContentSchema.safeParse(data).success
 }

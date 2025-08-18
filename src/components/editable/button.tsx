@@ -2,7 +2,7 @@
 
 import { Edit } from "../ui/edit"
 import type { ReactNode } from "react"
-import type { BlockButton } from "@/app/dashboard/shops/[id]/components/BlockForm/schemas"
+import type { BlockButton } from "@/components/blocks/schemas"
 
 interface EditableButtonProps {
   fieldPath: string

@@ -1,13 +1,10 @@
 import Image from "next/image"
 import { Calendar, Phone } from "lucide-react"
 import heroImage from "@/assets/hero-underwater.jpg"
-import type { HeroContent } from "@/app/dashboard/shops/[id]/components/BlockForm/schemas"
+import type { HeroContent } from "@/components/blocks/schemas"
 
-import {
-  BlockEditProvider,
-  useBlockEdit
-} from "@/components/editable/block-edit-context"
-import { E } from "@/components/editable/edit-with-context"
+import { BlockEditProvider, useBlockEdit } from "@/components/editable/context"
+import { E } from "@/components/editable/editable"
 import { HeroSettingsPanel } from "./hero-settings-panel"
 
 const defaultContent: HeroContent = {
@@ -45,10 +42,7 @@ const HeroBlockContent = () => {
 
       <div className="relative z-10 mx-auto max-w-7xl px-4">
         <div className="max-w-3xl text-white">
-          <E.h1
-            fieldPath="title"
-            className="mb-6 font-bold text-4xl md:text-5xl lg:text-6xl"
-          >
+          <E.h1 fieldPath="title" className="mb-6 font-bold text-4xl md:text-5xl lg:text-6xl">
             {content.title}
           </E.h1>
 
@@ -94,11 +88,7 @@ export const HeroBlock = ({
   blockId?: string
 }) => {
   return (
-    <BlockEditProvider<HeroContent>
-      blockId={blockId}
-      initialContent={content}
-      type="hero"
-    >
+    <BlockEditProvider<HeroContent> blockId={blockId} initialContent={content} type="hero">
       <HeroBlockContent />
     </BlockEditProvider>
   )

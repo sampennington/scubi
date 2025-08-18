@@ -1,11 +1,7 @@
 import { Separator } from "../../ui/separator"
-import {
-  BlockSettingsPanel,
-  SettingsSection,
-  SettingItem
-} from "../block-settings-panel"
-import { useBlockEdit } from "../block-edit-context"
-import type { ContactFormContent } from "@/app/dashboard/shops/[id]/components/BlockForm/schemas"
+import { BlockSettingsPanel, SettingsSection, SettingItem } from "../settings-panel"
+import { useBlockEdit } from "../context"
+import type { ContactFormContent } from "@/components/blocks/schemas"
 
 export const ContactFormSettingsPanel = () => {
   const { content, handleEdit } = useBlockEdit<ContactFormContent>()
@@ -45,10 +41,7 @@ export const ContactFormSettingsPanel = () => {
       <Separator />
 
       <SettingsSection title="Form Configuration">
-        <SettingItem
-          label="Submit Button Text"
-          description="Text displayed on the submit button"
-        >
+        <SettingItem label="Submit Button Text" description="Text displayed on the submit button">
           <input
             type="text"
             value={submitButtonText}
@@ -89,8 +82,8 @@ export const ContactFormSettingsPanel = () => {
 
       <SettingsSection title="Form Fields">
         <div className="text-sm text-muted-foreground">
-          Form fields are managed through the block editor. Use the "Add Field"
-          button to add new fields and configure their properties.
+          Form fields are managed through the block editor. Use the "Add Field" button to add new
+          fields and configure their properties.
         </div>
       </SettingsSection>
     </BlockSettingsPanel>

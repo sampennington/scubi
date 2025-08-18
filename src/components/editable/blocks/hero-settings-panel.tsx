@@ -1,17 +1,7 @@
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue
-} from "../../ui/select"
-import {
-  BlockSettingsPanel,
-  SettingsSection,
-  SettingItem
-} from "../block-settings-panel"
-import { useBlockEdit } from "../block-edit-context"
-import type { HeroContent } from "@/app/dashboard/shops/[id]/components/BlockForm/schemas"
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "../../ui/select"
+import { BlockSettingsPanel, SettingsSection, SettingItem } from "../settings-panel"
+import { useBlockEdit } from "../context"
+import type { HeroContent } from "@/components/blocks/schemas"
 
 export const HeroSettingsPanel = () => {
   const { content, handleEdit } = useBlockEdit<HeroContent>()
@@ -36,10 +26,7 @@ export const HeroSettingsPanel = () => {
           />
         </SettingItem>
 
-        <SettingItem
-          label="Description"
-          description="Supporting text below the title"
-        >
+        <SettingItem label="Description" description="Supporting text below the title">
           <textarea
             value={text}
             onChange={(e) => handleEdit("text", e.target.value)}
@@ -51,10 +38,7 @@ export const HeroSettingsPanel = () => {
       </SettingsSection>
 
       <SettingsSection title="Primary Button">
-        <SettingItem
-          label="Button Text"
-          description="Text displayed on the primary button"
-        >
+        <SettingItem label="Button Text" description="Text displayed on the primary button">
           <input
             type="text"
             value={primaryButton.label}
@@ -69,10 +53,7 @@ export const HeroSettingsPanel = () => {
           />
         </SettingItem>
 
-        <SettingItem
-          label="Button URL"
-          description="Link destination for the primary button"
-        >
+        <SettingItem label="Button URL" description="Link destination for the primary button">
           <input
             type="url"
             value={primaryButton.url}
@@ -87,10 +68,7 @@ export const HeroSettingsPanel = () => {
           />
         </SettingItem>
 
-        <SettingItem
-          label="Button Style"
-          description="Visual appearance of the primary button"
-        >
+        <SettingItem label="Button Style" description="Visual appearance of the primary button">
           <Select
             value={primaryButton.variant}
             onValueChange={(value) =>
@@ -112,10 +90,7 @@ export const HeroSettingsPanel = () => {
       </SettingsSection>
 
       <SettingsSection title="Secondary Button">
-        <SettingItem
-          label="Button Text"
-          description="Text displayed on the secondary button"
-        >
+        <SettingItem label="Button Text" description="Text displayed on the secondary button">
           <input
             type="text"
             value={secondaryButton.label}
@@ -130,10 +105,7 @@ export const HeroSettingsPanel = () => {
           />
         </SettingItem>
 
-        <SettingItem
-          label="Button URL"
-          description="Link destination for the secondary button"
-        >
+        <SettingItem label="Button URL" description="Link destination for the secondary button">
           <input
             type="url"
             value={secondaryButton.url}
@@ -148,10 +120,7 @@ export const HeroSettingsPanel = () => {
           />
         </SettingItem>
 
-        <SettingItem
-          label="Button Style"
-          description="Visual appearance of the secondary button"
-        >
+        <SettingItem label="Button Style" description="Visual appearance of the secondary button">
           <Select
             value={secondaryButton.variant}
             onValueChange={(value) =>

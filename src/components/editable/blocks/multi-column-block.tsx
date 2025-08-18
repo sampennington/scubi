@@ -1,12 +1,9 @@
-import type { MultiColumnContent } from "@/app/dashboard/shops/[id]/components/BlockForm/schemas"
+import type { MultiColumnContent } from "@/components/blocks/schemas"
 import { defaultMultiColumnContent } from "@/components/blocks/default-data"
 import * as Icons from "lucide-react"
 
-import {
-  BlockEditProvider,
-  useBlockEdit
-} from "@/components/editable/block-edit-context"
-import { E } from "@/components/editable/edit-with-context"
+import { BlockEditProvider, useBlockEdit } from "@/components/editable/context"
+import { E } from "@/components/editable/editable"
 import { MultiColumnSettingsPanel } from "./multi-column-settings-panel"
 
 // Icon mapping for Lucide React icons
@@ -159,18 +156,12 @@ const MultiColumnBlockContent = () => {
         {(title || description) && (
           <div className={`mb-12 ${textAlign[alignment]}`}>
             {title && (
-              <E.h2
-                fieldPath="title"
-                className="mb-4 font-bold text-3xl md:text-4xl"
-              >
+              <E.h2 fieldPath="title" className="mb-4 font-bold text-3xl md:text-4xl">
                 {title}
               </E.h2>
             )}
             {description && (
-              <E.p
-                fieldPath="description"
-                className="text-lg text-muted-foreground"
-              >
+              <E.p fieldPath="description" className="text-lg text-muted-foreground">
                 {description}
               </E.p>
             )}
@@ -179,10 +170,7 @@ const MultiColumnBlockContent = () => {
 
         <div className={`grid gap-8 ${gridCols[columnsPerRow]}`}>
           {columns.map((column, index) => (
-            <div
-              key={index}
-              className={`flex flex-col ${textAlign[alignment]}`}
-            >
+            <div key={index} className={`flex flex-col ${textAlign[alignment]}`}>
               {showIcons && column.icon && (
                 <div className="mb-4 flex justify-center">
                   <div className="flex h-16 w-16 items-center justify-center rounded-full bg-primary/10">
@@ -205,10 +193,7 @@ const MultiColumnBlockContent = () => {
                 </E.h3>
               )}
 
-              <E.p
-                fieldPath={`columns[${index}].body`}
-                className="text-muted-foreground"
-              >
+              <E.p fieldPath={`columns[${index}].body`} className="text-muted-foreground">
                 {column.body}
               </E.p>
             </div>

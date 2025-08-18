@@ -3,9 +3,9 @@ import { Button } from "../../ui/button"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "../../ui/select"
 import { Switch } from "../../ui/switch"
 import { Separator } from "../../ui/separator"
-import { BlockSettingsPanel, SettingsSection, SettingItem } from "../block-settings-panel"
-import { useBlockEdit } from "../block-edit-context"
-import type { TeamContent } from "@/app/dashboard/shops/[id]/components/BlockForm/schemas"
+import { BlockSettingsPanel, SettingsSection, SettingItem } from "../settings-panel"
+import { useBlockEdit } from "../context"
+import type { TeamContent } from "@/components/blocks/schemas"
 import { DragDropContext, Droppable, Draggable, type DropResult } from "@hello-pangea/dnd"
 
 export const TeamSettingsPanel = () => {

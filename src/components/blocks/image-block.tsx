@@ -1,4 +1,4 @@
-import type { ImageContent } from "@/app/dashboard/shops/[id]/components/BlockForm/schemas"
+import type { ImageContent } from "@/components/blocks/schemas"
 import Image from "next/image"
 
 const defaultContent: ImageContent = {
@@ -7,11 +7,7 @@ const defaultContent: ImageContent = {
   caption: "Set your caption here"
 }
 
-export const ImageBlock = ({
-  content = defaultContent
-}: {
-  content?: ImageContent
-}) => {
+export const ImageBlock = ({ content = defaultContent }: { content?: ImageContent }) => {
   return (
     <div className="image-block">
       <Image src={content.src} alt={content.alt} width={100} height={100} />

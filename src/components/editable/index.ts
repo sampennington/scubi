@@ -3,7 +3,7 @@ export {
   BlockSettingsPanel,
   SettingsSection,
   SettingItem
-} from "./block-settings-panel"
+} from "./settings-panel"
 export { CoursesSettingsPanel } from "./blocks/courses-settings-panel"
 export { HeroSettingsPanel } from "./blocks/hero-settings-panel"
 export { TeamSettingsPanel } from "./blocks/team-settings-panel"

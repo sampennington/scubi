@@ -1,13 +1,12 @@
 "use client"
 import { Form, FormInput } from "@/components/ui/form"
 import { useForm } from "react-hook-form"
-import { updateSiteSettings } from "../../actions"
+import { updateSiteSettings } from "../actions"
 import { toast } from "sonner"
 import type { SiteSettings } from "@/lib/api/types"
 import { Button } from "@/components/ui/button"
 import { ColorPicker } from "@/components/ui/color-picker"
 import { FontPicker } from "@/components/ui/font-picker"
-import { SettingsSection } from "./SettingsSection"
 import { LogoUpload } from "@/components/ui/logo-upload"
 import { FaviconUpload } from "@/components/ui/favicon-upload"
 
@@ -51,15 +50,13 @@ export const GeneralSettings = ({
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)}>
         <div className="flex flex-col gap-4">
-          <p className="text-muted-foreground text-sm">
-            Some general settings about your shop.
-          </p>
+          <p className="text-muted-foreground text-sm">Some general settings about your shop.</p>
           <div className="flex flex-col gap-4">
             <div className="flex flex-col gap-2" />
           </div>
         </div>
 
-        <SettingsSection title="Branding">
+        <Section title="Branding">
           <div className="space-y-6">
             <LogoUpload
               value={form.watch("logoUrl")}
@@ -72,19 +69,11 @@ export const GeneralSettings = ({
               onRemove={() => form.setValue("faviconUrl", "")}
             />
           </div>
-        </SettingsSection>
+        </Section>
 
-        <SettingsSection title="Contact Details">
-          <FormInput
-            name="name"
-            label="Your Shop Name"
-            placeholder="Enter your shop name"
-          />
-          <FormInput
-            name="address"
-            label="Address"
-            placeholder="Enter your shop address"
-          />
+        <Section title="Contact Details">
+          <FormInput name="name" label="Your Shop Name" placeholder="Enter your shop name" />
+          <FormInput name="address" label="Address" placeholder="Enter your shop address" />
           <FormInput
             name="phoneNumber"
             label="Phone Number"
@@ -107,16 +96,15 @@ export const GeneralSettings = ({
               }
             }}
           />
-        </SettingsSection>
-        <SettingsSection title="Socials">
+        </Section>
+        <Section title="Socials">
           <FormInput
             name="facebookUrl"
             label="Facebook URL"
             placeholder="Enter your shop Facebook URL"
             rules={{
               pattern: {
-                value:
-                  /^(https?:\/\/)?(www\.)?facebook\.com\/[a-zA-Z0-9_-]+\/?$/,
+                value: /^(https?:\/\/)?(www\.)?facebook\.com\/[a-zA-Z0-9_-]+\/?$/,
                 message: "Facebook URL must be a valid URL"
               }
             }}
@@ -127,8 +115,7 @@ export const GeneralSettings = ({
             placeholder="Enter your shop Instagram URL"
             rules={{
               pattern: {
-                value:
-                  /^(https?:\/\/)?(www\.)?instagram\.com\/[a-zA-Z0-9_-]+\/?$/,
+                value: /^(https?:\/\/)?(www\.)?instagram\.com\/[a-zA-Z0-9_-]+\/?$/,
                 message: "Instagram URL must be a valid URL"
               }
             }}
@@ -144,8 +131,8 @@ export const GeneralSettings = ({
               }
             }}
           />
-        </SettingsSection>
-        <SettingsSection title="Theme">
+        </Section>
+        <Section title="Theme">
           <div>
             <label htmlFor="primary-color" className="font-medium text-sm">
               Primary Color
@@ -179,9 +166,7 @@ export const GeneralSettings = ({
             </label>
             <FontPicker
               value={form.watch("fontFamilyHeading")}
-              onValueChange={(value) =>
-                form.setValue("fontFamilyHeading", value)
-              }
+              onValueChange={(value) => form.setValue("fontFamilyHeading", value)}
               placeholder="Select heading font..."
               className="mt-2"
             />
@@ -197,11 +182,20 @@ export const GeneralSettings = ({
               className="mt-2"
             />
           </div>
-        </SettingsSection>
+        </Section>
         <Button className="mt-4" type="submit">
           Save
         </Button>
       </form>
     </Form>
+  )
+}
+
+const Section = ({ children, title }: { children: React.ReactNode; title: string }) => {
+  return (
+    <div className="mt-4 flex flex-col gap-3">
+      <h3 className="font-semibold text-lg">{title}</h3>
+      {children}
+    </div>
   )
 }

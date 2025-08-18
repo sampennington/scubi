@@ -2,7 +2,7 @@ import Image from "next/image"
 import { Badge } from "../ui/badge"
 import { Button } from "../ui/button"
 import { Calendar, Users, Waves } from "lucide-react"
-import type { CoursesContent } from "@/app/dashboard/shops/[id]/components/BlockForm/schemas"
+import type { CoursesContent } from "@/components/blocks/schemas"
 
 const defaultContent: CoursesContent = {
   title: "Set your courses title here",

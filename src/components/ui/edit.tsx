@@ -1,9 +1,9 @@
 "use client"
 
 import { useSite } from "@/app/preview/components/site-context"
-import { EditableBlock } from "@/components/editable/EditableBlock"
+import { EditableBlock } from "@/components/editable/block"
 import type { ComponentProps, JSX } from "react"
-import { useBlockEdit } from "../editable/block-edit-context"
+import { useBlockEdit } from "../editable/context"
 
 interface EditElementProps {
   children: string

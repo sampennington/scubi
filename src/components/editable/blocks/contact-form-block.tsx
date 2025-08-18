@@ -4,20 +4,11 @@ import { useState } from "react"
 import { Button } from "../../ui/button"
 import { Input } from "../../ui/input"
 import { Textarea } from "../../ui/textarea"
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue
-} from "../../ui/select"
-import type { ContactFormContent } from "@/app/dashboard/shops/[id]/components/BlockForm/schemas"
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "../../ui/select"
+import type { ContactFormContent } from "@/components/blocks/schemas"
 
-import {
-  BlockEditProvider,
-  useBlockEdit
-} from "@/components/editable/block-edit-context"
-import { E } from "@/components/editable/edit-with-context"
+import { BlockEditProvider, useBlockEdit } from "@/components/editable/context"
+import { E } from "@/components/editable/editable"
 import { ContactFormSettingsPanel } from "./contact-form-settings-panel"
 
 const defaultContent: ContactFormContent = {
@@ -98,18 +89,12 @@ const ContactFormBlockContent = () => {
           {(title || description) && (
             <div className="mb-12 text-center">
               {title && (
-                <E.h2
-                  fieldPath="title"
-                  className="mb-4 font-bold text-3xl md:text-4xl"
-                >
+                <E.h2 fieldPath="title" className="mb-4 font-bold text-3xl md:text-4xl">
                   {title}
                 </E.h2>
               )}
               {description && (
-                <E.p
-                  fieldPath="description"
-                  className="text-lg text-muted-foreground"
-                >
+                <E.p fieldPath="description" className="text-lg text-muted-foreground">
                   {description}
                 </E.p>
               )}
@@ -119,32 +104,17 @@ const ContactFormBlockContent = () => {
           <form onSubmit={handleSubmit} className="space-y-6">
             {fields.map((field, index) => (
               <div key={field.name}>
-                <label
-                  htmlFor={field.name}
-                  className="mb-2 block font-medium text-sm"
-                >
-                  <E.span
-                    fieldPath={`fields[${index}].label`}
-                    className="inline"
-                  >
+                <label htmlFor={field.name} className="mb-2 block font-medium text-sm">
+                  <E.span fieldPath={`fields[${index}].label`} className="inline">
                     {field.label}
                   </E.span>
                   {field.required && <span className="text-red-500"> *</span>}
                 </label>
-                <Field
-                  field={field}
-                  handleInputChange={handleInputChange}
-                  formData={formData}
-                />
+                <Field field={field} handleInputChange={handleInputChange} formData={formData} />
               </div>
             ))}
 
-            <Button
-              type="submit"
-              disabled={isSubmitting}
-              className="w-full"
-              size="lg"
-            >
+            <Button type="submit" disabled={isSubmitting} className="w-full" size="lg">
               {isSubmitting ? "Sending..." : submitButtonText}
             </Button>
           </form>
@@ -163,9 +133,7 @@ const SuccessMessage = ({ successMessage }: { successMessage: string }) => {
             <h3 className="mb-4 text-2xl font-semibold text-green-800 dark:text-green-200">
               Success!
             </h3>
-            <p className="text-green-700 dark:text-green-300">
-              {successMessage}
-            </p>
+            <p className="text-green-700 dark:text-green-300">{successMessage}</p>
           </div>
         </div>
       </div>

@@ -16,7 +16,7 @@ import type {
   TwoColumnContent,
   CoursesContent,
   MarineLifeContent
-} from "@/app/dashboard/shops/[id]/components/BlockForm/schemas"
+} from "@/components/blocks/schemas"
 
 export const defaultHeroContent: HeroContent = {
   title: "Welcome to our site",

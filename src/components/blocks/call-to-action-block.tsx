@@ -1,6 +1,6 @@
 import Image from "next/image"
 import { Button } from "../ui/button"
-import type { CallToActionContent } from "@/app/dashboard/shops/[id]/components/BlockForm/schemas"
+import type { CallToActionContent } from "@/components/blocks/schemas"
 
 const defaultContent: CallToActionContent = {
   title: "Set your call to action title here",
@@ -50,9 +50,7 @@ export const CallToActionBlock = ({
 
       <div className="container relative z-10 mx-auto px-4">
         <div className={`mx-auto max-w-4xl ${textAlignment[alignment]}`}>
-          <h2 className="mb-6 font-bold text-4xl md:text-5xl lg:text-6xl">
-            {title}
-          </h2>
+          <h2 className="mb-6 font-bold text-4xl md:text-5xl lg:text-6xl">{title}</h2>
 
           {description && <p className="mb-8 text-xl ">{description}</p>}
 
