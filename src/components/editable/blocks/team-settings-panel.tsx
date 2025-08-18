@@ -1,27 +1,12 @@
 import { Trash2, Plus, Move } from "lucide-react"
 import { Button } from "../../ui/button"
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue
-} from "../../ui/select"
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "../../ui/select"
 import { Switch } from "../../ui/switch"
 import { Separator } from "../../ui/separator"
-import {
-  BlockSettingsPanel,
-  SettingsSection,
-  SettingItem
-} from "../block-settings-panel"
+import { BlockSettingsPanel, SettingsSection, SettingItem } from "../block-settings-panel"
 import { useBlockEdit } from "../block-edit-context"
 import type { TeamContent } from "@/app/dashboard/shops/[id]/components/BlockForm/schemas"
-import {
-  DragDropContext,
-  Droppable,
-  Draggable,
-  type DropResult
-} from "@hello-pangea/dnd"
+import { DragDropContext, Droppable, Draggable, type DropResult } from "@hello-pangea/dnd"
 
 export const TeamSettingsPanel = () => {
   const { content, handleEdit } = useBlockEdit<TeamContent>()
@@ -33,7 +18,7 @@ export const TeamSettingsPanel = () => {
     layout = "grid",
     columns = "3",
     showContactInfo = false,
-    showSocialLinks = false,
+    showSocialLinks = false
   } = content
 
   const removeMember = (index: number) => {
@@ -96,14 +81,8 @@ export const TeamSettingsPanel = () => {
       <Separator />
 
       <SettingsSection title="Layout">
-        <SettingItem
-          label="Display Style"
-          description="Choose how team members are displayed"
-        >
-          <Select
-            value={layout}
-            onValueChange={(value) => handleEdit("layout", value)}
-          >
+        <SettingItem label="Display Style" description="Choose how team members are displayed">
+          <Select value={layout} onValueChange={(value) => handleEdit("layout", value)}>
             <SelectTrigger>
               <SelectValue />
             </SelectTrigger>
@@ -114,14 +93,8 @@ export const TeamSettingsPanel = () => {
           </Select>
         </SettingItem>
 
-        <SettingItem
-          label="Columns"
-          description="Number of columns in grid layout"
-        >
-          <Select
-            value={columns}
-            onValueChange={(value) => handleEdit("columns", value)}
-          >
+        <SettingItem label="Columns" description="Number of columns in grid layout">
+          <Select value={columns} onValueChange={(value) => handleEdit("columns", value)}>
             <SelectTrigger>
               <SelectValue />
             </SelectTrigger>
@@ -137,27 +110,17 @@ export const TeamSettingsPanel = () => {
       <Separator />
 
       <SettingsSection title="Display Options">
-        <SettingItem
-          label="Show Photos"
-          description="Display team member photos"
-        >
+        <SettingItem label="Show Photos" description="Display team member photos">
           <Switch
             checked={showContactInfo}
-            onCheckedChange={(checked) =>
-              handleEdit("showContactInfo", checked)
-            }
+            onCheckedChange={(checked) => handleEdit("showContactInfo", checked)}
           />
         </SettingItem>
 
-        <SettingItem
-          label="Show Social Links"
-          description="Display social media links"
-        >
+        <SettingItem label="Show Social Links" description="Display social media links">
           <Switch
             checked={showSocialLinks}
-            onCheckedChange={(checked) =>
-              handleEdit("showSocialLinks", checked)
-            }
+            onCheckedChange={(checked) => handleEdit("showSocialLinks", checked)}
           />
         </SettingItem>
       </SettingsSection>
@@ -166,14 +129,8 @@ export const TeamSettingsPanel = () => {
 
       <SettingsSection title="Team Members">
         <div className="flex items-center justify-between">
-          <span className="font-medium text-sm">
-            Members ({members.length})
-          </span>
-          <Button
-            onClick={addNewMember}
-            size="sm"
-            className="flex items-center gap-2"
-          >
+          <span className="font-medium text-sm">Members ({members.length})</span>
+          <Button onClick={addNewMember} size="sm" className="flex items-center gap-2">
             <Plus className="h-4 w-4" />
             Add Member
           </Button>
@@ -182,11 +139,7 @@ export const TeamSettingsPanel = () => {
         <DragDropContext onDragEnd={handleDragEnd}>
           <Droppable droppableId="team-members">
             {(provided) => (
-              <div
-                {...provided.droppableProps}
-                ref={provided.innerRef}
-                className="max-h-64 space-y-3 overflow-y-auto"
-              >
+              <div {...provided.droppableProps} ref={provided.innerRef} className="space-y-3">
                 {members.map((member, index) => (
                   <Draggable
                     key={`${member.name}-${index}`}
@@ -197,13 +150,12 @@ export const TeamSettingsPanel = () => {
                       <div
                         ref={provided.innerRef}
                         {...provided.draggableProps}
-                        className={`flex items-center justify-between rounded-lg border bg-muted/50 p-3 transition-colors ${snapshot.isDragging ? "bg-muted/80 shadow-lg" : ""
-                          }`}
+                        className={`flex items-center justify-between rounded-lg border bg-muted/50 p-3 transition-colors ${
+                          snapshot.isDragging ? "bg-muted/80 shadow-lg" : ""
+                        }`}
                       >
                         <div className="min-w-0 flex-1">
-                          <div className="truncate font-medium text-sm">
-                            {member.name}
-                          </div>
+                          <div className="truncate font-medium text-sm">{member.name}</div>
                           <div className="truncate text-muted-foreground text-xs">
                             {member.role}
                           </div>

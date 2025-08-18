@@ -1,10 +1,13 @@
 "use client"
 
+import { useSite } from "@/app/preview/components/site-context"
 import { EditableBlock } from "@/components/editable/EditableBlock"
 import type { ComponentProps, JSX } from "react"
+import { useBlockEdit } from "../editable/block-edit-context"
 
 interface EditElementProps {
   children: string
+  fieldPath: string
   onSave?: (value: string) => void
   placeholder?: string
   multiline?: boolean
@@ -12,7 +15,6 @@ interface EditElementProps {
   className?: string
 }
 
-// Helper to create editable elements
 const createEditableElement = <T extends keyof JSX.IntrinsicElements>(
   element: T,
   defaultMultiline = false
@@ -24,14 +26,26 @@ const createEditableElement = <T extends keyof JSX.IntrinsicElements>(
     multiline = defaultMultiline,
     maxLength,
     className,
+    fieldPath,
     ...props
   }: EditElementProps & ComponentProps<T>) => {
+    const { isEditMode } = useSite()
+    const { handleEdit } = useBlockEdit()
+
     const Element = element as React.ElementType
+
+    if (!isEditMode) {
+      return (
+        <Element className={className} {...props}>
+          {children}
+        </Element>
+      )
+    }
 
     return (
       <EditableBlock
         value={children}
-        onSave={onSave || (() => {})}
+        onSave={(value) => handleEdit(fieldPath, value)}
         placeholder={placeholder}
         multiline={multiline}
         maxLength={maxLength}
@@ -134,9 +148,6 @@ const EditTemplate = createEditableElement("template", true)
 // Slot elements
 const EditSlot = createEditableElement("slot")
 
-// Custom elements (for web components)
-const EditCustom = (tagName: string) => createEditableElement(tagName as any)
-
 export const Edit = {
   // Headings
   h1: EditH1,
@@ -228,9 +239,6 @@ export const Edit = {
 
   // Slot elements
   slot: EditSlot,
-
-  // Custom elements
-  custom: EditCustom,
 
   // Raw EditableBlock for custom usage
   block: EditableBlock

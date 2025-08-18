@@ -1,7 +1,6 @@
 "use client"
 
 import { Edit } from "../ui/edit"
-import { useBlockEdit } from "./block-edit-context"
 import type { ReactNode } from "react"
 import type { BlockButton } from "@/app/dashboard/shops/[id]/components/BlockForm/schemas"
 
@@ -23,8 +22,7 @@ const getButtonStyles = (variant: string, size: string) => {
 
   const variantStyles = {
     default: "bg-primary text-primary-foreground hover:bg-primary/90",
-    destructive:
-      "bg-destructive text-destructive-foreground hover:bg-destructive/90",
+    destructive: "bg-destructive text-destructive-foreground hover:bg-destructive/90",
     outline: "border border-input hover:bg-accent hover:text-accent-foreground",
     secondary: "bg-secondary text-secondary-foreground hover:bg-secondary/80",
     ghost: "hover:bg-accent hover:text-accent-foreground",
@@ -43,7 +41,7 @@ const getButtonStyles = (variant: string, size: string) => {
   return `${baseStyles} ${variantStyles[variant as keyof typeof variantStyles] || variantStyles.default} ${sizeStyles[size as keyof typeof sizeStyles] || sizeStyles.default}`
 }
 
-export const EditableButton = ({
+export const Button = ({
   fieldPath,
   children,
   icon,
@@ -55,8 +53,6 @@ export const EditableButton = ({
   onClick,
   ...props
 }: EditableButtonProps) => {
-  const { handleEdit } = useBlockEdit()
-
   return (
     <button
       type={type}
@@ -66,9 +62,7 @@ export const EditableButton = ({
       {...props}
     >
       {icon && icon}
-      <Edit.span onSave={(value) => handleEdit(fieldPath, value)}>
-        {children}
-      </Edit.span>
+      <Edit.span fieldPath={fieldPath}>{children}</Edit.span>
     </button>
   )
 }

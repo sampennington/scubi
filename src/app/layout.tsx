@@ -11,7 +11,6 @@ export const metadata: Metadata = {
   },
   description: site.description,
   manifest: "/manifest.webmanifest",
-  viewport: "width=device-width, initial-scale=1",
   icons: {
     icon: "/favicon.ico",
     shortcut: "/favicon.ico",

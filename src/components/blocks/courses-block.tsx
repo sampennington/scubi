@@ -30,11 +30,7 @@ const getLevelColor = (level: string) => {
   }
 }
 
-export const CoursesBlock = ({
-  content = defaultContent
-}: {
-  content?: CoursesContent
-}) => {
+export const CoursesBlock = ({ content = defaultContent }: { content?: CoursesContent }) => {
   const {
     title,
     description,
@@ -55,22 +51,15 @@ export const CoursesBlock = ({
       <div className="container mx-auto px-4">
         {(title || description) && (
           <div className="mb-12 text-center">
-            {title && (
-              <h2 className="mb-4 font-bold text-3xl md:text-4xl">{title}</h2>
-            )}
-            {description && (
-              <p className="text-lg text-muted-foreground">{description}</p>
-            )}
+            {title && <h2 className="mb-4 font-bold text-3xl md:text-4xl">{title}</h2>}
+            {description && <p className="text-lg text-muted-foreground">{description}</p>}
           </div>
         )}
 
         {layout === "grid" && (
           <div className={`grid gap-8 ${gridCols[columns]}`}>
             {courses.map((course, index) => (
-              <div
-                key={index}
-                className="rounded-lg border bg-card p-6 shadow-lg"
-              >
+              <div key={index} className="rounded-lg border bg-card p-6 shadow-lg">
                 {course.image && (
                   <div className="mb-4">
                     <Image
@@ -85,28 +74,20 @@ export const CoursesBlock = ({
 
                 <div className="mb-4 flex items-center justify-between">
                   {showLevels && (
-                    <Badge className={getLevelColor(course.level)}>
-                      {course.level}
-                    </Badge>
+                    <Badge className={getLevelColor(course.level)}>{course.level}</Badge>
                   )}
                   {showPricing && (
                     <div className="text-right">
-                      <span className="font-bold text-2xl text-primary">
-                        ${course.price}
-                      </span>
+                      <span className="font-bold text-2xl text-primary">${course.price}</span>
                       {course.currency && course.currency !== "USD" && (
-                        <span className="text-muted-foreground text-sm">
-                          {course.currency}
-                        </span>
+                        <span className="text-muted-foreground text-sm">{course.currency}</span>
                       )}
                     </div>
                   )}
                 </div>
 
                 <h3 className="mb-2 font-semibold text-xl">{course.title}</h3>
-                <p className="mb-4 text-muted-foreground">
-                  {course.description}
-                </p>
+                <p className="mb-4 text-muted-foreground">{course.description}</p>
 
                 <div className="mb-4 space-y-2 text-muted-foreground text-sm">
                   <div className="flex items-center gap-2">
@@ -152,10 +133,7 @@ export const CoursesBlock = ({
         {layout === "list" && (
           <div className="space-y-6">
             {courses.map((course, index) => (
-              <div
-                key={index}
-                className="flex gap-6 rounded-lg border bg-card p-6"
-              >
+              <div key={index} className="flex gap-6 rounded-lg border bg-card p-6">
                 {course.image && (
                   <div className="flex-shrink-0">
                     <Image
@@ -173,21 +151,15 @@ export const CoursesBlock = ({
                     <h3 className="font-semibold text-xl">{course.title}</h3>
                     {showPricing && (
                       <div className="text-right">
-                        <span className="font-bold text-2xl text-primary">
-                          ${course.price}
-                        </span>
+                        <span className="font-bold text-2xl text-primary">${course.price}</span>
                         {course.currency && course.currency !== "USD" && (
-                          <span className="text-muted-foreground text-sm">
-                            {course.currency}
-                          </span>
+                          <span className="text-muted-foreground text-sm">{course.currency}</span>
                         )}
                       </div>
                     )}
                   </div>
 
-                  <p className="mb-3 text-muted-foreground">
-                    {course.description}
-                  </p>
+                  <p className="mb-3 text-muted-foreground">{course.description}</p>
 
                   <div className="mb-3 flex flex-wrap gap-4 text-muted-foreground text-sm">
                     <div className="flex items-center gap-2">
@@ -196,9 +168,7 @@ export const CoursesBlock = ({
                     </div>
 
                     {showLevels && (
-                      <Badge className={getLevelColor(course.level)}>
-                        {course.level}
-                      </Badge>
+                      <Badge className={getLevelColor(course.level)}>{course.level}</Badge>
                     )}
 
                     {course.maxDepth && (

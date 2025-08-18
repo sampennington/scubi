@@ -1,4 +1,4 @@
-export { EditableButton } from "./button"
+export { Button } from "./button"
 export {
   BlockSettingsPanel,
   SettingsSection,

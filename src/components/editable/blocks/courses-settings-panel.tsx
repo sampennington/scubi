@@ -1,27 +1,12 @@
 import { Trash2, Plus, Move } from "lucide-react"
 import { Button } from "../../ui/button"
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue
-} from "../../ui/select"
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "../../ui/select"
 import { Separator } from "../../ui/separator"
-import {
-  BlockSettingsPanel,
-  SettingsSection,
-  SettingItem
-} from "../block-settings-panel"
+import { BlockSettingsPanel, SettingsSection, SettingItem } from "../block-settings-panel"
 import { useBlockEdit } from "../block-edit-context"
 import type { CoursesContent } from "@/app/dashboard/shops/[id]/components/BlockForm/schemas"
 import { Switch } from "@/components/ui/switch"
-import {
-  DragDropContext,
-  Droppable,
-  Draggable,
-  type DropResult
-} from "@hello-pangea/dnd"
+import { DragDropContext, Droppable, Draggable, type DropResult } from "@hello-pangea/dnd"
 
 export const CoursesSettingsPanel = () => {
   const { content, handleEdit } = useBlockEdit<CoursesContent>()
@@ -65,14 +50,8 @@ export const CoursesSettingsPanel = () => {
   return (
     <BlockSettingsPanel title="Courses Block Settings">
       <SettingsSection title="Layout">
-        <SettingItem
-          label="Display Style"
-          description="Choose how courses are displayed"
-        >
-          <Select
-            value={layout}
-            onValueChange={(value) => handleEdit("layout", value)}
-          >
+        <SettingItem label="Display Style" description="Choose how courses are displayed">
+          <Select value={layout} onValueChange={(value) => handleEdit("layout", value)}>
             <SelectTrigger>
               <SelectValue />
             </SelectTrigger>
@@ -83,14 +62,8 @@ export const CoursesSettingsPanel = () => {
           </Select>
         </SettingItem>
 
-        <SettingItem
-          label="Columns"
-          description="Number of columns in grid layout"
-        >
-          <Select
-            value={columns}
-            onValueChange={(value) => handleEdit("columns", value)}
-          >
+        <SettingItem label="Columns" description="Number of columns in grid layout">
+          <Select value={columns} onValueChange={(value) => handleEdit("columns", value)}>
             <SelectTrigger>
               <SelectValue />
             </SelectTrigger>
@@ -113,10 +86,7 @@ export const CoursesSettingsPanel = () => {
           />
         </SettingItem>
 
-        <SettingItem
-          label="Show Levels"
-          description="Display difficulty levels"
-        >
+        <SettingItem label="Show Levels" description="Display difficulty levels">
           <Switch
             checked={showLevels}
             onCheckedChange={(checked) => handleEdit("showLevels", checked)}
@@ -128,14 +98,8 @@ export const CoursesSettingsPanel = () => {
 
       <SettingsSection title="Course Management">
         <div className="flex items-center justify-between">
-          <span className="font-medium text-sm">
-            Courses ({courses.length})
-          </span>
-          <Button
-            onClick={addNewCourse}
-            size="sm"
-            className="flex items-center gap-2"
-          >
+          <span className="font-medium text-sm">Courses ({courses.length})</span>
+          <Button onClick={addNewCourse} size="sm" className="flex items-center gap-2">
             <Plus className="h-4 w-4" />
             Add Course
           </Button>
@@ -144,11 +108,7 @@ export const CoursesSettingsPanel = () => {
         <DragDropContext onDragEnd={handleDragEnd}>
           <Droppable droppableId="courses">
             {(provided) => (
-              <div
-                {...provided.droppableProps}
-                ref={provided.innerRef}
-                className="max-h-64 space-y-3 overflow-y-auto"
-              >
+              <div {...provided.droppableProps} ref={provided.innerRef} className="space-y-3">
                 {courses.map((course, index) => (
                   <Draggable
                     key={`${course.title}-${index}`}
@@ -164,9 +124,7 @@ export const CoursesSettingsPanel = () => {
                         }`}
                       >
                         <div className="min-w-0 flex-1">
-                          <div className="truncate font-medium text-sm">
-                            {course.title}
-                          </div>
+                          <div className="truncate font-medium text-sm">{course.title}</div>
                           <div className="truncate text-muted-foreground text-xs">
                             {course.duration} • {course.level}
                           </div>

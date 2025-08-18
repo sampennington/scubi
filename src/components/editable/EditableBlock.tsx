@@ -1,4 +1,4 @@
-/** biome-ignore-all lint/a11y/noStaticElementInteractions: <explanation> */
+/** biome-ignore-all lint/a11y/noStaticElementInteractions: doing something weird */
 "use client"
 
 import { useState, useRef, useEffect } from "react"
@@ -54,8 +54,7 @@ export const EditableBlock = ({
           fontFamily: styles.fontFamily,
           textAlign: styles.textAlign as React.CSSProperties["textAlign"],
           letterSpacing: styles.letterSpacing,
-          textTransform:
-            styles.textTransform as React.CSSProperties["textTransform"],
+          textTransform: styles.textTransform as React.CSSProperties["textTransform"],
           textDecoration: styles.textDecoration,
           backgroundColor: styles.backgroundColor,
           padding: styles.padding,
@@ -128,7 +127,6 @@ export const EditableBlock = ({
   }
 
   const handleBlur = () => {
-    // Small delay to allow for click events on save/cancel buttons
     setTimeout(() => {
       if (!containerRef.current?.contains(document.activeElement)) {
         handleSave()
@@ -152,10 +150,9 @@ export const EditableBlock = ({
           handleClick()
         }
       }}
-      // biome-ignore lint/a11y/useKeyWithClickEvents: <explanation>
-      // biome-ignore lint/a11y/noNoninteractiveTabindex: <explanation>
+      // biome-ignore lint/a11y/useKeyWithClickEvents: a
+      // biome-ignore lint/a11y/noNoninteractiveTabindex: a
       tabIndex={0}
-      // biome-ignore lint: This div needs to contain complex content
     >
       {/* Hidden child element for style extraction */}
       <div
@@ -225,26 +222,6 @@ export const EditableBlock = ({
               }}
             />
           )}
-
-          {/* Edit controls - only show when actively editing */}
-          {/* {isEditing && (
-            <div className="-top-8 absolute right-0 flex gap-1">
-              <button
-                type="button"
-                onClick={handleSave}
-                className="rounded bg-green-500 px-2 py-1 text-white text-xs hover:bg-green-600"
-              >
-                Save
-              </button>
-              <button
-                type="button"
-                onClick={handleCancel}
-                className="rounded bg-gray-500 px-2 py-1 text-white text-xs hover:bg-gray-600"
-              >
-                Cancel
-              </button>
-            </div>
-          )} */}
         </div>
       )}
     </div>
