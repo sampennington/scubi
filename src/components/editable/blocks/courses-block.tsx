@@ -6,7 +6,7 @@ import type { CoursesContent } from "@/app/dashboard/shops/[id]/components/Block
 import { BlockEditProvider, useBlockEdit } from "@/components/editable/block-edit-context"
 import { E } from "@/components/editable/edit-with-context"
 import { ShopOwner } from "@/components/ui/shop-ownership-check"
-import { useSite } from "@/components/site-context"
+import { useSite } from "@/app/preview/components/site-context"
 import { CoursesSettingsPanel } from "./courses-settings-panel"
 
 const defaultContent: CoursesContent = {

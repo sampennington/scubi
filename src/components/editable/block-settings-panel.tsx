@@ -5,7 +5,7 @@ import { Button } from "../ui/button"
 import * as DialogPrimitive from "@radix-ui/react-dialog"
 import { cn } from "@/lib/utils"
 import { ShopOwner } from "../ui/shop-ownership-check"
-import { useSite } from "../site-context"
+import { useSite } from "../../app/preview/components/site-context"
 
 interface BlockSettingsPanelProps {
   children: React.ReactNode

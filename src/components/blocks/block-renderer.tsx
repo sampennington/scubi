@@ -36,7 +36,7 @@ import {
   isCoursesContent,
   isMarineLifeContent
 } from "@/app/dashboard/shops/[id]/components/BlockForm/schemas"
-import { useSite } from "../site-context"
+import { useSite } from "../../app/preview/components/site-context"
 
 export const BlockRenderer = () => {
   const { blocks } = useSite()
@@ -53,13 +53,7 @@ function BlockWithValidation({ block }: { block: Block }) {
   switch (block.type) {
     case BlockType.HERO: {
       if (isHeroContent(block.content)) {
-        return (
-          <HeroBlock
-            key={block.id}
-            content={block.content}
-            blockId={block.id}
-          />
-        )
+        return <HeroBlock key={block.id} content={block.content} blockId={block.id} />
       }
 
       return <HeroBlock key={block.id} />
@@ -67,52 +61,28 @@ function BlockWithValidation({ block }: { block: Block }) {
 
     case BlockType.MULTI_COLUMN: {
       if (isMultiColumnContent(block.content)) {
-        return (
-          <MultiColumnBlock
-            key={block.id}
-            content={block.content}
-            blockId={block.id}
-          />
-        )
+        return <MultiColumnBlock key={block.id} content={block.content} blockId={block.id} />
       }
       return <MultiColumnBlock key={block.id} />
     }
 
     case BlockType.TEAM: {
       if (isTeamContent(block.content)) {
-        return (
-          <TeamBlock
-            key={block.id}
-            content={block.content}
-            blockId={block.id}
-          />
-        )
+        return <TeamBlock key={block.id} content={block.content} blockId={block.id} />
       }
       return <TeamBlock key={block.id} />
     }
 
     case BlockType.CONTACT_FORM: {
       if (isContactFormContent(block.content)) {
-        return (
-          <ContactFormBlock
-            key={block.id}
-            content={block.content}
-            blockId={block.id}
-          />
-        )
+        return <ContactFormBlock key={block.id} content={block.content} blockId={block.id} />
       }
       return <ContactFormBlock key={block.id} />
     }
 
     case BlockType.COURSES: {
       if (isCoursesContent(block.content)) {
-        return (
-          <CoursesBlock
-            key={block.id}
-            content={block.content}
-            blockId={block.id}
-          />
-        )
+        return <CoursesBlock key={block.id} content={block.content} blockId={block.id} />
       }
       return <CoursesBlock key={block.id} />
     }

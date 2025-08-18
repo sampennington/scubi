@@ -1,7 +1,7 @@
 "use client"
 
 import { useEffect } from "react"
-import { useSite } from "../site-context"
+import { useSite } from "../../app/preview/components/site-context"
 
 export const Favicon = () => {
   const { siteSettings } = useSite()

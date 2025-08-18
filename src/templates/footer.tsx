@@ -1,5 +1,5 @@
 import { Facebook, Instagram, MessageCircle } from "lucide-react"
-import { useSite } from "@/components/site-context"
+import { useSite } from "@/app/preview/components/site-context"
 
 export const Footer = () => {
   const { siteSettings } = useSite()
@@ -10,25 +10,20 @@ export const Footer = () => {
           <div>
             <h3 className="mb-4 font-semibold text-lg">{siteSettings.name}</h3>
             <p className="text-muted-foreground text-sm">
-              Your gateway to underwater adventures and professional dive
-              training.
+              Your gateway to underwater adventures and professional dive training.
             </p>
           </div>
           <div>
             <h4 className="mb-4 font-semibold">Quick Links</h4>
             <div className="space-y-2 text-sm">
-              <div className="cursor-pointer text-muted-foreground hover:text-primary">
-                Courses
-              </div>
+              <div className="cursor-pointer text-muted-foreground hover:text-primary">Courses</div>
               <div className="cursor-pointer text-muted-foreground hover:text-primary">
                 Fun Dives
               </div>
               <div className="cursor-pointer text-muted-foreground hover:text-primary">
                 Equipment
               </div>
-              <div className="cursor-pointer text-muted-foreground hover:text-primary">
-                About
-              </div>
+              <div className="cursor-pointer text-muted-foreground hover:text-primary">About</div>
             </div>
           </div>
           <div>
@@ -68,10 +63,7 @@ export const Footer = () => {
           </div>
         </div>
         <div className="mt-8 border-border/20 border-t pt-8 text-center text-muted-foreground text-sm">
-          <p>
-            © 2025 {siteSettings.name}. All rights reserved. Powered by
-            DiveSiteBuilder.
-          </p>
+          <p>© 2025 {siteSettings.name}. All rights reserved. Powered by DiveSiteBuilder.</p>
         </div>
       </div>
     </footer>

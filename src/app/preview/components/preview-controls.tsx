@@ -12,8 +12,9 @@ import {
   MonitorIcon
 } from "lucide-react"
 import { ShopOwner } from "@/components/ui/shop-ownership-check"
-import { useSite } from "@/components/site-context"
+import { useSite } from "@/app/preview/components/site-context"
 import { Switch } from "@/components/ui/switch"
+import type { DeviceId } from "@/lib/preview-presets"
 
 export function PreviewControls({ shopId }: { shopId: string }) {
   const router = useRouter()
@@ -24,10 +25,14 @@ export function PreviewControls({ shopId }: { shopId: string }) {
   }
 
   const previewOptions = [
-    { id: "mobile" as const, icon: SmartphoneIcon, label: "Mobile" },
-    { id: "tablet" as const, icon: TabletIcon, label: "Tablet" },
-    { id: "desktop" as const, icon: MonitorIcon, label: "Desktop" }
+    { id: "mobile" as DeviceId, icon: SmartphoneIcon, label: "Mobile" },
+    { id: "tablet" as DeviceId, icon: TabletIcon, label: "Tablet" },
+    { id: "desktop" as DeviceId, icon: MonitorIcon, label: "Desktop" }
   ]
+
+  if (typeof window !== "undefined" && window.location.search.includes("device")) {
+    return null
+  }
 
   return (
     <ShopOwner shopId={shopId}>
@@ -51,8 +56,7 @@ export function PreviewControls({ shopId }: { shopId: string }) {
           <Switch checked={isEditMode} onCheckedChange={() => setEditMode(!isEditMode)} />
         </div>
 
-        {/* Responsive Preview Controls */}
-        <div className="flex items-center gap-1 ml-4">
+        <div className="ml-4 flex items-center gap-1">
           {previewOptions.map(({ id, icon: Icon, label }) => (
             <Button
               key={id}
@@ -68,7 +72,7 @@ export function PreviewControls({ shopId }: { shopId: string }) {
           ))}
         </div>
 
-        <div className="flex items-center gap-2 ml-auto mr-4">
+        <div className="mr-4 ml-auto flex items-center gap-2">
           <Button
             variant="outline"
             size="sm"

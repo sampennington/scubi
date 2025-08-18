@@ -1,7 +1,7 @@
 "use client"
 
 import { useEffect } from "react"
-import { useSite } from "../site-context"
+import { useSite } from "../../app/preview/components/site-context"
 
 interface ThemeProviderProps {
   children: React.ReactNode
@@ -12,9 +12,7 @@ const loadGoogleFont = (fontFamily: string) => {
   if (!fontFamily || fontFamily === "system-ui") return
 
   // Check if font is already loaded
-  const existingLink = document.querySelector(
-    `link[href*="${fontFamily.replace(" ", "+")}"]`
-  )
+  const existingLink = document.querySelector(`link[href*="${fontFamily.replace(" ", "+")}"]`)
   if (existingLink) return
 
   const link = document.createElement("link")
@@ -25,13 +23,8 @@ const loadGoogleFont = (fontFamily: string) => {
 
 export function ThemeProvider({ children }: ThemeProviderProps) {
   const { siteSettings } = useSite()
-  const {
-    primaryColor,
-    secondaryColor,
-    accentColor,
-    fontFamilyHeading,
-    fontFamilyBody
-  } = siteSettings
+  const { primaryColor, secondaryColor, accentColor, fontFamilyHeading, fontFamilyBody } =
+    siteSettings
 
   // Load fonts when theme changes
   useEffect(() => {

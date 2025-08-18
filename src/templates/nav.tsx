@@ -1,7 +1,7 @@
 import { Facebook, Instagram, MessageCircle } from "lucide-react"
 import type { NavigationItem } from "@/lib/api"
 import Image from "next/image"
-import { useSite } from "@/components/site-context"
+import { useSite } from "@/app/preview/components/site-context"
 
 export const Nav = () => {
   const { siteSettings, pages } = useSite()
@@ -19,9 +19,7 @@ export const Nav = () => {
                 height={40}
               />
             ) : (
-              <div className="font-bold text-2xl text-primary">
-                {siteSettings.name}
-              </div>
+              <div className="font-bold text-2xl text-primary">{siteSettings.name}</div>
             )}
           </div>
           <div className="hidden items-center gap-6 md:flex">
@@ -64,10 +62,7 @@ export const Nav = () => {
 const NavItem = ({ item }: { item: NavigationItem }) => {
   return (
     <div key={item.id} className="group relative">
-      <a
-        href={item.slug}
-        className="font-medium text-sm transition-colors hover:text-primary"
-      >
+      <a href={item.slug} className="font-medium text-sm transition-colors hover:text-primary">
         {item.title}
       </a>
 

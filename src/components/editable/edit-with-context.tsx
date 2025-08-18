@@ -8,7 +8,7 @@ import type { BlockButton } from "@/app/dashboard/shops/[id]/components/BlockFor
 import { EditableButton } from "."
 import { Button } from "../ui/button"
 import { EditableImage, NoEditImage } from "./editable-image"
-import { useSite } from "../site-context"
+import { useSite } from "../../app/preview/components/site-context"
 
 export const E = {
   h1: ({
@@ -120,11 +120,7 @@ export const E = {
     )
   },
 
-  p: ({
-    fieldPath,
-    children,
-    ...props
-  }: { fieldPath: string } & ComponentProps<typeof Edit.p>) => {
+  p: ({ fieldPath, children, ...props }: { fieldPath: string } & ComponentProps<typeof Edit.p>) => {
     const { handleEdit } = useBlockEdit()
     const { isEditMode } = useSite()
     if (!isEditMode) {
@@ -255,14 +251,7 @@ export const E = {
     }
 
     if (!isEditMode) {
-      return (
-        <NoEditImage
-          src={src}
-          alt={alt}
-          width={width || 400}
-          height={height || 300}
-        />
-      )
+      return <NoEditImage src={src} alt={alt} width={width || 400} height={height || 300} />
     }
 
     return (

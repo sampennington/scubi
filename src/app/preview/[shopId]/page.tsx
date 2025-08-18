@@ -1,11 +1,7 @@
-import { SiteWrapper } from "@/components/site-wrapper"
+import { PreviewPage } from "@/app/preview/components/preview-page"
 
-export default async function PreviewPage({
-  params
-}: {
-  params: Promise<{ shopId: string }>
-}) {
+export default async function Page({ params }: { params: Promise<{ shopId: string }> }) {
   const { shopId } = await params
 
-  return <SiteWrapper shopId={shopId} />
+  return <PreviewPage shopId={shopId} />
 }
