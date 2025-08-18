@@ -6,6 +6,8 @@ import { BlockEditProvider, useBlockEdit } from "@/components/editable/context"
 import { E } from "@/components/editable/editable"
 import { EditableImage } from "@/components/editable/editable-image"
 import { TeamSettingsPanel } from "./team-settings-panel"
+import { BlockType } from "@/database/schema"
+import type { Block } from "@/lib/api"
 
 const defaultContent: TeamContent = {
   title: "Set your team title here",
@@ -71,7 +73,6 @@ const TeamBlockContent = () => {
                           width={400}
                           height={300}
                           className="h-full w-full"
-                          aspectRatio="video"
                         />
                       </div>
                     ) : (
@@ -83,7 +84,6 @@ const TeamBlockContent = () => {
                           width={128}
                           height={128}
                           className="h-full w-full"
-                          aspectRatio="square"
                         />
                       </div>
                     )}
@@ -184,7 +184,6 @@ const TeamBlockContent = () => {
                           width={128}
                           height={96}
                           className="h-full w-full"
-                          aspectRatio="video"
                         />
                       </div>
                     ) : (
@@ -196,7 +195,6 @@ const TeamBlockContent = () => {
                           width={80}
                           height={80}
                           className="h-full w-full"
-                          aspectRatio="square"
                         />
                       </div>
                     )}
@@ -292,13 +290,19 @@ const TeamBlockContent = () => {
 
 export const TeamBlock = ({
   content = defaultContent,
-  blockId
-}: {
+  blockId,
+  ...props
+}: Block & {
   content?: TeamContent
   blockId?: string
 }) => {
   return (
-    <BlockEditProvider<TeamContent> blockId={blockId} initialContent={content} type="team">
+    <BlockEditProvider<TeamContent>
+      blockId={blockId}
+      {...props}
+      content={content}
+      type={BlockType.TEAM}
+    >
       <TeamBlockContent />
     </BlockEditProvider>
   )

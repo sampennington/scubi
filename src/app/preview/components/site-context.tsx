@@ -17,6 +17,7 @@ export interface SiteContextValue {
   currentPath: string
   isShopOwner: boolean
   publishSite: () => void
+  refreshBlocks: () => void
 }
 
 const SiteContext = createContext<SiteContextValue | null>(null)
@@ -61,9 +62,15 @@ export function TemplateProvider({
     if (enabled) {
       newUrl.searchParams.set("edit", "true")
     } else {
-      newUrl.searchParams.delete("edit")
+      newUrl.searchParams.set("edit", "false")
     }
     window.history.replaceState({}, "", newUrl.toString())
+  }
+
+  const refreshBlocks = () => {
+    // For now, we'll use window.location.reload()
+    // In a more sophisticated implementation, you could fetch blocks again
+    window.location.reload()
   }
 
   return (
@@ -80,7 +87,8 @@ export function TemplateProvider({
         currentPage,
         currentPath,
         isShopOwner,
-        publishSite: () => null
+        publishSite: () => null,
+        refreshBlocks
       }}
     >
       {children}

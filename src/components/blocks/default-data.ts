@@ -17,6 +17,7 @@ import type {
   CoursesContent,
   MarineLifeContent
 } from "@/components/blocks/schemas"
+import { BlockType } from "@/database/schema"
 
 export const defaultHeroContent: HeroContent = {
   title: "Welcome to our site",
@@ -282,4 +283,12 @@ export const defaultMarineLifeContent: MarineLifeContent = {
   layout: "grid",
   columns: "2",
   showSeasonalFilter: true
+}
+
+export const defaultContent: Partial<Record<BlockType, HeroContent | MultiColumnContent | TeamContent | ContactFormContent | CoursesContent>> = {
+  [BlockType.HERO]: defaultHeroContent as HeroContent,
+  [BlockType.MULTI_COLUMN]: defaultMultiColumnContent as MultiColumnContent,
+  [BlockType.TEAM]: defaultTeamContent as TeamContent,
+  [BlockType.CONTACT_FORM]: defaultContactFormContent as ContactFormContent,
+  [BlockType.COURSES]: defaultCoursesContent as CoursesContent
 }

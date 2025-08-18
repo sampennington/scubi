@@ -5,6 +5,8 @@ import * as Icons from "lucide-react"
 import { BlockEditProvider, useBlockEdit } from "@/components/editable/context"
 import { E } from "@/components/editable/editable"
 import { MultiColumnSettingsPanel } from "./multi-column-settings-panel"
+import { BlockType } from "@/database/schema"
+import type { Block } from "@/lib/api"
 
 // Icon mapping for Lucide React icons
 const ICONS = {
@@ -150,7 +152,7 @@ const MultiColumnBlockContent = () => {
   }
 
   return (
-    <section className="py-16 group relative">
+    <section className="group relative py-16">
       <MultiColumnSettingsPanel />
       <div className="container mx-auto px-4">
         {(title || description) && (
@@ -206,16 +208,18 @@ const MultiColumnBlockContent = () => {
 
 export const MultiColumnBlock = ({
   content = defaultMultiColumnContent,
-  blockId
-}: {
+  blockId,
+  ...props
+}: Block & {
   content?: MultiColumnContent
   blockId?: string
 }) => {
   return (
     <BlockEditProvider<MultiColumnContent>
+      {...props}
       blockId={blockId}
-      initialContent={content}
-      type="multi-column"
+      content={content}
+      type={BlockType.MULTI_COLUMN}
     >
       <MultiColumnBlockContent />
     </BlockEditProvider>

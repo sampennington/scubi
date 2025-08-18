@@ -2,15 +2,11 @@
 
 import { updateBlock } from "@/app/dashboard/shops/[id]/actions"
 import type { BlockType } from "@/database/schema"
-import {
-  createContext,
-  useContext,
-  useState,
-  useEffect,
-  type ReactNode
-} from "react"
+import { createContext, useContext, useState, useEffect, type ReactNode } from "react"
 import { setProperty } from "dot-prop"
 import { useSearchParams } from "next/navigation"
+import { AddBlockButton } from "@/app/preview/components/add-block-button"
+import type { Block } from "@/lib/api"
 
 interface BlockEditContextType<T = Record<string, unknown>> {
   handleEdit: (
@@ -24,22 +20,22 @@ interface BlockEditContextType<T = Record<string, unknown>> {
 
 const BlockEditContext = createContext<BlockEditContextType | null>(null)
 
-interface BlockEditProviderProps<T = Record<string, unknown>> {
+type BlockEditProviderProps<T = Record<string, unknown>> = Block & {
   children: ReactNode
   blockId?: string
-  initialContent: T
+  content: T
   onContentChange?: (content: T) => void
-  type: BlockType
 }
 
 export const BlockEditProvider = <T extends Record<string, unknown>>({
   children,
   blockId,
-  initialContent,
+  content,
+  order,
   onContentChange,
   type
 }: BlockEditProviderProps<T>) => {
-  const [localContent, setLocalContent] = useState<T>(initialContent)
+  const [localContent, setLocalContent] = useState<T>(content)
   const [isSaving, setIsSaving] = useState(false)
   const searchParams = useSearchParams()
   const [isEditMode, setIsEditMode] = useState(false)
@@ -49,7 +45,6 @@ export const BlockEditProvider = <T extends Record<string, unknown>>({
     const editParam = searchParams.get("edit")
     setIsEditMode(editParam === "true")
   }, [searchParams])
-
 
   const handleEdit = async (
     fieldPath: string,
@@ -71,15 +66,11 @@ export const BlockEditProvider = <T extends Record<string, unknown>>({
       setIsSaving(true)
       await updateBlock(blockId, {
         content: updatedContent,
-        type
+        type: type as BlockType
       })
     } catch (error) {
       setLocalContent((prev) =>
-        setProperty(
-          prev,
-          fieldPath,
-          (initialContent as Record<string, unknown>)[fieldPath]
-        )
+        setProperty(prev, fieldPath, (content as Record<string, unknown>)[fieldPath])
       )
       console.error("Failed to save:", error)
     } finally {
@@ -93,10 +84,12 @@ export const BlockEditProvider = <T extends Record<string, unknown>>({
         handleEdit,
         isSaving,
         blockId,
-        content: localContent,
+        content: localContent
       }}
     >
+      {order === 0 && <AddBlockButton order={order} onBlockAdded={() => {}} />}
       {children}
+      <AddBlockButton order={order} onBlockAdded={() => {}} />
     </BlockEditContext.Provider>
   )
 }

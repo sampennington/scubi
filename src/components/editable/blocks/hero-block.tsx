@@ -1,27 +1,11 @@
 import Image from "next/image"
 import { Calendar, Phone } from "lucide-react"
-import heroImage from "@/assets/hero-underwater.jpg"
 import type { HeroContent } from "@/components/blocks/schemas"
 
 import { BlockEditProvider, useBlockEdit } from "@/components/editable/context"
 import { E } from "@/components/editable/editable"
 import { HeroSettingsPanel } from "./hero-settings-panel"
-
-const defaultContent: HeroContent = {
-  title: "Set your title here",
-  text: "Set your text here",
-  image: heroImage.src,
-  primaryButton: {
-    label: "Set your button label here",
-    url: "",
-    variant: "secondary"
-  },
-  secondaryButton: {
-    label: "Set your secondary button here",
-    url: "",
-    variant: "invert"
-  }
-}
+import type { Block } from "@/lib/api"
 
 const HeroBlockContent = () => {
   const { isSaving, content } = useBlockEdit<HeroContent>()
@@ -81,14 +65,15 @@ const HeroBlockContent = () => {
 }
 
 export const HeroBlock = ({
-  content = defaultContent,
-  blockId
-}: {
-  content?: HeroContent
+  content,
+  blockId,
+  ...props
+}: Block & {
+  content: HeroContent
   blockId?: string
 }) => {
   return (
-    <BlockEditProvider<HeroContent> blockId={blockId} initialContent={content} type="hero">
+    <BlockEditProvider<HeroContent> blockId={blockId} content={content} {...props}>
       <HeroBlockContent />
     </BlockEditProvider>
   )

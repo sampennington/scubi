@@ -53,7 +53,7 @@ export const TwoColumnBlock = ({ content = defaultContent }: { content?: TwoColu
       default:
         return (
           <div>
-            {content.title && <h3 className="mb-4 text-2xl font-semibold">{content.title}</h3>}
+            {content.title && <h3 className="mb-4 font-semibold text-2xl">{content.title}</h3>}
             <div className="prose prose-gray max-w-none">
               <p className="text-muted-foreground">{content.content}</p>
             </div>

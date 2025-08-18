@@ -17,6 +17,7 @@ import { DividerBlock } from "./divider-block"
 import { TwoColumnBlock } from "./two-column-block"
 import { CoursesBlock } from "../editable/blocks/courses-block"
 import { MarineLifeBlock } from "./marine-life-block"
+import { EmptyPagePlaceholder } from "./empty-page-placeholder"
 import {
   isHeroContent,
   isTextContent,
@@ -34,16 +35,29 @@ import {
   isDividerContent,
   isTwoColumnContent,
   isCoursesContent,
-  isMarineLifeContent
+  isMarineLifeContent,
+  type HeroContent,
+  type MultiColumnContent,
+  type TeamContent,
+  type ContactFormContent,
+  type CoursesContent
 } from "@/components/blocks/schemas"
 import { useSite } from "../../app/preview/components/site-context"
+import { defaultContent } from "./default-data"
 
 export const BlockRenderer = () => {
   const { blocks } = useSite()
+
+  if (blocks.length === 0) {
+    return <EmptyPagePlaceholder />
+  }
+
   return (
     <div className="flex w-full flex-col">
       {blocks.map((block) => (
-        <BlockWithValidation key={block.id} block={block} />
+        <div key={block.id}>
+          <BlockWithValidation block={block} />
+        </div>
       ))}
     </div>
   )
@@ -52,39 +66,43 @@ export const BlockRenderer = () => {
 function BlockWithValidation({ block }: { block: Block }) {
   switch (block.type) {
     case BlockType.HERO: {
-      if (isHeroContent(block.content)) {
-        return <HeroBlock key={block.id} content={block.content} blockId={block.id} />
-      }
+      const content = isHeroContent(block.content)
+        ? block.content
+        : (defaultContent[BlockType.HERO] as HeroContent)
 
-      return <HeroBlock key={block.id} />
+      return <HeroBlock key={block.id} blockId={block.id} {...block} content={content} />
     }
 
     case BlockType.MULTI_COLUMN: {
-      if (isMultiColumnContent(block.content)) {
-        return <MultiColumnBlock key={block.id} content={block.content} blockId={block.id} />
-      }
-      return <MultiColumnBlock key={block.id} />
+      const content = isMultiColumnContent(block.content)
+        ? block.content
+        : (defaultContent[BlockType.MULTI_COLUMN] as MultiColumnContent)
+
+      return <MultiColumnBlock key={block.id} content={content} blockId={block.id} />
     }
 
     case BlockType.TEAM: {
-      if (isTeamContent(block.content)) {
-        return <TeamBlock key={block.id} content={block.content} blockId={block.id} />
-      }
-      return <TeamBlock key={block.id} />
+      const content = isTeamContent(block.content)
+        ? block.content
+        : (defaultContent[BlockType.TEAM] as TeamContent)
+
+      return <TeamBlock key={block.id} content={content} blockId={block.id} />
     }
 
     case BlockType.CONTACT_FORM: {
-      if (isContactFormContent(block.content)) {
-        return <ContactFormBlock key={block.id} content={block.content} blockId={block.id} />
-      }
-      return <ContactFormBlock key={block.id} />
+      const content = isContactFormContent(block.content)
+        ? block.content
+        : (defaultContent[BlockType.CONTACT_FORM] as ContactFormContent)
+
+      return <ContactFormBlock key={block.id} content={content} blockId={block.id} />
     }
 
     case BlockType.COURSES: {
-      if (isCoursesContent(block.content)) {
-        return <CoursesBlock key={block.id} content={block.content} blockId={block.id} />
-      }
-      return <CoursesBlock key={block.id} />
+      const content = isCoursesContent(block.content)
+        ? block.content
+        : (defaultContent[BlockType.COURSES] as CoursesContent)
+
+      return <CoursesBlock key={block.id} content={content} blockId={block.id} />
     }
 
     // Non editable blocks

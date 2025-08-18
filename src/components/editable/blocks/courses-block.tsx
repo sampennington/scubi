@@ -8,6 +8,8 @@ import { E } from "@/components/editable/editable"
 import { ShopOwner } from "@/components/ui/shop-ownership-check"
 import { useSite } from "@/app/preview/components/site-context"
 import { CoursesSettingsPanel } from "./courses-settings-panel"
+import { BlockType } from "@/database/schema"
+import type { Block } from "@/lib/api"
 
 const defaultContent: CoursesContent = {
   title: "Set your courses title here",
@@ -258,13 +260,19 @@ const CoursesBlockContent = () => {
 
 export const CoursesBlock = ({
   content = defaultContent,
-  blockId
-}: {
+  blockId,
+  ...props
+}: Block & {
   content?: CoursesContent
   blockId?: string
 }) => {
   return (
-    <BlockEditProvider<CoursesContent> blockId={blockId} initialContent={content} type="courses">
+    <BlockEditProvider<CoursesContent>
+      {...props}
+      blockId={blockId}
+      content={content}
+      type={BlockType.COURSES}
+    >
       <CoursesBlockContent />
     </BlockEditProvider>
   )

@@ -4,7 +4,6 @@ import { blocks } from "@/database/schema"
 import { generateId } from "@/lib/utils"
 
 export type Block = typeof blocks.$inferSelect
-
 export const blockApi = {
   async getByPageId(pageId: string): Promise<Block[]> {
     return db

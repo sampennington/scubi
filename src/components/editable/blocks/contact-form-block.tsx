@@ -10,6 +10,8 @@ import type { ContactFormContent } from "@/components/blocks/schemas"
 import { BlockEditProvider, useBlockEdit } from "@/components/editable/context"
 import { E } from "@/components/editable/editable"
 import { ContactFormSettingsPanel } from "./contact-form-settings-panel"
+import { BlockType } from "@/database/schema"
+import type { Block } from "@/lib/api"
 
 const defaultContent: ContactFormContent = {
   title: "Contact Us",
@@ -205,16 +207,18 @@ const Field = ({
 
 export const ContactFormBlock = ({
   content = defaultContent,
-  blockId
-}: {
+  blockId,
+  ...props
+}: Block & {
   content?: ContactFormContent
   blockId?: string
 }) => {
   return (
     <BlockEditProvider<ContactFormContent>
+      {...props}
       blockId={blockId}
-      initialContent={content}
-      type="contact-form"
+      content={content}
+      type={BlockType.CONTACT_FORM}
     >
       <ContactFormBlockContent />
     </BlockEditProvider>

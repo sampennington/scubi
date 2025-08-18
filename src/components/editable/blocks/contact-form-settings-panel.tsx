@@ -81,7 +81,7 @@ export const ContactFormSettingsPanel = () => {
       <Separator />
 
       <SettingsSection title="Form Fields">
-        <div className="text-sm text-muted-foreground">
+        <div className="text-muted-foreground text-sm">
           Form fields are managed through the block editor. Use the "Add Field" button to add new
           fields and configure their properties.
         </div>
