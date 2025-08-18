@@ -89,6 +89,23 @@ export async function reorderBlocks(
   }
 }
 
+export async function updateBlockOrder(
+  id: string,
+  order: number,
+  revalidatePaths: string[] = []
+) {
+  try {
+    const block = await api.blocks.update(id, { order })
+
+    revalidatePaths.forEach((path) => revalidatePath(path))
+
+    return { success: true, block }
+  } catch (error) {
+    console.error("Error updating block order:", error)
+    return { success: false, error: "Failed to update block order" }
+  }
+}
+
 export async function getBlocksByPageId(pageId: string) {
   try {
     return await api.blocks.getByPageId(pageId)

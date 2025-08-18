@@ -22,7 +22,6 @@ export async function PreviewPage({ shopId, slug }: SiteWrapperProps) {
     return notFound()
   }
 
-  const blocks = await api.blocks.getByPageId(currentPage.id)
   const siteSettings = await api.siteSettings.getByShopId(shopId)
 
   if (!siteSettings) {
@@ -37,7 +36,6 @@ export async function PreviewPage({ shopId, slug }: SiteWrapperProps) {
       <TemplateProvider
         shopId={shopId}
         siteSettings={siteSettings}
-        blocks={blocks}
         pages={pages}
         currentPage={currentPage}
         currentPath={currentPath}

@@ -32,6 +32,7 @@ export function EmptyPagePlaceholder() {
         isOpen={isModalOpen}
         onClose={() => setIsModalOpen(false)}
         onBlockAdded={refreshBlocks}
+        order={0}
       />
     </>
   )

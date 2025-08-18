@@ -70,7 +70,7 @@ function BlockWithValidation({ block }: { block: Block }) {
         ? block.content
         : (defaultContent[BlockType.HERO] as HeroContent)
 
-      return <HeroBlock key={block.id} blockId={block.id} {...block} content={content} />
+      return <HeroBlock key={block.id} {...block} content={content} />
     }
 
     case BlockType.MULTI_COLUMN: {
@@ -78,7 +78,7 @@ function BlockWithValidation({ block }: { block: Block }) {
         ? block.content
         : (defaultContent[BlockType.MULTI_COLUMN] as MultiColumnContent)
 
-      return <MultiColumnBlock key={block.id} content={content} blockId={block.id} />
+      return <MultiColumnBlock key={block.id} {...block} content={content} />
     }
 
     case BlockType.TEAM: {
@@ -86,7 +86,7 @@ function BlockWithValidation({ block }: { block: Block }) {
         ? block.content
         : (defaultContent[BlockType.TEAM] as TeamContent)
 
-      return <TeamBlock key={block.id} content={content} blockId={block.id} />
+      return <TeamBlock key={block.id} {...block} content={content} />
     }
 
     case BlockType.CONTACT_FORM: {
@@ -94,7 +94,7 @@ function BlockWithValidation({ block }: { block: Block }) {
         ? block.content
         : (defaultContent[BlockType.CONTACT_FORM] as ContactFormContent)
 
-      return <ContactFormBlock key={block.id} content={content} blockId={block.id} />
+      return <ContactFormBlock key={block.id} {...block} content={content} />
     }
 
     case BlockType.COURSES: {
@@ -102,7 +102,7 @@ function BlockWithValidation({ block }: { block: Block }) {
         ? block.content
         : (defaultContent[BlockType.COURSES] as CoursesContent)
 
-      return <CoursesBlock key={block.id} content={content} blockId={block.id} />
+      return <CoursesBlock key={block.id} {...block} content={content} />
     }
 
     // Non editable blocks

@@ -7,7 +7,7 @@ import { Input } from "@/components/ui/input"
 import { SearchIcon, PlusIcon } from "lucide-react"
 import { useSite } from "@/app/preview/components/site-context"
 import { BlockType } from "@/database/schema"
-import { createBlock } from "@/lib/actions/blocks"
+import { createBlock, updateBlockOrder } from "@/lib/actions/blocks"
 import { defaultContent } from "@/components/blocks/default-data"
 import { toast } from "sonner"
 
@@ -15,7 +15,7 @@ interface AddBlockModalProps {
   isOpen: boolean
   onClose: () => void
   onBlockAdded: () => void
-  order: number
+  order: number | null
 }
 
 const EDITABLE_BLOCKS = [
@@ -65,15 +65,24 @@ export function AddBlockModal({ isOpen, onClose, onBlockAdded, order }: AddBlock
   const handleCreateBlock = async (blockType: BlockType) => {
     setIsCreating(true)
     try {
-      // For now, we'll add blocks at the end and let users reorder manually
-      // This is simpler and avoids complex reordering logic
-      const newOrder = blocks.length > 0 ? Math.max(...blocks.map((b) => b.order ?? 0)) + 1 : 0
+      if (order === null) {
+        throw new Error("Order is required")
+      }
+
+      const blocksToUpdate = blocks.filter((block) => (block.order ?? 0) > order)
+
+      for (const block of blocksToUpdate) {
+        const updateResult = await updateBlockOrder(block.id, (block.order ?? 0) + 1)
+        if (!updateResult.success) {
+          throw new Error(`Failed to update block order: ${updateResult.error}`)
+        }
+      }
 
       const result = await createBlock({
         pageId: currentPage.id,
         type: blockType,
         content: defaultContent[blockType] as Record<string, unknown>,
-        order: newOrder
+        order: order
       })
 
       if (!result.success) {

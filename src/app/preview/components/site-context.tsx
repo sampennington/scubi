@@ -1,8 +1,9 @@
 "use client"
 
-import { createContext, useContext, useState, useEffect, type ReactNode } from "react"
+import { createContext, useContext, useState, useEffect, type ReactNode, useCallback } from "react"
 import type { Block, NavigationItem, Page } from "@/lib/api"
 import type { SiteSettings } from "@/lib/api/types"
+import { getBlocks } from "@/lib/actions/blocks"
 
 export interface SiteContextValue {
   shopId: string
@@ -17,7 +18,7 @@ export interface SiteContextValue {
   currentPath: string
   isShopOwner: boolean
   publishSite: () => void
-  refreshBlocks: () => void
+  refreshBlocks: () => Promise<void>
 }
 
 const SiteContext = createContext<SiteContextValue | null>(null)
@@ -26,7 +27,6 @@ interface TemplateProviderProps {
   children: ReactNode
   shopId: string
   siteSettings: SiteSettings
-  blocks: Block[]
   pages: NavigationItem[]
   currentPage: Page
   currentPath: string
@@ -37,13 +37,13 @@ export function TemplateProvider({
   children,
   shopId,
   siteSettings,
-  blocks,
   pages,
   currentPage,
   currentPath,
   isShopOwner
 }: TemplateProviderProps) {
   const [isEditMode, setIsEditMode] = useState(false)
+  const [blocks, setBlocks] = useState<Block[]>([])
   const [previewDimension, setPreviewDimension] = useState<"mobile" | "tablet" | "desktop">(
     "desktop"
   )
@@ -53,6 +53,18 @@ export function TemplateProvider({
     const editMode = searchParams.get("edit") === "true"
     setIsEditMode(editMode)
   }, [])
+
+  const fetchBlocks = useCallback(async (pageId: string) => {
+    const { blocks } = await getBlocks(pageId)
+
+    if (blocks) {
+      setBlocks(blocks)
+    }
+  }, [])
+
+  useEffect(() => {
+    fetchBlocks(currentPage.id)
+  }, [currentPage.id, fetchBlocks])
 
   const setEditMode = (enabled: boolean) => {
     setIsEditMode(enabled)
@@ -65,12 +77,6 @@ export function TemplateProvider({
       newUrl.searchParams.set("edit", "false")
     }
     window.history.replaceState({}, "", newUrl.toString())
-  }
-
-  const refreshBlocks = () => {
-    // For now, we'll use window.location.reload()
-    // In a more sophisticated implementation, you could fetch blocks again
-    window.location.reload()
   }
 
   return (
@@ -88,7 +94,7 @@ export function TemplateProvider({
         currentPath,
         isShopOwner,
         publishSite: () => null,
-        refreshBlocks
+        refreshBlocks: () => fetchBlocks(currentPage.id)
       }}
     >
       {children}
