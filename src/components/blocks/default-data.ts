@@ -15,7 +15,8 @@ import type {
   SocialFeedContent,
   TwoColumnContent,
   CoursesContent,
-  MarineLifeContent
+  MarineLifeContent,
+  ReviewsContent
 } from "@/components/blocks/schemas"
 import { BlockType } from "@/database/schema"
 
@@ -285,10 +286,36 @@ export const defaultMarineLifeContent: MarineLifeContent = {
   showSeasonalFilter: true
 }
 
-export const defaultContent: Partial<Record<BlockType, HeroContent | MultiColumnContent | TeamContent | ContactFormContent | CoursesContent>> = {
+export const defaultReviewsContent: ReviewsContent = {
+  title: "Customer Reviews",
+  description: "See what our customers are saying",
+  platform: "all",
+  layout: "grid",
+  columns: "4",
+  maxReviews: 8,
+  showRating: true,
+  showPhotos: true,
+  showVerifiedBadge: true,
+  showDate: true,
+  showPlatform: false,
+  showReadMore: true,
+  truncateLength: 150,
+  showAggregateRating: true,
+  showReviewButton: true,
+  reviewButtonText: "Review us on Google",
+  reviewButtonUrl: "https://google.com",
+  sortBy: "date",
+  sortOrder: "desc",
+  filterRating: "all",
+  autoRefresh: false,
+  refreshInterval: 3600
+}
+
+export const defaultContent: Partial<Record<BlockType, HeroContent | MultiColumnContent | TeamContent | ContactFormContent | CoursesContent | ReviewsContent>> = {
   [BlockType.HERO]: defaultHeroContent as HeroContent,
   [BlockType.MULTI_COLUMN]: defaultMultiColumnContent as MultiColumnContent,
   [BlockType.TEAM]: defaultTeamContent as TeamContent,
   [BlockType.CONTACT_FORM]: defaultContactFormContent as ContactFormContent,
-  [BlockType.COURSES]: defaultCoursesContent as CoursesContent
+  [BlockType.COURSES]: defaultCoursesContent as CoursesContent,
+  [BlockType.REVIEWS]: defaultReviewsContent as ReviewsContent
 }

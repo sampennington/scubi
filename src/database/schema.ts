@@ -26,7 +26,8 @@ export const BlockType = {
   DIVIDER: "divider",
   TWO_COLUMN: "two-column",
   COURSES: "courses",
-  MARINE_LIFE: "marine-life"
+  MARINE_LIFE: "marine-life",
+  REVIEWS: "reviews"
 } as const
 
 export type BlockType = (typeof BlockType)[keyof typeof BlockType]
@@ -202,4 +203,28 @@ export const siteSettings = pgTable("site_settings", {
   accentColor: text("accent_color"),
   fontFamilyHeading: text("font_family_heading"),
   fontFamilyBody: text("font_family_body")
+})
+
+export const reviews = pgTable("reviews", {
+  id: text("id").primaryKey(),
+  shopId: text("shop_id")
+    .references(() => shops.id, { onDelete: "cascade" })
+    .notNull(),
+  platform: text("platform").notNull(), // 'google', 'tripadvisor', 'facebook', etc.
+  externalId: text("external_id"), // ID from the platform
+  reviewerName: text("reviewer_name").notNull(),
+  reviewerPhoto: text("reviewer_photo"), // URL to profile photo
+  rating: integer("rating").notNull(), // 1-5 stars
+  reviewText: text("review_text").notNull(),
+  reviewDate: timestamp("review_date").notNull(),
+  language: text("language").default("en"),
+  verified: boolean("verified").default(false),
+  helpfulCount: integer("helpful_count").default(0),
+  reviewUrl: text("review_url"), // Link to the review on the platform
+  createdAt: timestamp("created_at")
+    .$defaultFn(() => new Date())
+    .notNull(),
+  updatedAt: timestamp("updated_at")
+    .$defaultFn(() => new Date())
+    .notNull()
 })

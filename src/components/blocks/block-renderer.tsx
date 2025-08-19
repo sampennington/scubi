@@ -40,11 +40,14 @@ import {
   type MultiColumnContent,
   type TeamContent,
   type ContactFormContent,
-  type CoursesContent
+  type CoursesContent,
+  type ReviewsContent,
+  isReviewsContent
 } from "@/components/blocks/schemas"
 import { useSite } from "../../app/preview/components/site-context"
 import { defaultContent } from "./default-data"
 import { Loader2 } from "lucide-react"
+import ReviewsBlock from "../editable/blocks/reviews-block"
 
 export const BlockRenderer = () => {
   const { blocks, isLoadingLocalBlocks } = useSite()
@@ -115,6 +118,14 @@ function BlockWithValidation({ block }: { block: Block }) {
         : (defaultContent[BlockType.COURSES] as CoursesContent)
 
       return <CoursesBlock key={block.id} {...block} content={content} />
+    }
+
+    case BlockType.REVIEWS: {
+      const content = isReviewsContent(block.content)
+        ? block.content
+        : (defaultContent[BlockType.REVIEWS] as ReviewsContent)
+
+      return <ReviewsBlock key={block.id} {...block} content={content} />
     }
 
     // Non editable blocks

@@ -48,6 +48,12 @@ const EDITABLE_BLOCKS = [
     name: "Courses",
     description: "Display available courses with details and pricing",
     icon: "📚"
+  },
+  {
+    type: BlockType.REVIEWS,
+    name: "Reviews",
+    description: "Display customer reviews from Google, TripAdvisor, and other platforms",
+    icon: "⭐"
   }
 ]
 

@@ -5,6 +5,7 @@ import { blockApi, type Block } from "./blocks"
 import { templateApi } from "./templates"
 import { siteSettingsApi } from "./site-settings"
 import { subscriptionApi } from "./subscriptions"
+import { reviewsApi } from "./reviews"
 
 export { shopApi, type Shop, type ShopWithMembers } from "./shops"
 export { memberApi } from "./members"
@@ -13,6 +14,7 @@ export { blockApi, type Block } from "./blocks"
 export { templateApi } from "./templates"
 export { siteSettingsApi } from "./site-settings"
 export { subscriptionApi } from "./subscriptions"
+export { reviewsApi } from "./reviews"
 
 export type PageWithBlocks = Page & {
   blocks: Block[]
@@ -26,6 +28,7 @@ export const api = {
   templates: templateApi,
   siteSettings: siteSettingsApi,
   subscriptions: subscriptionApi,
+  reviews: reviewsApi,
 
   utils: {
     async getShopWithMembers(shopId: string): Promise<ShopWithMembers | null> {
