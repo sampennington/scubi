@@ -15,6 +15,7 @@ import { BlockEditProvider, useBlockEdit } from "@/components/editable/context"
 import { BlockType } from "@/database/schema"
 import type { Block } from "@/lib/api"
 import { defaultReviewsContent } from "@/components/blocks/default-data"
+import ReviewsSettingsPanel from "./reviews-settings-panel"
 
 const truncateText = (text: string, maxLength: number) => {
   if (text.length <= maxLength) return text
@@ -194,7 +195,8 @@ export function ReviewsBlockContent() {
   }
 
   return (
-    <section className="w-full bg-gradient-to-br from-teal-900 to-teal-800 py-12">
+    <section className="group relative w-full bg-gradient-to-br from-teal-900 to-teal-800 py-12">
+      <ReviewsSettingsPanel />
       <div className="container mx-auto px-4">
         {(content.title ||
           content.description ||
@@ -257,7 +259,7 @@ export function ReviewsBlockContent() {
             content.layout === "carousel" && "grid-cols-1 md:grid-cols-2 lg:grid-cols-4"
           )}
         >
-          {reviews.slice(0, content.maxReviews).map((review) => (
+          {reviews?.slice(0, content.maxReviews).map((review) => (
             <Card
               key={review.id}
               className="bg-white transition-shadow duration-200 hover:shadow-lg"
