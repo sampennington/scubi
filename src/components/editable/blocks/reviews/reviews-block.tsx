@@ -37,19 +37,20 @@ const getPlatformIcon = (platform: string) => {
   }
 }
 
-const getPlatformColor = (platform: string) => {
-  switch (platform.toLowerCase()) {
-    case "google":
-      return "bg-blue-500"
-    case "tripadvisor":
-      return "bg-green-500"
-    case "facebook":
-      return "bg-blue-600"
-    case "yelp":
-      return "bg-red-500"
-    default:
-      return "bg-gray-500"
-  }
+const getAvatarColor = (name: string) => {
+  const colors = [
+    "bg-red-400",
+    "bg-blue-400",
+    "bg-green-400",
+    "bg-yellow-400",
+    "bg-purple-400",
+    "bg-pink-400",
+    "bg-indigo-400",
+    "bg-teal-400"
+  ]
+
+  const index = name.charCodeAt(0) % colors.length
+  return colors[index]
 }
 
 const mockReviews: Review[] = [
@@ -59,7 +60,7 @@ const mockReviews: Review[] = [
     reviewText: "This is a review",
     platform: "google",
     reviewerName: "John Doe",
-    reviewerPhoto: "https://images.unsplash.com/photos/1234567890",
+    reviewerPhoto: "",
     reviewDate: new Date(),
     helpfulCount: 10,
     reviewUrl: "https://example.com",
@@ -77,7 +78,7 @@ const mockReviews: Review[] = [
     reviewText: "This is a review",
     platform: "google",
     reviewerName: "Jane Doe",
-    reviewerPhoto: "https://images.unsplash.com/photos/1234567890",
+    reviewerPhoto: "",
     reviewDate: new Date(),
     helpfulCount: 10,
     reviewUrl: "https://example.com",
@@ -94,11 +95,96 @@ const mockReviews: Review[] = [
     reviewText: "This is a review",
     platform: "google",
     reviewerName: "Jim Doe",
-    reviewerPhoto: "https://images.unsplash.com/photos/1234567890",
+    reviewerPhoto: "",
     reviewDate: new Date(),
     helpfulCount: 10,
     reviewUrl: "https://example.com",
     verified: true,
+    createdAt: new Date(),
+    updatedAt: new Date(),
+    shopId: "1",
+    externalId: "1",
+    language: "en"
+  },
+  {
+    id: "4",
+    rating: 5,
+    reviewText: "Amazing experience! Highly recommend this place.",
+    platform: "tripadvisor",
+    reviewerName: "Alice Smith",
+    reviewerPhoto: "",
+    reviewDate: new Date(),
+    helpfulCount: 15,
+    reviewUrl: "https://example.com",
+    verified: true,
+    createdAt: new Date(),
+    updatedAt: new Date(),
+    shopId: "1",
+    externalId: "1",
+    language: "en"
+  },
+  {
+    id: "5",
+    rating: 4,
+    reviewText: "Great service and friendly staff. Will come back!",
+    platform: "facebook",
+    reviewerName: "Bob Johnson",
+    reviewerPhoto: "",
+    reviewDate: new Date(),
+    helpfulCount: 8,
+    reviewUrl: "https://example.com",
+    verified: false,
+    createdAt: new Date(),
+    updatedAt: new Date(),
+    shopId: "1",
+    externalId: "1",
+    language: "en"
+  },
+  {
+    id: "6",
+    rating: 5,
+    reviewText: "Absolutely fantastic experience! The staff went above and beyond.",
+    platform: "yelp",
+    reviewerName: "Charlie Wilson",
+    reviewerPhoto: "",
+    reviewDate: new Date(),
+    helpfulCount: 12,
+    reviewUrl: "https://example.com",
+    verified: true,
+    createdAt: new Date(),
+    updatedAt: new Date(),
+    shopId: "1",
+    externalId: "1",
+    language: "en"
+  },
+  {
+    id: "7",
+    rating: 4,
+    reviewText: "Really enjoyed our time here. Great atmosphere and service.",
+    platform: "google",
+    reviewerName: "Diana Brown",
+    reviewerPhoto: "",
+    reviewDate: new Date(),
+    helpfulCount: 6,
+    reviewUrl: "https://example.com",
+    verified: true,
+    createdAt: new Date(),
+    updatedAt: new Date(),
+    shopId: "1",
+    externalId: "1",
+    language: "en"
+  },
+  {
+    id: "8",
+    rating: 5,
+    reviewText: "Excellent quality and very professional team. Highly recommend!",
+    platform: "tripadvisor",
+    reviewerName: "Ethan Davis",
+    reviewerPhoto: "",
+    reviewDate: new Date(),
+    helpfulCount: 9,
+    reviewUrl: "https://example.com",
+    verified: false,
     createdAt: new Date(),
     updatedAt: new Date(),
     shopId: "1",
@@ -116,12 +202,11 @@ export function ReviewsBlockContent() {
   const [loading, setLoading] = useState(true)
 
   const fetchReviews = useCallback(async () => {
-    setReviews(mockReviews)
-    setAggregateRating(5)
-    setTotalReviews(124)
-    setLoading(false)
+    // setReviews(mockReviews)
+    // setAggregateRating(5)
+    // setTotalReviews(124)
+    // setLoading(false)
 
-    return
     setLoading(true)
 
     const [reviewsResult, aggregateResult] = await Promise.all([
@@ -140,6 +225,7 @@ export function ReviewsBlockContent() {
       setReviews([])
       setAggregateRating(0)
       setTotalReviews(0)
+      setLoading(false)
       return
     }
 
@@ -160,6 +246,12 @@ export function ReviewsBlockContent() {
   useEffect(() => {
     fetchReviews()
   }, [fetchReviews])
+
+  console.log({ reviews })
+
+  if (reviews?.length === 0 && !loading) {
+    return null
+  }
 
   if (loading) {
     return (
@@ -309,10 +401,10 @@ export function ReviewsBlockContent() {
                       <div
                         className={cn(
                           "flex h-10 w-10 items-center justify-center rounded-full font-bold text-sm text-white",
-                          getPlatformColor(review.platform)
+                          getAvatarColor(review.reviewerName)
                         )}
                       >
-                        {getPlatformIcon(review.platform)}
+                        {review.reviewerName.charAt(0).toUpperCase()}
                       </div>
                     )
                   ) : null}
