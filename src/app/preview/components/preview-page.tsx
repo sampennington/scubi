@@ -29,7 +29,9 @@ export async function PreviewPage({ shopId, slug }: SiteWrapperProps) {
   }
 
   const session = await auth.api.getSession({ headers: await headers() })
-  const isShopOwner = session?.user?.id === siteSettings.shopId
+  const member = await api.members.getByShopId(shopId)
+
+  const isShopOwner = member.some((m) => m.userId === session?.user?.id)
 
   return (
     <div className="relative">

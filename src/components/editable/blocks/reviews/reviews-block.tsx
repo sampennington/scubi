@@ -202,11 +202,6 @@ export function ReviewsBlockContent() {
   const [loading, setLoading] = useState(true)
 
   const fetchReviews = useCallback(async () => {
-    // setReviews(mockReviews)
-    // setAggregateRating(5)
-    // setTotalReviews(124)
-    // setLoading(false)
-
     setLoading(true)
 
     const [reviewsResult, aggregateResult] = await Promise.all([
@@ -246,8 +241,6 @@ export function ReviewsBlockContent() {
   useEffect(() => {
     fetchReviews()
   }, [fetchReviews])
-
-  console.log({ reviews })
 
   if (reviews?.length === 0 && !loading) {
     return null
