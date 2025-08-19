@@ -62,7 +62,7 @@ export const MultiColumnSettingsPanel = () => {
           <input
             type="text"
             value={title}
-            onChange={(e) => handleEdit("title", e.target.value)}
+            onChange={(e) => handleEdit("title", e.target.value, true)}
             className="w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2"
             placeholder="Enter section title"
           />
@@ -71,7 +71,7 @@ export const MultiColumnSettingsPanel = () => {
         <SettingItem label="Description" description="Section description">
           <textarea
             value={description}
-            onChange={(e) => handleEdit("description", e.target.value)}
+            onChange={(e) => handleEdit("description", e.target.value, true)}
             className="w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2"
             placeholder="Enter section description"
             rows={3}

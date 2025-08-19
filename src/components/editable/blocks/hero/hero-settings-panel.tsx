@@ -30,7 +30,7 @@ export const HeroSettingsPanel = () => {
           <input
             type="text"
             value={title}
-            onChange={(e) => handleEdit("title", e.target.value)}
+            onChange={(e) => handleEdit("title", e.target.value, true)}
             className="w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2"
             placeholder="Enter hero title"
           />
@@ -39,7 +39,7 @@ export const HeroSettingsPanel = () => {
         <SettingItem label="Description" description="Supporting text below the title">
           <textarea
             value={text}
-            onChange={(e) => handleEdit("text", e.target.value)}
+            onChange={(e) => handleEdit("text", e.target.value, true)}
             className="w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2"
             placeholder="Enter hero description"
             rows={3}
@@ -53,10 +53,14 @@ export const HeroSettingsPanel = () => {
             type="text"
             value={primaryButton.label}
             onChange={(e) =>
-              handleEdit("primaryButton", {
-                ...primaryButton,
-                label: e.target.value
-              })
+              handleEdit(
+                "primaryButton",
+                {
+                  ...primaryButton,
+                  label: e.target.value
+                },
+                true
+              )
             }
             className="w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2"
             placeholder="Button text"
@@ -68,10 +72,14 @@ export const HeroSettingsPanel = () => {
             type="url"
             value={primaryButton.url}
             onChange={(e) =>
-              handleEdit("primaryButton", {
-                ...primaryButton,
-                url: e.target.value
-              })
+              handleEdit(
+                "primaryButton",
+                {
+                  ...primaryButton,
+                  url: e.target.value
+                },
+                true
+              )
             }
             className="w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2"
             placeholder="https://example.com"
@@ -82,7 +90,7 @@ export const HeroSettingsPanel = () => {
           <Select
             value={primaryButton.variant}
             onValueChange={(value) =>
-              handleEdit("primaryButton", { ...primaryButton, variant: value })
+              handleEdit("primaryButton", { ...primaryButton, variant: value }, true)
             }
           >
             <SelectTrigger>
@@ -105,10 +113,14 @@ export const HeroSettingsPanel = () => {
             type="text"
             value={secondaryButton.label}
             onChange={(e) =>
-              handleEdit("secondaryButton", {
-                ...secondaryButton,
-                label: e.target.value
-              })
+              handleEdit(
+                "secondaryButton",
+                {
+                  ...secondaryButton,
+                  label: e.target.value
+                },
+                true
+              )
             }
             className="w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2"
             placeholder="Button text"
@@ -120,10 +132,14 @@ export const HeroSettingsPanel = () => {
             type="url"
             value={secondaryButton.url}
             onChange={(e) =>
-              handleEdit("secondaryButton", {
-                ...secondaryButton,
-                url: e.target.value
-              })
+              handleEdit(
+                "secondaryButton",
+                {
+                  ...secondaryButton,
+                  url: e.target.value
+                },
+                true
+              )
             }
             className="w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2"
             placeholder="https://example.com"
@@ -134,10 +150,14 @@ export const HeroSettingsPanel = () => {
           <Select
             value={secondaryButton.variant}
             onValueChange={(value) =>
-              handleEdit("secondaryButton", {
-                ...secondaryButton,
-                variant: value
-              })
+              handleEdit(
+                "secondaryButton",
+                {
+                  ...secondaryButton,
+                  variant: value
+                },
+                true
+              )
             }
           >
             <SelectTrigger>

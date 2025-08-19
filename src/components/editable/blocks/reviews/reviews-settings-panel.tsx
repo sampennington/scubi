@@ -50,7 +50,7 @@ export default function ReviewsSettingsPanel() {
           <input
             type="text"
             value={title}
-            onChange={(e) => handleEdit("title", e.target.value)}
+            onChange={(e) => handleEdit("title", e.target.value, true)}
             className="w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2"
             placeholder="Enter reviews section title"
           />
@@ -59,7 +59,7 @@ export default function ReviewsSettingsPanel() {
         <SettingItem label="Description" description="Section description">
           <textarea
             value={description}
-            onChange={(e) => handleEdit("description", e.target.value)}
+            onChange={(e) => handleEdit("description", e.target.value, true)}
             className="w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2"
             placeholder="Enter reviews section description"
             rows={3}
@@ -109,7 +109,7 @@ export default function ReviewsSettingsPanel() {
             min="1"
             max="50"
             value={maxReviews}
-            onChange={(e) => handleEdit("maxReviews", parseInt(e.target.value))}
+            onChange={(e) => handleEdit("maxReviews", parseInt(e.target.value), true)}
             className="w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2"
           />
         </SettingItem>
@@ -174,7 +174,7 @@ export default function ReviewsSettingsPanel() {
               min="50"
               max="500"
               value={truncateLength}
-              onChange={(e) => handleEdit("truncateLength", parseInt(e.target.value))}
+              onChange={(e) => handleEdit("truncateLength", parseInt(e.target.value), true)}
               className="w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2"
             />
           </SettingItem>
@@ -200,7 +200,7 @@ export default function ReviewsSettingsPanel() {
               <input
                 type="text"
                 value={reviewButtonText}
-                onChange={(e) => handleEdit("reviewButtonText", e.target.value)}
+                onChange={(e) => handleEdit("reviewButtonText", e.target.value, true)}
                 className="w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2"
                 placeholder="Review us on Google"
               />
@@ -210,8 +210,8 @@ export default function ReviewsSettingsPanel() {
               <input
                 type="url"
                 value={reviewButtonUrl || ""}
-                onChange={(e) => handleEdit("reviewButtonUrl", e.target.value)}
-                className="w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2"
+                onChange={(e) => handleEdit("reviewButtonUrl", e.target.value, true)}
+                className="w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus:outline-none focus:ring-ring focus:ring-offset-2"
                 placeholder="https://google.com"
               />
             </SettingItem>

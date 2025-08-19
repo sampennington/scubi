@@ -25,7 +25,7 @@ export const ContactFormSettingsPanel = () => {
           <input
             type="text"
             value={title}
-            onChange={(e) => handleEdit("title", e.target.value)}
+            onChange={(e) => handleEdit("title", e.target.value, true)}
             className="w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2"
             placeholder="Enter form title"
           />
@@ -34,7 +34,7 @@ export const ContactFormSettingsPanel = () => {
         <SettingItem label="Description" description="Form description text">
           <textarea
             value={description}
-            onChange={(e) => handleEdit("description", e.target.value)}
+            onChange={(e) => handleEdit("description", e.target.value, true)}
             className="w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2"
             placeholder="Enter form description"
             rows={3}
@@ -49,7 +49,7 @@ export const ContactFormSettingsPanel = () => {
           <input
             type="text"
             value={submitButtonText}
-            onChange={(e) => handleEdit("submitButtonText", e.target.value)}
+            onChange={(e) => handleEdit("submitButtonText", e.target.value, true)}
             className="w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2"
             placeholder="Send Message"
           />
@@ -62,7 +62,7 @@ export const ContactFormSettingsPanel = () => {
           <input
             type="text"
             value={successMessage}
-            onChange={(e) => handleEdit("successMessage", e.target.value)}
+            onChange={(e) => handleEdit("successMessage", e.target.value, true)}
             className="w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2"
             placeholder="Thank you! Your message has been sent successfully."
           />
@@ -75,7 +75,7 @@ export const ContactFormSettingsPanel = () => {
           <input
             type="email"
             value={emailTo}
-            onChange={(e) => handleEdit("emailTo", e.target.value)}
+            onChange={(e) => handleEdit("emailTo", e.target.value, true)}
             className="w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2"
             placeholder="contact@example.com"
           />
