@@ -1,56 +1,97 @@
 import { Trash2, Plus, Move } from "lucide-react"
-import { Button } from "../../ui/button"
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "../../ui/select"
-import { Separator } from "../../ui/separator"
-import { BlockSettingsPanel, SettingsSection, SettingItem } from "../settings-panel"
-import { useBlockEdit } from "../context"
-import type { CoursesContent } from "@/components/blocks/schemas"
+import { Button } from "@/components/ui/button"
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue
+} from "@/components/ui/select"
 import { Switch } from "@/components/ui/switch"
+import { Separator } from "@/components/ui/separator"
+import {
+  BlockSettingsPanel,
+  SettingsSection,
+  SettingItem
+} from "@/components/editable/settings-panel"
+import { useBlockEdit } from "@/components/editable/context"
+import type { TeamContent } from "@/components/blocks/schemas"
 import { DragDropContext, Droppable, Draggable, type DropResult } from "@hello-pangea/dnd"
 
-export const CoursesSettingsPanel = () => {
-  const { content, handleEdit } = useBlockEdit<CoursesContent>()
+export const TeamSettingsPanel = () => {
+  const { content, handleEdit } = useBlockEdit<TeamContent>()
 
   const {
+    title = "",
+    description = "",
+    members = [],
     layout = "grid",
-    columns = "2",
-    showPricing = true,
-    showLevels = true,
-    courses = []
+    columns = "3",
+    showContactInfo = false,
+    showSocialLinks = false
   } = content
 
-  const removeCourse = (index: number) => {
-    const updatedCourses = courses.filter((_, i) => i !== index)
-    handleEdit("courses", updatedCourses)
+  const removeMember = (index: number) => {
+    const updatedMembers = members.filter((_, i) => i !== index)
+    handleEdit("members", updatedMembers)
   }
 
-  const addNewCourse = () => {
-    const newCourse = {
-      title: "New Course",
-      description: "Course description",
-      duration: "2 hours",
-      level: "beginner" as const,
-      price: 99,
-      currency: "USD"
+  const addNewMember = () => {
+    const newMember = {
+      name: "New Team Member",
+      role: "Team Member",
+      bio: "Team member bio",
+      photo: "",
+      email: "",
+      phone: "",
+      socialLinks: {
+        linkedin: "",
+        twitter: "",
+        instagram: ""
+      }
     }
-    const updatedCourses = [...courses, newCourse]
-    handleEdit("courses", updatedCourses)
+    const updatedMembers = [...members, newMember]
+    handleEdit("members", updatedMembers)
   }
 
   const handleDragEnd = (result: DropResult) => {
     if (!result.destination) return
 
-    const items = Array.from(courses)
+    const items = Array.from(members)
     const [reorderedItem] = items.splice(result.source.index, 1)
     items.splice(result.destination.index, 0, reorderedItem)
 
-    handleEdit("courses", items)
+    handleEdit("members", items)
   }
 
   return (
-    <BlockSettingsPanel title="Courses Block Settings">
+    <BlockSettingsPanel title="Team Block Settings">
+      <SettingsSection title="Content">
+        <SettingItem label="Title" description="Section title">
+          <input
+            type="text"
+            value={title}
+            onChange={(e) => handleEdit("title", e.target.value)}
+            className="w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2"
+            placeholder="Enter team section title"
+          />
+        </SettingItem>
+
+        <SettingItem label="Description" description="Section description">
+          <textarea
+            value={description}
+            onChange={(e) => handleEdit("description", e.target.value)}
+            className="w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2"
+            placeholder="Enter team section description"
+            rows={3}
+          />
+        </SettingItem>
+      </SettingsSection>
+
+      <Separator />
+
       <SettingsSection title="Layout">
-        <SettingItem label="Display Style" description="Choose how courses are displayed">
+        <SettingItem label="Display Style" description="Choose how team members are displayed">
           <Select value={layout} onValueChange={(value) => handleEdit("layout", value)}>
             <SelectTrigger>
               <SelectValue />
@@ -79,40 +120,40 @@ export const CoursesSettingsPanel = () => {
       <Separator />
 
       <SettingsSection title="Display Options">
-        <SettingItem label="Show Pricing" description="Display course prices">
+        <SettingItem label="Show Photos" description="Display team member photos">
           <Switch
-            checked={showPricing}
-            onCheckedChange={(checked) => handleEdit("showPricing", checked)}
+            checked={showContactInfo}
+            onCheckedChange={(checked) => handleEdit("showContactInfo", checked)}
           />
         </SettingItem>
 
-        <SettingItem label="Show Levels" description="Display difficulty levels">
+        <SettingItem label="Show Social Links" description="Display social media links">
           <Switch
-            checked={showLevels}
-            onCheckedChange={(checked) => handleEdit("showLevels", checked)}
+            checked={showSocialLinks}
+            onCheckedChange={(checked) => handleEdit("showSocialLinks", checked)}
           />
         </SettingItem>
       </SettingsSection>
 
       <Separator />
 
-      <SettingsSection title="Course Management">
+      <SettingsSection title="Team Members">
         <div className="flex items-center justify-between">
-          <span className="font-medium text-sm">Courses ({courses.length})</span>
-          <Button onClick={addNewCourse} size="sm" className="flex items-center gap-2">
+          <span className="font-medium text-sm">Members ({members.length})</span>
+          <Button onClick={addNewMember} size="sm" className="flex items-center gap-2">
             <Plus className="h-4 w-4" />
-            Add Course
+            Add Member
           </Button>
         </div>
 
         <DragDropContext onDragEnd={handleDragEnd}>
-          <Droppable droppableId="courses">
+          <Droppable droppableId="team-members">
             {(provided) => (
               <div {...provided.droppableProps} ref={provided.innerRef} className="space-y-3">
-                {courses.map((course, index) => (
+                {members.map((member, index) => (
                   <Draggable
-                    key={`${course.title}-${index}`}
-                    draggableId={`${course.title}-${index}`}
+                    key={`${member.name}-${index}`}
+                    draggableId={`${member.name}-${index}`}
                     index={index}
                   >
                     {(provided, snapshot) => (
@@ -124,9 +165,9 @@ export const CoursesSettingsPanel = () => {
                         }`}
                       >
                         <div className="min-w-0 flex-1">
-                          <div className="truncate font-medium text-sm">{course.title}</div>
+                          <div className="truncate font-medium text-sm">{member.name}</div>
                           <div className="truncate text-muted-foreground text-xs">
-                            {course.duration} • {course.level}
+                            {member.role}
                           </div>
                         </div>
                         <div className="ml-2 flex items-center gap-2">
@@ -141,8 +182,8 @@ export const CoursesSettingsPanel = () => {
                             variant="ghost"
                             size="sm"
                             className="h-6 w-6 p-0 text-destructive hover:text-destructive"
-                            onClick={() => removeCourse(index)}
-                            title="Remove course"
+                            onClick={() => removeMember(index)}
+                            title="Remove member"
                           >
                             <Trash2 className="h-3 w-3" />
                           </Button>

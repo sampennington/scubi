@@ -1,6 +1,10 @@
-import { Separator } from "../../ui/separator"
-import { BlockSettingsPanel, SettingsSection, SettingItem } from "../settings-panel"
-import { useBlockEdit } from "../context"
+import { Separator } from "@/components/ui/separator"
+import {
+  BlockSettingsPanel,
+  SettingsSection,
+  SettingItem
+} from "@/components/editable/settings-panel"
+import { useBlockEdit } from "@/components/editable/context"
 import type { ContactFormContent } from "@/components/blocks/schemas"
 
 export const ContactFormSettingsPanel = () => {

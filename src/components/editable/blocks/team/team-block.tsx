@@ -1,5 +1,5 @@
 import { Mail, Phone, Linkedin, Twitter, Instagram } from "lucide-react"
-import { Card, CardContent, CardHeader } from "../../ui/card"
+import { Card, CardContent, CardHeader } from "@/components/ui/card"
 import type { TeamContent } from "@/components/blocks/schemas"
 
 import { BlockEditProvider, useBlockEdit } from "@/components/editable/context"

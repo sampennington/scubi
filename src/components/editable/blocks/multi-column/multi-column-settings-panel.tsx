@@ -1,61 +1,62 @@
 import { Trash2, Plus, Move } from "lucide-react"
-import { Button } from "../../ui/button"
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "../../ui/select"
-import { Switch } from "../../ui/switch"
-import { Separator } from "../../ui/separator"
-import { BlockSettingsPanel, SettingsSection, SettingItem } from "../settings-panel"
-import { useBlockEdit } from "../context"
-import type { TeamContent } from "@/components/blocks/schemas"
+import { Button } from "@/components/ui/button"
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue
+} from "@/components/ui/select"
+import { Switch } from "@/components/ui/switch"
+import { Separator } from "@/components/ui/separator"
+import {
+  BlockSettingsPanel,
+  SettingsSection,
+  SettingItem
+} from "@/components/editable/settings-panel"
+import { useBlockEdit } from "@/components/editable/context"
+import type { MultiColumnContent } from "@/components/blocks/schemas"
 import { DragDropContext, Droppable, Draggable, type DropResult } from "@hello-pangea/dnd"
 
-export const TeamSettingsPanel = () => {
-  const { content, handleEdit } = useBlockEdit<TeamContent>()
+export const MultiColumnSettingsPanel = () => {
+  const { content, handleEdit } = useBlockEdit<MultiColumnContent>()
 
   const {
     title = "",
     description = "",
-    members = [],
-    layout = "grid",
-    columns = "3",
-    showContactInfo = false,
-    showSocialLinks = false
+    columns = [],
+    columnsPerRow = "3",
+    alignment = "center",
+    showIcons = true
   } = content
 
-  const removeMember = (index: number) => {
-    const updatedMembers = members.filter((_, i) => i !== index)
-    handleEdit("members", updatedMembers)
+  const removeColumn = (index: number) => {
+    const updatedColumns = columns.filter((_, i) => i !== index)
+    handleEdit("columns", updatedColumns)
   }
 
-  const addNewMember = () => {
-    const newMember = {
-      name: "New Team Member",
-      role: "Team Member",
-      bio: "Team member bio",
-      photo: "",
-      email: "",
-      phone: "",
-      socialLinks: {
-        linkedin: "",
-        twitter: "",
-        instagram: ""
-      }
+  const addNewColumn = () => {
+    const newColumn = {
+      icon: "",
+      heading: "New Column",
+      body: "Column content goes here"
     }
-    const updatedMembers = [...members, newMember]
-    handleEdit("members", updatedMembers)
+    const updatedColumns = [...columns, newColumn]
+    handleEdit("columns", updatedColumns)
   }
 
   const handleDragEnd = (result: DropResult) => {
     if (!result.destination) return
 
-    const items = Array.from(members)
+    const items = Array.from(columns)
     const [reorderedItem] = items.splice(result.source.index, 1)
     items.splice(result.destination.index, 0, reorderedItem)
 
-    handleEdit("members", items)
+    handleEdit("columns", items)
   }
 
   return (
-    <BlockSettingsPanel title="Team Block Settings">
+    <BlockSettingsPanel title="Multi-Column Block Settings">
       <SettingsSection title="Content">
         <SettingItem label="Title" description="Section title">
           <input
@@ -63,7 +64,7 @@ export const TeamSettingsPanel = () => {
             value={title}
             onChange={(e) => handleEdit("title", e.target.value)}
             className="w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2"
-            placeholder="Enter team section title"
+            placeholder="Enter section title"
           />
         </SettingItem>
 
@@ -72,7 +73,7 @@ export const TeamSettingsPanel = () => {
             value={description}
             onChange={(e) => handleEdit("description", e.target.value)}
             className="w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2"
-            placeholder="Enter team section description"
+            placeholder="Enter section description"
             rows={3}
           />
         </SettingItem>
@@ -81,27 +82,32 @@ export const TeamSettingsPanel = () => {
       <Separator />
 
       <SettingsSection title="Layout">
-        <SettingItem label="Display Style" description="Choose how team members are displayed">
-          <Select value={layout} onValueChange={(value) => handleEdit("layout", value)}>
+        <SettingItem label="Columns Per Row" description="Number of columns displayed in each row">
+          <Select
+            value={columnsPerRow}
+            onValueChange={(value) => handleEdit("columnsPerRow", value)}
+          >
             <SelectTrigger>
               <SelectValue />
             </SelectTrigger>
             <SelectContent>
-              <SelectItem value="grid">Grid Layout</SelectItem>
-              <SelectItem value="list">List Layout</SelectItem>
+              <SelectItem value="1">1 Column</SelectItem>
+              <SelectItem value="2">2 Columns</SelectItem>
+              <SelectItem value="3">3 Columns</SelectItem>
+              <SelectItem value="4">4 Columns</SelectItem>
             </SelectContent>
           </Select>
         </SettingItem>
 
-        <SettingItem label="Columns" description="Number of columns in grid layout">
-          <Select value={columns} onValueChange={(value) => handleEdit("columns", value)}>
+        <SettingItem label="Alignment" description="Text alignment for column content">
+          <Select value={alignment} onValueChange={(value) => handleEdit("alignment", value)}>
             <SelectTrigger>
               <SelectValue />
             </SelectTrigger>
             <SelectContent>
-              <SelectItem value="2">2 Columns</SelectItem>
-              <SelectItem value="3">3 Columns</SelectItem>
-              <SelectItem value="4">4 Columns</SelectItem>
+              <SelectItem value="left">Left</SelectItem>
+              <SelectItem value="center">Center</SelectItem>
+              <SelectItem value="right">Right</SelectItem>
             </SelectContent>
           </Select>
         </SettingItem>
@@ -110,40 +116,37 @@ export const TeamSettingsPanel = () => {
       <Separator />
 
       <SettingsSection title="Display Options">
-        <SettingItem label="Show Photos" description="Display team member photos">
+        <SettingItem label="Show Icons" description="Display column icons">
           <Switch
-            checked={showContactInfo}
-            onCheckedChange={(checked) => handleEdit("showContactInfo", checked)}
-          />
-        </SettingItem>
-
-        <SettingItem label="Show Social Links" description="Display social media links">
-          <Switch
-            checked={showSocialLinks}
-            onCheckedChange={(checked) => handleEdit("showSocialLinks", checked)}
+            checked={showIcons}
+            onCheckedChange={(checked) => handleEdit("showIcons", checked)}
           />
         </SettingItem>
       </SettingsSection>
 
       <Separator />
 
-      <SettingsSection title="Team Members">
+      <SettingsSection title="Columns">
         <div className="flex items-center justify-between">
-          <span className="font-medium text-sm">Members ({members.length})</span>
-          <Button onClick={addNewMember} size="sm" className="flex items-center gap-2">
+          <span className="font-medium text-sm">Columns ({columns.length})</span>
+          <Button onClick={addNewColumn} size="sm" className="flex items-center gap-2">
             <Plus className="h-4 w-4" />
-            Add Member
+            Add Column
           </Button>
         </div>
 
         <DragDropContext onDragEnd={handleDragEnd}>
-          <Droppable droppableId="team-members">
+          <Droppable droppableId="columns">
             {(provided) => (
-              <div {...provided.droppableProps} ref={provided.innerRef} className="space-y-3">
-                {members.map((member, index) => (
+              <div
+                {...provided.droppableProps}
+                ref={provided.innerRef}
+                className="max-h-64 space-y-3 overflow-y-auto"
+              >
+                {columns.map((column, index) => (
                   <Draggable
-                    key={`${member.name}-${index}`}
-                    draggableId={`${member.name}-${index}`}
+                    key={`${column.heading}-${index}`}
+                    draggableId={`${column.heading}-${index}`}
                     index={index}
                   >
                     {(provided, snapshot) => (
@@ -155,9 +158,11 @@ export const TeamSettingsPanel = () => {
                         }`}
                       >
                         <div className="min-w-0 flex-1">
-                          <div className="truncate font-medium text-sm">{member.name}</div>
+                          <div className="truncate font-medium text-sm">
+                            {column.heading || "Untitled Column"}
+                          </div>
                           <div className="truncate text-muted-foreground text-xs">
-                            {member.role}
+                            {column.body}
                           </div>
                         </div>
                         <div className="ml-2 flex items-center gap-2">
@@ -172,8 +177,8 @@ export const TeamSettingsPanel = () => {
                             variant="ghost"
                             size="sm"
                             className="h-6 w-6 p-0 text-destructive hover:text-destructive"
-                            onClick={() => removeMember(index)}
-                            title="Remove member"
+                            onClick={() => removeColumn(index)}
+                            title="Remove column"
                           >
                             <Trash2 className="h-3 w-3" />
                           </Button>

@@ -1,6 +1,16 @@
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "../../ui/select"
-import { BlockSettingsPanel, SettingsSection, SettingItem } from "../settings-panel"
-import { useBlockEdit } from "../context"
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue
+} from "@/components/ui/select"
+import {
+  BlockSettingsPanel,
+  SettingsSection,
+  SettingItem
+} from "@/components/editable/settings-panel"
+import { useBlockEdit } from "@/components/editable/context"
 import type { HeroContent } from "@/components/blocks/schemas"
 
 export const HeroSettingsPanel = () => {
