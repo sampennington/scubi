@@ -1,7 +1,7 @@
 /* eslint-disable no-console */
+import dotenv from 'dotenv'
 import * as cheerio from "cheerio"
 import type { ZodTypeAny } from "zod"
-
 import { PlaywrightRenderer } from "./engines/playwright-renderer"
 import { llmExtractBlocks } from "./ai"
 
@@ -12,7 +12,6 @@ import {
   FontsSchema,
   type SiteScrape,
   type ScrapedPage,
-  type LlmBlockCandidate
 } from "@/scraper/models"
 
 import { normalizeUrl, fetchText, toOrigin, type Url } from "@/scraper/utils/http"
@@ -23,6 +22,9 @@ import { extractSeoMeta, extractPlainText, extractImages as extractPageImages } 
 import { extractBusinessProfile } from "@/scraper/utils/business"
 import { writeJsonToTmpScrapes } from "@/scraper/utils/files"
 import { BlockSchemas } from "@/components/blocks/schemas"
+import { info } from "@/scraper/utils/logger"
+
+dotenv.config({ path: '.env.local' })
 
 const DEFAULT_MAX_PAGES = 40
 
@@ -54,13 +56,8 @@ async function scrapePage(url: Url, renderer: PlaywrightRenderer): Promise<Scrap
   const images = extractPageImages($, url)
   const seo = extractSeoMeta($)
 
-  let llmBlocks: LlmBlockCandidate[] = []
-  let llmSections: Array<{ type: string; title?: string; contentText?: string; contentHtml?: string; images: string[]; confidence: number; rationale?: string }> = []
-  try {
-    const ai = (await llmExtractBlocks({ url, text, html })) as { blocks?: LlmBlockCandidate[]; sections?: typeof llmSections }
-    llmBlocks = ai.blocks ?? []
-    llmSections = ai.sections ?? []
-  } catch { }
+  const { blocks, sections } = await llmExtractBlocks({ url, text, html })
+
 
   return ScrapedPageSchema.parse({
     url,
@@ -68,15 +65,11 @@ async function scrapePage(url: Url, renderer: PlaywrightRenderer): Promise<Scrap
     title,
     html,
     text,
-    sections: [],
-    blockCandidates: llmBlocks.map((b, i) => ({
-      type: b.type,
-      content: b.content,
-      sourceSectionType: b.sourceSectionType
-    })),
+    sections,
+    blockCandidates: blocks,
     images,
     seo,
-    ai: { llmBlocks, llmSections }
+    ai: { blocks, sections }
   })
 }
 
@@ -92,6 +85,7 @@ export async function scrapeSite(targetUrl: Url): Promise<SiteScrape> {
   let renderCssSample: string[] = []
   let business: ReturnType<typeof extractBusinessProfile> | undefined
   try {
+    info("Rendering home page", { homeUrl })
     const previewRenderer = new PlaywrightRenderer()
     const rendered = await previewRenderer.render(homeUrl)
     const $home = cheerio.load(rendered.html)
@@ -114,15 +108,16 @@ export async function scrapeSite(targetUrl: Url): Promise<SiteScrape> {
 
     business = extractBusinessProfile($home, homeUrl)
     await previewRenderer.close()
+    info("Home page rendered", { primary: colors.primary, headingFont: fonts.heading, bodyFont: fonts.body })
   } catch { }
 
   const chosenUrls = [homeUrl] // [...urls].slice(0, DEFAULT_MAX_PAGES)
   const renderer = new PlaywrightRenderer()
 
+  info("Scraping page", { url: homeUrl })
   const pages: ScrapedPage[] = [await scrapePage(homeUrl, renderer)] // for (const u of urls) pages.push(await scrapePage(u, renderer))
   await renderer.close()
 
-  // Simple sitemap tree
   const tree = chosenUrls
     .sort((a, b) => toSlug(a).localeCompare(toSlug(b)))
     .map((u) => ({ url: u, title: pages.find((p) => p.url === u)?.title }))
@@ -142,9 +137,10 @@ export async function scrapeSite(targetUrl: Url): Promise<SiteScrape> {
     renderCssSample
   }
   const result = SiteScrapeSchema.parse(resultSeed)
+  info("Scrape complete", { pages: result.pages.length })
 
   // Write a full dump of the SiteScrape result for inspection
-  writeJsonToTmpScrapes(
+  const fullPath = writeJsonToTmpScrapes(
     `${new URL(targetUrl).hostname}-${Date.now()}-full.json`,
     result
   )
@@ -158,7 +154,7 @@ export async function scrapeSite(targetUrl: Url): Promise<SiteScrape> {
       llmBlocks: p.ai?.llmBlocks ?? []
     }))
   }
-  writeJsonToTmpScrapes(
+  const openAiPath = writeJsonToTmpScrapes(
     `${new URL(targetUrl).hostname}-${Date.now()}-openai.json`,
     openAiOnly
   )
@@ -180,7 +176,13 @@ export async function scrapeSite(targetUrl: Url): Promise<SiteScrape> {
     }))
   }
 
-  writeJsonToTmpScrapes(`${new URL(targetUrl).hostname}-${Date.now()}.json`, leftovers)
+  const leftoversPath = writeJsonToTmpScrapes(
+    `${new URL(targetUrl).hostname}-${Date.now()}.json`,
+    leftovers
+  )
+
+  // Log file locations for convenience
+  info("Wrote scrape outputs", { fullPath, openAiPath, leftoversPath })
 
   return result
 }
@@ -192,7 +194,9 @@ if (require.main === module) {
     process.exit(1)
   }
   scrapeSite(url)
-    .then((res) => console.log(JSON.stringify(res, null, 2)))
+    .then((res) => {
+      info("Scrape finished. Set SCRAPER_PRINT_JSON=true to print JSON to stdout.")
+    })
     .catch((err) => {
       console.error(err)
       process.exit(1)

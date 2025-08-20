@@ -1,7 +1,9 @@
 import { z } from "zod"
 import { BlockType } from "@/database/schema"
 import { BlockSchemas } from "@/components/blocks/schemas"
-// Avoid runtime dependency conflicts: implement a minimal Zod-to-JSON helper
+import { LlmBlockCandidateSchema, LlmSectionSchema } from "./models"
+import { debug, error, warn } from "@/scraper/utils/logger"
+
 function zodShapeToJson(schema: z.ZodTypeAny): unknown {
   // We don't need a perfect conversion; the LLM benefits from examples/fields.
   // Emit a shallow example by parsing an empty object and reporting issues as keys.
@@ -15,7 +17,7 @@ function zodShapeToJson(schema: z.ZodTypeAny): unknown {
   }
   return { exampleHints: shape }
 }
-import { LlmBlockCandidateSchema, LlmSectionSchema } from "./models"
+
 
 export async function llmExtractBlocks(input: {
   siteName?: string
@@ -43,7 +45,10 @@ Use only these block types when suitable: ${Object.values(BlockType).join(", ")}
   ].join("\n")
 
   const apiKey = process.env.OPENAI_API_KEY
-  if (!apiKey) return []
+  if (!apiKey) {
+    warn("OPENAI_API_KEY not set")
+    return { blocks: [], sections: [] }
+  }
 
   const resp = await fetch("https://api.openai.com/v1/chat/completions", {
     method: "POST",
@@ -62,27 +67,27 @@ Use only these block types when suitable: ${Object.values(BlockType).join(", ")}
       ]
     })
   })
-  const data = await resp.json().catch(() => ({}))
-  const raw = data?.choices?.[0]?.message?.content || "{}"
-  let parsedJson: unknown
-  try {
-    parsedJson = JSON.parse(raw)
-  } catch {
-    parsedJson = {}
-  }
-  const parsedBlocks = z.array(LlmBlockCandidateSchema).safeParse(
-    (parsedJson as { blocks?: unknown[];[k: string]: unknown }).blocks ?? []
-  )
-  const parsedSections = z.array(LlmSectionSchema).safeParse(
-    (parsedJson as { sections?: unknown[];[k: string]: unknown }).sections ?? []
-  )
 
-  const blocks = (parsedBlocks.success ? parsedBlocks.data : []).filter((c) => {
-    const schema = (BlockSchemas as Record<string, z.ZodTypeAny>)[c.type as string]
-    if (!schema) return false
-    return schema.safeParse(c.content).success
-  })
-  const sections = parsedSections.success ? parsedSections.data : []
+  const data = await resp.json().catch(() => ({}))
+  debug("openai response received", { status: resp.status })
+
+  const raw = data?.choices?.[0]?.message?.content || "{}"
+  let parsedBlocks: unknown
+  let parsedSections: unknown
+
+  try {
+    parsedBlocks = JSON.parse(raw).blocks
+    parsedSections = JSON.parse(raw).sections
+  } catch {
+    error("llm response parse failed", { raw })
+    return { blocks: [], sections: [] }
+  }
+  const blocks = z.array(LlmBlockCandidateSchema).safeParse(parsedBlocks)
+  const sections = z.array(LlmSectionSchema).safeParse(parsedSections)
+
+  if (!blocks.success) warn("llm blocks parse failed", blocks.error.message)
+  if (!sections.success) warn("llm sections parse failed", sections.error.message)
+
   return { blocks, sections }
 }
 
