@@ -1,10 +1,12 @@
 import { XMLParser } from "fast-xml-parser"
 import { fetchText, type Url, toOrigin } from "./http"
+import { crawl } from "./crawl"
 
-export async function discoverSitemapUrls(originOrUrl: string): Promise<string[]> {
+export async function getSitemapUrls(originOrUrl: string): Promise<string[]> {
   const origin = originOrUrl.startsWith("http") ? toOrigin(originOrUrl as Url) : originOrUrl
   const robotsTxt = await fetchText(`${origin}/robots.txt`)
   const urls: string[] = []
+
   if (robotsTxt) {
     for (const line of robotsTxt.split("\n")) {
       const m = line.match(/sitemap:\s*(.+)$/i)
@@ -32,3 +34,28 @@ export async function parseSitemapXmlText(xml: string): Promise<string[]> {
 }
 
 
+export async function getUrls(targetUrl: string, maxPages: number): Promise<{ urls: Set<string>; sitemapUrls: string[] }> {
+  const origin = toOrigin(targetUrl)
+
+  const sitemapUrls = await getSitemapUrls(origin)
+  const urls = new Set<string>()
+  const fetchedSitemaps: string[] = []
+
+  for (const url of sitemapUrls) {
+    const xml = await fetchText(url)
+    if (!xml) continue
+    fetchedSitemaps.push(url)
+    const xmlUrls = await parseSitemapXmlText(xml)
+    for (const u of xmlUrls) urls.add(u)
+  }
+
+  if (urls.size === 0) {
+    const crawled = await crawl(targetUrl, maxPages)
+    for (const u of crawled) urls.add(u)
+  }
+
+  return {
+    urls,
+    sitemapUrls
+  }
+}

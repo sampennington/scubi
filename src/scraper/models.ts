@@ -84,7 +84,8 @@ export type PageSection = z.infer<typeof PageSectionSchema>
 export const BlockCandidateSchema = z.object({
   type: z.nativeEnum(BlockType),
   content: z.unknown(),
-  sourceSectionType: SectionTypeSchema.optional()
+  sourceSectionType: SectionTypeSchema.optional(),
+  order: z.number().optional()
 })
 export type BlockCandidate = z.infer<typeof BlockCandidateSchema>
 
@@ -93,9 +94,21 @@ export const LlmBlockCandidateSchema = z.object({
   content: z.unknown(),
   sourceSectionType: SectionTypeSchema.optional(),
   confidence: z.number().min(0).max(1),
-  rationale: z.string().optional()
+  rationale: z.string().optional(),
+  order: z.number().optional()
 })
 export type LlmBlockCandidate = z.infer<typeof LlmBlockCandidateSchema>
+
+export const LlmSectionSchema = z.object({
+  type: z.string(),
+  title: z.string().optional(),
+  contentText: z.string().optional(),
+  contentHtml: z.string().optional(),
+  images: z.array(z.string()).default([]),
+  confidence: z.number().min(0).max(1),
+  rationale: z.string().optional()
+})
+export type LlmSection = z.infer<typeof LlmSectionSchema>
 
 export const RenderStatsSchema = z.object({
   screenshotPng: z.string().optional(),
@@ -110,9 +123,37 @@ export const RenderStatsSchema = z.object({
 
 export const AiSignalsSchema = z.object({
   llmBlocks: z.array(LlmBlockCandidateSchema).default([]),
+  llmSections: z.array(LlmSectionSchema).default([]),
   notes: z.string().optional(),
   confidence: z.number().min(0).max(1).optional()
 })
+
+export const SocialLinksSchema = z.object({
+  instagram: z.string().optional(),
+  facebook: z.string().optional(),
+  twitter: z.string().optional(),
+  youtube: z.string().optional(),
+  tiktok: z.string().optional(),
+  linkedin: z.string().optional(),
+  whatsapp: z.string().optional()
+})
+
+export const BusinessProfileSchema = z.object({
+  name: z.string().optional(),
+  description: z.string().optional(),
+  websiteUrl: z.string().optional(),
+  logoUrl: z.string().optional(),
+  faviconUrl: z.string().optional(),
+  phoneNumber: z.string().optional(),
+  email: z.string().optional(),
+  address: z.string().optional(),
+  openingHours: z.array(z.string()).default([]),
+  geo: z
+    .object({ lat: z.number(), lng: z.number() })
+    .optional(),
+  social: SocialLinksSchema.optional()
+})
+export type BusinessProfile = z.infer<typeof BusinessProfileSchema>
 
 export type SiteMapNode = {
   url: string
@@ -149,6 +190,7 @@ export const SiteScrapeSchema = z.object({
   crawledAt: z.date(),
   colors: ColorPaletteSchema,
   fonts: FontsSchema,
+  business: BusinessProfileSchema.optional(),
   sitemap: z.array(SiteMapNodeSchema).default([]),
   pages: z.array(ScrapedPageSchema),
   rawCssUrls: z.array(z.string()).default([]),

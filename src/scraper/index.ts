@@ -17,11 +17,10 @@ import {
 
 import { normalizeUrl, fetchText, toOrigin, type Url } from "@/scraper/utils/http"
 import { loadRobots } from "@/scraper/utils/robots"
-import { discoverSitemapUrls, parseSitemapXmlText } from "@/scraper/utils/sitemap"
+import { getUrls } from "@/scraper/utils/sitemap"
 import { collectStylesheetUrls, extractFontFamiliesAndSources, isNonSystemFont, pickPalette, scoreColorsFromCss } from "@/scraper/utils/css"
 import { extractSeoMeta, extractPlainText, extractImages as extractPageImages } from "@/scraper/utils/html"
-import { inferSections } from "@/scraper/utils/sections"
-import { mapSectionsToBlockCandidates } from "@/scraper/utils/mapper"
+import { extractBusinessProfile } from "@/scraper/utils/business"
 import { writeJsonToTmpScrapes } from "@/scraper/utils/files"
 import { BlockSchemas } from "@/components/blocks/schemas"
 
@@ -30,36 +29,6 @@ const DEFAULT_MAX_PAGES = 40
 function toSlug(u: Url): string {
   const p = new URL(u).pathname
   return p === "" ? "/" : p
-}
-
-async function crawl(startUrl: Url, maxPages = DEFAULT_MAX_PAGES): Promise<string[]> {
-  const origin = toOrigin(startUrl)
-  const { isAllowed } = await loadRobots(origin)
-
-  const queue: string[] = [startUrl]
-  const visited = new Set<string>()
-  const result: string[] = []
-
-  while (queue.length && result.length < maxPages) {
-    const url = queue.shift() as string
-    if (visited.has(url)) continue
-    visited.add(url)
-    if (!isAllowed(url)) continue
-
-    const html = await fetchText(url)
-    if (!html) continue
-    result.push(url)
-
-    const $ = cheerio.load(html)
-    $("a[href]").each((_, el) => {
-      const href = $(el).attr("href") ?? ""
-      const u = normalizeUrl(url, href)
-      if (u && !visited.has(u) && u.startsWith(origin)) {
-        queue.push(u)
-      }
-    })
-  }
-  return result
 }
 
 async function scrapePage(url: Url, renderer: PlaywrightRenderer): Promise<ScrapedPage> {
@@ -82,14 +51,15 @@ async function scrapePage(url: Url, renderer: PlaywrightRenderer): Promise<Scrap
   const $ = cheerio.load(html)
   const title = $("title").first().text().trim() || $("h1").first().text().trim()
   const text = extractPlainText($)
-  const sections = inferSections($)
   const images = extractPageImages($, url)
   const seo = extractSeoMeta($)
-  const blockCandidates = mapSectionsToBlockCandidates(sections)
 
   let llmBlocks: LlmBlockCandidate[] = []
+  let llmSections: Array<{ type: string; title?: string; contentText?: string; contentHtml?: string; images: string[]; confidence: number; rationale?: string }> = []
   try {
-    llmBlocks = await llmExtractBlocks({ url, text, html })
+    const ai = (await llmExtractBlocks({ url, text, html })) as { blocks?: LlmBlockCandidate[]; sections?: typeof llmSections }
+    llmBlocks = ai.blocks ?? []
+    llmSections = ai.sections ?? []
   } catch { }
 
   return ScrapedPageSchema.parse({
@@ -98,41 +68,29 @@ async function scrapePage(url: Url, renderer: PlaywrightRenderer): Promise<Scrap
     title,
     html,
     text,
-    sections,
-    blockCandidates: [
-      ...blockCandidates,
-      ...llmBlocks.map((b) => ({ type: b.type, content: b.content, sourceSectionType: b.sourceSectionType }))
-    ],
+    sections: [],
+    blockCandidates: llmBlocks.map((b, i) => ({
+      type: b.type,
+      content: b.content,
+      sourceSectionType: b.sourceSectionType
+    })),
     images,
-    seo
+    seo,
+    ai: { llmBlocks, llmSections }
   })
 }
 
 export async function scrapeSite(targetUrl: Url): Promise<SiteScrape> {
   const origin = toOrigin(targetUrl)
 
-  const sitemapUrls = await discoverSitemapUrls(origin)
-  const candidatePageUrls = new Set<string>()
-  const fetchedSitemaps: string[] = []
+  const { urls, sitemapUrls } = await getUrls(targetUrl, DEFAULT_MAX_PAGES)
 
-  for (const url of sitemapUrls) {
-    const xml = await fetchText(url)
-    if (!xml) continue
-    fetchedSitemaps.push(url)
-    const urls = await parseSitemapXmlText(xml)
-    for (const u of urls) candidatePageUrls.add(u)
-  }
-
-  if (candidatePageUrls.size === 0) {
-    const crawled = await crawl(targetUrl, DEFAULT_MAX_PAGES)
-    for (const u of crawled) candidatePageUrls.add(u)
-  }
-
-  const homeUrl = candidatePageUrls.has(origin) ? origin : targetUrl
+  // Render home and compute colors/fonts from real CSS
+  const homeUrl = urls.has(origin) ? origin : targetUrl
   let colors = ColorPaletteSchema.parse({ palette: [] })
   let fonts = FontsSchema.parse({ families: [], sources: [] })
   let renderCssSample: string[] = []
-
+  let business: ReturnType<typeof extractBusinessProfile> | undefined
   try {
     const previewRenderer = new PlaywrightRenderer()
     const rendered = await previewRenderer.render(homeUrl)
@@ -153,33 +111,57 @@ export async function scrapeSite(targetUrl: Url): Promise<SiteScrape> {
       families: ordered.slice(0, 8),
       sources
     })
+
+    business = extractBusinessProfile($home, homeUrl)
     await previewRenderer.close()
   } catch { }
 
-
-  const urls = [...candidatePageUrls].slice(0, DEFAULT_MAX_PAGES)
+  const chosenUrls = [homeUrl] // [...urls].slice(0, DEFAULT_MAX_PAGES)
   const renderer = new PlaywrightRenderer()
-  const pages: ScrapedPage[] = []
-  for (const u of urls) pages.push(await scrapePage(u, renderer))
+
+  const pages: ScrapedPage[] = [await scrapePage(homeUrl, renderer)] // for (const u of urls) pages.push(await scrapePage(u, renderer))
   await renderer.close()
 
-  const tree = urls
+  // Simple sitemap tree
+  const tree = chosenUrls
     .sort((a, b) => toSlug(a).localeCompare(toSlug(b)))
     .map((u) => ({ url: u, title: pages.find((p) => p.url === u)?.title }))
 
-  const result = SiteScrapeSchema.parse({
+  const resultSeed = {
     targetUrl,
     crawledAt: new Date(),
     colors,
     fonts,
-    sitemap: tree.map((n) => ({ url: n.url, title: n.title, children: [] })),
+    business,
+    sitemap: tree.map((n) => ({ url: n.url, title: n.title, children: [] as [] })),
     pages,
     rawCssUrls: [],
     robotsTxt: (await loadRobots(origin)).robots ?? undefined,
-    sitemapXmlUrls: fetchedSitemaps,
+    sitemapXmlUrls: sitemapUrls,
     errors: [],
     renderCssSample
-  })
+  }
+  const result = SiteScrapeSchema.parse(resultSeed)
+
+  // Write a full dump of the SiteScrape result for inspection
+  writeJsonToTmpScrapes(
+    `${new URL(targetUrl).hostname}-${Date.now()}-full.json`,
+    result
+  )
+
+  // Write only OpenAI-contributed content for quick review
+  const openAiOnly = {
+    targetUrl: result.targetUrl,
+    pages: result.pages.map((p: ScrapedPage) => ({
+      url: p.url,
+      slug: p.slug,
+      llmBlocks: p.ai?.llmBlocks ?? []
+    }))
+  }
+  writeJsonToTmpScrapes(
+    `${new URL(targetUrl).hostname}-${Date.now()}-openai.json`,
+    openAiOnly
+  )
 
   const leftovers = {
     targetUrl: result.targetUrl,
