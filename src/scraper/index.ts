@@ -18,7 +18,7 @@ import {
 import { normalizeUrl, fetchText, toOrigin, type Url } from "@/scraper/utils/http"
 import { loadRobots } from "@/scraper/utils/robots"
 import { discoverSitemapUrls, parseSitemapXmlText } from "@/scraper/utils/sitemap"
-import { collectStylesheetUrls, extractFontFamiliesAndSources, scoreColorsFromCss } from "@/scraper/utils/css"
+import { collectStylesheetUrls, extractFontFamiliesAndSources, isNonSystemFont, pickPalette, scoreColorsFromCss } from "@/scraper/utils/css"
 import { extractSeoMeta, extractPlainText, extractImages as extractPageImages } from "@/scraper/utils/html"
 import { inferSections } from "@/scraper/utils/sections"
 import { mapSectionsToBlockCandidates } from "@/scraper/utils/mapper"
@@ -26,24 +26,6 @@ import { writeJsonToTmpScrapes } from "@/scraper/utils/files"
 import { BlockSchemas } from "@/components/blocks/schemas"
 
 const DEFAULT_MAX_PAGES = 40
-
-function pickPalette(sortedColors: string[]) {
-  const primary = sortedColors[0]
-  const secondary = sortedColors.find((c) => c !== primary)
-  const background = sortedColors.find((c) => (c.includes("rgb") || c.includes("hsl")) ? false : c.length >= 4)
-  return ColorPaletteSchema.parse({
-    primary,
-    secondary,
-    background,
-    accent: sortedColors[2],
-    palette: sortedColors.slice(0, 12)
-  })
-}
-
-function isNonSystemFont(f: string): boolean {
-  const sys = ["arial", "helvetica", "sans-serif", "serif", "system-ui", "ui-sans-serif", "times new roman"]
-  return !sys.includes(f.toLowerCase())
-}
 
 function toSlug(u: Url): string {
   const p = new URL(u).pathname
@@ -129,36 +111,40 @@ async function scrapePage(url: Url, renderer: PlaywrightRenderer): Promise<Scrap
 export async function scrapeSite(targetUrl: Url): Promise<SiteScrape> {
   const origin = toOrigin(targetUrl)
 
-  // Sitemap discovery or fallback crawl
   const sitemapUrls = await discoverSitemapUrls(origin)
   const candidatePageUrls = new Set<string>()
   const fetchedSitemaps: string[] = []
-  for (const smUrl of sitemapUrls) {
-    const xml = await fetchText(smUrl)
+
+  for (const url of sitemapUrls) {
+    const xml = await fetchText(url)
     if (!xml) continue
-    fetchedSitemaps.push(smUrl)
+    fetchedSitemaps.push(url)
     const urls = await parseSitemapXmlText(xml)
     for (const u of urls) candidatePageUrls.add(u)
   }
+
   if (candidatePageUrls.size === 0) {
     const crawled = await crawl(targetUrl, DEFAULT_MAX_PAGES)
     for (const u of crawled) candidatePageUrls.add(u)
   }
 
-  // Render home and compute colors/fonts from real CSS
   const homeUrl = candidatePageUrls.has(origin) ? origin : targetUrl
   let colors = ColorPaletteSchema.parse({ palette: [] })
   let fonts = FontsSchema.parse({ families: [], sources: [] })
   let renderCssSample: string[] = []
+
   try {
     const previewRenderer = new PlaywrightRenderer()
     const rendered = await previewRenderer.render(homeUrl)
     const $home = cheerio.load(rendered.html)
+
     const cssUrls = [...new Set([...collectStylesheetUrls($home, homeUrl, normalizeUrl), ...rendered.cssUrls])]
     const cssTexts = (await Promise.all(cssUrls.map(fetchText))).filter((t): t is string => !!t)
     renderCssSample = cssTexts.slice(0, 3)
+
     const colorOrder = scoreColorsFromCss(cssTexts)
     colors = pickPalette(colorOrder)
+
     const { families, sources } = extractFontFamiliesAndSources($home, cssTexts)
     const ordered = families.filter((f) => isNonSystemFont(f))
     fonts = FontsSchema.parse({
@@ -170,14 +156,13 @@ export async function scrapeSite(targetUrl: Url): Promise<SiteScrape> {
     await previewRenderer.close()
   } catch { }
 
-  // Scrape pages
+
   const urls = [...candidatePageUrls].slice(0, DEFAULT_MAX_PAGES)
   const renderer = new PlaywrightRenderer()
   const pages: ScrapedPage[] = []
   for (const u of urls) pages.push(await scrapePage(u, renderer))
   await renderer.close()
 
-  // Simple sitemap tree
   const tree = urls
     .sort((a, b) => toSlug(a).localeCompare(toSlug(b)))
     .map((u) => ({ url: u, title: pages.find((p) => p.url === u)?.title }))
@@ -196,7 +181,6 @@ export async function scrapeSite(targetUrl: Url): Promise<SiteScrape> {
     renderCssSample
   })
 
-  // Save leftovers for manual review
   const leftovers = {
     targetUrl: result.targetUrl,
     sitemap: result.sitemap,
@@ -213,12 +197,12 @@ export async function scrapeSite(targetUrl: Url): Promise<SiteScrape> {
       })
     }))
   }
+
   writeJsonToTmpScrapes(`${new URL(targetUrl).hostname}-${Date.now()}.json`, leftovers)
 
   return result
 }
 
-// CLI entry
 if (require.main === module) {
   const url = process.argv[2]
   if (!url) {

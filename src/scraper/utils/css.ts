@@ -1,3 +1,4 @@
+import { ColorPaletteSchema } from "../models"
 import type { Url } from "./http"
 import * as cheerio from "cheerio"
 
@@ -78,4 +79,21 @@ function splitFontList(val: string): string[] {
     .filter(Boolean)
 }
 
+export function pickPalette(sortedColors: string[]) {
+  const primary = sortedColors[0]
+  const secondary = sortedColors.find((c) => c !== primary)
+  const background = sortedColors.find((c) => (c.includes("rgb") || c.includes("hsl")) ? false : c.length >= 4)
 
+  return ColorPaletteSchema.parse({
+    primary,
+    secondary,
+    background,
+    accent: sortedColors[2],
+    palette: sortedColors.slice(0, 12)
+  })
+}
+
+export function isNonSystemFont(f: string): boolean {
+  const sys = ["arial", "helvetica", "sans-serif", "serif", "system-ui", "ui-sans-serif", "times new roman"]
+  return !sys.includes(f.toLowerCase())
+}
