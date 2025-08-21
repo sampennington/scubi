@@ -27,8 +27,50 @@ export const BlockType = {
   TWO_COLUMN: "two-column",
   COURSES: "courses",
   MARINE_LIFE: "marine-life",
+  DIVE_SITES: "dive-sites",
   REVIEWS: "reviews"
 } as const
+
+export const BlockTypeDescriptions: Record<BlockType, string> = {
+  [BlockType.HERO]:
+    "A full‑width section typically at the top of the page, featuring a prominent background image or video with overlaid headline, supporting copy, and primary/secondary CTAs.",
+  [BlockType.TEXT]:
+    "A flexible rich‑text section for headings and paragraphs; ideal for introductions, explanations, or standalone copy.",
+  [BlockType.IMAGE]:
+    "A single media block to showcase an image with optional caption/alt and responsive sizing.",
+  [BlockType.MULTI_COLUMN]:
+    "A layout section that arranges content into multiple columns for scannability; columns can contain text, icons, or small images.",
+  [BlockType.GALLERY]:
+    "A grid or carousel of images for showcasing photos; may support captions and lightbox/open‑in‑place behavior.",
+  [BlockType.TESTIMONIALS]:
+    "Displays customer quotes and ratings, often with names, avatars, and optional company logos.",
+  [BlockType.TEAM]:
+    "Introduces team members or instructors with photos, names, roles, and potentially brief bios or links.",
+  [BlockType.FAQ]:
+    "An accordion of common questions and answers to address user concerns and reduce support friction.",
+  [BlockType.CONTACT_FORM]:
+    "A lead‑capture form (e.g., name, email, message) for enquiries; can include phone/subject and routes submissions to a configured endpoint.",
+  [BlockType.CALL_TO_ACTION]:
+    "A focused prompt driving a specific action (book, enquire, subscribe) with concise copy and one or two CTAs.",
+  [BlockType.VIDEO]:
+    "Embeds video from a URL or file with optional title/description and poster image.",
+  [BlockType.MAP]:
+    "Shows a map centered on the business location with a pin and optional address details or directions link.",
+  [BlockType.SOCIAL_FEED]:
+    "Surfaces recent posts from a social platform (e.g., Instagram) with thumbnails and links back to the source.",
+  [BlockType.DIVIDER]:
+    "A visual separator—line, space, or decorative element—to break up content sections.",
+  [BlockType.TWO_COLUMN]:
+    "A balanced two‑column layout, commonly pairing text and media (e.g., copy left, image right) with responsive stacking.",
+  [BlockType.COURSES]:
+    "Showcases courses or offerings with title, description, key details (level, duration, price), and links to learn more or enroll.",
+  [BlockType.MARINE_LIFE]:
+    "Highlights marine species or dive‑site points of interest with images and short descriptions—tailored for dive content.",
+  [BlockType.DIVE_SITES]:
+    "Lists dive sites with depth, difficulty, conditions, and summaries; can link to detailed pages for each site.",
+  [BlockType.REVIEWS]:
+    "Aggregates third‑party reviews (e.g., Google, TripAdvisor) with ratings and excerpts, optionally linking to sources."
+}
 
 export type BlockType = (typeof BlockType)[keyof typeof BlockType]
 
@@ -87,12 +129,8 @@ export const verifications = pgTable("verifications", {
   identifier: text("identifier").notNull(),
   value: text("value").notNull(),
   expiresAt: timestamp("expires_at").notNull(),
-  createdAt: timestamp("created_at").$defaultFn(
-    () => /* @__PURE__ */ new Date()
-  ),
-  updatedAt: timestamp("updated_at").$defaultFn(
-    () => /* @__PURE__ */ new Date()
-  )
+  createdAt: timestamp("created_at").$defaultFn(() => /* @__PURE__ */ new Date()),
+  updatedAt: timestamp("updated_at").$defaultFn(() => /* @__PURE__ */ new Date())
 })
 
 export const subscriptions = pgTable("subscriptions", {

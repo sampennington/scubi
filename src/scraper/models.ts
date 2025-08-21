@@ -34,6 +34,7 @@ export const ColorPaletteSchema = z.object({
   accent: z.string().optional(),
   palette: z.array(z.string()).default([])
 })
+
 export type ColorPalette = z.infer<typeof ColorPaletteSchema>
 
 export const FontsSchema = z.object({
@@ -148,9 +149,7 @@ export const BusinessProfileSchema = z.object({
   email: z.string().optional(),
   address: z.string().optional(),
   openingHours: z.array(z.string()).default([]),
-  geo: z
-    .object({ lat: z.number(), lng: z.number() })
-    .optional(),
+  geo: z.object({ lat: z.number(), lng: z.number() }).optional(),
   social: SocialLinksSchema.optional()
 })
 export type BusinessProfile = z.infer<typeof BusinessProfileSchema>
@@ -201,5 +200,3 @@ export const SiteScrapeSchema = z.object({
 })
 
 export type SiteScrape = z.infer<typeof SiteScrapeSchema>
-
-
