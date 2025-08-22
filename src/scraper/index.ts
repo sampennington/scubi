@@ -1,5 +1,7 @@
 /* eslint-disable no-console */
 import dotenv from "dotenv"
+dotenv.config({ path: ".env.local" })
+
 import * as cheerio from "cheerio"
 import { PlaywrightRenderer } from "./engines/playwright-renderer"
 import { llmExtractBlocks } from "./ai"
@@ -30,8 +32,6 @@ import {
 } from "@/scraper/utils/html"
 import { extractBusinessProfile } from "@/scraper/utils/business"
 import { info } from "@/scraper/utils/logger"
-
-dotenv.config({ path: ".env.local" })
 
 const DEFAULT_MAX_PAGES = 40
 
@@ -70,6 +70,12 @@ async function scrapePage(url: Url, renderer: PlaywrightRenderer): Promise<Scrap
     html,
     screenshot: rendered.lowQScreenShotbase64
   })
+
+  // write blocks to file
+  const fs = require("fs")
+  const path = require("path")
+  const blocksPath = path.join(process.cwd(), "tmp", "scrapes", `blocks-${Date.now()}.json`)
+  fs.writeFileSync(blocksPath, JSON.stringify(blocks, null, 2))
 
   return ScrapedPageSchema.parse({
     url,
