@@ -19,9 +19,14 @@ export const BlockButtonSchema = z.object({
 export const HeroContentSchema = z.object({
   title: z.string(),
   text: z.string(),
-  image: z.string(),
+  image: z.string().optional(),
+  logo: z.string().optional(),
+  announcement: z.string().optional(),
+  announcementUrl: z.string().optional(),
   primaryButton: BlockButtonSchema,
-  secondaryButton: BlockButtonSchema
+  secondaryButton: BlockButtonSchema,
+  alignment: z.enum(["left", "center", "right"]).optional(),
+  minHeight: z.number().optional()
 })
 
 export const TextContentSchema = z.object({

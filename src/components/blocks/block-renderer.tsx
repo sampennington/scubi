@@ -2,7 +2,9 @@ import type { Block } from "@/lib/api"
 import { BlockType } from "@/database/schema"
 import { TextBlock } from "./text-block"
 import { ImageBlock } from "./image-block"
-import { HeroBlock } from "../editable/blocks/hero/hero-block"
+// import { HeroBlock } from "../editable/blocks/hero/hero-block"
+import { EditableHeroBlock } from "../editable/blocks/hero/hero-block-new"
+
 import { MultiColumnBlock } from "../editable/blocks/multi-column/multi-column-block"
 import { GalleryBlock } from "./gallery-block"
 import { TestimonialsBlock } from "./testimonials-block"
@@ -85,7 +87,8 @@ function BlockWithValidation({ block }: { block: Block }) {
         ? block.content
         : (defaultContent[BlockType.HERO] as HeroContent)
 
-      return <HeroBlock key={block.id} {...block} content={content} />
+      // Use editable version if available, otherwise fall back to template
+      return <EditableHeroBlock key={block.id} {...block} content={content} />
     }
 
     case BlockType.MULTI_COLUMN: {

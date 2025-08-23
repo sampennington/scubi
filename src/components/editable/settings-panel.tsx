@@ -55,7 +55,7 @@ export const BlockSettingsPanel = ({
   }
 
   return (
-    <ShopOwner shopId={shopId}>
+    <ShopOwner>
       <DialogPrimitive.Root open={isOpen} onOpenChange={setIsOpen}>
         <div
           className={cn(
