@@ -15,11 +15,23 @@ import { ColorPicker } from "@/components/ui/color-picker"
 import { UploadButton } from "@/components/ui/upload-button"
 import { Plus, Trash2 } from "lucide-react"
 import type { FieldConfig } from "@/lib/blocks/config-types"
+import Image from "next/image"
+
+type FieldValue =
+  | string
+  | number
+  | boolean
+  | string[]
+  | number[]
+  | Record<string, unknown>
+  | Record<string, unknown>[]
+  | null
+  | undefined
 
 interface DynamicFieldProps {
   config: FieldConfig
-  value: any
-  onChange: (value: any) => void
+  value: FieldValue
+  onChange: (value: FieldValue) => void
   error?: string
   touched?: boolean
 }
@@ -33,7 +45,7 @@ export function DynamicField({ config, value, onChange, error, touched }: Dynami
         <div className="space-y-1">
           <Input
             type={config.type}
-            value={value || ""}
+            value={(value as string) || ""}
             onChange={(e) => onChange(e.target.value)}
             placeholder={config.placeholder}
             maxLength={config.maxLength}
@@ -47,7 +59,7 @@ export function DynamicField({ config, value, onChange, error, touched }: Dynami
         <div className="space-y-1">
           <Input
             type={config.type}
-            value={value || ""}
+            value={(value as string) || ""}
             onChange={(e) => onChange(e.target.value)}
             placeholder={config.placeholder}
             maxLength={config.maxLength}
@@ -61,7 +73,7 @@ export function DynamicField({ config, value, onChange, error, touched }: Dynami
         <div className="space-y-1">
           <Input
             type={config.type}
-            value={value || ""}
+            value={(value as string) || ""}
             onChange={(e) => onChange(e.target.value)}
             placeholder={config.placeholder}
             maxLength={config.maxLength}
@@ -75,7 +87,7 @@ export function DynamicField({ config, value, onChange, error, touched }: Dynami
       return (
         <div className="space-y-1">
           <Textarea
-            value={value || ""}
+            value={(value as string) || ""}
             onChange={(e) => onChange(e.target.value)}
             placeholder={config.placeholder}
             rows={config.rows || 3}
@@ -91,7 +103,7 @@ export function DynamicField({ config, value, onChange, error, touched }: Dynami
         <div className="space-y-1">
           <Input
             type="number"
-            value={value || ""}
+            value={(value as number)?.toString() || ""}
             onChange={(e) => onChange(Number(e.target.value))}
             min={config.min}
             max={config.max}
@@ -108,23 +120,25 @@ export function DynamicField({ config, value, onChange, error, touched }: Dynami
           <div className="flex items-center space-x-4">
             <input
               type="range"
-              value={value || config.min}
+              value={(value as number) || config.min}
               onChange={(e) => onChange(Number(e.target.value))}
               min={config.min}
               max={config.max}
               step={config.step || 1}
               className="flex-1"
             />
-            <span className="w-12 text-center font-medium text-sm">{value || config.min}</span>
+            <span className="w-12 text-center font-medium text-sm">
+              {(value as number) || config.min}
+            </span>
           </div>
-          {hasError && <p className="text-sm text-red-500">{error}</p>}
+          {hasError && <p className="text-red-500 text-sm">{error}</p>}
         </div>
       )
 
     case "select":
       return (
         <div className="space-y-1">
-          <Select value={value} onValueChange={onChange}>
+          <Select value={(value as string) || ""} onValueChange={onChange}>
             <SelectTrigger className={hasError ? "border-red-500" : ""}>
               <SelectValue placeholder="Select an option..." />
             </SelectTrigger>
@@ -136,23 +150,23 @@ export function DynamicField({ config, value, onChange, error, touched }: Dynami
               ))}
             </SelectContent>
           </Select>
-          {hasError && <p className="text-sm text-red-500">{error}</p>}
+          {hasError && <p className="text-red-500 text-sm">{error}</p>}
         </div>
       )
 
     case "toggle":
       return (
         <div className="space-y-1">
-          <Switch checked={value || false} onCheckedChange={onChange} />
-          {hasError && <p className="text-sm text-red-500">{error}</p>}
+          <Switch checked={(value as boolean) || false} onCheckedChange={onChange} />
+          {hasError && <p className="text-red-500 text-sm">{error}</p>}
         </div>
       )
 
     case "color":
       return (
         <div className="space-y-1">
-          <ColorPicker value={value || "#000000"} onChange={onChange} />
-          {hasError && <p className="text-sm text-red-500">{error}</p>}
+          <ColorPicker color={(value as string) || "#000000"} onChange={onChange} />
+          {hasError && <p className="text-red-500 text-sm">{error}</p>}
         </div>
       )
 
@@ -160,48 +174,62 @@ export function DynamicField({ config, value, onChange, error, touched }: Dynami
       return (
         <div className="space-y-1">
           <UploadButton
-            endpoint="imageUploader"
-            onClientUploadComplete={(res) => {
-              if (res?.[0]?.url) {
-                onChange(res[0].url)
-              }
+            onFileSelect={async (file: File) => {
+              // TODO: Implement actual file upload logic
+              console.log("File selected:", file.name)
+              // For now, create a temporary URL for preview
+              const tempUrl = URL.createObjectURL(file)
+              onChange(tempUrl)
             }}
-            onUploadError={(error: Error) => {
-              console.error("Upload error:", error)
-            }}
+            accept="image/*"
           />
           {value && (
             <div className="mt-2">
-              <img src={value} alt="Preview" className="w-20 h-20 object-cover rounded border" />
+              <Image
+                src={value as string}
+                alt="Preview"
+                className="h-20 w-20 rounded border object-cover"
+                width={80}
+                height={80}
+              />
             </div>
           )}
-          {hasError && <p className="text-sm text-red-500">{error}</p>}
+          {hasError && <p className="text-red-500 text-sm">{error}</p>}
         </div>
       )
 
     case "object":
       return (
-        <div className="space-y-4 p-4 border rounded-lg bg-muted/50">
+        <div className="space-y-4 rounded-lg border bg-muted/50 p-4">
           {config.fields.map((subField) => (
             <div key={subField.name} className="space-y-2">
-              <label className="font-medium text-sm">{subField.label}</label>
-              <DynamicField
-                config={subField}
-                value={value?.[subField.name]}
-                onChange={(subValue) => onChange({ ...value, [subField.name]: subValue })}
-              />
+              <label htmlFor={`field-${subField.name}`} className="font-medium text-sm">
+                {subField.label}
+              </label>
+              <div id={`field-${subField.name}`}>
+                <DynamicField
+                  config={subField}
+                  value={(value as Record<string, unknown>)?.[subField.name] as FieldValue}
+                  onChange={(subValue) =>
+                    onChange({
+                      ...((value as Record<string, unknown>) || {}),
+                      [subField.name]: subValue
+                    })
+                  }
+                />
+              </div>
             </div>
           ))}
-          {hasError && <p className="text-sm text-red-500">{error}</p>}
+          {hasError && <p className="text-red-500 text-sm">{error}</p>}
         </div>
       )
 
     case "array":
-      const arrayValue = value || []
+      const arrayValue = (value as FieldValue[]) || []
 
       return (
         <div className="space-y-3">
-          {arrayValue.map((item: any, index: number) => (
+          {arrayValue.map((item: FieldValue, index: number) => (
             <div key={index} className="flex items-start gap-2 rounded-lg border p-3">
               <div className="flex-1">
                 <DynamicField
@@ -210,7 +238,7 @@ export function DynamicField({ config, value, onChange, error, touched }: Dynami
                   onChange={(newItem) => {
                     const newArray = [...arrayValue]
                     newArray[index] = newItem
-                    onChange(newArray)
+                    onChange(newArray as FieldValue)
                   }}
                 />
               </div>
@@ -219,8 +247,8 @@ export function DynamicField({ config, value, onChange, error, touched }: Dynami
                 variant="outline"
                 size="sm"
                 onClick={() => {
-                  const newArray = arrayValue.filter((_: any, i: number) => i !== index)
-                  onChange(newArray)
+                  const newArray = arrayValue.filter((_: FieldValue, i: number) => i !== index)
+                  onChange(newArray as FieldValue)
                 }}
               >
                 <Trash2 className="h-4 w-4" />
@@ -232,22 +260,22 @@ export function DynamicField({ config, value, onChange, error, touched }: Dynami
             type="button"
             variant="outline"
             onClick={() => {
-              onChange([...arrayValue, config.itemSchema.defaultValue || ""])
+              onChange([...arrayValue, config.itemSchema.defaultValue || ""] as FieldValue)
             }}
             className="w-full"
           >
-            <Plus className="h-4 w-4 mr-2" />
+            <Plus className="mr-2 h-4 w-4" />
             {config.addButtonText || "Add Item"}
           </Button>
 
-          {hasError && <p className="text-sm text-red-500">{error}</p>}
+          {hasError && <p className="text-red-500 text-sm">{error}</p>}
         </div>
       )
 
     default:
       return (
         <div className="text-muted-foreground text-sm">
-          Unsupported field type: {(config as any).type}
+          Unsupported field type: {(config as { type: string }).type}
         </div>
       )
   }

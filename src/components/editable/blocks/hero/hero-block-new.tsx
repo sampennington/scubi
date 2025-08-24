@@ -4,10 +4,12 @@ import { Bars3Icon, XMarkIcon } from "@heroicons/react/24/outline"
 import type { HeroContent } from "@/components/blocks/schemas"
 import type { Block } from "@/lib/api"
 import { BlockEditProvider, useBlockEdit } from "@/components/editable/context"
-import { HeroSettingsPanel } from "./hero-settings-panel-new"
 import { E } from "@/components/editable/editable"
 import { cn } from "@/lib/utils"
 import { DynamicSettings } from "@/components/blocks/dynamic-settings"
+import { blockRegistry } from "@/lib/blocks/registry"
+
+import "@/lib/blocks/configs"
 
 const navigation = [
   { name: "Courses", href: "#" },
@@ -25,6 +27,10 @@ const HeroBlockContent = () => {
   const { content, handleEdit } = useBlockEdit<HeroContent>()
 
   const blockConfig = blockRegistry.get("hero")
+  console.log({ blockConfig })
+  if (!blockConfig) {
+    return null
+  }
 
   // Destructure content with scuba diving defaults
   const {
@@ -40,7 +46,6 @@ const HeroBlockContent = () => {
     minHeight = 60
   } = content
 
-  // Dynamic styles based on props
   const containerStyle = {
     minHeight: `${minHeight}vh`
   }
