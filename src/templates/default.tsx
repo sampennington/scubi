@@ -1,8 +1,8 @@
 "use client"
 import { Nav } from "./nav"
 import { Footer } from "./footer"
-import { BlockRenderer } from "@/components/blocks/block-renderer"
-import { ThemeProvider } from "@/components/blocks/theme-provider"
+import { BlockRenderer } from "@/components/blocks/shared/block-renderer"
+import { ThemeProvider } from "@/components/blocks/shared/theme-provider"
 import { Favicon } from "@/components/ui/favicon"
 
 import { ThemeProvider as NextThemeProvider } from "next-themes"

@@ -8,7 +8,7 @@ import { SearchIcon, PlusIcon } from "lucide-react"
 import { useSite } from "@/app/preview/components/site-context"
 import { BlockType } from "@/database/schema"
 import { createBlock, updateBlockOrder } from "@/lib/actions/blocks"
-import { defaultContent } from "@/components/blocks/default-data"
+import { defaultContent } from "@/components/blocks/shared/defaults-index"
 import { toast } from "sonner"
 
 interface AddBlockModalProps {

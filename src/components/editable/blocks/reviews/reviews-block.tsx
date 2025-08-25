@@ -14,7 +14,7 @@ import { useSite } from "@/app/preview/components/site-context"
 import { BlockEditProvider, useBlockEdit } from "@/components/editable/context"
 import { BlockType } from "@/database/schema"
 import type { Block } from "@/lib/api"
-import { defaultReviewsContent } from "@/components/blocks/default-data"
+import { defaultReviewsContent } from "@/components/blocks/shared/defaults-index"
 import ReviewsSettingsPanel from "./reviews-settings-panel"
 
 const truncateText = (text: string, maxLength: number) => {

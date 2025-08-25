@@ -1,12 +1,6 @@
-import type { MultiColumnContent } from "@/components/blocks/schemas"
-import { defaultMultiColumnContent } from "@/components/blocks/layout/multi-column/defaults"
+import type { MultiColumnContent } from "../../shared/schemas"
+import { defaultMultiColumnContent } from "./defaults"
 import * as Icons from "lucide-react"
-
-import { BlockEditProvider, useBlockEdit } from "@/components/editable/context"
-import { E } from "@/components/editable/editable"
-import { MultiColumnSettingsPanel } from "./multi-column-settings-panel"
-import { BlockType } from "@/database/schema"
-import type { Block } from "@/lib/api"
 
 // Icon mapping for Lucide React icons
 const ICONS = {
@@ -127,52 +121,46 @@ const getIcon = (iconName: string) => {
   return IconComponent || null
 }
 
-const MultiColumnBlockContent = () => {
-  const { content } = useBlockEdit<MultiColumnContent>()
+export const MultiColumnBlock = ({
+  content = defaultMultiColumnContent
+}: {
+  content?: MultiColumnContent
+}) => {
   const {
     title,
     description,
     columns,
-    columnsPerRow = "3",
+    columnsPerRow = 3,
     alignment = "center",
     showIcons = true
   } = content
 
   const gridCols = {
-    "1": "grid-cols-1",
-    "2": "grid-cols-1 md:grid-cols-2",
-    "3": "grid-cols-1 md:grid-cols-2 lg:grid-cols-3",
-    "4": "grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4"
+    1: "grid-cols-1",
+    2: "grid-cols-1 md:grid-cols-2",
+    3: "grid-cols-1 md:grid-cols-2 lg:grid-cols-3",
+    4: "grid-cols-1 md:grid-cols-2 lg:grid-cols-4"
   }
 
-  const textAlign = {
+  const textAlignment = {
     left: "text-left",
     center: "text-center",
     right: "text-right"
   }
 
   return (
-    <section className="group relative py-16">
-      <MultiColumnSettingsPanel />
+    <section className="py-16">
       <div className="container mx-auto px-4">
         {(title || description) && (
-          <div className={`mb-12 ${textAlign[alignment]}`}>
-            {title && (
-              <E.h2 fieldPath="title" className="mb-4 font-bold text-3xl md:text-4xl">
-                {title}
-              </E.h2>
-            )}
-            {description && (
-              <E.p fieldPath="description" className="text-lg text-muted-foreground">
-                {description}
-              </E.p>
-            )}
+          <div className={`mb-12 ${textAlignment[alignment]}`}>
+            {title && <h2 className="mb-4 font-bold text-3xl md:text-4xl">{title}</h2>}
+            {description && <p className="text-lg text-muted-foreground">{description}</p>}
           </div>
         )}
 
         <div className={`grid gap-8 ${gridCols[columnsPerRow]}`}>
           {columns.map((column, index) => (
-            <div key={index} className={`flex flex-col ${textAlign[alignment]}`}>
+            <div key={index} className={`flex flex-col ${textAlignment[alignment]}`}>
               {showIcons && column.icon && (
                 <div className="mb-4 flex justify-center">
                   <div className="flex h-16 w-16 items-center justify-center rounded-full bg-primary/10">
@@ -186,42 +174,13 @@ const MultiColumnBlockContent = () => {
                 </div>
               )}
 
-              {column.heading && (
-                <E.h3
-                  fieldPath={`columns[${index}].heading`}
-                  className="mb-3 font-semibold text-xl"
-                >
-                  {column.heading}
-                </E.h3>
-              )}
+              {column.heading && <h3 className="mb-3 font-semibold text-xl">{column.heading}</h3>}
 
-              <E.p fieldPath={`columns[${index}].body`} className="text-muted-foreground">
-                {column.body}
-              </E.p>
+              <p className="text-muted-foreground">{column.body}</p>
             </div>
           ))}
         </div>
       </div>
     </section>
-  )
-}
-
-export const MultiColumnBlock = ({
-  content = defaultMultiColumnContent,
-  blockId,
-  ...props
-}: Block & {
-  content?: MultiColumnContent
-  blockId?: string
-}) => {
-  return (
-    <BlockEditProvider<MultiColumnContent>
-      {...props}
-      blockId={blockId}
-      content={content}
-      type={BlockType.MULTI_COLUMN}
-    >
-      <MultiColumnBlockContent />
-    </BlockEditProvider>
   )
 }

@@ -2,7 +2,7 @@
 export { heroBlockConfig } from "./hero.config"
 
 // Registry setup
-import { blockRegistry } from "../registry"
+import { blockRegistry } from "../core/registry"
 import { heroBlockConfig } from "./hero.config"
 
 // Auto-register all block configurations
