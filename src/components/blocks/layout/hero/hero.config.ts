@@ -1,5 +1,5 @@
-import { HeroContentSchema } from "../../../../lib/blocks/schemas"
 import type { BlockConfig } from "../../../../lib/blocks/core/config-types"
+import { HeroContentSchema } from "./hero.schema"
 
 export const heroBlockConfig: BlockConfig = {
   id: "hero",

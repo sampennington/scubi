@@ -1,7 +1,7 @@
 import { useState } from "react"
 import { Dialog, DialogPanel } from "@headlessui/react"
 import { Bars3Icon, XMarkIcon } from "@heroicons/react/24/outline"
-import type { HeroContent } from "@/components/blocks/shared/schemas"
+import type { HeroContent } from "./hero.schema"
 import type { Block } from "@/lib/api"
 import { BlockEditProvider, useBlockEdit } from "@/components/blocks/editable/context"
 import { E } from "@/components/blocks/editable/editable"
@@ -17,7 +17,7 @@ const navigation = [
   { name: "About Us", href: "#" }
 ]
 
-interface EditableHeroBlockProps extends Block {
+export interface HeroBlockProps extends Block {
   content: HeroContent
 }
 

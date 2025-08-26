@@ -3,7 +3,6 @@ import type { ZodSchema } from "zod"
 import type { BlockConfig, SettingsConfig } from "./config-types"
 import { blockRegistry } from "./registry"
 
-// Enhanced block registration with better type inference
 export interface BlockDefinition<T = unknown> {
   id: string
   name: string

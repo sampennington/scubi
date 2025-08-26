@@ -16,19 +16,6 @@ export const BlockButtonSchema = z.object({
   ])
 })
 
-export const HeroContentSchema = z.object({
-  title: z.string(),
-  text: z.string(),
-  image: z.string().optional(),
-  logo: z.string().optional(),
-  announcement: z.string().optional(),
-  announcementUrl: z.string().optional(),
-  primaryButton: BlockButtonSchema,
-  secondaryButton: BlockButtonSchema,
-  alignment: z.enum(["left", "center", "right"]).optional(),
-  minHeight: z.number().optional()
-})
-
 export const TextContentSchema = z.object({
   text: z.string(),
   alignment: z.enum(["left", "center", "right"]).optional()
@@ -331,10 +318,6 @@ export type TwoColumnContent = z.infer<typeof TwoColumnBlockContentSchema>
 export type CoursesContent = z.infer<typeof CoursesContentSchema>
 export type MarineLifeContent = z.infer<typeof MarineLifeContentSchema>
 export type ReviewsContent = z.infer<typeof ReviewsContentSchema>
-
-export function isHeroContent(data: unknown): data is HeroContent {
-  return HeroContentSchema.safeParse(data).success
-}
 
 export function isTextContent(data: unknown): data is TextContent {
   return TextContentSchema.safeParse(data).success

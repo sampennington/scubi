@@ -6,7 +6,7 @@ export const BlockButtonSchema = z.object({
   variant: z.enum([
     "default",
     "cta",
-    "secondary", 
+    "secondary",
     "primary",
     "outline",
     "invert",

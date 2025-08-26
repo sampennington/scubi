@@ -1,24 +1,10 @@
 import type { Block } from "@/lib/api"
-import { BlockType } from "@/database/schema"
-
+import { getBlockComponent } from "@/lib/blocks/registry"
 import { EmptyPagePlaceholder } from "./empty-page-placeholder"
-import {
-  isHeroContent,
-  isTeamContent,
-  isContactFormContent,
-  isCoursesContent,
-  type HeroContent,
-  type TeamContent,
-  type ContactFormContent,
-  type CoursesContent,
-  type ReviewsContent,
-  isReviewsContent
-} from "./schemas"
 import { useSite } from "../../../app/preview/components/site-context"
 import { defaultContent } from "./defaults-index"
 import { Loader2 } from "lucide-react"
-
-import { HeroBlock, TeamBlock, ContactFormBlock, CoursesBlock, ReviewsBlock } from "../"
+import type { BlockType } from "@/database/schema"
 
 export const BlockRenderer = () => {
   const { blocks, isLoadingLocalBlocks } = useSite()
@@ -50,49 +36,21 @@ export const BlockRenderer = () => {
 }
 
 function BlockWithValidation({ block }: { block: Block }) {
-  switch (block.type) {
-    case BlockType.HERO: {
-      const content = isHeroContent(block.content)
-        ? block.content
-        : (defaultContent[BlockType.HERO] as HeroContent)
+  const BlockComponent = getBlockComponent(block.type as BlockType)
 
-      return <HeroBlock key={block.id} {...block} content={content} />
-    }
-
-    case BlockType.TEAM: {
-      const content = isTeamContent(block.content)
-        ? block.content
-        : (defaultContent[BlockType.TEAM] as TeamContent)
-
-      return <TeamBlock key={block.id} {...block} content={content} />
-    }
-
-    case BlockType.CONTACT_FORM: {
-      const content = isContactFormContent(block.content)
-        ? block.content
-        : (defaultContent[BlockType.CONTACT_FORM] as ContactFormContent)
-
-      return <ContactFormBlock key={block.id} {...block} content={content} />
-    }
-
-    case BlockType.COURSES: {
-      const content = isCoursesContent(block.content)
-        ? block.content
-        : (defaultContent[BlockType.COURSES] as CoursesContent)
-
-      return <CoursesBlock key={block.id} {...block} content={content} />
-    }
-
-    case BlockType.REVIEWS: {
-      const content = isReviewsContent(block.content)
-        ? block.content
-        : (defaultContent[BlockType.REVIEWS] as ReviewsContent)
-
-      return <ReviewsBlock key={block.id} {...block} content={content} />
-    }
-
-    default:
-      console.warn(`Unknown block type: ${block.type}`)
-      return null
+  if (!BlockComponent) {
+    console.warn(`Unknown block type: ${block.type}`)
+    return (
+      <div className="border border-gray-300 border-dashed bg-gray-50 p-8 text-center text-gray-500">
+        <p>Unknown block type: {block.type}</p>
+        <p className="text-sm">Please check your block registry</p>
+      </div>
+    )
   }
+
+  // Use default content as fallback if block content is invalid/missing
+  const content = block.content || defaultContent[block.type as BlockType] || {}
+
+  // @ts-ignore
+  return <BlockComponent key={block.id} {...block} content={content} />
 }
