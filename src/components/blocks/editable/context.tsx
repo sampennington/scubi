@@ -9,7 +9,6 @@ import {
   useCallback,
   type ReactNode
 } from "react"
-import { useSearchParams } from "next/navigation"
 import { setProperty } from "dot-prop"
 import { updateBlock } from "@/app/dashboard/shops/[id]/actions"
 import type { BlockType } from "@/database/schema"
@@ -45,15 +44,9 @@ export const BlockEditProvider = <T extends Record<string, unknown>>({
 }: BlockEditProviderProps<T>) => {
   const [localContent, setLocalContent] = useState<T>(content)
   const [isSaving, setIsSaving] = useState<boolean>(false)
-  const searchParams = useSearchParams()
-  const [isEditMode, setIsEditMode] = useState<boolean>(false)
+
   const debounceTimeoutRef = useRef<NodeJS.Timeout | undefined>(undefined)
   const pendingUpdateRef = useRef<{ content: T; fieldPath: string; value: unknown } | null>(null)
-
-  useEffect(() => {
-    const editParam = searchParams.get("edit")
-    setIsEditMode(editParam === "true")
-  }, [searchParams])
 
   const debouncedUpdateBlock = useCallback(
     async (content: T) => {
@@ -82,7 +75,7 @@ export const BlockEditProvider = <T extends Record<string, unknown>>({
     value: string | number | boolean | object | Array<unknown>,
     debounce: boolean = false
   ) => {
-    if (!id || !isEditMode) {
+    if (!id) {
       console.warn("No blockId or not in edit mode")
       return
     }

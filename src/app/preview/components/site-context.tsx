@@ -20,6 +20,8 @@ export interface SiteContextValue {
   publishSite: () => void
   refreshBlocks: () => Promise<void>
   isLoadingLocalBlocks: boolean
+  blockSettingsActive: string | null | undefined
+  setBlockSettingsActive: (id: string) => void
 }
 
 const SiteContext = createContext<SiteContextValue | null>(null)
@@ -44,6 +46,7 @@ export function TemplateProvider({
   isShopOwner
 }: TemplateProviderProps) {
   const [isEditMode, setIsEditMode] = useState(false)
+  const [blockSettingsActive, setBlockSettingsActive] = useState<string | null>()
 
   const [isLoadingLocalBlocks, setIsLoadingLocalBlocks] = useState(false)
 
@@ -101,7 +104,9 @@ export function TemplateProvider({
         isShopOwner,
         publishSite: () => null,
         refreshBlocks: () => fetchBlocks(currentPage.id),
-        isLoadingLocalBlocks
+        isLoadingLocalBlocks,
+        blockSettingsActive,
+        setBlockSettingsActive
       }}
     >
       {children}

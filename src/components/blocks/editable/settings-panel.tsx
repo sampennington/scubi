@@ -1,5 +1,6 @@
 import type React from "react"
-import { useState, useMemo } from "react"
+import { useState, useMemo, useEffect } from "react"
+import { createPortal } from "react-dom"
 import { Settings, X, Trash2, GripVertical, Plus, ChevronDown, ChevronRight } from "lucide-react"
 import { Button } from "../../ui/button"
 import * as DialogPrimitive from "@radix-ui/react-dialog"
@@ -19,6 +20,55 @@ interface BlockSettingsPanelProps {
   onBlockAdded?: () => void
   onDeleteBlock?: () => void
   onDragStart?: () => void
+}
+
+const SettingsPortal = ({ children }: { children: React.ReactNode }) => {
+  const [portalContainer, setPortalContainer] = useState<Element | null>(null)
+
+  useEffect(() => {
+    // Check if we're in an iframe
+    const isInIframe = window !== window.parent
+    console.log({ isInIframe })
+    if (!isInIframe) {
+      // If not in iframe, render normally in current document
+      setPortalContainer(document.body)
+      return
+    }
+
+    try {
+      // Create or find a container in the parent window
+      const parentDoc = window.parent.document
+      let container = parentDoc.getElementById("settings-portal")
+
+      if (!container) {
+        container = parentDoc.createElement("div")
+        container.id = "settings-portal"
+        container.className = "fixed inset-0 z-[9999] pointer-events-none"
+        container.style.cssText =
+          "position: fixed; top: 0; left: 0; right: 0; bottom: 0; z-index: 9999; pointer-events: none;"
+        parentDoc.body.appendChild(container)
+      }
+
+      setPortalContainer(container)
+
+      return () => {
+        // Cleanup on unmount - remove container if it's empty
+        if (container?.parentNode && container.children.length === 0) {
+          container.parentNode.removeChild(container)
+        }
+      }
+    } catch (error) {
+      // Fallback to current document if cross-origin issues
+      console.warn("Could not access parent window, rendering in current frame:", error)
+      setPortalContainer(document.body)
+    }
+  }, [])
+
+  return portalContainer ? (
+    createPortal(children, portalContainer)
+  ) : (
+    <DialogPrimitive.Portal>{children}</DialogPrimitive.Portal>
+  )
 }
 
 export const BlockSettingsPanel = ({
@@ -114,11 +164,11 @@ export const BlockSettingsPanel = ({
           order={order}
         />
 
-        <DialogPrimitive.Portal>
-          <DialogPrimitive.Overlay className="data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 fixed inset-0 z-50 bg-black/20 data-[state=closed]:animate-out data-[state=open]:animate-in" />
+        <SettingsPortal>
+          <DialogPrimitive.Overlay className="data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 pointer-events-auto fixed inset-0 z-50 bg-black/20 data-[state=closed]:animate-out data-[state=open]:animate-in" />
           <DialogPrimitive.Content
             className={cn(
-              "fixed top-0 right-0 z-50 h-full w-96 bg-background px-4 shadow-xl transition-all duration-300",
+              "pointer-events-auto fixed top-0 right-0 z-50 h-full w-96 bg-background px-4 shadow-xl transition-all duration-300",
               "data-[state=closed]:animate-out data-[state=open]:animate-in",
               "data-[state=closed]:slide-out-to-right data-[state=open]:slide-in-from-right",
               "border-border border-l",
@@ -146,7 +196,7 @@ export const BlockSettingsPanel = ({
               <div className="space-y-6 pb-20">{children}</div>
             </div>
           </DialogPrimitive.Content>
-        </DialogPrimitive.Portal>
+        </SettingsPortal>
       </DialogPrimitive.Root>
     </ShopOwner>
   )
