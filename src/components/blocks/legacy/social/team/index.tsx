@@ -1,7 +1,7 @@
 import Image from "next/image"
 import { Mail, Phone, Linkedin, Twitter, Instagram } from "lucide-react"
 import { Card, CardContent, CardHeader } from "@/components/ui/card"
-import type { TeamContent } from "../../shared/schemas"
+import type { TeamContent } from "../../../shared/schemas"
 
 const defaultContent: TeamContent = {
   title: "Set your team title here",

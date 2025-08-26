@@ -1,4 +1,4 @@
-import type { TestimonialsContent } from "../../shared/schemas"
+import type { TestimonialsContent } from "../../../shared/schemas"
 
 export const defaultTestimonialsContent: TestimonialsContent = {
   title: "What Our Customers Say",
@@ -6,7 +6,7 @@ export const defaultTestimonialsContent: TestimonialsContent = {
   testimonials: [
     {
       name: "John Doe",
-      role: "Customer", 
+      role: "Customer",
       company: "ABC Company",
       content: "Amazing experience! Highly recommended.",
       rating: "5",
@@ -14,7 +14,7 @@ export const defaultTestimonialsContent: TestimonialsContent = {
     }
   ],
   layout: "grid",
-  columns: "2", 
+  columns: "2",
   showPhotos: true,
   showRatings: true
 }

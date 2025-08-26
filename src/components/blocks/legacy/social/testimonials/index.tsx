@@ -1,6 +1,6 @@
 import Image from "next/image"
 import { Star } from "lucide-react"
-import type { TestimonialsContent } from "../../shared/schemas"
+import type { TestimonialsContent } from "../../../shared/schemas"
 import { defaultTestimonialsContent } from "./defaults"
 
 const renderStars = (rating: number) => {

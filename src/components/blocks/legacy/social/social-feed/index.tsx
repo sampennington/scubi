@@ -1,5 +1,5 @@
 import Image from "next/image"
-import type { SocialFeedContent } from "../../shared/schemas"
+import type { SocialFeedContent } from "../../../shared/schemas"
 
 const defaultContent: SocialFeedContent = {
   title: "Set your social feed title here",

@@ -2,7 +2,7 @@ import Image from "next/image"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import { Calendar, Users, Waves } from "lucide-react"
-import type { CoursesContent } from "../../shared/schemas"
+import type { CoursesContent } from "../../../shared/schemas"
 
 const defaultContent: CoursesContent = {
   title: "Set your courses title here",

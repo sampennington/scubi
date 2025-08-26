@@ -1,15 +1,15 @@
 import { useState } from "react"
 import { Dialog, DialogPanel } from "@headlessui/react"
 import { Bars3Icon, XMarkIcon } from "@heroicons/react/24/outline"
-import type { HeroContent } from "@/components/blocks/schemas"
+import type { HeroContent } from "@/components/blocks/shared/schemas"
 import type { Block } from "@/lib/api"
 import { BlockEditProvider, useBlockEdit } from "@/components/editable/context"
 import { E } from "@/components/editable/editable"
 import { cn } from "@/lib/utils"
-import { DynamicSettings } from "@/components/blocks/dynamic-settings"
-import { blockRegistry } from "@/lib/blocks/registry"
+import { DynamicSettings } from "@/components/blocks/shared/dynamic-settings"
 
 import "@/lib/blocks/configs"
+import { blockRegistry } from "@/lib/blocks"
 
 const navigation = [
   { name: "Courses", href: "#" },
@@ -27,7 +27,7 @@ const HeroBlockContent = () => {
   const { content, handleEdit } = useBlockEdit<HeroContent>()
 
   const blockConfig = blockRegistry.get("hero")
-  console.log({ blockConfig })
+
   if (!blockConfig) {
     return null
   }

@@ -1,7 +1,7 @@
 import Image from "next/image"
 import { Badge } from "@/components/ui/badge"
 import { Calendar, Waves } from "lucide-react"
-import type { MarineLifeContent } from "../../shared/schemas"
+import type { MarineLifeContent } from "../../../shared/schemas"
 
 const defaultContent: MarineLifeContent = {
   title: "Set your marine life title here",
