@@ -8,7 +8,7 @@ class BlockRegistry implements IBlockRegistry {
 
   register(config: BlockConfig): void {
     // Validate config before registration
-    if (!config.id || !config.name || !config.schema || !config.settings || !config.template) {
+    if (!config.id || !config.name || !config.schema || !config.settings) {
       throw new Error(`Invalid block config for ${config.id}`)
     }
 
@@ -19,10 +19,10 @@ class BlockRegistry implements IBlockRegistry {
     if (!this.categories.has(config.category)) {
       this.categories.set(config.category, [])
     }
-    
+
     const categoryBlocks = this.categories.get(config.category)!
-    const existingIndex = categoryBlocks.findIndex(b => b.id === config.id)
-    
+    const existingIndex = categoryBlocks.findIndex((b) => b.id === config.id)
+
     if (existingIndex >= 0) {
       categoryBlocks[existingIndex] = config
     } else {
@@ -40,7 +40,7 @@ class BlockRegistry implements IBlockRegistry {
     // Remove from category
     const categoryBlocks = this.categories.get(config.category)
     if (categoryBlocks) {
-      const index = categoryBlocks.findIndex(b => b.id === blockId)
+      const index = categoryBlocks.findIndex((b) => b.id === blockId)
       if (index >= 0) {
         categoryBlocks.splice(index, 1)
       }
@@ -67,10 +67,11 @@ class BlockRegistry implements IBlockRegistry {
 
   search(query: string): BlockConfig[] {
     const lowerQuery = query.toLowerCase()
-    return this.getAllBlocks().filter(config =>
-      config.name.toLowerCase().includes(lowerQuery) ||
-      config.description?.toLowerCase().includes(lowerQuery) ||
-      config.preview?.tags?.some(tag => tag.toLowerCase().includes(lowerQuery))
+    return this.getAllBlocks().filter(
+      (config) =>
+        config.name.toLowerCase().includes(lowerQuery) ||
+        config.description?.toLowerCase().includes(lowerQuery) ||
+        config.preview?.tags?.some((tag) => tag.toLowerCase().includes(lowerQuery))
     )
   }
 
@@ -83,7 +84,6 @@ class BlockRegistry implements IBlockRegistry {
     if (!config.category) errors.push("Missing required field: category")
     if (!config.schema) errors.push("Missing required field: schema")
     if (!config.settings) errors.push("Missing required field: settings")
-    if (!config.template?.component) errors.push("Missing required field: template.component")
 
     // Validate settings structure
     if (config.settings) {
@@ -97,9 +97,12 @@ class BlockRegistry implements IBlockRegistry {
             errors.push(`Section ${sectionIndex}: fields must be an array`)
           } else {
             section.fields.forEach((field, fieldIndex) => {
-              if (!field.name) errors.push(`Section ${sectionIndex}, Field ${fieldIndex}: missing name`)
-              if (!field.label) errors.push(`Section ${sectionIndex}, Field ${fieldIndex}: missing label`)
-              if (!field.type) errors.push(`Section ${sectionIndex}, Field ${fieldIndex}: missing type`)
+              if (!field.name)
+                errors.push(`Section ${sectionIndex}, Field ${fieldIndex}: missing name`)
+              if (!field.label)
+                errors.push(`Section ${sectionIndex}, Field ${fieldIndex}: missing label`)
+              if (!field.type)
+                errors.push(`Section ${sectionIndex}, Field ${fieldIndex}: missing type`)
             })
           }
         })
@@ -112,23 +115,23 @@ class BlockRegistry implements IBlockRegistry {
   // Development helpers
   listRegistered(): void {
     console.group("🧱 Registered Blocks")
-    
-    this.getAllCategories().forEach(category => {
+
+    this.getAllCategories().forEach((category) => {
       const blocks = this.getByCategory(category)
       console.group(`📁 ${category} (${blocks.length})`)
-      
-      blocks.forEach(block => {
+
+      blocks.forEach((block) => {
         console.log(`  • ${block.name} (${block.id})${block.deprecated ? " [DEPRECATED]" : ""}`)
-        
+
         const validation = this.validateConfig(block)
         if (validation.length > 0) {
           console.warn(`    ⚠️ Validation errors:`, validation)
         }
       })
-      
+
       console.groupEnd()
     })
-    
+
     console.groupEnd()
   }
 
@@ -142,7 +145,7 @@ class BlockRegistry implements IBlockRegistry {
   }
 
   import(configs: Record<string, BlockConfig>): void {
-    Object.values(configs).forEach(config => {
+    Object.values(configs).forEach((config) => {
       try {
         this.register(config)
       } catch (error) {

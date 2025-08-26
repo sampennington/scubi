@@ -54,12 +54,6 @@ export function registerBlock<T>(definition: BlockDefinition<T>): void {
     icon: definition.icon,
     schema: definition.schema,
     settings: definition.settings,
-    template: {
-      component: definition.component,
-      // Future: support for variants
-      variants: {},
-      wrapperProps: {}
-    },
     preview: definition.preview,
     version: definition.version || "1.0.0",
     deprecated: definition.deprecated || false
@@ -149,34 +143,6 @@ function validateBlockDefinition<T>(definition: BlockDefinition<T>): string[] {
  */
 export function createBlockDefinition<T>(definition: BlockDefinition<T>): BlockDefinition<T> {
   return definition
-}
-
-/**
- * Higher-order function to create block registration with shared configuration
- *
- * @example
- * ```typescript
- * const registerLayoutBlock = createBlockRegistration({
- *   category: 'layout',
- *   version: '2.0.0'
- * })
- *
- * registerLayoutBlock({
- *   id: 'hero',
- *   name: 'Hero Section',
- *   component: HeroComponent,
- *   // category and version are inherited
- * })
- * ```
- */
-export function createBlockRegistration<T>(sharedConfig: Partial<BlockDefinition<T>>) {
-  return function registerWithSharedConfig(
-    definition: Omit<BlockDefinition<T>, keyof typeof sharedConfig> &
-      Partial<Pick<BlockDefinition<T>, keyof typeof sharedConfig>>
-  ) {
-    const fullDefinition = { ...sharedConfig, ...definition } as BlockDefinition<T>
-    return registerBlock(fullDefinition)
-  }
 }
 
 /**

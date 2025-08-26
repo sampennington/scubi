@@ -1,4 +1,4 @@
-import type { MultiColumnContent } from "../../shared/schemas"
+import type { MultiColumnContent } from "@/components/blocks/shared/schemas"
 
 export const defaultMultiColumnContent: MultiColumnContent = {
   title: "Our Services",
@@ -9,7 +9,7 @@ export const defaultMultiColumnContent: MultiColumnContent = {
       body: "Description of service 1"
     },
     {
-      heading: "Service 2", 
+      heading: "Service 2",
       body: "Description of service 2"
     },
     {

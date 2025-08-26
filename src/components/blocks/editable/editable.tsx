@@ -1,10 +1,10 @@
 "use client"
 
 import { useState } from "react"
-import { Edit } from "../ui/edit"
+import { Edit } from "../../ui/edit"
 import type { ComponentProps } from "react"
 import { EditableImage, NoEditImage } from "./editable-image"
-import { useSite } from "../../app/preview/components/site-context"
+import { useSite } from "../../../app/preview/components/site-context"
 import { Button } from "./button"
 
 export const E = {

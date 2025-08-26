@@ -9,13 +9,13 @@ import { getReviews, getReviewsAggregate } from "@/lib/actions/reviews"
 import type { Review } from "@/lib/api/reviews"
 import Image from "next/image"
 import { timeAgoFormat } from "@/lib/date"
-import type { ReviewsContent } from "@/components/blocks/schemas"
 import { useSite } from "@/app/preview/components/site-context"
-import { BlockEditProvider, useBlockEdit } from "@/components/editable/context"
+import { BlockEditProvider, useBlockEdit } from "@/components/blocks/editable/context"
 import { BlockType } from "@/database/schema"
 import type { Block } from "@/lib/api"
 import { defaultReviewsContent } from "@/components/blocks/shared/defaults-index"
 import ReviewsSettingsPanel from "./reviews-settings-panel"
+import { ReviewsContent } from "@/components/blocks/shared/schemas"
 
 const truncateText = (text: string, maxLength: number) => {
   if (text.length <= maxLength) return text
@@ -454,7 +454,7 @@ export function ReviewsBlockContent() {
   )
 }
 
-export default function ReviewsBlock({
+export function ReviewsBlock({
   content = defaultReviewsContent,
   blockId,
   ...props

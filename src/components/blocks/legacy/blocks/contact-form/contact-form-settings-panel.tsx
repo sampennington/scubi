@@ -3,8 +3,8 @@ import {
   BlockSettingsPanel,
   SettingsSection,
   SettingItem
-} from "@/components/editable/settings-panel"
-import { useBlockEdit } from "@/components/editable/context"
+} from "@/components/blocks/editable/settings-panel"
+import { useBlockEdit } from "@/components/blocks/editable/context"
 import type { ContactFormContent } from "@/components/blocks/schemas"
 
 export const ContactFormSettingsPanel = () => {

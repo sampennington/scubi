@@ -1,5 +1,4 @@
 import { z } from "zod"
-import type { ComponentType } from "react"
 
 // Base field configuration
 export interface BaseFieldConfig {
@@ -68,7 +67,7 @@ export interface ArrayFieldConfig extends BaseFieldConfig {
 }
 
 // Union of all field types
-export type FieldConfig = 
+export type FieldConfig =
   | TextFieldConfig
   | SelectFieldConfig
   | ToggleFieldConfig
@@ -109,23 +108,15 @@ export interface PreviewConfig {
   description?: string
 }
 
-// Component template information
-export interface ComponentTemplate {
-  component: ComponentType<any>
-  variants?: Record<string, ComponentType<any>>
-  wrapperProps?: Record<string, any>
-}
-
 // Complete block configuration
 export interface BlockConfig {
   id: string
   name: string
   description?: string
-  category: 'layout' | 'content' | 'media' | 'commerce' | 'social' | 'interactive' | 'specialized'
+  category: "layout" | "content" | "media" | "commerce" | "social" | "interactive" | "specialized"
   icon?: string
   schema: z.ZodSchema
   settings: SettingsConfig
-  template: ComponentTemplate
   preview?: PreviewConfig
   version?: string
   deprecated?: boolean
@@ -152,8 +143,9 @@ export interface FormState {
 }
 
 // Helper types for type inference
-export type InferBlockContent<T extends BlockConfig> = 
-  T["schema"] extends z.ZodSchema<infer U> ? U : never
+export type InferBlockContent<T extends BlockConfig> = T["schema"] extends z.ZodSchema<infer U>
+  ? U
+  : never
 
 export type BlockConfigMap = Record<string, BlockConfig>
 
@@ -164,7 +156,7 @@ export const validateFieldConfig = (config: FieldConfig): boolean => {
 }
 
 export const validateSettingsConfig = (config: SettingsConfig): boolean => {
-  return config.sections.every(section => 
-    section.fields.every(field => validateFieldConfig(field))
+  return config.sections.every((section) =>
+    section.fields.every((field) => validateFieldConfig(field))
   )
 }

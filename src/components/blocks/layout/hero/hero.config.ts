@@ -1,6 +1,5 @@
-import { HeroContentSchema } from "../schemas"
-import type { BlockConfig } from "../core/config-types"
-import { HeroBlock } from "@/components/template-blocks/hero"
+import { HeroContentSchema } from "../../../../lib/blocks/schemas"
+import type { BlockConfig } from "../../../../lib/blocks/core/config-types"
 
 export const heroBlockConfig: BlockConfig = {
   id: "hero",
@@ -10,9 +9,6 @@ export const heroBlockConfig: BlockConfig = {
   category: "layout",
   icon: "layout-template",
   schema: HeroContentSchema,
-  template: {
-    component: HeroBlock
-  },
   preview: {
     thumbnail: "/block-previews/hero.jpg",
     category: "Headers",
@@ -44,7 +40,8 @@ export const heroBlockConfig: BlockConfig = {
             placeholder: "Professional dive training and underwater adventures...",
             rows: 3,
             maxLength: 300,
-            defaultValue: "Professional dive training and unforgettable underwater adventures await. From beginner courses to advanced certifications, explore the ocean's wonders with our expert instructors."
+            defaultValue:
+              "Professional dive training and unforgettable underwater adventures await. From beginner courses to advanced certifications, explore the ocean's wonders with our expert instructors."
           },
           {
             type: "text",
@@ -90,7 +87,8 @@ export const heroBlockConfig: BlockConfig = {
             label: "Logo",
             description: "Company logo displayed in navigation",
             accept: "image/*",
-            defaultValue: "https://tailwindcss.com/plus-assets/img/logos/mark.svg?color=indigo&shade=500"
+            defaultValue:
+              "https://tailwindcss.com/plus-assets/img/logos/mark.svg?color=indigo&shade=500"
           }
         ]
       },

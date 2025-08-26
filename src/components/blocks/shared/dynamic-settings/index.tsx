@@ -5,7 +5,7 @@ import {
   BlockSettingsPanel,
   SettingsSection as BaseSettingsSection,
   SettingItem
-} from "@/components/editable/settings-panel"
+} from "@/components/blocks/editable/settings-panel"
 import type { SettingsConfig, FormState, FieldState } from "@/lib/blocks/core/config-types"
 import { DynamicField } from "./dynamic-field"
 import { evaluateCondition } from "./condition-evaluator"

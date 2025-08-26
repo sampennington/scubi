@@ -3,12 +3,11 @@ import { Dialog, DialogPanel } from "@headlessui/react"
 import { Bars3Icon, XMarkIcon } from "@heroicons/react/24/outline"
 import type { HeroContent } from "@/components/blocks/shared/schemas"
 import type { Block } from "@/lib/api"
-import { BlockEditProvider, useBlockEdit } from "@/components/editable/context"
-import { E } from "@/components/editable/editable"
+import { BlockEditProvider, useBlockEdit } from "@/components/blocks/editable/context"
+import { E } from "@/components/blocks/editable/editable"
 import { cn } from "@/lib/utils"
 import { DynamicSettings } from "@/components/blocks/shared/dynamic-settings"
 
-import "@/lib/blocks/configs"
 import { blockRegistry } from "@/lib/blocks"
 
 const navigation = [
@@ -291,7 +290,7 @@ const HeroBlockContent = () => {
   )
 }
 
-export const EditableHeroBlock = (props: EditableHeroBlockProps) => {
+export const HeroBlock = (props: EditableHeroBlockProps) => {
   return (
     <BlockEditProvider {...props}>
       <HeroBlockContent />

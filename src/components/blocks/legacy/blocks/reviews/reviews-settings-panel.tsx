@@ -13,9 +13,9 @@ import {
   BlockSettingsPanel,
   SettingsSection,
   SettingItem
-} from "@/components/editable/settings-panel"
-import { useBlockEdit } from "../../context"
-import type { ReviewsContent } from "@/components/blocks/schemas"
+} from "@/components/blocks/editable/settings-panel"
+import type { ReviewsContent } from "@/components/blocks/shared/schemas"
+import { useBlockEdit } from "@/components/blocks/editable/context"
 
 export default function ReviewsSettingsPanel() {
   const { content, handleEdit } = useBlockEdit<ReviewsContent>()

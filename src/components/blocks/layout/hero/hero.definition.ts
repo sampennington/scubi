@@ -1,16 +1,17 @@
-import { registerBlock } from "../core/register-block"
-import { HeroContentSchema } from "../schemas"
-import { heroBlockConfig } from "../configs/hero.config"
-import { defaultHeroContent } from "@/components/blocks/layout/hero/defaults"
-import type { HeroContent } from "../schemas"
+import { registerBlock } from "../../../../lib/blocks/core/register-block"
+import { heroBlockConfig } from "./hero.config"
 import { createElement } from "react"
+import { type HeroContent, HeroContentSchema } from "./hero.schema"
+import { defaultHeroContent } from "../../shared/defaults-index"
 
 // Simple wrapper component
 const HeroComponent = ({ content }: { content?: HeroContent }) => {
   const data = content || defaultHeroContent
-  return createElement('div', { className: 'hero-block' },
-    createElement('h1', null, data.title),
-    createElement('p', null, data.text)
+  return createElement(
+    "div",
+    { className: "hero-block" },
+    createElement("h1", null, data.title),
+    createElement("p", null, data.text)
   )
 }
 
@@ -19,8 +20,9 @@ const HeroComponent = ({ content }: { content?: HeroContent }) => {
  */
 export const heroBlockDefinition = {
   id: "hero",
-  name: "Hero Section", 
-  description: "A full-width hero section with title, description, background image, and call-to-action buttons",
+  name: "Hero Section",
+  description:
+    "A full-width hero section with title, description, background image, and call-to-action buttons",
   category: "layout" as const,
   icon: "layout-template",
   component: HeroComponent,

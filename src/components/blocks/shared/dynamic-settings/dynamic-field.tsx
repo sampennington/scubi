@@ -224,7 +224,7 @@ export function DynamicField({ config, value, onChange, error, touched }: Dynami
         </div>
       )
 
-    case "array":
+    case "array": {
       const arrayValue = (value as FieldValue[]) || []
 
       return (
@@ -271,6 +271,7 @@ export function DynamicField({ config, value, onChange, error, touched }: Dynami
           {hasError && <p className="text-red-500 text-sm">{error}</p>}
         </div>
       )
+    }
 
     default:
       return (

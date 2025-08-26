@@ -348,9 +348,7 @@ export function isDividerContent(data: unknown): data is DividerContent {
   return DividerContentSchema.safeParse(data).success
 }
 
-export function isMultiColumnContent(
-  data: unknown
-): data is MultiColumnContent {
+export function isMultiColumnContent(data: unknown): data is MultiColumnContent {
   return MultiColumnContentSchema.safeParse(data).success
 }
 
@@ -358,9 +356,7 @@ export function isGalleryContent(data: unknown): data is GalleryContent {
   return GalleryContentSchema.safeParse(data).success
 }
 
-export function isTestimonialsContent(
-  data: unknown
-): data is TestimonialsContent {
+export function isTestimonialsContent(data: unknown): data is TestimonialsContent {
   return TestimonialsContentSchema.safeParse(data).success
 }
 
@@ -372,15 +368,11 @@ export function isFAQContent(data: unknown): data is FAQContent {
   return FAQContentSchema.safeParse(data).success
 }
 
-export function isContactFormContent(
-  data: unknown
-): data is ContactFormContent {
+export function isContactFormContent(data: unknown): data is ContactFormContent {
   return ContactFormContentSchema.safeParse(data).success
 }
 
-export function isCallToActionContent(
-  data: unknown
-): data is CallToActionContent {
+export function isCallToActionContent(data: unknown): data is CallToActionContent {
   return CallToActionContentSchema.safeParse(data).success
 }
 
@@ -412,7 +404,7 @@ export function isReviewsContent(data: unknown): data is ReviewsContent {
   return ReviewsContentSchema.safeParse(data).success
 }
 
-export const typeGuardMap = {
+export const typeGuardMap: Record<BlockType, (data: unknown) => boolean> = {
   [BlockType.HERO]: isHeroContent,
   [BlockType.TEXT]: isTextContent,
   [BlockType.IMAGE]: isImageContent,
@@ -430,5 +422,6 @@ export const typeGuardMap = {
   [BlockType.TWO_COLUMN]: isTwoColumnContent,
   [BlockType.COURSES]: isCoursesContent,
   [BlockType.MARINE_LIFE]: isMarineLifeContent,
-  [BlockType.REVIEWS]: isReviewsContent
+  [BlockType.REVIEWS]: isReviewsContent,
+  [BlockType.DIVE_SITES]: (data) => false
 }

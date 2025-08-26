@@ -13,8 +13,8 @@ import {
 } from "@/components/ui/select"
 import type { ContactFormContent } from "@/components/blocks/schemas"
 
-import { BlockEditProvider, useBlockEdit } from "@/components/editable/context"
-import { E } from "@/components/editable/editable"
+import { BlockEditProvider, useBlockEdit } from "@/components/blocks/editable/context"
+import { E } from "@/components/blocks/editable/editable"
 import { ContactFormSettingsPanel } from "./contact-form-settings-panel"
 import { BlockType } from "@/database/schema"
 import type { Block } from "@/lib/api"

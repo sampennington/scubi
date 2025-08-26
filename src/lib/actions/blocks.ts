@@ -3,11 +3,13 @@
 import { api, type Block } from "@/lib/api"
 import { revalidatePath } from "next/cache"
 import type { BlockType } from "@/database/schema"
-import { typeGuardMap } from "@/components/blocks/schemas"
+import { typeGuardMap } from "@/components/blocks/shared/schemas"
 
-export async function getBlocks(pageId: string): Promise<{ success: boolean, error?: string, blocks?: Block[] }> {
+export async function getBlocks(
+  pageId: string
+): Promise<{ success: boolean; error?: string; blocks?: Block[] }> {
   try {
-    console.log('Getting blocks ', pageId)
+    console.log("Getting blocks ", pageId)
     const blocks = await api.blocks.getByPageId(pageId)
 
     return { success: true, blocks }
@@ -74,11 +76,11 @@ export async function updateBlock(
 
 export async function deleteBlock(id: string, revalidatePaths: string[] = []) {
   try {
-    console.log('Deleting block', id)
+    console.log("Deleting block", id)
     await api.blocks.delete(id)
-    console.log('Deleted block', id)
+    console.log("Deleted block", id)
     revalidatePaths.forEach((path) => revalidatePath(path))
-    console.log('Revalidated paths', revalidatePaths)
+    console.log("Revalidated paths", revalidatePaths)
     return { success: true }
   } catch (error) {
     console.error("Error deleting block:", error)
@@ -86,10 +88,7 @@ export async function deleteBlock(id: string, revalidatePaths: string[] = []) {
   }
 }
 
-export async function reorderBlocks(
-  blockIds: string[],
-  revalidatePaths: string[] = []
-) {
+export async function reorderBlocks(blockIds: string[], revalidatePaths: string[] = []) {
   try {
     await api.blocks.reorder(blockIds)
 
@@ -102,11 +101,7 @@ export async function reorderBlocks(
   }
 }
 
-export async function updateBlockOrder(
-  id: string,
-  order: number,
-  revalidatePaths: string[] = []
-) {
+export async function updateBlockOrder(id: string, order: number, revalidatePaths: string[] = []) {
   try {
     const block = await api.blocks.update(id, { order })
 

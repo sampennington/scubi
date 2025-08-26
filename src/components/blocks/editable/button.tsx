@@ -1,6 +1,6 @@
 "use client"
 
-import { Edit } from "../ui/edit"
+import { Edit } from "../../ui/edit"
 import type { ReactNode } from "react"
 import type { BlockButton } from "@/components/blocks/schemas"
 
