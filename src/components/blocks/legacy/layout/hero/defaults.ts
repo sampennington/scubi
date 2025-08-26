@@ -1,4 +1,4 @@
-import type { HeroContent } from "../../shared/schemas"
+import type { HeroContent } from "@/components/blocks/shared/schemas"
 
 export const defaultHeroContent: HeroContent = {
   title: "Welcome to our site",

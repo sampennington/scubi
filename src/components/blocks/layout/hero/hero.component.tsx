@@ -2,20 +2,13 @@ import { useState } from "react"
 import { Dialog, DialogPanel } from "@headlessui/react"
 import { Bars3Icon, XMarkIcon } from "@heroicons/react/24/outline"
 import type { HeroContent } from "./hero.schema"
+import { defaultHeroContent } from "./hero.default"
 import type { Block } from "@/lib/api"
 import { BlockEditProvider, useBlockEdit } from "@/components/blocks/editable/context"
 import { E } from "@/components/blocks/editable/editable"
 import { cn } from "@/lib/utils"
 import { DynamicSettings } from "@/components/blocks/shared/dynamic-settings"
-
 import { blockRegistry } from "@/lib/blocks"
-
-const navigation = [
-  { name: "Courses", href: "#" },
-  { name: "Dive Trips", href: "#" },
-  { name: "Equipment", href: "#" },
-  { name: "About Us", href: "#" }
-]
 
 export interface HeroBlockProps extends Block {
   content: HeroContent
@@ -31,19 +24,24 @@ const HeroBlockContent = () => {
     return null
   }
 
-  // Destructure content with scuba diving defaults
   const {
-    title = "Discover the Underwater World",
-    text = "Professional dive training and unforgettable underwater adventures await. From beginner courses to advanced certifications, explore the ocean's wonders with our expert instructors.",
+    title,
+    text,
     image,
-    logo = "https://tailwindcss.com/plus-assets/img/logos/mark.svg?color=indigo&shade=500",
-    announcement = "New PADI Advanced Open Water courses starting soon!",
-    announcementUrl = "#",
-    primaryButton = { label: "Book a Dive", url: "#", variant: "primary" },
-    secondaryButton = { label: "View Courses", url: "#", variant: "outline" },
-    alignment = "center",
-    minHeight = 60
-  } = content
+    logo,
+    logoUrl,
+    announcement,
+    announcementUrl,
+    primaryButton,
+    secondaryButton,
+    alignment,
+    minHeight,
+    navigation,
+    loginText,
+    loginUrl,
+    showNavigation,
+    showLogin
+  } = { ...defaultHeroContent, ...content }
 
   const containerStyle = {
     minHeight: `${minHeight}vh`
@@ -95,47 +93,9 @@ const HeroBlockContent = () => {
       <div className={cn("bg-gray-900")} style={backgroundStyle}>
         <header className="absolute inset-x-0 top-0 z-50">
           <nav aria-label="Global" className="flex items-center justify-between p-6 lg:px-8">
-            <div className="flex lg:flex-1">
-              <a href="#" className="-m-1.5 p-1.5">
-                <span className="sr-only">Your Company</span>
-                <E.image
-                  fieldPath="logo"
-                  src={logo}
-                  alt="Company Logo"
-                  className="h-8 w-auto"
-                  width={32}
-                  height={32}
-                />
-              </a>
-            </div>
-            <div className="flex lg:hidden">
-              <button
-                type="button"
-                onClick={() => setMobileMenuOpen(true)}
-                className="-m-2.5 inline-flex items-center justify-center rounded-md p-2.5 text-gray-200"
-              >
-                <span className="sr-only">Open main menu</span>
-                <Bars3Icon aria-hidden="true" className="size-6" />
-              </button>
-            </div>
-            <div className="hidden lg:flex lg:gap-x-12">
-              {navigation.map((item) => (
-                <a key={item.name} href={item.href} className="font-semibold text-sm/6 text-white">
-                  {item.name}
-                </a>
-              ))}
-            </div>
-            <div className="hidden lg:flex lg:flex-1 lg:justify-end">
-              <a href="#" className="font-semibold text-sm/6 text-white">
-                Log in <span aria-hidden="true">&rarr;</span>
-              </a>
-            </div>
-          </nav>
-          <Dialog open={mobileMenuOpen} onClose={setMobileMenuOpen} className="lg:hidden">
-            <div className="fixed inset-0 z-50" />
-            <DialogPanel className="fixed inset-y-0 right-0 z-50 w-full overflow-y-auto bg-gray-900 p-6 sm:max-w-sm sm:ring-1 sm:ring-gray-100/10">
-              <div className="flex items-center justify-between">
-                <a href="#" className="-m-1.5 p-1.5">
+            {logo && (
+              <div className="flex lg:flex-1">
+                <a href={logoUrl} className="-m-1.5 p-1.5">
                   <span className="sr-only">Your Company</span>
                   <E.image
                     fieldPath="logo"
@@ -146,40 +106,101 @@ const HeroBlockContent = () => {
                     height={32}
                   />
                 </a>
-                <button
-                  type="button"
-                  onClick={() => setMobileMenuOpen(false)}
-                  className="-m-2.5 rounded-md p-2.5 text-gray-200"
-                >
-                  <span className="sr-only">Close menu</span>
-                  <XMarkIcon aria-hidden="true" className="size-6" />
-                </button>
               </div>
-              <div className="mt-6 flow-root">
-                <div className="-my-6 divide-y divide-white/10">
-                  <div className="space-y-2 py-6">
-                    {navigation.map((item) => (
-                      <a
-                        key={item.name}
-                        href={item.href}
-                        className="-mx-3 block rounded-lg px-3 py-2 font-semibold text-base/7 text-white hover:bg-white/5"
-                      >
-                        {item.name}
-                      </a>
-                    ))}
-                  </div>
-                  <div className="py-6">
+            )}
+
+            {showNavigation && navigation && navigation.length > 0 && (
+              <>
+                <div className="flex lg:hidden">
+                  <button
+                    type="button"
+                    onClick={() => setMobileMenuOpen(true)}
+                    className="-m-2.5 inline-flex items-center justify-center rounded-md p-2.5 text-gray-200"
+                  >
+                    <span className="sr-only">Open main menu</span>
+                    <Bars3Icon aria-hidden="true" className="size-6" />
+                  </button>
+                </div>
+
+                <div className="hidden lg:flex lg:gap-x-12">
+                  {navigation.map((item, index) => (
                     <a
-                      href="#"
-                      className="-mx-3 block rounded-lg px-3 py-2.5 font-semibold text-base/7 text-white hover:bg-white/5"
+                      key={item.name}
+                      href={item.href}
+                      className="font-semibold text-sm/6 text-white"
                     >
-                      Log in
+                      <E.span fieldPath={`navigation[${index}].name`}>{item.name}</E.span>
                     </a>
+                  ))}
+                </div>
+              </>
+            )}
+
+            {showLogin && loginText && loginUrl && (
+              <div className="hidden lg:flex lg:flex-1 lg:justify-end">
+                <a href={loginUrl} className="font-semibold text-sm/6 text-white">
+                  <E.span fieldPath="loginText">{loginText}</E.span>
+                  <span aria-hidden="true"> →</span>
+                </a>
+              </div>
+            )}
+          </nav>
+
+          {showNavigation && navigation && navigation.length > 0 && (
+            <Dialog open={mobileMenuOpen} onClose={setMobileMenuOpen} className="lg:hidden">
+              <div className="fixed inset-0 z-50" />
+              <DialogPanel className="fixed inset-y-0 right-0 z-50 w-full overflow-y-auto bg-gray-900 p-6 sm:max-w-sm sm:ring-1 sm:ring-gray-100/10">
+                <div className="flex items-center justify-between">
+                  <a href={logoUrl} className="-m-1.5 p-1.5">
+                    <span className="sr-only">Your Company</span>
+                    {logo && (
+                      <E.image
+                        fieldPath="logo"
+                        src={logo}
+                        alt="Company Logo"
+                        className="h-8 w-auto"
+                        width={32}
+                        height={32}
+                      />
+                    )}
+                  </a>
+                  <button
+                    type="button"
+                    onClick={() => setMobileMenuOpen(false)}
+                    className="-m-2.5 rounded-md p-2.5 text-gray-200"
+                  >
+                    <span className="sr-only">Close menu</span>
+                    <XMarkIcon aria-hidden="true" className="size-6" />
+                  </button>
+                </div>
+                <div className="mt-6 flow-root">
+                  <div className="-my-6 divide-y divide-white/10">
+                    <div className="space-y-2 py-6">
+                      {navigation.map((item, index) => (
+                        <a
+                          key={item.name}
+                          href={item.href}
+                          className="-mx-3 block rounded-lg px-3 py-2 font-semibold text-base/7 text-white hover:bg-white/5"
+                        >
+                          <E.span fieldPath={`navigation[${index}].name`}>{item.name}</E.span>
+                        </a>
+                      ))}
+                    </div>
+                    {showLogin && loginText && loginUrl && (
+                      <div className="py-6">
+                        <a
+                          href={loginUrl}
+                          className="-mx-3 block rounded-lg px-3 py-2.5 font-semibold text-base/7 text-white hover:bg-white/5"
+                        >
+                          <E.span fieldPath="loginText">{loginText}</E.span>
+                        </a>
+                      </div>
+                    )}
                   </div>
                 </div>
-              </div>
-            </DialogPanel>
-          </Dialog>
+              </DialogPanel>
+            </Dialog>
+          )}
         </header>
 
         <div className="relative isolate px-6 pt-14 lg:px-8">
@@ -221,7 +242,6 @@ const HeroBlockContent = () => {
               </div>
             )}
 
-            {/* Main Content */}
             <div className={getAlignmentClasses()}>
               <E.h1
                 fieldPath="title"
@@ -290,7 +310,7 @@ const HeroBlockContent = () => {
   )
 }
 
-export const HeroBlock = (props: EditableHeroBlockProps) => {
+export const HeroBlock = (props: HeroBlockProps) => {
   return (
     <BlockEditProvider {...props}>
       <HeroBlockContent />

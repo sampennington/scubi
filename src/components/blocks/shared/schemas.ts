@@ -1,20 +1,7 @@
 import { z } from "zod"
 import { BlockType } from "@/database/schema"
-
-export const BlockButtonSchema = z.object({
-  label: z.string(),
-  url: z.string(),
-  variant: z.enum([
-    "default",
-    "cta",
-    "secondary",
-    "primary",
-    "outline",
-    "invert",
-    "destructive",
-    "ghost"
-  ])
-})
+import { BlockButtonSchema } from "./primitives"
+import { HeroContentSchema, isHeroContent } from "../layout/hero/hero.schema"
 
 export const TextContentSchema = z.object({
   text: z.string(),

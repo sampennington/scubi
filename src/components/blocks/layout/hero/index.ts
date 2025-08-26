@@ -1,0 +1,6 @@
+export { HeroBlock } from "./hero.component"
+export { defaultHeroContent } from "./hero.default"
+export { heroBlockDefinition } from "./hero.definition"
+export { heroBlockConfig } from "./hero.config"
+export type { HeroContent, HeroBlockButton, HeroNavigationItem } from "./hero.schema"
+export { HeroContentSchema, HeroNavigationItemSchema, isHeroContent } from "./hero.schema"
