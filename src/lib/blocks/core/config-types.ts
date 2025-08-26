@@ -121,7 +121,7 @@ export interface BlockConfig {
   id: string
   name: string
   description?: string
-  category: 'layout' | 'content' | 'media' | 'commerce' | 'social'
+  category: 'layout' | 'content' | 'media' | 'commerce' | 'social' | 'interactive' | 'specialized'
   icon?: string
   schema: z.ZodSchema
   settings: SettingsConfig

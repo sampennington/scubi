@@ -96,6 +96,9 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ### Code Quality Rules
 - Do not leave comments like: "// Memoize visible sections to avoid re-renders" This should be obvious from the high quality self documenting code you write.
+- Do not add obvious comments that simply restate what the code does (e.g., "// Validate the definition", "// Create the block config", "// Register with the global registry")
+- Only add comments for complex business logic, non-obvious algorithms, or important architectural decisions
+- Prefer self-documenting code with clear function/variable names over explanatory comments
 
 **TailwindCSS Class Sorting:**
 - All TailwindCSS classes MUST be sorted according to the `useSortedClasses` Biome rule
