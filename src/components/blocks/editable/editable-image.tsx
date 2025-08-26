@@ -118,8 +118,8 @@ export const NoEditImage = ({
 }: {
   src: string
   alt: string
-  width: number
-  height: number
+  width?: number
+  height?: number
   onError?: () => void
 }) => {
   if (!src) {
@@ -133,7 +133,7 @@ export const NoEditImage = ({
       width={width}
       height={height}
       onError={onError}
-      className={cn("h-full w-full object-cover transition-all duration-200")}
+      className={cn("object-cover transition-all duration-200")}
     />
   )
 }

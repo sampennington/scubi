@@ -30,8 +30,6 @@ const HeroBlockContent = () => {
     image,
     logo,
     logoUrl,
-    announcement,
-    announcementUrl,
     primaryButton,
     secondaryButton,
     alignment,
@@ -92,7 +90,7 @@ const HeroBlockContent = () => {
 
       <div className={cn("bg-gray-900")} style={backgroundStyle}>
         <header className="absolute inset-x-0 top-0 z-50">
-          <nav aria-label="Global" className="flex items-center justify-between p-6 lg:px-8">
+          <nav aria-label="Global" className="flex items-center p-6 lg:px-8">
             {logo && (
               <div className="flex lg:flex-1">
                 <a href={logoUrl} className="-m-1.5 p-1.5">
@@ -122,7 +120,7 @@ const HeroBlockContent = () => {
                   </button>
                 </div>
 
-                <div className="hidden lg:flex lg:gap-x-12">
+                <div className="hidden lg:flex lg:flex-1 lg:justify-center lg:gap-x-12">
                   {navigation.map((item, index) => (
                     <a
                       key={item.name}
@@ -134,15 +132,6 @@ const HeroBlockContent = () => {
                   ))}
                 </div>
               </>
-            )}
-
-            {showLogin && loginText && loginUrl && (
-              <div className="hidden lg:flex lg:flex-1 lg:justify-end">
-                <a href={loginUrl} className="font-semibold text-sm/6 text-white">
-                  <E.span fieldPath="loginText">{loginText}</E.span>
-                  <span aria-hidden="true"> →</span>
-                </a>
-              </div>
             )}
           </nav>
 
@@ -217,31 +206,6 @@ const HeroBlockContent = () => {
             />
           </div>
           <div className="mx-auto max-w-2xl py-32 sm:py-48 lg:py-56" style={containerStyle}>
-            {announcement && (
-              <div
-                className={cn(
-                  "hidden sm:mb-8 sm:flex",
-                  alignment === "center"
-                    ? "sm:justify-center"
-                    : alignment === "right"
-                      ? "sm:justify-end"
-                      : "sm:justify-start"
-                )}
-              >
-                <div className="relative rounded-full px-3 py-1 text-gray-400 text-sm/6 ring-1 ring-white/10 hover:ring-white/20">
-                  <E.span fieldPath="announcement" className="">
-                    {announcement}
-                  </E.span>{" "}
-                  {announcementUrl && (
-                    <a href={announcementUrl} className="font-semibold text-blue-400">
-                      <span aria-hidden="true" className="absolute inset-0" />
-                      Learn more <span aria-hidden="true">&rarr;</span>
-                    </a>
-                  )}
-                </div>
-              </div>
-            )}
-
             <div className={getAlignmentClasses()}>
               <E.h1
                 fieldPath="title"
