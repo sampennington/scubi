@@ -40,12 +40,7 @@ function BlockWithValidation({ block }: { block: Block }) {
 
   if (!BlockComponent) {
     console.warn(`Unknown block type: ${block.type}`)
-    return (
-      <div className="border border-gray-300 border-dashed bg-gray-50 p-8 text-center text-gray-500">
-        <p>Unknown block type: {block.type}</p>
-        <p className="text-sm">Please check your block registry</p>
-      </div>
-    )
+    return null
   }
 
   // Use default content as fallback if block content is invalid/missing

@@ -35,10 +35,7 @@ const HeroBlockContent = () => {
     alignment,
     minHeight,
     navigation,
-    loginText,
-    loginUrl,
-    showNavigation,
-    showLogin
+    showNavigation
   } = { ...defaultHeroContent, ...content }
 
   const containerStyle = {
@@ -175,16 +172,6 @@ const HeroBlockContent = () => {
                         </a>
                       ))}
                     </div>
-                    {showLogin && loginText && loginUrl && (
-                      <div className="py-6">
-                        <a
-                          href={loginUrl}
-                          className="-mx-3 block rounded-lg px-3 py-2.5 font-semibold text-base/7 text-white hover:bg-white/5"
-                        >
-                          <E.span fieldPath="loginText">{loginText}</E.span>
-                        </a>
-                      </div>
-                    )}
                   </div>
                 </div>
               </DialogPanel>

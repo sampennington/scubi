@@ -1,6 +1,6 @@
 import { heroBlockConfig } from "./hero.config"
 import { type HeroContent, HeroContentSchema } from "./hero.schema"
-import { defaultHeroContent } from "../../shared/defaults-index"
+import { defaultHeroContent } from "./hero.default"
 import { HeroBlock } from "."
 import type { BlockDefinition } from "@/lib/blocks"
 

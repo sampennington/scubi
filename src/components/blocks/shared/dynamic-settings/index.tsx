@@ -3,7 +3,7 @@
 import { useState, useCallback, useMemo } from "react"
 import {
   BlockSettingsPanel,
-  SettingsSection as BaseSettingsSection,
+  SettingsSection,
   SettingItem
 } from "@/components/blocks/editable/settings-panel"
 import type { SettingsConfig, FormState, FieldState } from "@/lib/blocks/core/config-types"
@@ -64,7 +64,12 @@ export function DynamicSettings({
   return (
     <BlockSettingsPanel title={title}>
       {visibleSections.map((section) => (
-        <BaseSettingsSection key={section.id} title={section.title}>
+        <SettingsSection
+          key={section.id}
+          title={section.title}
+          collapsible={true}
+          defaultOpen={false}
+        >
           {section.description && (
             <p className="mb-4 text-muted-foreground text-sm">{section.description}</p>
           )}
@@ -85,7 +90,7 @@ export function DynamicSettings({
               </SettingItem>
             )
           })}
-        </BaseSettingsSection>
+        </SettingsSection>
       ))}
     </BlockSettingsPanel>
   )

@@ -2,6 +2,7 @@ import type { ComponentType } from "react"
 import type { ZodSchema } from "zod"
 import type { BlockConfig, SettingsConfig } from "./config-types"
 import { blockRegistry } from "./registry"
+import type { Block } from "@/lib/api"
 
 export interface BlockDefinition<T = unknown> {
   id: string
@@ -9,7 +10,7 @@ export interface BlockDefinition<T = unknown> {
   description?: string
   category: "layout" | "content" | "media" | "commerce" | "social" | "interactive" | "specialized"
   icon?: string
-  component: ComponentType<{ content?: T }>
+  component: ComponentType<Block & { content: T }>
   schema: ZodSchema<T>
   settings: SettingsConfig
   defaults: T

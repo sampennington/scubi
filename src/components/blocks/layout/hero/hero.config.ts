@@ -42,29 +42,6 @@ export const heroBlockConfig: BlockConfig = {
             maxLength: 300,
             defaultValue:
               "Professional dive training and unforgettable underwater adventures await. From beginner courses to advanced certifications, explore the ocean's wonders with our expert instructors."
-          },
-          {
-            type: "text",
-            name: "announcement",
-            label: "Announcement Banner",
-            description: "Optional announcement text above the headline",
-            placeholder: "New PADI courses starting soon!",
-            maxLength: 150,
-            defaultValue: "New PADI Advanced Open Water courses starting soon!"
-          },
-          {
-            type: "url",
-            name: "announcementUrl",
-            label: "Announcement Link",
-            description: "Link for the announcement banner",
-            placeholder: "https://example.com/news",
-            defaultValue: "#",
-            conditions: [
-              {
-                field: "announcement",
-                operator: "exists"
-              }
-            ]
           }
         ]
       },

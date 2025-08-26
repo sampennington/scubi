@@ -12,15 +12,11 @@ export const HeroContentSchema = z.object({
   image: z.string().optional(),
   logo: z.string().optional(),
   logoUrl: z.string().optional(),
-  announcement: z.string().optional(),
-  announcementUrl: z.string().optional(),
   primaryButton: BlockButtonSchema,
   secondaryButton: BlockButtonSchema,
   alignment: z.enum(["left", "center", "right"]).optional(),
   minHeight: z.number().optional(),
   navigation: z.array(HeroNavigationItemSchema).optional(),
-  loginText: z.string().optional(),
-  loginUrl: z.string().optional(),
   showNavigation: z.boolean().optional(),
   showLogin: z.boolean().optional()
 })

@@ -1,6 +1,6 @@
 import type React from "react"
 import { useState, useMemo } from "react"
-import { Settings, X, Trash2, GripVertical, Plus } from "lucide-react"
+import { Settings, X, Trash2, GripVertical, Plus, ChevronDown, ChevronRight } from "lucide-react"
 import { Button } from "../../ui/button"
 import * as DialogPrimitive from "@radix-ui/react-dialog"
 import { cn } from "@/lib/utils"
@@ -31,7 +31,7 @@ export const BlockSettingsPanel = ({
 }: BlockSettingsPanelProps) => {
   const [isOpen, setIsOpen] = useState(false)
   const [isModalOpen, setIsModalOpen] = useState(false)
-  const { shopId, isEditMode, refreshBlocks } = useSite()
+  const { isEditMode, refreshBlocks } = useSite()
   const { blockId, order } = useBlockEdit()
 
   const handleBlockAdded = useMemo<() => void>(
@@ -59,7 +59,7 @@ export const BlockSettingsPanel = ({
       <DialogPrimitive.Root open={isOpen} onOpenChange={setIsOpen}>
         <div
           className={cn(
-            "absolute top-4 right-4 z-50 flex items-center gap-1 rounded-lg border bg-background/95 p-1 opacity-0 shadow-lg backdrop-blur-sm transition-opacity duration-200 group-hover:opacity-100",
+            "absolute top-4 right-4 z-500 flex items-center gap-1 rounded-lg border bg-background/95 p-1 opacity-0 shadow-lg backdrop-blur-sm transition-opacity duration-200 group-hover:opacity-100",
             className
           )}
         >
@@ -155,16 +155,50 @@ export const BlockSettingsPanel = ({
 export const SettingsSection = ({
   title,
   children,
-  className
+  className,
+  collapsible = false,
+  defaultOpen = true
 }: {
   title: string
   children: React.ReactNode
   className?: string
+  collapsible?: boolean
+  defaultOpen?: boolean
 }) => {
+  const [isOpen, setIsOpen] = useState(defaultOpen)
+
+  const toggleOpen = () => {
+    if (collapsible) {
+      setIsOpen(!isOpen)
+    }
+  }
+
   return (
-    <div className={cn("space-y-4", className)}>
-      <h3 className="font-medium text-muted-foreground text-sm uppercase tracking-wide">{title}</h3>
-      <div className="space-y-3">{children}</div>
+    <div className={cn("rounded-lg border border-blue-200 bg-blue-50", className)}>
+      {collapsible ? (
+        <button
+          type="button"
+          className={cn(
+            "flex w-full items-center justify-between p-4 text-left transition-colors hover:bg-black/5"
+          )}
+          onClick={toggleOpen}
+          onKeyDown={(e) => {
+            if (e.key === "Enter" || e.key === " ") {
+              e.preventDefault()
+              toggleOpen()
+            }
+          }}
+        >
+          <h3 className="font-medium text-muted-foreground text-sm tracking-wide">{title}</h3>
+          {isOpen ? <ChevronDown className="h-4 w-4" /> : <ChevronRight className="h-4 w-4" />}
+        </button>
+      ) : (
+        <div className="flex items-center justify-between p-4">
+          <h3 className="font-medium text-muted-foreground text-sm tracking-wide">{title}</h3>
+        </div>
+      )}
+
+      {isOpen && <div className="space-y-3 px-4 pb-4">{children}</div>}
     </div>
   )
 }
@@ -181,7 +215,7 @@ export const SettingItem = ({
   className?: string
 }) => {
   return (
-    <div className={cn("space-y-2", className)}>
+    <div className={cn("space-y-2 rounded-md border border-white/80 bg-white/50 p-3", className)}>
       <div className="font-medium text-sm leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">
         {label}
       </div>
