@@ -4,7 +4,7 @@ import type { BlockConfig, SettingsConfig } from "./config-types"
 import { blockRegistry } from "./registry"
 import type { Block } from "@/lib/api"
 
-export interface BlockDefinition<T = unknown> {
+export interface BlockDefinition<T> {
   id: string
   name: string
   description?: string
@@ -69,7 +69,7 @@ export function registerBlock<T>(definition: BlockDefinition<T>): void {
 /**
  * Register multiple blocks at once
  */
-export function registerBlocks<T>(definitions: BlockDefinition<T>[]): void {
+export function registerBlocks(...definitions: BlockDefinition<unknown>[]): void {
   definitions.forEach((def) => registerBlock(def))
 }
 

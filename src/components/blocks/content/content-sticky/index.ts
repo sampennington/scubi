@@ -1,0 +1,6 @@
+export { ContentStickyBlock } from "./content-sticky.component"
+export { defaultContentStickyContent } from "./content-sticky.default"
+export { contentStickyBlockDefinition } from "./content-sticky.definition"
+export { contentStickyBlockConfig } from "./content-sticky.config"
+export type { ContentStickyContent } from "./content-sticky.schema"
+export { contentStickySchema } from "./content-sticky.schema"
