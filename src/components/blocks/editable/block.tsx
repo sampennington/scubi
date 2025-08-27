@@ -171,8 +171,10 @@ export const EditableBlock = ({
       <div
         className={`transition-opacity duration-200 ${className} ${
           isEditing ? "pointer-events-none opacity-0" : "opacity-100"
-        }`}
-        style={{ visibility: isEditing ? "hidden" : "visible" }}
+        } ${isHovered ? "outline-1 outline-purple-500" : ""} outline-offset-2 transition-all duration-200 ease-in-out`}
+        style={{
+          visibility: isEditing ? "hidden" : "visible"
+        }}
       >
         {children}
       </div>
@@ -180,7 +182,7 @@ export const EditableBlock = ({
       {/* Edit interface - shown when hovering or editing */}
       {showEditInterface && (
         <div
-          className={`absolute inset-0 z-10 transition-opacity duration-200 ${
+          className={`absolute inset-0 z-10 outline-1 outline-purple-500 outline-offset-2 transition-all duration-200 ease-in-out" ${
             isEditing ? "opacity-100" : "opacity-0"
           }`}
           style={{ visibility: showEditInterface ? "visible" : "hidden" }}

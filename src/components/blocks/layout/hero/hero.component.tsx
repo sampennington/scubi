@@ -92,14 +92,7 @@ const HeroBlockContent = () => {
               <div className="flex lg:flex-1">
                 <a href={logoUrl} className="-m-1.5 p-1.5">
                   <span className="sr-only">Your Company</span>
-                  <E.image
-                    fieldPath="logo"
-                    src={logo}
-                    alt="Company Logo"
-                    className="h-8 w-auto"
-                    width={64}
-                    height={64}
-                  />
+                  <E.image fieldPath="logo" src={logo} alt="Company Logo" width={64} height={64} />
                 </a>
               </div>
             )}

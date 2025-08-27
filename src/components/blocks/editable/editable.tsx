@@ -24,6 +24,7 @@ export const E = {
     alt,
     width,
     height,
+    buttons = "overlay",
     ...props
   }: {
     fieldPath: string
@@ -31,6 +32,7 @@ export const E = {
     alt: string
     width?: number
     height?: number
+    buttons?: "overlay" | "below"
   } & ComponentProps<"img">) => {
     const { isEditMode } = useSite()
     const [imageError, setImageError] = useState(false)
@@ -52,6 +54,7 @@ export const E = {
         width={width}
         height={height}
         onError={() => setImageError(true)}
+        buttons={buttons}
       />
     )
   }
