@@ -48,10 +48,9 @@ export function ThemeProvider({ children }: ThemeProviderProps) {
       className="site-preview"
       style={
         {
-          "--primary": primaryColor,
-          "--secondary": secondaryColor,
-          "--accent": accentColor,
-          // "--cta": ctaColor || primaryColor,
+          "--primary": primaryColor || "#3b82f6",
+          "--secondary": secondaryColor || "#64748b",
+          "--accent": accentColor || "#06b6d4",
           "--font-heading": getFontStyle(fontFamilyHeading || "Inter"),
           "--font-body": getFontStyle(fontFamilyBody || "Inter")
         } as React.CSSProperties

@@ -76,7 +76,7 @@ export function DynamicSettings({
 
           {section.fields.map((field) => {
             const fieldState = formState.fields[field.name]
-            const fieldValue = value[field.name] ?? field.defaultValue
+            const fieldValue = fieldState?.value ?? value[field.name] ?? field.defaultValue
 
             return (
               <SettingItem key={field.name} label={field.label} description={field.description}>

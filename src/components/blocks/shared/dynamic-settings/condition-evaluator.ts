@@ -1,10 +1,11 @@
 import type { ConditionConfig } from "@/lib/blocks/core/config-types"
+import { getProperty } from "dot-prop"
 
 export function evaluateCondition(
   condition: ConditionConfig,
-  values: Record<string, any>
+  values: Record<string, unknown>
 ): boolean {
-  const fieldValue = values[condition.field]
+  const fieldValue = getProperty(values, condition.field) as unknown
 
   switch (condition.operator) {
     case "equals":
@@ -14,7 +15,7 @@ export function evaluateCondition(
       return fieldValue !== condition.value
 
     case "contains":
-      if (typeof fieldValue === "string") {
+      if (typeof fieldValue === "string" && typeof condition.value === "string") {
         return fieldValue.includes(condition.value)
       }
       if (Array.isArray(fieldValue)) {

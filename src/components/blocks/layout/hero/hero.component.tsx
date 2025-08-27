@@ -87,7 +87,7 @@ const HeroBlockContent = () => {
 
       <div className={cn("bg-gray-900")} style={backgroundStyle}>
         <header className="absolute inset-x-0 top-0 z-50">
-          <nav aria-label="Global" className="flex items-center p-6 lg:px-8">
+          <nav aria-label="Global" className="flex items-center justify-between p-6 lg:px-8">
             {logo && (
               <div className="flex lg:flex-1">
                 <a href={logoUrl} className="-m-1.5 p-1.5">
@@ -97,15 +97,29 @@ const HeroBlockContent = () => {
                     src={logo}
                     alt="Company Logo"
                     className="h-8 w-auto"
-                    width={32}
-                    height={32}
+                    width={64}
+                    height={64}
                   />
                 </a>
               </div>
             )}
 
             {showNavigation && navigation && navigation.length > 0 && (
-              <>
+              <div className="hidden lg:flex lg:flex-1 lg:justify-center lg:gap-x-8 lg:whitespace-nowrap xl:gap-x-12">
+                {navigation.map((item, index) => (
+                  <a
+                    key={item.name}
+                    href={item.href}
+                    className="font-semibold text-sm/6 text-white"
+                  >
+                    <E.span fieldPath={`navigation[${index}].name`}>{item.name}</E.span>
+                  </a>
+                ))}
+              </div>
+            )}
+
+            <div className="flex lg:flex-1 lg:justify-end">
+              {showNavigation && navigation && navigation.length > 0 && (
                 <div className="flex lg:hidden">
                   <button
                     type="button"
@@ -116,24 +130,12 @@ const HeroBlockContent = () => {
                     <Bars3Icon aria-hidden="true" className="size-6" />
                   </button>
                 </div>
-
-                <div className="hidden lg:flex lg:flex-1 lg:justify-center lg:gap-x-12">
-                  {navigation.map((item, index) => (
-                    <a
-                      key={item.name}
-                      href={item.href}
-                      className="font-semibold text-sm/6 text-white"
-                    >
-                      <E.span fieldPath={`navigation[${index}].name`}>{item.name}</E.span>
-                    </a>
-                  ))}
-                </div>
-              </>
-            )}
+              )}
+            </div>
           </nav>
 
           {showNavigation && navigation && navigation.length > 0 && (
-            <Dialog open={mobileMenuOpen} onClose={setMobileMenuOpen} className="lg:hidden">
+            <Dialog open={mobileMenuOpen} onClose={setMobileMenuOpen} className="lg:hidden ">
               <div className="fixed inset-0 z-50" />
               <DialogPanel className="fixed inset-y-0 right-0 z-50 w-full overflow-y-auto bg-gray-900 p-6 sm:max-w-sm sm:ring-1 sm:ring-gray-100/10">
                 <div className="flex items-center justify-between">

@@ -19,7 +19,7 @@ export const DiveShopSite = () => {
       <Favicon />
       <ThemeProvider>
         <div className="flex min-h-screen flex-col bg-background">
-          <Nav />
+          {/* <Nav /> */}
           <main className="flex-1">
             <BlockRenderer />
           </main>
