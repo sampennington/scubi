@@ -56,6 +56,7 @@ export const heroBlockConfig: BlockConfig = {
             label: "Background Image",
             description: "Full-width background image",
             accept: "image/*",
+            aspectRatio: "16/9",
             defaultValue: ""
           },
           {
@@ -64,6 +65,7 @@ export const heroBlockConfig: BlockConfig = {
             label: "Logo",
             description: "Company logo displayed in navigation",
             accept: "image/*",
+            aspectRatio: "1/1",
             defaultValue:
               "https://tailwindcss.com/plus-assets/img/logos/mark.svg?color=indigo&shade=500"
           }

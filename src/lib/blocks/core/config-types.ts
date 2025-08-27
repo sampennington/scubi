@@ -44,6 +44,7 @@ export interface ImageFieldConfig extends BaseFieldConfig {
   type: "image"
   accept?: string
   maxSize?: number
+  aspectRatio?: string
 }
 
 export interface RangeFieldConfig extends BaseFieldConfig {

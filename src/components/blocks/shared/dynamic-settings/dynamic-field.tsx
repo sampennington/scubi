@@ -12,10 +12,9 @@ import { Input } from "@/components/ui/input"
 import { Textarea } from "@/components/ui/textarea"
 import { Button } from "@/components/ui/button"
 import { ColorPicker } from "@/components/ui/color-picker"
-import { UploadButton } from "@/components/ui/upload-button"
 import { Plus, Trash2 } from "lucide-react"
 import type { FieldConfig } from "@/lib/blocks/core/config-types"
-import Image from "next/image"
+import { EditableImage } from "../../editable/editable-image"
 
 type FieldValue =
   | string
@@ -172,28 +171,21 @@ export function DynamicField({ config, value, onChange, error, touched }: Dynami
 
     case "image":
       return (
-        <div className="space-y-1">
-          <UploadButton
-            onFileSelect={async (file: File) => {
-              // TODO: Implement actual file upload logic
-              console.log("File selected:", file.name)
-              // For now, create a temporary URL for preview
-              const tempUrl = URL.createObjectURL(file)
-              onChange(tempUrl)
-            }}
-            accept="image/*"
-          />
-          {value && (
-            <div className="mt-2">
-              <Image
-                src={value as string}
-                alt="Preview"
-                className="h-20 w-20 rounded border object-cover"
-                width={80}
-                height={80}
+        <div className="space-y-2">
+          <div className="group relative w-full rounded border">
+            <div
+              className={`flex w-full items-center justify-center overflow-hidden rounded transition-colors duration-200 ${config.aspectRatio ? `aspect-[${config.aspectRatio}]` : "aspect-[2/1]"}`}
+            >
+              <EditableImage
+                fieldPath={config.name}
+                src={(value as string) || ""}
+                alt={config.label || "Image"}
+                className="max-h-full max-w-full object-contain"
+                buttons="below"
+                aspectRatio={config.aspectRatio}
               />
             </div>
-          )}
+          </div>
           {hasError && <p className="text-red-500 text-sm">{error}</p>}
         </div>
       )

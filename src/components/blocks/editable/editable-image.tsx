@@ -7,6 +7,8 @@ import { useBlockEdit } from "./context"
 import { cn } from "@/lib/utils"
 import Image from "next/image"
 import { ImageCropperDialog } from "./image-cropper"
+import { Button } from "@/components/ui/button"
+import { parseAspectRatio } from "@/lib/image"
 
 interface EditableImageProps {
   fieldPath: string
@@ -17,6 +19,8 @@ interface EditableImageProps {
   height?: number
   showUploadButton?: boolean
   onError?: () => void
+  buttons: "overlay" | "below"
+  aspectRatio?: string
 }
 
 export const EditableImage = ({
@@ -24,9 +28,11 @@ export const EditableImage = ({
   src,
   alt,
   className,
-  width = 128,
-  height = 128,
+  width,
+  height,
   showUploadButton = true,
+  buttons = "overlay",
+  aspectRatio,
   onError
 }: EditableImageProps) => {
   const { handleEdit } = useBlockEdit()
@@ -59,7 +65,13 @@ export const EditableImage = ({
   }
 
   return (
-    <div className={cn("relative overflow-hidden object-cover", className)}>
+    <div
+      className={cn(
+        "overflow-hidden object-cover",
+        buttons === "overlay" ? "relative" : "flex flex-col items-center p-3",
+        className
+      )}
+    >
       {src ? (
         <NoEditImage src={src} alt={alt} width={width} height={height} onError={onError} />
       ) : (
@@ -83,6 +95,7 @@ export const EditableImage = ({
           fieldPath={fieldPath}
           onEditClick={() => setIsCropperOpen(true)}
           initiateUpload={initiateUpload}
+          buttons={buttons}
         />
       )}
 
@@ -103,7 +116,9 @@ export const EditableImage = ({
           handleEdit(fieldPath, croppedImageUrl)
           setIsCropperOpen(false)
         }}
-        aspectRatio={width / height}
+        aspectRatio={
+          aspectRatio ? parseAspectRatio(aspectRatio) : width && height ? width / height : 1
+        }
       />
     </div>
   )
@@ -125,13 +140,12 @@ export const NoEditImage = ({
   if (!src) {
     return null
   }
-
   return (
     <Image
       src={src}
       alt={alt}
-      width={width}
-      height={height}
+      width={width || 400}
+      height={height || 400}
       onError={onError}
       className={cn("object-cover transition-all duration-200")}
     />
@@ -141,46 +155,65 @@ export const NoEditImage = ({
 const UploadEditButton = ({
   isUploading,
   onEditClick,
-  initiateUpload
+  initiateUpload,
+  buttons
 }: {
   isUploading: boolean
   fieldPath: string
   onEditClick: () => void
   initiateUpload: () => void
-}) => (
-  <div
-    className={cn(
-      "absolute inset-0 flex items-center justify-center bg-black/50 opacity-0 transition-opacity duration-200 hover:opacity-100",
-      isUploading && "opacity-100"
-    )}
-  >
-    {isUploading ? (
-      <div className="flex flex-col items-center gap-2 text-white">
-        <div className="h-6 w-6 animate-spin rounded-full border-2 border-white border-t-transparent" />
-        <span className="text-sm">Uploading...</span>
-      </div>
-    ) : (
-      <div className="flex items-center gap-4">
-        <button
-          type="button"
-          className="flex flex-col items-center gap-2 rounded-lg bg-white/20 p-3 transition-colors hover:bg-white/30"
-          onClick={onEditClick}
-          disabled={isUploading}
-        >
-          <Pencil className="h-4 w-4 text-white" />
-          <span className="text-sm text-white">Edit Image</span>
-        </button>
+  buttons: "overlay" | "below"
+}) => {
+  if (buttons === "below") {
+    return (
+      <div className="mt-4 flex items-center justify-around">
+        <Button type="button" variant="secondary" onClick={onEditClick} disabled={isUploading}>
+          <Pencil className="mr-4 h-4 w-4" />
+          <span className="text-sm">Edit Image</span>
+        </Button>
 
-        <button
-          type="button"
-          className="flex flex-col items-center gap-2 rounded-lg bg-white/20 p-3 transition-colors hover:bg-white/30"
-          onClick={initiateUpload}
-          disabled={isUploading}
-        >
-          <Upload className="h-4 w-4 text-white" />
-          <span className="text-sm text-white">New Image</span>
-        </button>
+        <Button type="button" variant="outline" onClick={initiateUpload} disabled={isUploading}>
+          <Upload className="mr-4 h-4 w-4" />
+          <span className="text-sm">New Image</span>
+        </Button>
       </div>
-    )}
-  </div>
-)
+    )
+  }
+  return (
+    <div
+      className={cn(
+        "absolute inset-0 flex items-center justify-center bg-black/50 opacity-0 transition-opacity duration-200 hover:opacity-100",
+        isUploading && "opacity-100"
+      )}
+    >
+      {isUploading ? (
+        <div className="flex flex-col items-center gap-2 text-white">
+          <div className="h-6 w-6 animate-spin rounded-full border-2 border-white border-t-transparent" />
+          <span className="text-sm">Uploading...</span>
+        </div>
+      ) : (
+        <div className="flex items-center gap-4">
+          <button
+            type="button"
+            className="flex flex-col items-center gap-2 rounded-lg bg-white/20 p-3 transition-colors hover:bg-white/30"
+            onClick={onEditClick}
+            disabled={isUploading}
+          >
+            <Pencil className="h-4 w-4 text-white" />
+            <span className="text-sm text-white">Edit Image</span>
+          </button>
+
+          <button
+            type="button"
+            className="flex flex-col items-center gap-2 rounded-lg bg-white/20 p-3 transition-colors hover:bg-white/30"
+            onClick={initiateUpload}
+            disabled={isUploading}
+          >
+            <Upload className="h-4 w-4 text-white" />
+            <span className="text-sm text-white">New Image</span>
+          </button>
+        </div>
+      )}
+    </div>
+  )
+}

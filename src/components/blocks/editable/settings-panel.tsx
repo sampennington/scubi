@@ -26,17 +26,13 @@ const SettingsPortal = ({ children }: { children: React.ReactNode }) => {
   const [portalContainer, setPortalContainer] = useState<Element | null>(null)
 
   useEffect(() => {
-    // Check if we're in an iframe
     const isInIframe = window !== window.parent
-    console.log({ isInIframe })
+
     if (!isInIframe) {
-      // If not in iframe, render normally in current document
-      setPortalContainer(document.body)
       return
     }
 
     try {
-      // Create or find a container in the parent window
       const parentDoc = window.parent.document
       let container = parentDoc.getElementById("settings-portal")
 
@@ -52,15 +48,12 @@ const SettingsPortal = ({ children }: { children: React.ReactNode }) => {
       setPortalContainer(container)
 
       return () => {
-        // Cleanup on unmount - remove container if it's empty
         if (container?.parentNode && container.children.length === 0) {
           container.parentNode.removeChild(container)
         }
       }
-    } catch (error) {
-      // Fallback to current document if cross-origin issues
-      console.warn("Could not access parent window, rendering in current frame:", error)
-      setPortalContainer(document.body)
+    } catch (e) {
+      console.warn("Could not access parent window, rendering in current frame", e)
     }
   }, [])
 
