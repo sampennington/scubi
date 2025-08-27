@@ -62,14 +62,12 @@ const featureList: FeatureProps[] = [
   },
   {
     title: "Build Trust",
-    description:
-      "Leverage social proof elements to establish trust and credibility."
+    description: "Leverage social proof elements to establish trust and credibility."
   },
 
   {
     title: "Scale Fast",
-    description:
-      "Built-in tools and integrations to help you scale your business."
+    description: "Built-in tools and integrations to help you scale your business."
   }
 ]
 
@@ -149,17 +147,8 @@ export const Navbar = () => {
 
           {/* Desktop Actions */}
           <div className="hidden items-center gap-2 lg:flex">
-            <Button
-              asChild
-              variant="outline"
-              size="icon"
-              className="size-10 rounded-full"
-            >
-              <Link
-                href={site.links.github}
-                target="_blank"
-                aria-label="View on GitHub"
-              >
+            <Button asChild variant="outline" size="icon" className="size-10 rounded-full">
+              <Link href={site.links.github} target="_blank" aria-label="View on GitHub">
                 <RiGithubFill className="size-5 fill-foreground" />
               </Link>
             </Button>
@@ -169,14 +158,8 @@ export const Navbar = () => {
               <Button asChild size="sm" variant="outline" className="ml-2">
                 <Link href="/auth/sign-in?redirectTo=/dashboard">Sign In</Link>
               </Button>
-              <Button
-                asChild
-                size="sm"
-                className="bg-primary hover:bg-primary/90"
-              >
-                <Link href="/auth/sign-up?redirectTo=/dashboard">
-                  Get Started
-                </Link>
+              <Button asChild size="sm" className="bg-primary hover:bg-primary/90">
+                <Link href="/auth/sign-up?redirectTo=/dashboard">Get Started</Link>
               </Button>
             </SignedOut>
             <SignedIn>
@@ -188,17 +171,8 @@ export const Navbar = () => {
 
           {/* Mobile Menu Button */}
           <div className="flex items-center gap-2 lg:hidden">
-            <Button
-              asChild
-              variant="outline"
-              size="icon"
-              className="size-10 rounded-full"
-            >
-              <Link
-                href={site.links.github}
-                target="_blank"
-                aria-label="View on GitHub"
-              >
+            <Button asChild variant="outline" size="icon" className="size-10 rounded-full">
+              <Link href={site.links.github} target="_blank" aria-label="View on GitHub">
                 <RiGithubFill className="size-5 fill-foreground" />
               </Link>
             </Button>
@@ -211,11 +185,7 @@ export const Navbar = () => {
                   className="rounded-lg hover:bg-accent/50"
                   aria-label="Toggle menu"
                 >
-                  {isOpen ? (
-                    <X className="size-4" />
-                  ) : (
-                    <Menu className="size-4" />
-                  )}
+                  {isOpen ? <X className="size-4" /> : <Menu className="size-4" />}
                 </Button>
               </SheetTrigger>
 
@@ -231,12 +201,7 @@ export const Navbar = () => {
                         className="flex items-center gap-2"
                         onClick={() => setIsOpen(false)}
                       >
-                        <Image
-                          src={site.logo}
-                          alt={site.name}
-                          width={32}
-                          height={32}
-                        />
+                        <Image src={site.logo} alt={site.name} width={32} height={32} />
                         <span className="font-bold text-lg">{site.name}</span>
                       </Link>
                     </SheetTitle>
@@ -270,18 +235,14 @@ export const Navbar = () => {
                         className="w-full"
                         onClick={() => setIsOpen(false)}
                       >
-                        <Link href="/auth/sign-in?redirectTo=/dashboard">
-                          Sign In
-                        </Link>
+                        <Link href="/auth/sign-in?redirectTo=/dashboard">Sign In</Link>
                       </Button>
                       <Button
                         asChild
                         className="w-full bg-primary hover:bg-primary/90"
                         onClick={() => setIsOpen(false)}
                       >
-                        <Link href="/auth/sign-up?redirectTo=/dashboard">
-                          Get Started
-                        </Link>
+                        <Link href="/auth/sign-up?redirectTo=/dashboard">Get Started</Link>
                       </Button>
                     </SignedOut>
                     <SignedIn>

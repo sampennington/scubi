@@ -44,10 +44,7 @@ export async function reorderBlocks(blockIds: string[]) {
   return reorderBlocksShared(blockIds, [`/dashboard/shops/${blockIds[0]}`])
 }
 
-export async function updateSiteSettings(
-  shopId: string,
-  data: Partial<SiteSettings>
-) {
+export async function updateSiteSettings(shopId: string, data: Partial<SiteSettings>) {
   try {
     const session = await auth.api.getSession({ headers: await headers() })
 

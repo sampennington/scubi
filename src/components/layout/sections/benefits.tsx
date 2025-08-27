@@ -40,26 +40,21 @@ export const BenefitsSection = () => {
     <section id="benefits" className="container mx-auto px-4 py-24 sm:py-32">
       <div className="grid place-items-center lg:grid-cols-2 lg:gap-24">
         <div>
-          <h2 className="mb-2 text-lg text-primary tracking-wider">
-            Why Upgrade
-          </h2>
+          <h2 className="mb-2 text-lg text-primary tracking-wider">Why Upgrade</h2>
 
           <h2 className="mb-4 font-bold text-3xl md:text-4xl">
             Why Upgrade (or Start) Your Dive Shop Website?
           </h2>
           <p className="mb-8 text-muted-foreground text-xl">
-            Running a dive center is hard work. Between dive trips, gear
-            servicing, and training students, your website is the last thing you
-            want to worry about. That's where Scubi comes in.
+            Running a dive center is hard work. Between dive trips, gear servicing, and training
+            students, your website is the last thing you want to worry about. That's where Scubi
+            comes in.
           </p>
         </div>
 
         <div className="grid w-full gap-4 lg:grid-cols-2">
           {benefitList.map(({ icon, title, description }, index) => (
-            <Card
-              key={title}
-              className="group/number transition-all delay-75 hover:bg-sidebar"
-            >
+            <Card key={title} className="group/number transition-all delay-75 hover:bg-sidebar">
               <CardHeader>
                 <div className="flex justify-between">
                   <Icon
@@ -76,9 +71,7 @@ export const BenefitsSection = () => {
                 <CardTitle>{title}</CardTitle>
               </CardHeader>
 
-              <CardContent className="text-muted-foreground">
-                {description}
-              </CardContent>
+              <CardContent className="text-muted-foreground">{description}</CardContent>
             </Card>
           ))}
         </div>

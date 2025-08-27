@@ -17,10 +17,7 @@ export const Icon = ({
   if (!LucideIcon) {
     console.warn(`Icon "${name}" not found in lucide-react`)
     return (
-      <div
-        className={className}
-        style={{ width: size, height: size, backgroundColor: color }}
-      />
+      <div className={className} style={{ width: size, height: size, backgroundColor: color }} />
     )
   }
 

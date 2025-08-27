@@ -37,9 +37,7 @@ export const memberApi = {
     const [member] = await db
       .update(shopMembers)
       .set({ role })
-      .where(
-        and(eq(shopMembers.userId, userId), eq(shopMembers.shopId, shopId))
-      )
+      .where(and(eq(shopMembers.userId, userId), eq(shopMembers.shopId, shopId)))
       .returning()
     return member || null
   },
@@ -47,9 +45,7 @@ export const memberApi = {
   async remove(userId: string, shopId: string): Promise<boolean> {
     const result = await db
       .delete(shopMembers)
-      .where(
-        and(eq(shopMembers.userId, userId), eq(shopMembers.shopId, shopId))
-      )
+      .where(and(eq(shopMembers.userId, userId), eq(shopMembers.shopId, shopId)))
     return (result.rowCount ?? 0) > 0
   },
 
@@ -57,9 +53,7 @@ export const memberApi = {
     const [member] = await db
       .select({ role: shopMembers.role })
       .from(shopMembers)
-      .where(
-        and(eq(shopMembers.userId, userId), eq(shopMembers.shopId, shopId))
-      )
+      .where(and(eq(shopMembers.userId, userId), eq(shopMembers.shopId, shopId)))
     return member?.role || null
   },
 
@@ -67,9 +61,7 @@ export const memberApi = {
     const [member] = await db
       .select({ userId: shopMembers.userId })
       .from(shopMembers)
-      .where(
-        and(eq(shopMembers.userId, userId), eq(shopMembers.shopId, shopId))
-      )
+      .where(and(eq(shopMembers.userId, userId), eq(shopMembers.shopId, shopId)))
     return !!member
   },
 
@@ -77,9 +69,7 @@ export const memberApi = {
     const [member] = await db
       .select({ role: shopMembers.role })
       .from(shopMembers)
-      .where(
-        and(eq(shopMembers.userId, userId), eq(shopMembers.shopId, shopId))
-      )
+      .where(and(eq(shopMembers.userId, userId), eq(shopMembers.shopId, shopId)))
     return member?.role === "admin"
   }
 }

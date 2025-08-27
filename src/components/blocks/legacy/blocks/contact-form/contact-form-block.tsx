@@ -90,7 +90,7 @@ const ContactFormBlockContent = () => {
   }
 
   return (
-    <section className="py-16 group relative">
+    <section className="group relative py-16">
       <ContactFormSettingsPanel />
       <div className="container mx-auto px-4">
         <div className="mx-auto max-w-2xl">
@@ -138,7 +138,7 @@ const SuccessMessage = ({ successMessage }: { successMessage: string }) => {
       <div className="container mx-auto px-4">
         <div className="mx-auto max-w-2xl text-center">
           <div className="mb-8 rounded-lg bg-green-50 p-8 dark:bg-green-900/20">
-            <h3 className="mb-4 text-2xl font-semibold text-green-800 dark:text-green-200">
+            <h3 className="mb-4 font-semibold text-2xl text-green-800 dark:text-green-200">
               Success!
             </h3>
             <p className="text-green-700 dark:text-green-300">{successMessage}</p>

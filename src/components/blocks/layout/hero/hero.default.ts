@@ -6,15 +6,13 @@ export const defaultHeroContent: HeroContent = {
   image: "",
   logo: "https://tailwindcss.com/plus-assets/img/logos/mark.svg?color=indigo&shade=500",
   logoUrl: "/",
-  announcement: "New PADI Advanced Open Water courses starting soon!",
-  announcementUrl: "#",
   primaryButton: {
     label: "Book a Dive",
     url: "#",
     variant: "primary"
   },
   secondaryButton: {
-    label: "View Courses", 
+    label: "View Courses",
     url: "#",
     variant: "outline"
   },
@@ -26,8 +24,6 @@ export const defaultHeroContent: HeroContent = {
     { name: "Equipment", href: "#" },
     { name: "About Us", href: "#" }
   ],
-  loginText: "Log in",
-  loginUrl: "#",
   showNavigation: true,
   showLogin: true
 }

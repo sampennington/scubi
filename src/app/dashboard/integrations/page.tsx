@@ -1,9 +1,9 @@
-import { PageHeader } from "@/components/layout/page-header";
-import type { Metadata } from "next";
+import { PageHeader } from "@/components/layout/page-header"
+import type { Metadata } from "next"
 
 export const metadata: Metadata = {
-  title: "Integrations",
-};
+  title: "Integrations"
+}
 
 export default function IntegrationsPage() {
   return (
@@ -13,5 +13,5 @@ export default function IntegrationsPage() {
         description="Connect your apps and services to your dashboard."
       />
     </div>
-  );
+  )
 }

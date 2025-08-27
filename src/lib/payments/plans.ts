@@ -16,12 +16,7 @@ export const plans: Plan[] = [
     limits: {
       tokens: 100
     },
-    features: [
-      "Up to 3 projects",
-      "Basic analytics",
-      "Email support",
-      "1 GB storage"
-    ],
+    features: ["Up to 3 projects", "Basic analytics", "Email support", "1 GB storage"],
     price: 9.99,
     trialDays: 0
   },
@@ -50,12 +45,7 @@ export const plans: Plan[] = [
     limits: {
       tokens: 900
     },
-    features: [
-      "Unlimited projects",
-      "Advanced analytics",
-      "Priority support",
-      "100 GB storage"
-    ],
+    features: ["Unlimited projects", "Advanced analytics", "Priority support", "100 GB storage"],
     price: 59.99,
     trialDays: 7
   }

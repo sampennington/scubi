@@ -14,8 +14,7 @@ interface FAQProps {
 const FAQList: FAQProps[] = [
   {
     question: "Is it really free?",
-    answer:
-      "Yes! Free forever with MIT license. Use it for any project, commercial or personal.",
+    answer: "Yes! Free forever with MIT license. Use it for any project, commercial or personal.",
     value: "item-1"
   },
   {
@@ -46,26 +45,17 @@ const FAQList: FAQProps[] = [
 
 export const FAQSection = () => {
   return (
-    <section
-      id="faq"
-      className="container mx-auto px-4 py-24 sm:py-32 md:w-[700px]"
-    >
+    <section id="faq" className="container mx-auto px-4 py-24 sm:py-32 md:w-[700px]">
       <div className="mb-8 text-center">
-        <h2 className="mb-2 text-center text-lg text-primary tracking-wider">
-          FAQs
-        </h2>
+        <h2 className="mb-2 text-center text-lg text-primary tracking-wider">FAQs</h2>
 
-        <h2 className="text-center font-bold text-3xl md:text-4xl">
-          Common Questions
-        </h2>
+        <h2 className="text-center font-bold text-3xl md:text-4xl">Common Questions</h2>
       </div>
 
       <Accordion type="single" collapsible className="AccordionRoot">
         {FAQList.map(({ question, answer, value }) => (
           <AccordionItem key={value} value={value}>
-            <AccordionTrigger className="text-left">
-              {question}
-            </AccordionTrigger>
+            <AccordionTrigger className="text-left">{question}</AccordionTrigger>
 
             <AccordionContent>{answer}</AccordionContent>
           </AccordionItem>

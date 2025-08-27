@@ -149,9 +149,7 @@ export function FontPicker({
                 <span className="font-medium" style={getFontStyle(font.value)}>
                   {font.label}
                 </span>
-                <span className="text-muted-foreground text-xs">
-                  {font.description}
-                </span>
+                <span className="text-muted-foreground text-xs">{font.description}</span>
               </div>
               {value === font.value && <Check className="ml-2 h-4 w-4" />}
             </div>

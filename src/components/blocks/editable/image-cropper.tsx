@@ -82,7 +82,7 @@ export const ImageCropperDialog = ({
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50">
       <div className="relative max-h-[90vh] max-w-[90vw] overflow-hidden rounded-lg bg-white shadow-2xl">
         <div className="flex items-center justify-between border-b p-4">
-          <h3 className="text-lg font-semibold">Edit Image</h3>
+          <h3 className="font-semibold text-lg">Edit Image</h3>
           <Button variant="ghost" size="sm" onClick={onClose} className="h-8 w-8 p-0">
             <X className="h-4 w-4" />
           </Button>

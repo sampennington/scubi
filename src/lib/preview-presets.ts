@@ -4,4 +4,4 @@ export const DEVICE_PRESETS = [
   { id: "desktop", label: "Desktop", w: 1280, h: 800 }
 ] as const
 
-export type DeviceId = typeof DEVICE_PRESETS[number]["id"]
+export type DeviceId = (typeof DEVICE_PRESETS)[number]["id"]

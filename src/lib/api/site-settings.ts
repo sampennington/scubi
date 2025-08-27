@@ -6,10 +6,7 @@ import type { SiteSettings } from "./types"
 export const siteSettingsApi = {
   async getByShopId(shopId: string): Promise<SiteSettings | null> {
     try {
-      const [settings] = await db
-        .select()
-        .from(siteSettings)
-        .where(eq(siteSettings.shopId, shopId))
+      const [settings] = await db.select().from(siteSettings).where(eq(siteSettings.shopId, shopId))
 
       return settings || null
     } catch (error) {

@@ -31,4 +31,4 @@ export async function crawl(startUrl: Url, maxPages: number): Promise<string[]> 
   }
 
   return result
-} 
+}

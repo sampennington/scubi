@@ -15,12 +15,7 @@ export function Providers({ children }: { children: ReactNode }) {
   const { startUpload } = useUploadThing("avatarUploader")
 
   return (
-    <ThemeProvider
-      attribute="class"
-      defaultTheme="light"
-      enableSystem
-      disableTransitionOnChange
-    >
+    <ThemeProvider attribute="class" defaultTheme="light" enableSystem disableTransitionOnChange>
       <AuthUIProvider
         authClient={authClient}
         navigate={router.push}

@@ -10,13 +10,13 @@ export const defaultGalleryContent: GalleryContent = {
       caption: "Image 1"
     },
     {
-      src: "/demo-img.png", 
+      src: "/demo-img.png",
       alt: "Gallery image 2",
       caption: "Image 2"
     },
     {
       src: "/demo-img.png",
-      alt: "Gallery image 3", 
+      alt: "Gallery image 3",
       caption: "Image 3"
     }
   ],

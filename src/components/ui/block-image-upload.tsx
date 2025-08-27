@@ -64,13 +64,8 @@ export const BlockImageUpload = ({
 
       {value ? (
         <div className="space-y-4">
-          <div className="relative group">
-            <div
-              className={cn(
-                "relative overflow-hidden rounded-lg border",
-                previewSizes[size]
-              )}
-            >
+          <div className="group relative">
+            <div className={cn("relative overflow-hidden rounded-lg border", previewSizes[size])}>
               <Image
                 src={value}
                 alt={label}

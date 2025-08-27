@@ -101,15 +101,15 @@ export const MarineLifeBlock = ({ content = defaultContent }: { content?: Marine
                 )}
 
                 <div className="mb-3 flex items-center justify-between">
-                  <h3 className="text-lg font-semibold">{item.name}</h3>
+                  <h3 className="font-semibold text-lg">{item.name}</h3>
                   <Badge className={getSeasonColor(item.season)}>
                     {item.season === "year-round" ? "Year-round" : item.season}
                   </Badge>
                 </div>
 
-                <p className="mb-3 text-sm text-muted-foreground">{item.description}</p>
+                <p className="mb-3 text-muted-foreground text-sm">{item.description}</p>
 
-                <div className="flex flex-wrap gap-2 text-xs text-muted-foreground">
+                <div className="flex flex-wrap gap-2 text-muted-foreground text-xs">
                   {item.depth && (
                     <div className="flex items-center gap-1">
                       <Waves className="h-3 w-3" />

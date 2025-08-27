@@ -1,13 +1,7 @@
 "use client"
 import { Star } from "lucide-react"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle
-} from "@/components/ui/card"
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import {
   Carousel,
   CarouselContent,
@@ -83,10 +77,7 @@ const reviewList: ReviewProps[] = [
 
 export const TestimonialSection = () => {
   return (
-    <section
-      id="testimonials"
-      className="container mx-auto px-4 py-24 sm:py-32"
-    >
+    <section id="testimonials" className="container mx-auto px-4 py-24 sm:py-32">
       <div className="mb-8 text-center">
         <h2 className="mb-2 text-center text-lg text-primary tracking-wider">
           What Dive Shop Owners Say
@@ -105,10 +96,7 @@ export const TestimonialSection = () => {
       >
         <CarouselContent>
           {reviewList.map((review) => (
-            <CarouselItem
-              key={review.name}
-              className="md:basis-1/2 lg:basis-1/3"
-            >
+            <CarouselItem key={review.name} className="md:basis-1/2 lg:basis-1/3">
               <Card className="flex h-full flex-col bg-muted/50">
                 <CardContent className="flex flex-grow flex-col">
                   <div className="flex gap-1 pb-4">

@@ -30,9 +30,9 @@ export const HeroSection = () => {
           </div>
 
           <p className="mx-auto max-w-screen-sm text-muted-foreground text-xl">
-            Just paste your current website link — or start from scratch.{" "}
-            <strong>Scubi</strong> instantly builds a faster, better-looking,
-            mobile-friendly site — designed to bring in more divers.
+            Just paste your current website link — or start from scratch. <strong>Scubi</strong>{" "}
+            instantly builds a faster, better-looking, mobile-friendly site — designed to bring in
+            more divers.
           </p>
 
           <div className="flex flex-col items-center space-y-4 md:flex-row md:justify-center md:space-x-4 md:space-y-0">
@@ -43,12 +43,7 @@ export const HeroSection = () => {
               </Link>
             </Button>
 
-            <Button
-              asChild
-              variant="outline"
-              size="lg"
-              className="rounded-full"
-            >
+            <Button asChild variant="outline" size="lg" className="rounded-full">
               <Link href="/auth/sign-up">Start Fresh Without a Website</Link>
             </Button>
           </div>
@@ -70,9 +65,7 @@ export const HeroSection = () => {
               <div className="-translate-x-1/2 -translate-y-1/2 absolute top-1/2 left-1/2 w-1/3">
                 <div className="flex h-6 items-center justify-center rounded-md bg-secondary/50 px-3">
                   <Lock className="mr-1.5 size-3 text-muted-foreground" />
-                  <div className="text-muted-foreground text-xs">
-                    scubi.site
-                  </div>
+                  <div className="text-muted-foreground text-xs">scubi.site</div>
                 </div>
               </div>
             </div>

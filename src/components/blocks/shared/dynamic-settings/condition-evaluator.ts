@@ -5,14 +5,14 @@ export function evaluateCondition(
   values: Record<string, any>
 ): boolean {
   const fieldValue = values[condition.field]
-  
+
   switch (condition.operator) {
     case "equals":
       return fieldValue === condition.value
-      
+
     case "not_equals":
       return fieldValue !== condition.value
-      
+
     case "contains":
       if (typeof fieldValue === "string") {
         return fieldValue.includes(condition.value)
@@ -21,16 +21,16 @@ export function evaluateCondition(
         return fieldValue.includes(condition.value)
       }
       return false
-      
+
     case "exists":
       return fieldValue !== undefined && fieldValue !== null && fieldValue !== ""
-      
+
     case "greater_than":
       return Number(fieldValue) > Number(condition.value)
-      
+
     case "less_than":
       return Number(fieldValue) < Number(condition.value)
-      
+
     default:
       console.warn(`Unknown condition operator: ${condition.operator}`)
       return true
@@ -43,10 +43,10 @@ export function evaluateConditions(
   operator: "and" | "or" = "and"
 ): boolean {
   if (conditions.length === 0) return true
-  
+
   if (operator === "and") {
-    return conditions.every(condition => evaluateCondition(condition, values))
+    return conditions.every((condition) => evaluateCondition(condition, values))
   } else {
-    return conditions.some(condition => evaluateCondition(condition, values))
+    return conditions.some((condition) => evaluateCondition(condition, values))
   }
 }

@@ -29,16 +29,10 @@ export default function CreateShop() {
 
   return (
     <div className="space-y-6">
-      <PageHeader
-        title="Create Shop"
-        description="Create a new shop to get started."
-      />
+      <PageHeader title="Create Shop" description="Create a new shop to get started." />
 
       <Form {...form}>
-        <form
-          onSubmit={form.handleSubmit(handleCreateShop)}
-          className="space-y-4"
-        >
+        <form onSubmit={form.handleSubmit(handleCreateShop)} className="space-y-4">
           <FormInput
             name="name"
             label="Name"
@@ -52,8 +46,7 @@ export default function CreateShop() {
             placeholder="If you already have a website, enter the url here."
             rules={{
               pattern: {
-                value:
-                  /^[a-zA-Z0-9][a-zA-Z0-9-]{0,61}[a-zA-Z0-9]?\.[a-zA-Z]{2,}$/,
+                value: /^[a-zA-Z0-9][a-zA-Z0-9-]{0,61}[a-zA-Z0-9]?\.[a-zA-Z]{2,}$/,
                 message: "Please enter a valid domain (e.g., dive-shop.com)"
               }
             }}

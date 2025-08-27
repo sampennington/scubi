@@ -15,27 +15,27 @@ import { BlockType } from "@/database/schema"
 import type { Block } from "@/lib/api"
 import { defaultReviewsContent } from "@/components/blocks/shared/defaults-index"
 import ReviewsSettingsPanel from "./reviews-settings-panel"
-import { ReviewsContent } from "@/components/blocks/shared/schemas"
+import type { ReviewsContent } from "@/components/blocks/shared/schemas"
 
 const truncateText = (text: string, maxLength: number) => {
   if (text.length <= maxLength) return text
   return `${text.substring(0, maxLength)}...`
 }
 
-const getPlatformIcon = (platform: string) => {
-  switch (platform.toLowerCase()) {
-    case "google":
-      return "G"
-    case "tripadvisor":
-      return "T"
-    case "facebook":
-      return "F"
-    case "yelp":
-      return "Y"
-    default:
-      return "R"
-  }
-}
+// const getPlatformIcon = (platform: string) => {
+//   switch (platform.toLowerCase()) {
+//     case "google":
+//       return "G"
+//     case "tripadvisor":
+//       return "T"
+//     case "facebook":
+//       return "F"
+//     case "yelp":
+//       return "Y"
+//     default:
+//       return "R"
+//   }
+// }
 
 const getAvatarColor = (name: string) => {
   const colors = [
@@ -53,145 +53,145 @@ const getAvatarColor = (name: string) => {
   return colors[index]
 }
 
-const mockReviews: Review[] = [
-  {
-    id: "1",
-    rating: 5,
-    reviewText: "This is a review",
-    platform: "google",
-    reviewerName: "John Doe",
-    reviewerPhoto: "",
-    reviewDate: new Date(),
-    helpfulCount: 10,
-    reviewUrl: "https://example.com",
-    verified: true,
-    createdAt: new Date(),
-    updatedAt: new Date(),
-    shopId: "1",
-    externalId: "1",
-    language: "en"
-  },
+// const mockReviews: Review[] = [
+//   {
+//     id: "1",
+//     rating: 5,
+//     reviewText: "This is a review",
+//     platform: "google",
+//     reviewerName: "John Doe",
+//     reviewerPhoto: "",
+//     reviewDate: new Date(),
+//     helpfulCount: 10,
+//     reviewUrl: "https://example.com",
+//     verified: true,
+//     createdAt: new Date(),
+//     updatedAt: new Date(),
+//     shopId: "1",
+//     externalId: "1",
+//     language: "en"
+//   },
 
-  {
-    id: "2",
-    rating: 4,
-    reviewText: "This is a review",
-    platform: "google",
-    reviewerName: "Jane Doe",
-    reviewerPhoto: "",
-    reviewDate: new Date(),
-    helpfulCount: 10,
-    reviewUrl: "https://example.com",
-    verified: true,
-    createdAt: new Date(),
-    updatedAt: new Date(),
-    shopId: "1",
-    externalId: "1",
-    language: "en"
-  },
-  {
-    id: "3",
-    rating: 3,
-    reviewText: "This is a review",
-    platform: "google",
-    reviewerName: "Jim Doe",
-    reviewerPhoto: "",
-    reviewDate: new Date(),
-    helpfulCount: 10,
-    reviewUrl: "https://example.com",
-    verified: true,
-    createdAt: new Date(),
-    updatedAt: new Date(),
-    shopId: "1",
-    externalId: "1",
-    language: "en"
-  },
-  {
-    id: "4",
-    rating: 5,
-    reviewText: "Amazing experience! Highly recommend this place.",
-    platform: "tripadvisor",
-    reviewerName: "Alice Smith",
-    reviewerPhoto: "",
-    reviewDate: new Date(),
-    helpfulCount: 15,
-    reviewUrl: "https://example.com",
-    verified: true,
-    createdAt: new Date(),
-    updatedAt: new Date(),
-    shopId: "1",
-    externalId: "1",
-    language: "en"
-  },
-  {
-    id: "5",
-    rating: 4,
-    reviewText: "Great service and friendly staff. Will come back!",
-    platform: "facebook",
-    reviewerName: "Bob Johnson",
-    reviewerPhoto: "",
-    reviewDate: new Date(),
-    helpfulCount: 8,
-    reviewUrl: "https://example.com",
-    verified: false,
-    createdAt: new Date(),
-    updatedAt: new Date(),
-    shopId: "1",
-    externalId: "1",
-    language: "en"
-  },
-  {
-    id: "6",
-    rating: 5,
-    reviewText: "Absolutely fantastic experience! The staff went above and beyond.",
-    platform: "yelp",
-    reviewerName: "Charlie Wilson",
-    reviewerPhoto: "",
-    reviewDate: new Date(),
-    helpfulCount: 12,
-    reviewUrl: "https://example.com",
-    verified: true,
-    createdAt: new Date(),
-    updatedAt: new Date(),
-    shopId: "1",
-    externalId: "1",
-    language: "en"
-  },
-  {
-    id: "7",
-    rating: 4,
-    reviewText: "Really enjoyed our time here. Great atmosphere and service.",
-    platform: "google",
-    reviewerName: "Diana Brown",
-    reviewerPhoto: "",
-    reviewDate: new Date(),
-    helpfulCount: 6,
-    reviewUrl: "https://example.com",
-    verified: true,
-    createdAt: new Date(),
-    updatedAt: new Date(),
-    shopId: "1",
-    externalId: "1",
-    language: "en"
-  },
-  {
-    id: "8",
-    rating: 5,
-    reviewText: "Excellent quality and very professional team. Highly recommend!",
-    platform: "tripadvisor",
-    reviewerName: "Ethan Davis",
-    reviewerPhoto: "",
-    reviewDate: new Date(),
-    helpfulCount: 9,
-    reviewUrl: "https://example.com",
-    verified: false,
-    createdAt: new Date(),
-    updatedAt: new Date(),
-    shopId: "1",
-    externalId: "1",
-    language: "en"
-  }
-]
+//   {
+//     id: "2",
+//     rating: 4,
+//     reviewText: "This is a review",
+//     platform: "google",
+//     reviewerName: "Jane Doe",
+//     reviewerPhoto: "",
+//     reviewDate: new Date(),
+//     helpfulCount: 10,
+//     reviewUrl: "https://example.com",
+//     verified: true,
+//     createdAt: new Date(),
+//     updatedAt: new Date(),
+//     shopId: "1",
+//     externalId: "1",
+//     language: "en"
+//   },
+//   {
+//     id: "3",
+//     rating: 3,
+//     reviewText: "This is a review",
+//     platform: "google",
+//     reviewerName: "Jim Doe",
+//     reviewerPhoto: "",
+//     reviewDate: new Date(),
+//     helpfulCount: 10,
+//     reviewUrl: "https://example.com",
+//     verified: true,
+//     createdAt: new Date(),
+//     updatedAt: new Date(),
+//     shopId: "1",
+//     externalId: "1",
+//     language: "en"
+//   },
+//   {
+//     id: "4",
+//     rating: 5,
+//     reviewText: "Amazing experience! Highly recommend this place.",
+//     platform: "tripadvisor",
+//     reviewerName: "Alice Smith",
+//     reviewerPhoto: "",
+//     reviewDate: new Date(),
+//     helpfulCount: 15,
+//     reviewUrl: "https://example.com",
+//     verified: true,
+//     createdAt: new Date(),
+//     updatedAt: new Date(),
+//     shopId: "1",
+//     externalId: "1",
+//     language: "en"
+//   },
+//   {
+//     id: "5",
+//     rating: 4,
+//     reviewText: "Great service and friendly staff. Will come back!",
+//     platform: "facebook",
+//     reviewerName: "Bob Johnson",
+//     reviewerPhoto: "",
+//     reviewDate: new Date(),
+//     helpfulCount: 8,
+//     reviewUrl: "https://example.com",
+//     verified: false,
+//     createdAt: new Date(),
+//     updatedAt: new Date(),
+//     shopId: "1",
+//     externalId: "1",
+//     language: "en"
+//   },
+//   {
+//     id: "6",
+//     rating: 5,
+//     reviewText: "Absolutely fantastic experience! The staff went above and beyond.",
+//     platform: "yelp",
+//     reviewerName: "Charlie Wilson",
+//     reviewerPhoto: "",
+//     reviewDate: new Date(),
+//     helpfulCount: 12,
+//     reviewUrl: "https://example.com",
+//     verified: true,
+//     createdAt: new Date(),
+//     updatedAt: new Date(),
+//     shopId: "1",
+//     externalId: "1",
+//     language: "en"
+//   },
+//   {
+//     id: "7",
+//     rating: 4,
+//     reviewText: "Really enjoyed our time here. Great atmosphere and service.",
+//     platform: "google",
+//     reviewerName: "Diana Brown",
+//     reviewerPhoto: "",
+//     reviewDate: new Date(),
+//     helpfulCount: 6,
+//     reviewUrl: "https://example.com",
+//     verified: true,
+//     createdAt: new Date(),
+//     updatedAt: new Date(),
+//     shopId: "1",
+//     externalId: "1",
+//     language: "en"
+//   },
+//   {
+//     id: "8",
+//     rating: 5,
+//     reviewText: "Excellent quality and very professional team. Highly recommend!",
+//     platform: "tripadvisor",
+//     reviewerName: "Ethan Davis",
+//     reviewerPhoto: "",
+//     reviewDate: new Date(),
+//     helpfulCount: 9,
+//     reviewUrl: "https://example.com",
+//     verified: false,
+//     createdAt: new Date(),
+//     updatedAt: new Date(),
+//     shopId: "1",
+//     externalId: "1",
+//     language: "en"
+//   }
+// ]
 
 export function ReviewsBlockContent() {
   const { shopId } = useSite()

@@ -40,7 +40,7 @@ const TeamBlockContent = () => {
   }
 
   return (
-    <section className="py-16 group relative">
+    <section className="group relative py-16">
       <TeamSettingsPanel />
       <div className="container mx-auto px-4">
         {(title || description) && (

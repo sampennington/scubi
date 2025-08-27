@@ -51,9 +51,7 @@ export async function middleware(request: NextRequest) {
   if (!sessionCookie) {
     const redirectTo = request.nextUrl.pathname + request.nextUrl.search
     console.log("No session, redirecting to:", redirectTo)
-    return NextResponse.redirect(
-      new URL(`/auth/sign-in?redirectTo=${redirectTo}`, request.url)
-    )
+    return NextResponse.redirect(new URL(`/auth/sign-in?redirectTo=${redirectTo}`, request.url))
   }
 
   console.log("Session found, allowing access")

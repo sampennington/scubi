@@ -37,7 +37,10 @@ export async function getReviews({
     conditions.push(gte(reviews.rating, minRating))
   }
 
-  const baseQuery = db.select().from(reviews).where(and(...conditions))
+  const baseQuery = db
+    .select()
+    .from(reviews)
+    .where(and(...conditions))
 
   if (sortBy === "rating") {
     return sortOrder === "desc"
@@ -54,7 +57,10 @@ export async function getReviews({
   }
 }
 
-export async function getReviewsAggregate(shopId: string, platform?: string): Promise<ReviewsAggregate> {
+export async function getReviewsAggregate(
+  shopId: string,
+  platform?: string
+): Promise<ReviewsAggregate> {
   const conditions = [eq(reviews.shopId, shopId)]
 
   if (platform && platform !== "all") {
@@ -72,9 +78,10 @@ export async function getReviewsAggregate(shopId: string, platform?: string): Pr
     .where(and(...conditions))
 
   const totalReviews = countResult.length
-  const avgRating = ratingResult.length > 0
-    ? ratingResult.reduce((sum, row) => sum + (row.avgRating || 0), 0) / ratingResult.length
-    : 0
+  const avgRating =
+    ratingResult.length > 0
+      ? ratingResult.reduce((sum, row) => sum + (row.avgRating || 0), 0) / ratingResult.length
+      : 0
 
   return { totalReviews, avgRating }
 }
@@ -102,5 +109,5 @@ export async function getReviewById(id: string) {
 export const reviewsApi = {
   getReviews,
   getReviewsAggregate,
-  deleteReview,
+  deleteReview
 }

@@ -1,4 +1,3 @@
-import type { z } from "zod"
 import dotenv from "dotenv"
 dotenv.config({ path: ".env.local" })
 
@@ -6,7 +5,6 @@ import { type BlockType, BlockTypeDescriptions } from "@/database/schema"
 import { BlockSchemas } from "@/components/blocks/schemas"
 import { error, warn } from "@/scraper/utils/logger"
 import OpenAI from "openai"
-import { zodToJsonSchema } from "zod-to-json-schema"
 
 const openai = new OpenAI({
   apiKey: process.env.OPENAI_API_KEY

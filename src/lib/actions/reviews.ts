@@ -47,7 +47,10 @@ export async function getReviews({
   }
 }
 
-export async function getReviewsAggregate(shopId: string, platform?: string): APIResponse<{ avgRating: number; totalReviews: number }> {
+export async function getReviewsAggregate(
+  shopId: string,
+  platform?: string
+): APIResponse<{ avgRating: number; totalReviews: number }> {
   try {
     const aggregate = await api.reviews.getReviewsAggregate(shopId, platform)
     return { success: true, data: aggregate }

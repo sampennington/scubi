@@ -30,5 +30,3 @@ export async function fetchText(url: Url): Promise<string | null> {
     return null
   }
 }
-
-

@@ -92,8 +92,7 @@ export function NavUser() {
   const user = session.user as Profile
 
   // Get user's display name with fallbacks
-  const displayName =
-    user.displayName || user.fullName || user.name || user.firstName || "User"
+  const displayName = user.displayName || user.fullName || user.name || user.firstName || "User"
 
   // Get user's avatar with fallbacks
   const avatarSrc = user.avatarUrl || user.avatar || user.image
@@ -123,9 +122,7 @@ export function NavUser() {
               <div className="ms-1 grid flex-1 text-left text-sm leading-tight group-data-[collapsible=icon]:hidden">
                 <span className="truncate font-medium">{displayName}</span>
                 {user.email && (
-                  <span className="truncate text-muted-foreground text-xs">
-                    {user.email}
-                  </span>
+                  <span className="truncate text-muted-foreground text-xs">{user.email}</span>
                 )}
               </div>
               <div className="flex size-8 items-center justify-center rounded-lg bg-sidebar-accent/50 in-[[data-slot=dropdown-menu-trigger]:hover]:bg-transparent group-data-[collapsible=icon]:hidden">
@@ -141,40 +138,24 @@ export function NavUser() {
           >
             <Link href="/dashboard">
               <DropdownMenuItem className="gap-3 px-1">
-                <RiTimer2Line
-                  size={20}
-                  className="text-muted-foreground/70"
-                  aria-hidden="true"
-                />
+                <RiTimer2Line size={20} className="text-muted-foreground/70" aria-hidden="true" />
                 <span>Dashboard</span>
               </DropdownMenuItem>
             </Link>
             <Link href="/dashboard/settings">
               <DropdownMenuItem className="gap-3 px-1">
-                <RiUserLine
-                  size={20}
-                  className="text-muted-foreground/70"
-                  aria-hidden="true"
-                />
+                <RiUserLine size={20} className="text-muted-foreground/70" aria-hidden="true" />
                 <span>Account</span>
               </DropdownMenuItem>
             </Link>
             <Link href="/dashboard/billing">
               <DropdownMenuItem className="gap-3 px-1">
-                <RiBankCardLine
-                  size={20}
-                  className="text-muted-foreground/70"
-                  aria-hidden="true"
-                />
+                <RiBankCardLine size={20} className="text-muted-foreground/70" aria-hidden="true" />
                 <span>Billing</span>
               </DropdownMenuItem>
             </Link>
             <DropdownMenuItem className="gap-3 px-1">
-              <RiLockLine
-                size={20}
-                className="text-muted-foreground/70"
-                aria-hidden="true"
-              />
+              <RiLockLine size={20} className="text-muted-foreground/70" aria-hidden="true" />
               <span>Security</span>
             </DropdownMenuItem>
             <DropdownMenuItem className="gap-3 px-1">
@@ -188,19 +169,12 @@ export function NavUser() {
             <DropdownMenuSeparator />
             <Link href="/">
               <DropdownMenuItem className="gap-3 px-1">
-                <RiHomeLine
-                  size={20}
-                  className="text-muted-foreground/70"
-                  aria-hidden="true"
-                />
+                <RiHomeLine size={20} className="text-muted-foreground/70" aria-hidden="true" />
                 <span>Homepage</span>
               </DropdownMenuItem>
             </Link>
 
-            <DropdownMenuItem
-              className="cursor-pointer gap-3 px-1"
-              onClick={handleSignOut}
-            >
+            <DropdownMenuItem className="cursor-pointer gap-3 px-1" onClick={handleSignOut}>
               <RiLogoutCircleLine
                 size={20}
                 className="text-muted-foreground/70"

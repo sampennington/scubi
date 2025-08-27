@@ -97,18 +97,13 @@ export const FooterSection = () => {
                 <div className="col-span-2">
                   <Link href="/" className="group mb-4 flex gap-2 font-bold">
                     <div className="relative">
-                      <Image
-                        src={site.logo}
-                        alt={site.name}
-                        width={30}
-                        height={30}
-                      />
+                      <Image src={site.logo} alt={site.name} width={30} height={30} />
                     </div>
                     <h3 className="font-bold text-2xl">{site.name}</h3>
                   </Link>
                   <p className="mb-6 text-muted-foreground text-sm leading-relaxed">
-                    Build and scale your SaaS faster with our Starter Kit. From
-                    authentication to payments, we've got you covered.
+                    Build and scale your SaaS faster with our Starter Kit. From authentication to
+                    payments, we've got you covered.
                   </p>
 
                   {/* Social Links */}
@@ -124,9 +119,7 @@ export const FooterSection = () => {
                         <Link
                           href={social.href}
                           target={social.external ? "_blank" : undefined}
-                          rel={
-                            social.external ? "noopener noreferrer" : undefined
-                          }
+                          rel={social.external ? "noopener noreferrer" : undefined}
                           aria-label={social.label}
                         >
                           {social.icon}
@@ -164,18 +157,13 @@ export const FooterSection = () => {
                 <div className="mb-8">
                   <Link href="/" className="group mb-4 flex gap-2 font-bold">
                     <div className="relative">
-                      <Image
-                        src={site.logo}
-                        alt={site.name}
-                        width={30}
-                        height={30}
-                      />
+                      <Image src={site.logo} alt={site.name} width={30} height={30} />
                     </div>
                     <h3 className="font-bold text-2xl">{site.name}</h3>
                   </Link>
                   <p className="mb-6 max-w-sm text-muted-foreground text-sm leading-relaxed">
-                    Build and scale your SaaS faster with our Starter Kit. From
-                    authentication to payments, we've got you covered.
+                    Build and scale your SaaS faster with our Starter Kit. From authentication to
+                    payments, we've got you covered.
                   </p>
 
                   {/* Social Links Mobile */}
@@ -191,9 +179,7 @@ export const FooterSection = () => {
                         <Link
                           href={social.href}
                           target={social.external ? "_blank" : undefined}
-                          rel={
-                            social.external ? "noopener noreferrer" : undefined
-                          }
+                          rel={social.external ? "noopener noreferrer" : undefined}
                           aria-label={social.label}
                         >
                           {social.icon}

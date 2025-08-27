@@ -168,75 +168,58 @@ export const TeamSection = () => {
   return (
     <section id="team" className="container mx-auto px-4 py-24 sm:py-32">
       <div className="mb-8 text-center">
-        <h2 className="mb-2 text-center text-lg text-primary tracking-wider">
-          Team
-        </h2>
+        <h2 className="mb-2 text-center text-lg text-primary tracking-wider">Team</h2>
 
-        <h2 className="text-center font-bold text-3xl md:text-4xl">
-          The Company Dream Team
-        </h2>
+        <h2 className="text-center font-bold text-3xl md:text-4xl">The Company Dream Team</h2>
       </div>
 
       <div className="grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
-        {teamList.map(
-          (
-            { imageUrl, firstName, lastName, positions, socialNetworks },
-            index
-          ) => (
-            <Card
-              key={index}
-              className="group flex h-full flex-col overflow-hidden bg-muted/60 py-0"
-            >
-              {/* Header - Image Section */}
-              <div className="relative overflow-hidden">
-                <Image
-                  src={imageUrl}
-                  alt={`${firstName} ${lastName}`}
-                  width={300}
-                  height={300}
-                  className="aspect-square w-full object-cover saturate-0 transition-all duration-300 ease-in-out group-hover:scale-105 group-hover:saturate-100"
-                />
-              </div>
+        {teamList.map(({ imageUrl, firstName, lastName, positions, socialNetworks }, index) => (
+          <Card key={index} className="group flex h-full flex-col overflow-hidden bg-muted/60 py-0">
+            {/* Header - Image Section */}
+            <div className="relative overflow-hidden">
+              <Image
+                src={imageUrl}
+                alt={`${firstName} ${lastName}`}
+                width={300}
+                height={300}
+                className="aspect-square w-full object-cover saturate-0 transition-all duration-300 ease-in-out group-hover:scale-105 group-hover:saturate-100"
+              />
+            </div>
 
-              {/* Content - Name and Positions Section */}
-              <div className="flex-1 px-6">
-                <CardTitle className="mb-2 text-xl">
-                  {firstName}
-                  <span className="ml-2 font-semibold text-primary">
-                    {lastName}
-                  </span>
-                </CardTitle>
+            {/* Content - Name and Positions Section */}
+            <div className="flex-1 px-6">
+              <CardTitle className="mb-2 text-xl">
+                {firstName}
+                <span className="ml-2 font-semibold text-primary">{lastName}</span>
+              </CardTitle>
 
-                <div className="space-y-1">
-                  {positions.map((position, index) => (
-                    <div
-                      key={index}
-                      className="text-muted-foreground text-sm leading-relaxed"
-                    >
-                      {position}
-                    </div>
-                  ))}
-                </div>
-              </div>
-
-              {/* Footer - Social Links Section */}
-              <CardFooter className="mb-6 flex gap-3">
-                {socialNetworks.map(({ name, url }, index) => (
-                  <Link
-                    key={index}
-                    href={url}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="transition-all duration-200 hover:scale-110 hover:opacity-80"
-                    aria-label={`Visit ${firstName}'s ${name} profile`}
-                  >
-                    {socialIcon(name)}
-                  </Link>
+              <div className="space-y-1">
+                {positions.map((position, index) => (
+                  <div key={index} className="text-muted-foreground text-sm leading-relaxed">
+                    {position}
+                  </div>
                 ))}
-              </CardFooter>
-            </Card>
-          )
-        )}
+              </div>
+            </div>
+
+            {/* Footer - Social Links Section */}
+            <CardFooter className="mb-6 flex gap-3">
+              {socialNetworks.map(({ name, url }, index) => (
+                <Link
+                  key={index}
+                  href={url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="transition-all duration-200 hover:scale-110 hover:opacity-80"
+                  aria-label={`Visit ${firstName}'s ${name} profile`}
+                >
+                  {socialIcon(name)}
+                </Link>
+              ))}
+            </CardFooter>
+          </Card>
+        ))}
       </div>
     </section>
   )

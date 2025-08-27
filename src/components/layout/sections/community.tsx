@@ -1,12 +1,6 @@
 import { Github, Star } from "lucide-react"
 import { Button } from "@/components/ui/button"
-import {
-  Card,
-  CardContent,
-  CardFooter,
-  CardHeader,
-  CardTitle
-} from "@/components/ui/card"
+import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
 
 export const CommunitySection = () => {
   return (
@@ -19,14 +13,14 @@ export const CommunitySection = () => {
               <Github className="mb-4 h-16 w-16" />
               <CardTitle className="flex flex-col items-center text-center font-bold text-4xl md:text-5xl">
                 <div className="whitespace-nowrap">Contribute to this</div>
-                <span className="bg-gradient-to-r from-[#da5319] to-primary bg-clip-text text-transparent py-1">
+                <span className="bg-gradient-to-r from-[#da5319] to-primary bg-clip-text py-1 text-transparent">
                   Project
                 </span>
               </CardTitle>
             </CardHeader>
             <CardContent className="text-muted-foreground text-xl lg:w-[80%]">
-              Join our open-source community on GitHub! Star the repo, report
-              issues, contribute code, and help make this starter even better.
+              Join our open-source community on GitHub! Star the repo, report issues, contribute
+              code, and help make this starter even better.
             </CardContent>
 
             <CardFooter>

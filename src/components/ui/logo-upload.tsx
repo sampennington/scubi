@@ -16,12 +16,7 @@ interface LogoUploadProps {
   className?: string
 }
 
-export const LogoUpload = ({
-  value,
-  onChange,
-  onRemove,
-  className
-}: LogoUploadProps) => {
+export const LogoUpload = ({ value, onChange, onRemove, className }: LogoUploadProps) => {
   const { startUpload } = useUploadThing("logoUploader")
 
   const handleFileUpload = useCallback(
@@ -74,9 +69,7 @@ export const LogoUpload = ({
 
           {/* Upload New Logo */}
           <div className="flex flex-col">
-            <div className="mb-2 text-muted-foreground text-xs">
-              Upload a new logo:
-            </div>
+            <div className="mb-2 text-muted-foreground text-xs">Upload a new logo:</div>
             <UploadButton
               onFileSelect={handleFileUpload}
               size="sm"

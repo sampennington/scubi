@@ -4,11 +4,7 @@ interface PageHeaderProps {
   className?: string
 }
 
-export function PageHeader({
-  title,
-  description,
-  className = ""
-}: PageHeaderProps) {
+export function PageHeader({ title, description, className = "" }: PageHeaderProps) {
   return (
     <div className={`mb-8 ${className}`}>
       <h1 className="font-bold text-2xl tracking-tight">{title}</h1>

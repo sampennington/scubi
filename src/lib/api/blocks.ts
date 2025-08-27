@@ -6,11 +6,7 @@ import { generateId } from "@/lib/utils"
 export type Block = typeof blocks.$inferSelect
 export const blockApi = {
   async getByPageId(pageId: string): Promise<Block[]> {
-    return db
-      .select()
-      .from(blocks)
-      .where(eq(blocks.pageId, pageId))
-      .orderBy(asc(blocks.order))
+    return db.select().from(blocks).where(eq(blocks.pageId, pageId)).orderBy(asc(blocks.order))
   },
 
   async create(data: {
@@ -30,11 +26,7 @@ export const blockApi = {
   },
 
   async update(id: string, data: Partial<Block>): Promise<Block | null> {
-    const [block] = await db
-      .update(blocks)
-      .set(data)
-      .where(eq(blocks.id, id))
-      .returning()
+    const [block] = await db.update(blocks).set(data).where(eq(blocks.id, id)).returning()
     return block || null
   },
 
@@ -45,10 +37,7 @@ export const blockApi = {
 
   async reorder(blockIds: string[]): Promise<void> {
     for (let i = 0; i < blockIds.length; i++) {
-      await db
-        .update(blocks)
-        .set({ order: i })
-        .where(eq(blocks.id, blockIds[i]))
+      await db.update(blocks).set({ order: i }).where(eq(blocks.id, blockIds[i]))
     }
   }
 }

@@ -17,17 +17,12 @@ import SubscriptionButton from "./subscription-button"
 
 interface PlanSelectorProps {
   activeSub: any
-  session: any
 }
 
-export default function PlanSelector({
-  activeSub,
-  session
-}: PlanSelectorProps) {
+export default function PlanSelector({ activeSub }: PlanSelectorProps) {
   const [selectedPlan, setSelectedPlan] = useState(
     activeSub?.plan
-      ? plans.find((p) => p.name === activeSub.plan)?.id.toString() ||
-          plans[0].id.toString()
+      ? plans.find((p) => p.name === activeSub.plan)?.id.toString() || plans[0].id.toString()
       : plans[0].id.toString()
   )
   const id = useId()
@@ -39,17 +34,11 @@ export default function PlanSelector({
     <Card className="mx-auto max-w-3xl">
       <CardHeader>
         <CardTitle>Choose Your Plan</CardTitle>
-        <CardDescription>
-          Select the plan that best fits your needs
-        </CardDescription>
+        <CardDescription>Select the plan that best fits your needs</CardDescription>
       </CardHeader>
 
       <CardContent className="space-y-6">
-        <RadioGroup
-          className="gap-2"
-          value={selectedPlan}
-          onValueChange={setSelectedPlan}
-        >
+        <RadioGroup className="gap-2" value={selectedPlan} onValueChange={setSelectedPlan}>
           {plans.map((plan) => (
             <div
               key={plan.id}
@@ -62,28 +51,18 @@ export default function PlanSelector({
                 className="order-1 after:absolute after:inset-0"
               />
               <div className="grid grow gap-1">
-                <Label
-                  htmlFor={`${id}-${plan.id}`}
-                  className="font-medium capitalize"
-                >
+                <Label htmlFor={`${id}-${plan.id}`} className="font-medium capitalize">
                   {plan.name}
                 </Label>
-                <p
-                  id={`${id}-${plan.id}-description`}
-                  className="text-muted-foreground text-sm"
-                >
+                <p id={`${id}-${plan.id}-description`} className="text-muted-foreground text-sm">
                   ${plan.price} per month
                 </p>
                 {plan.trialDays > 0 && (
-                  <span className="text-xs">
-                    {plan.trialDays}-day free trial
-                  </span>
+                  <span className="text-xs">{plan.trialDays}-day free trial</span>
                 )}
               </div>
               {activeSub?.plan === plan.name && (
-                <div className="font-medium text-green-500 text-sm">
-                  Current Plan
-                </div>
+                <div className="font-medium text-green-500 text-sm">Current Plan</div>
               )}
             </div>
           ))}
@@ -113,18 +92,15 @@ export default function PlanSelector({
       <CardFooter className="flex items-center justify-end gap-4">
         <div className="flex flex-col items-end gap-2">
           {activeSub?.plan === currentPlan?.name ? (
-            <>
-              {activeSub.cancelAtPeriodEnd ? (
-                <p className="text-right text-destructive text-xs">
-                  Your subscription will be cancelled on:{" "}
-                  {activeSub.periodEnd?.toLocaleDateString()}
-                </p>
-              ) : (
-                <p className="text-right font-bold text-green-500 text-sm">
-                  You are subscribed to this plan.
-                </p>
-              )}
-            </>
+            activeSub.cancelAtPeriodEnd ? (
+              <p className="text-right text-destructive text-xs">
+                Your subscription will be cancelled on: {activeSub.periodEnd?.toLocaleDateString()}
+              </p>
+            ) : (
+              <p className="text-right font-bold text-green-500 text-sm">
+                You are subscribed to this plan.
+              </p>
+            )
           ) : currentPlan ? (
             <SubscriptionButton
               buttonText={buttonText}

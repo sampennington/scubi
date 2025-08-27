@@ -12,5 +12,3 @@ export async function loadRobots(originOrUrl: string) {
     isAllowed: (u: Url) => parser.isAllowed(u, "scubi-scraper/1.0") !== false
   }
 }
-
-

@@ -39,5 +39,3 @@ export async function renderPage(url: string): Promise<RenderResult> {
   await browser.close()
   return { html, screenshotPng, cssUrls: [...cssUrls], computedFonts }
 }
-
-

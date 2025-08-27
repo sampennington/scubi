@@ -17,19 +17,21 @@ export function extractBusinessProfile($: cheerio.CheerioAPI, originUrl: string)
       const parsed = JSON.parse(t)
       if (Array.isArray(parsed)) (jsonLd as unknown[]).push(...parsed)
       else (jsonLd as unknown[]).push(parsed)
-    } catch { }
+    } catch {}
   })
 
   type OrgLike = {
     "@type"?: string | string[]
     logo?: string | { url?: string }
-    address?: string | {
-      streetAddress?: string
-      addressLocality?: string
-      addressRegion?: string
-      postalCode?: string
-      addressCountry?: string
-    }
+    address?:
+      | string
+      | {
+          streetAddress?: string
+          addressLocality?: string
+          addressRegion?: string
+          postalCode?: string
+          addressCountry?: string
+        }
     openingHours?: string[]
     openingHoursSpecification?: Array<{ dayOfWeek?: string; opens?: string; closes?: string }>
     geo?: { latitude?: number | string; longitude?: number | string }
@@ -41,28 +43,39 @@ export function extractBusinessProfile($: cheerio.CheerioAPI, originUrl: string)
     email?: string
   }
 
-  const org = (jsonLd.find((n) => {
-    if (typeof n !== "object" || n === null) return false
-    const t = (n as Record<string, unknown>)["@type"]
-    return /Organization|LocalBusiness/i.test(String(t))
-  }) as OrgLike) || ({} as OrgLike)
+  const org =
+    (jsonLd.find((n) => {
+      if (typeof n !== "object" || n === null) return false
+      const t = (n as Record<string, unknown>)["@type"]
+      return /Organization|LocalBusiness/i.test(String(t))
+    }) as OrgLike) || ({} as OrgLike)
 
-  const logoFromJson = typeof org.logo === "string" ? org.logo : (org.logo?.url as string | undefined)
+  const logoFromJson =
+    typeof org.logo === "string" ? org.logo : (org.logo?.url as string | undefined)
   const addressFromJson = org.address
     ? typeof org.address === "string"
       ? org.address
-      : [org.address.streetAddress, org.address.addressLocality, org.address.addressRegion, org.address.postalCode, org.address.addressCountry]
-        .filter(Boolean)
-        .join(", ")
+      : [
+          org.address.streetAddress,
+          org.address.addressLocality,
+          org.address.addressRegion,
+          org.address.postalCode,
+          org.address.addressCountry
+        ]
+          .filter(Boolean)
+          .join(", ")
     : undefined
   const openingHoursFromJson: string[] = Array.isArray(org.openingHours)
     ? org.openingHours
     : Array.isArray(org.openingHoursSpecification)
-      ? org.openingHoursSpecification.map((s) => `${s.dayOfWeek ?? ""} ${s.opens ?? ""}-${s.closes ?? ""}`.trim())
+      ? org.openingHoursSpecification.map((s) =>
+          `${s.dayOfWeek ?? ""} ${s.opens ?? ""}-${s.closes ?? ""}`.trim()
+        )
       : []
-  const geoFromJson = org.geo && (org.geo.latitude || org.geo.longitude)
-    ? { lat: Number(org.geo.latitude), lng: Number(org.geo.longitude) }
-    : undefined
+  const geoFromJson =
+    org.geo && (org.geo.latitude || org.geo.longitude)
+      ? { lat: Number(org.geo.latitude), lng: Number(org.geo.longitude) }
+      : undefined
   // sameAs not used currently
 
   // Meta/link
@@ -70,11 +83,17 @@ export function extractBusinessProfile($: cheerio.CheerioAPI, originUrl: string)
   const siteName = $('meta[property="og:site_name"]').attr("content")
   const ogTitle = $('meta[property="og:title"]').attr("content")
   const titleTag = $("title").first().text().trim()
-  const logoLink = $('link[rel="icon"]').attr("href") || $('link[rel="shortcut icon"]').attr("href") || $('link[rel="apple-touch-icon"]').attr("href")
+  const logoLink =
+    $('link[rel="icon"]').attr("href") ||
+    $('link[rel="shortcut icon"]').attr("href") ||
+    $('link[rel="apple-touch-icon"]').attr("href")
 
   // Contact anchors
   const tel = $('a[href^="tel:"]').first().attr("href")?.replace(/^tel:/, "")
-  const mail = $('a[href^="mailto:"]').first().attr("href")?.replace(/^mailto:/, "")
+  const mail = $('a[href^="mailto:"]')
+    .first()
+    .attr("href")
+    ?.replace(/^mailto:/, "")
 
   // Social links
   const social: Record<string, string | undefined> = {
@@ -86,7 +105,7 @@ export function extractBusinessProfile($: cheerio.CheerioAPI, originUrl: string)
     linkedin: undefined,
     whatsapp: undefined
   }
-  $('a[href]').each((_, el) => {
+  $("a[href]").each((_, el) => {
     const href = $(el).attr("href") || ""
     if (/instagram\.com/i.test(href)) social.instagram = href
     else if (/facebook\.com/i.test(href)) social.facebook = href
@@ -113,5 +132,3 @@ export function extractBusinessProfile($: cheerio.CheerioAPI, originUrl: string)
 
   return BusinessProfileSchema.parse(profile)
 }
-
-

@@ -5,20 +5,12 @@ import { AppSidebar } from "@/components/layout/app-sidebar"
 import { DynamicBreadcrumb } from "@/components/layout/dynamic-breadcrumb"
 import { ModeToggle } from "@/components/layout/mode-toggle"
 import { Separator } from "@/components/ui/separator"
-import {
-  SidebarInset,
-  SidebarProvider,
-  SidebarTrigger
-} from "@/components/ui/sidebar"
+import { SidebarInset, SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar"
 import { Button } from "@/components/ui/button"
 import Link from "next/link"
 import GithubIcon from "@/components/icons/github-icon"
 
-export default function ProtectedPage({
-  children
-}: {
-  children: React.ReactNode
-}) {
+export default function ProtectedPage({ children }: { children: React.ReactNode }) {
   return (
     <>
       <RedirectToSignUp />
@@ -40,12 +32,7 @@ export default function ProtectedPage({
                     </div>
                   </div>
                   {/* Right side */}
-                  <Button
-                    asChild
-                    variant="outline"
-                    size="sm"
-                    className="font-semibold"
-                  >
+                  <Button asChild variant="outline" size="sm" className="font-semibold">
                     <Link
                       href="https://github.com/indieceo/Indiesaas"
                       target="_blank"

@@ -4,5 +4,5 @@ import { defaultTextContent } from "./defaults"
 export const TextBlock = ({ content = defaultTextContent }: { content?: TextContent }) => {
   const { text } = content
 
-  return <div className="text-block text-left">{text}</div>
+  return <div className="text-left text-block">{text}</div>
 }

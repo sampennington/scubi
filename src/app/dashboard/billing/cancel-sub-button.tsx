@@ -34,11 +34,7 @@ export default function CancelSubscription() {
   }
 
   return (
-    <Button
-      variant="destructive"
-      onClick={handleSubCancellation}
-      disabled={isPending}
-    >
+    <Button variant="destructive" onClick={handleSubCancellation} disabled={isPending}>
       {isPending ? "Processing..." : "Cancel subscription"}
     </Button>
   )

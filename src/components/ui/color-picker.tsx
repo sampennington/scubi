@@ -1,14 +1,10 @@
 "use client"
 
-import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger
-} from "@/components/ui/popover"
+import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover"
 import { Button } from "@/components/ui/button"
 import { cn } from "@/lib/utils"
 import { Palette } from "lucide-react"
-import BaseColorPicker, { Color } from "@rc-component/color-picker"
+import BaseColorPicker, { type Color } from "@rc-component/color-picker"
 import "@rc-component/color-picker/assets/index.css"
 
 interface ColorPickerProps {
@@ -40,10 +36,7 @@ export function ColorPicker({
           )}
         >
           <div className="flex items-center gap-2">
-            <div
-              className="h-4 w-4 rounded border"
-              style={{ backgroundColor: color }}
-            />
+            <div className="h-4 w-4 rounded border" style={{ backgroundColor: color }} />
             <span>{color || placeholder}</span>
             <Palette className="ml-auto h-4 w-4 opacity-50" />
           </div>

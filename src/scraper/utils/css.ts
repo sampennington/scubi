@@ -1,6 +1,6 @@
 import { ColorPaletteSchema } from "../models"
 import type { Url } from "./http"
-import * as cheerio from "cheerio"
+import type * as cheerio from "cheerio"
 
 // Regexes for extracting color values
 const HEX = /#(?:[0-9a-fA-F]{3,8})\b/g
@@ -26,7 +26,11 @@ export function scoreColorsFromCss(cssList: string[]): string[] {
   return [...counts.entries()].sort((a, b) => b[1] - a[1]).map(([c]) => c)
 }
 
-export function collectStylesheetUrls($: cheerio.CheerioAPI, baseUrl: Url, normalize: (base: Url, href: string) => string | null): string[] {
+export function collectStylesheetUrls(
+  $: cheerio.CheerioAPI,
+  baseUrl: Url,
+  normalize: (base: Url, href: string) => string | null
+): string[] {
   const urls = new Set<string>()
   $('link[rel="stylesheet"]').each((_, el) => {
     const href = $(el).attr("href")
@@ -66,7 +70,11 @@ export function extractFontFamiliesAndSources($: cheerio.CheerioAPI, cssTexts: s
     const href = $(el).attr("href")
     if (href) sources.add(href)
     const fam = new URL(href ?? "", "https://example.com").searchParams.get("family")
-    if (fam) fam.split(":")[0].split("&").forEach((f) => families.add(f.replace(/\+/g, " ")))
+    if (fam)
+      fam
+        .split(":")[0]
+        .split("&")
+        .forEach((f) => families.add(f.replace(/\+/g, " ")))
   })
 
   return { families: [...families], sources: [...sources] }
@@ -82,7 +90,9 @@ function splitFontList(val: string): string[] {
 export function pickPalette(sortedColors: string[]) {
   const primary = sortedColors[0]
   const secondary = sortedColors.find((c) => c !== primary)
-  const background = sortedColors.find((c) => (c.includes("rgb") || c.includes("hsl")) ? false : c.length >= 4)
+  const background = sortedColors.find((c) =>
+    c.includes("rgb") || c.includes("hsl") ? false : c.length >= 4
+  )
 
   return ColorPaletteSchema.parse({
     primary,
@@ -94,6 +104,14 @@ export function pickPalette(sortedColors: string[]) {
 }
 
 export function isNonSystemFont(f: string): boolean {
-  const sys = ["arial", "helvetica", "sans-serif", "serif", "system-ui", "ui-sans-serif", "times new roman"]
+  const sys = [
+    "arial",
+    "helvetica",
+    "sans-serif",
+    "serif",
+    "system-ui",
+    "ui-sans-serif",
+    "times new roman"
+  ]
   return !sys.includes(f.toLowerCase())
 }

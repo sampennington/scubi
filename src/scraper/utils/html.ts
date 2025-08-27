@@ -32,7 +32,7 @@ export function extractSeoMeta($: cheerio.CheerioAPI) {
       try {
         const parsed = JSON.parse(t)
         jsonLd.push(parsed)
-      } catch { }
+      } catch {}
     }
   })
   return SeoMetaSchema.parse({ title, description, canonical, robots, og, twitter, jsonLd })
@@ -50,7 +50,7 @@ export function getSelector($el: cheerio.Cheerio<AnyNode>): string {
   const id = $el.attr("id")
   if (id) return `#${id}`
   const cls = $el.attr("class")
-  const node = $el.get(0) as (AnyNode & { name?: string; tagName?: string })
+  const node = $el.get(0) as AnyNode & { name?: string; tagName?: string }
   const tag = node?.name ?? node?.tagName ?? "div"
   if (cls) return `${tag}.${cls.split(" ").slice(0, 2).join(".")}`
   return tag
@@ -69,5 +69,3 @@ export function extractImages($: cheerio.CheerioAPI, pageUrl: string) {
   })
   return images
 }
-
-

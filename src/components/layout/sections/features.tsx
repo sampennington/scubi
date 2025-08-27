@@ -56,35 +56,28 @@ const featureList: FeaturesProps[] = [
 export const FeaturesSection = () => {
   return (
     <section id="features" className="container mx-auto px-4 py-24 sm:py-32">
-      <h2 className="mb-2 text-center text-lg text-primary tracking-wider">
-        What Is Scubi?
-      </h2>
+      <h2 className="mb-2 text-center text-lg text-primary tracking-wider">What Is Scubi?</h2>
 
       <h2 className="mb-4 text-center font-bold text-3xl md:text-4xl">
         Built for Busy Dive Shop Owners
       </h2>
 
       <h3 className="mx-auto mb-8 text-center text-muted-foreground text-xl md:w-1/2">
-        We built Scubi.site for busy dive shop owners, instructors, and new dive
-        businesses who want a professional online presence — without the hassle
-        or cost of hiring a web designer.
+        We built Scubi.site for busy dive shop owners, instructors, and new dive businesses who want
+        a professional online presence — without the hassle or cost of hiring a web designer.
       </h3>
 
       <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
         {featureList.map(({ icon, title, description }) => (
           <div key={title}>
             <Card className="h-full border-0 bg-background shadow-none">
-              <CardHeader className="flex items-center justify-center gap-4 align-middle pb-2">
-                <div className="rounded-full bg-primary/20 p-2 ring-8 ring-primary/10">
-                  {icon}
-                </div>
+              <CardHeader className="flex items-center justify-center gap-4 pb-2 align-middle">
+                <div className="rounded-full bg-primary/20 p-2 ring-8 ring-primary/10">{icon}</div>
 
                 <CardTitle>{title}</CardTitle>
               </CardHeader>
 
-              <CardContent className="text-center text-muted-foreground">
-                {description}
-              </CardContent>
+              <CardContent className="text-center text-muted-foreground">{description}</CardContent>
             </Card>
           </div>
         ))}

@@ -34,5 +34,3 @@ export function mapSectionsToBlockCandidates(sections: PageSection[]) {
 
   return candidates
 }
-
-

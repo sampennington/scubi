@@ -4,11 +4,7 @@ import { useState } from "react"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
-import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger
-} from "@/components/ui/popover"
+import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover"
 import { ScrollArea } from "@/components/ui/scroll-area"
 import { Search, X } from "lucide-react"
 import { cn } from "@/lib/utils"
@@ -165,7 +161,7 @@ export function IconSelector({
               {SelectedIcon ? (
                 <>
                   <SelectedIcon className="h-4 w-4" />
-                  <span className="text-sm text-muted-foreground">{value}</span>
+                  <span className="text-muted-foreground text-sm">{value}</span>
                 </>
               ) : (
                 <span className="text-muted-foreground">{placeholder}</span>
@@ -174,7 +170,7 @@ export function IconSelector({
           </Button>
         </PopoverTrigger>
         <PopoverContent className="w-80 p-0" align="start">
-          <div className="p-4 border-b">
+          <div className="border-b p-4">
             <div className="flex items-center gap-2">
               <Search className="h-4 w-4 text-muted-foreground" />
               <Input
@@ -205,7 +201,7 @@ export function IconSelector({
             </div>
           </ScrollArea>
           {SelectedIcon && (
-            <div className="p-2 border-t">
+            <div className="border-t p-2">
               <Button
                 variant="ghost"
                 size="sm"
@@ -215,7 +211,7 @@ export function IconSelector({
                   setIsOpen(false)
                 }}
               >
-                <X className="h-4 w-4 mr-2" />
+                <X className="mr-2 h-4 w-4" />
                 Clear Icon
               </Button>
             </div>

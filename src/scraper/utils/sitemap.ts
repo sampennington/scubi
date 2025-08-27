@@ -27,14 +27,18 @@ export async function parseSitemapXmlText(xml: string): Promise<string[]> {
     for (const it of items) if (it?.loc) urls.push(String(it.loc))
   }
   if (data?.sitemapindex?.sitemap) {
-    const items = Array.isArray(data.sitemapindex.sitemap) ? data.sitemapindex.sitemap : [data.sitemapindex.sitemap]
+    const items = Array.isArray(data.sitemapindex.sitemap)
+      ? data.sitemapindex.sitemap
+      : [data.sitemapindex.sitemap]
     for (const it of items) if (it?.loc) urls.push(String(it.loc))
   }
   return urls
 }
 
-
-export async function getUrls(targetUrl: string, maxPages: number): Promise<{ urls: Set<string>; sitemapUrls: string[] }> {
+export async function getUrls(
+  targetUrl: string,
+  maxPages: number
+): Promise<{ urls: Set<string>; sitemapUrls: string[] }> {
   const origin = toOrigin(targetUrl)
 
   const sitemapUrls = await getSitemapUrls(origin)

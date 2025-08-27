@@ -26,5 +26,3 @@ export function debug(message: string, meta?: unknown) {
   if (meta !== undefined) console.log(`[scraper] ${ts()} DEBUG ${message}`, meta)
   else console.log(`[scraper] ${ts()} DEBUG ${message}`)
 }
-
-

@@ -2,8 +2,7 @@ const site_url = process.env.NEXT_PUBLIC_APP_URL || "http://scubi.local:3000"
 
 export const site = {
   name: "Scubi",
-  description:
-    "A modern SaaS starter built with Next.js, Drizzle, and Better Auth",
+  description: "A modern SaaS starter built with Next.js, Drizzle, and Better Auth",
   url: site_url,
   ogImage: `${site_url}/og.jpg`,
   logo: "/logo.svg",

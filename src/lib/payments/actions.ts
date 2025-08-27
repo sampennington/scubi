@@ -28,9 +28,7 @@ export async function getActiveSubscription(): Promise<{
     })
     const activeSub =
       activeSubs.length > 1
-        ? activeSubs.find(
-            (sub) => sub.status === "active" || sub.status === "trialing"
-          )
+        ? activeSubs.find((sub) => sub.status === "active" || sub.status === "trialing")
         : activeSubs[0]
     return {
       subscription: activeSub ?? null,

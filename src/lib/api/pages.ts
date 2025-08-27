@@ -25,11 +25,7 @@ export const pageApi = {
   },
 
   async getByShopId(shopId: string): Promise<Page[]> {
-    return db
-      .select()
-      .from(pages)
-      .where(eq(pages.shopId, shopId))
-      .orderBy(asc(pages.slug))
+    return db.select().from(pages).where(eq(pages.shopId, shopId)).orderBy(asc(pages.slug))
   },
 
   async getNavigationTree(shopId: string): Promise<NavigationItem[]> {
@@ -82,11 +78,7 @@ export const pageApi = {
   },
 
   async update(id: string, data: Partial<Page>): Promise<Page | null> {
-    const [page] = await db
-      .update(pages)
-      .set(data)
-      .where(eq(pages.id, id))
-      .returning()
+    const [page] = await db.update(pages).set(data).where(eq(pages.id, id)).returning()
 
     return page || null
   },

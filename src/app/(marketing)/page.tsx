@@ -15,8 +15,7 @@ export const metadata = {
   openGraph: {
     type: "website",
     url: site.url,
-    title:
-      "Scubi - Turn Your Dive Shop's Website into a Modern Booking Machine",
+    title: "Scubi - Turn Your Dive Shop's Website into a Modern Booking Machine",
     description:
       "Just paste your current website link — or start from scratch. Scubi instantly builds a faster, better-looking, mobile-friendly site — designed to bring in more divers.",
     images: [
@@ -31,8 +30,7 @@ export const metadata = {
   twitter: {
     card: "summary_large_image",
     site: site.url,
-    title:
-      "Scubi - Turn Your Dive Shop's Website into a Modern Booking Machine",
+    title: "Scubi - Turn Your Dive Shop's Website into a Modern Booking Machine",
     description:
       "Just paste your current website link — or start from scratch. Scubi instantly builds a faster, better-looking, mobile-friendly site — designed to bring in more divers.",
     images: [

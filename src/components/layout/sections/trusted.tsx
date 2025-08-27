@@ -31,13 +31,7 @@ const LogoCard = ({ img }: { img: string }) => {
       transition={{ duration: 0.5, ease: "easeOut" }}
     >
       <div className="flex flex-row items-center justify-center gap-6">
-        <Image
-          width={180}
-          height={180}
-          className="rounded-full"
-          alt="logo"
-          src={img}
-        />
+        <Image width={180} height={180} className="rounded-full" alt="logo" src={img} />
       </div>
     </motion.figure>
   )

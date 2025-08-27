@@ -8,10 +8,7 @@ export const templateApi = {
   },
 
   async getById(id: string) {
-    const [template] = await db
-      .select()
-      .from(templates)
-      .where(eq(templates.id, id))
+    const [template] = await db.select().from(templates).where(eq(templates.id, id))
     return template || null
   }
 }

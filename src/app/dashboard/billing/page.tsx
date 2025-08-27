@@ -4,14 +4,7 @@ import { PageHeader } from "@/components/layout/page-header"
 import { headers } from "next/headers"
 import CancelSubButton from "./cancel-sub-button"
 
-import {
-  Zap,
-  RotateCcw,
-  CheckCircle,
-  Users,
-  CreditCard,
-  User
-} from "lucide-react"
+import { Zap, RotateCcw, CheckCircle, Users, CreditCard, User } from "lucide-react"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import {
   Card,
@@ -64,16 +57,12 @@ export default async function Plans() {
               <Card className="mx-auto max-w-3xl">
                 <CardHeader>
                   <CardTitle>Account Information</CardTitle>
-                  <CardDescription>
-                    Your current account details
-                  </CardDescription>
+                  <CardDescription>Your current account details</CardDescription>
                 </CardHeader>
                 <CardContent>
                   <p className="text-muted-foreground text-sm">
                     Logged in as:{" "}
-                    <span className="font-medium text-foreground">
-                      {session?.user?.email}
-                    </span>
+                    <span className="font-medium text-foreground">{session?.user?.email}</span>
                   </p>
                 </CardContent>
               </Card>
@@ -83,9 +72,7 @@ export default async function Plans() {
                   <CardHeader>
                     <CardTitle className="flex items-center justify-between">
                       <span>
-                        {activeSub.plan.charAt(0).toUpperCase() +
-                          activeSub.plan.slice(1)}{" "}
-                        Plan
+                        {activeSub.plan.charAt(0).toUpperCase() + activeSub.plan.slice(1)} Plan
                       </span>
                     </CardTitle>
                     <CardDescription>Your subscription details</CardDescription>
@@ -98,9 +85,7 @@ export default async function Plans() {
                           <Zap className="mr-2 h-4 w-4" />
                           Status
                         </span>
-                        <span className="font-semibold capitalize">
-                          {activeSub.status}
-                        </span>
+                        <span className="font-semibold capitalize">{activeSub.status}</span>
                       </div>
 
                       <div className="flex items-center justify-between rounded-lg border bg-card p-3">
@@ -149,9 +134,7 @@ export default async function Plans() {
                 <Card className="mx-auto max-w-3xl">
                   <CardHeader>
                     <CardTitle>No Active Subscription</CardTitle>
-                    <CardDescription>
-                      You don't have an active subscription plan
-                    </CardDescription>
+                    <CardDescription>You don't have an active subscription plan</CardDescription>
                   </CardHeader>
                   <CardContent className="text-center">
                     <p className="mb-4 text-muted-foreground">
@@ -167,8 +150,8 @@ export default async function Plans() {
             <div className="mx-auto mb-6 max-w-3xl rounded-lg border bg-muted/50 p-4 ">
               <p className="font-medium">This is a demo app.</p>
               <p className="mt-1 text-muted-foreground">
-                This is a demo app that uses Stripe test environment. You can
-                find a list of test card numbers on the{" "}
+                This is a demo app that uses Stripe test environment. You can find a list of test
+                card numbers on the{" "}
                 <a
                   href="https://docs.stripe.com/testing#cards"
                   target="_blank"

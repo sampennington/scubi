@@ -7,13 +7,13 @@ export const defaultContactFormContent: ContactFormContent = {
     {
       name: "name",
       type: "text",
-      label: "Name", 
+      label: "Name",
       required: true,
       placeholder: "Enter your name"
     },
     {
       name: "email",
-      type: "email", 
+      type: "email",
       label: "Email",
       required: true,
       placeholder: "Enter your email"
@@ -22,7 +22,7 @@ export const defaultContactFormContent: ContactFormContent = {
       name: "message",
       type: "textarea",
       label: "Message",
-      required: true, 
+      required: true,
       placeholder: "Enter your message"
     }
   ],

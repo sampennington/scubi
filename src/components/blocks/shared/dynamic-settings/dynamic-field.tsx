@@ -50,7 +50,7 @@ export function DynamicField({ config, value, onChange, error, touched }: Dynami
             maxLength={config.maxLength}
             className={hasError ? "border-red-500" : ""}
           />
-          {hasError && <p className="text-sm text-red-500">{error}</p>}
+          {hasError && <p className="text-red-500 text-sm">{error}</p>}
         </div>
       )
     case "email":
@@ -64,7 +64,7 @@ export function DynamicField({ config, value, onChange, error, touched }: Dynami
             maxLength={config.maxLength}
             className={hasError ? "border-red-500" : ""}
           />
-          {hasError && <p className="text-sm text-red-500">{error}</p>}
+          {hasError && <p className="text-red-500 text-sm">{error}</p>}
         </div>
       )
     case "url":
@@ -78,7 +78,7 @@ export function DynamicField({ config, value, onChange, error, touched }: Dynami
             maxLength={config.maxLength}
             className={hasError ? "border-red-500" : ""}
           />
-          {hasError && <p className="text-sm text-red-500">{error}</p>}
+          {hasError && <p className="text-red-500 text-sm">{error}</p>}
         </div>
       )
 

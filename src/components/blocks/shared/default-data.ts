@@ -1,13 +1,13 @@
 /**
  * @deprecated This file is deprecated. Default values are now co-located with their components.
- * 
+ *
  * New default locations:
  * - Hero: src/components/blocks/layout/hero/defaults.ts
- * - Text: src/components/blocks/content/text/defaults.ts  
+ * - Text: src/components/blocks/content/text/defaults.ts
  * - Image: src/components/blocks/content/image/defaults.ts
  * - Gallery: src/components/blocks/content/gallery/defaults.ts
  * - etc.
- * 
+ *
  * Use the defaults-index.ts file for backward compatibility imports.
  */
 
@@ -324,7 +324,17 @@ export const defaultReviewsContent: ReviewsContent = {
   refreshInterval: 3600
 }
 
-export const defaultContent: Partial<Record<BlockType, HeroContent | MultiColumnContent | TeamContent | ContactFormContent | CoursesContent | ReviewsContent>> = {
+export const defaultContent: Partial<
+  Record<
+    BlockType,
+    | HeroContent
+    | MultiColumnContent
+    | TeamContent
+    | ContactFormContent
+    | CoursesContent
+    | ReviewsContent
+  >
+> = {
   [BlockType.HERO]: defaultHeroContent as HeroContent,
   [BlockType.MULTI_COLUMN]: defaultMultiColumnContent as MultiColumnContent,
   [BlockType.TEAM]: defaultTeamContent as TeamContent,

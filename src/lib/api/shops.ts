@@ -22,10 +22,7 @@ export const shopApi = {
   },
 
   async getByDomain(domain: string): Promise<Shop | null> {
-    const [shop] = await db
-      .select()
-      .from(shops)
-      .where(eq(shops.customDomain, domain))
+    const [shop] = await db.select().from(shops).where(eq(shops.customDomain, domain))
     return shop || null
   },
 
@@ -67,11 +64,7 @@ export const shopApi = {
   },
 
   async update(id: string, data: Partial<Shop>): Promise<Shop | null> {
-    const [shop] = await db
-      .update(shops)
-      .set(data)
-      .where(eq(shops.id, id))
-      .returning()
+    const [shop] = await db.update(shops).set(data).where(eq(shops.id, id)).returning()
     return shop || null
   },
 

@@ -4,9 +4,7 @@ import { toast } from "sonner"
 
 export function WelcomeToast() {
   const promise = () =>
-    new Promise((resolve) =>
-      setTimeout(() => resolve({ name: "Sonner" }), 2000)
-    )
+    new Promise((resolve) => setTimeout(() => resolve({ name: "Sonner" }), 2000))
 
   toast.promise(promise, {
     loading: "Authenticating...",

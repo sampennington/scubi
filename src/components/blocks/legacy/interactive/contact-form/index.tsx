@@ -4,7 +4,13 @@ import { useState } from "react"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Textarea } from "@/components/ui/textarea"
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue
+} from "@/components/ui/select"
 import type { ContactFormContent } from "../../shared/schemas"
 
 const defaultContent: ContactFormContent = {
@@ -94,7 +100,7 @@ const SuccessMessage = ({ successMessage }: { successMessage: string }) => {
       <div className="container mx-auto px-4">
         <div className="mx-auto max-w-2xl text-center">
           <div className="mb-8 rounded-lg bg-green-50 p-8 dark:bg-green-900/20">
-            <h3 className="mb-4 text-2xl font-semibold text-green-800 dark:text-green-200">
+            <h3 className="mb-4 font-semibold text-2xl text-green-800 dark:text-green-200">
               Success!
             </h3>
             <p className="text-green-700 dark:text-green-300">{successMessage}</p>

@@ -34,9 +34,7 @@ export const UploadButton = ({
 }: UploadButtonProps) => {
   const [isUploading, setIsUploading] = useState(false)
   const [dragActive, setDragActive] = useState(false)
-  const [inputId] = useState(
-    () => `upload-${Math.random().toString(36).substr(2, 9)}`
-  )
+  const [inputId] = useState(() => `upload-${Math.random().toString(36).substr(2, 9)}`)
 
   const handleFileUpload = useCallback(
     async (file: File) => {
@@ -103,7 +101,7 @@ export const UploadButton = ({
         dragActive
           ? "border-primary bg-primary/5"
           : "border-muted-foreground/25 hover:border-muted-foreground/50 hover:bg-muted/20",
-        (isUploading || disabled) && "opacity-50 pointer-events-none",
+        (isUploading || disabled) && "pointer-events-none opacity-50",
         className
       )}
       onClick={handleClick}
@@ -118,27 +116,18 @@ export const UploadButton = ({
       <div className="flex flex-col items-center gap-4">
         {isUploading ? (
           <div className="flex flex-col items-center gap-2">
-            <Loader2
-              className={cn("animate-spin text-primary", iconSizes[size])}
-            />
-            <div className={cn("font-medium text-primary", textSizes[size])}>
-              {loadingText}
-            </div>
+            <Loader2 className={cn("animate-spin text-primary", iconSizes[size])} />
+            <div className={cn("font-medium text-primary", textSizes[size])}>{loadingText}</div>
           </div>
         ) : (
           <>
             {children || (
               <div className="flex flex-col items-center gap-2">
-                <Upload
-                  className={cn("text-muted-foreground", iconSizes[size])}
-                />
+                <Upload className={cn("text-muted-foreground", iconSizes[size])} />
                 <div className={textSizes[size]}>
-                  <span className="font-medium text-primary">{uploadText}</span>{" "}
-                  {dragText}
+                  <span className="font-medium text-primary">{uploadText}</span> {dragText}
                 </div>
-                <div className="text-xs text-muted-foreground">
-                  {fileTypeText}
-                </div>
+                <div className="text-muted-foreground text-xs">{fileTypeText}</div>
               </div>
             )}
             <Input

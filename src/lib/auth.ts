@@ -30,10 +30,7 @@ export const auth = betterAuth({
     crossSubDomainCookies: {
       enabled: true,
       additionalCookies: ["custom_cookie"],
-      domain:
-        process.env.NODE_ENV === "development"
-          ? ".scubi.local"
-          : ".yourdomain.com"
+      domain: process.env.NODE_ENV === "development" ? ".scubi.local" : ".yourdomain.com"
     },
     cookies: {
       session_token: {

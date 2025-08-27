@@ -1,4 +1,4 @@
-"use client";
+"use client"
 
 import {
   RiCodeSSlashLine,
@@ -6,13 +6,13 @@ import {
   RiToolsFill,
   RiSettingsLine,
   RiSpeedUpLine,
-  RiBankCardLine,
-} from "@remixicon/react";
-import Image from "next/image";
-import Link from "next/link";
-import { usePathname } from "next/navigation";
-import type * as React from "react";
-import { NavUser } from "@/components/layout/nav-user";
+  RiBankCardLine
+} from "@remixicon/react"
+import Image from "next/image"
+import Link from "next/link"
+import { usePathname } from "next/navigation"
+import type * as React from "react"
+import { NavUser } from "@/components/layout/nav-user"
 import {
   Sidebar,
   SidebarContent,
@@ -23,9 +23,9 @@ import {
   SidebarHeader,
   SidebarMenu,
   SidebarMenuButton,
-  SidebarMenuItem,
-} from "@/components/ui/sidebar";
-import { site } from "@/config/site";
+  SidebarMenuItem
+} from "@/components/ui/sidebar"
+import { site } from "@/config/site"
 
 const data = {
   navMain: [
@@ -36,20 +36,20 @@ const data = {
         {
           title: "Analytics",
           url: "/dashboard/analytics",
-          icon: RiLineChartLine,
+          icon: RiLineChartLine
         },
         {
           title: "Integrations",
           url: "/dashboard/integrations",
-          icon: RiToolsFill,
+          icon: RiToolsFill
         },
         { title: "Settings", url: "/dashboard/settings", icon: RiSettingsLine },
         { title: "Billing", url: "/dashboard/billing", icon: RiBankCardLine },
-        { title: "API", url: "/dashboard/api", icon: RiCodeSSlashLine },
-      ],
-    },
-  ],
-};
+        { title: "API", url: "/dashboard/api", icon: RiCodeSSlashLine }
+      ]
+    }
+  ]
+}
 
 function SidebarLogo() {
   return (
@@ -71,11 +71,11 @@ function SidebarLogo() {
         </span>
       </Link>
     </div>
-  );
+  )
 }
 
 export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
-  const pathname = usePathname();
+  const pathname = usePathname()
 
   return (
     <Sidebar collapsible="icon" variant="inset" {...props}>
@@ -91,7 +91,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
             <SidebarGroupContent>
               <SidebarMenu>
                 {item.items.map((item) => {
-                  const isActive = pathname === item.url;
+                  const isActive = pathname === item.url
 
                   return (
                     <SidebarMenuItem key={item.title}>
@@ -101,10 +101,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
                         tooltip={item.title}
                         isActive={isActive}
                       >
-                        <Link
-                          href={item.url}
-                          className="flex items-center gap-3"
-                        >
+                        <Link href={item.url} className="flex items-center gap-3">
                           {item.icon && (
                             <item.icon
                               className="text-muted-foreground/65 group-data-[active=true]/menu-button:text-primary"
@@ -116,7 +113,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
                         </Link>
                       </SidebarMenuButton>
                     </SidebarMenuItem>
-                  );
+                  )
                 })}
               </SidebarMenu>
             </SidebarGroupContent>
@@ -127,5 +124,5 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
         <NavUser />
       </SidebarFooter>
     </Sidebar>
-  );
+  )
 }

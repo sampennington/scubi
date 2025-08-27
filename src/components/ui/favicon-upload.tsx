@@ -16,12 +16,7 @@ interface FaviconUploadProps {
   className?: string
 }
 
-export const FaviconUpload = ({
-  value,
-  onChange,
-  onRemove,
-  className
-}: FaviconUploadProps) => {
+export const FaviconUpload = ({ value, onChange, onRemove, className }: FaviconUploadProps) => {
   const { startUpload } = useUploadThing("logoUploader") // Reuse logoUploader for favicon
 
   const handleFileUpload = useCallback(
@@ -58,7 +53,7 @@ export const FaviconUpload = ({
       {value ? (
         <div className="grid grid-cols-2 gap-4">
           {/* Favicon Preview */}
-          <div className="flex items-center justify-center p-4 border rounded-lg bg-muted/20">
+          <div className="flex items-center justify-center rounded-lg border bg-muted/20 p-4">
             <div className="group relative">
               <Image
                 src={value}
@@ -71,7 +66,7 @@ export const FaviconUpload = ({
                 type="button"
                 variant="destructive"
                 size="sm"
-                className="absolute -top-2 -right-2 h-5 w-5 p-0 opacity-0 transition-opacity duration-200 group-hover:opacity-100"
+                className="-top-2 -right-2 absolute h-5 w-5 p-0 opacity-0 transition-opacity duration-200 group-hover:opacity-100"
                 onClick={onRemove}
               >
                 <X className="h-3 w-3" />
@@ -81,9 +76,7 @@ export const FaviconUpload = ({
 
           {/* Upload New Favicon */}
           <div className="flex flex-col">
-            <div className="text-xs text-muted-foreground mb-2">
-              Upload a new favicon:
-            </div>
+            <div className="mb-2 text-muted-foreground text-xs">Upload a new favicon:</div>
             <UploadButton
               onFileSelect={handleFileUpload}
               size="sm"

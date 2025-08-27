@@ -1,4 +1,4 @@
-import * as cheerio from "cheerio"
+import type * as cheerio from "cheerio"
 import { getSelector } from "./html"
 
 export type PageSection = {
@@ -22,10 +22,12 @@ export function inferSections($: cheerio.CheerioAPI): PageSection[] {
     })
   }
 
-  const hero = $("section, div").filter((_, el) => {
-    const t = ($(el).attr("class") ?? "").toLowerCase()
-    return t.includes("hero") || $(el).find("h1").length > 0
-  }).first()
+  const hero = $("section, div")
+    .filter((_, el) => {
+      const t = ($(el).attr("class") ?? "").toLowerCase()
+      return t.includes("hero") || $(el).find("h1").length > 0
+    })
+    .first()
   if (hero.length) {
     sections.push({
       type: "hero",
@@ -84,5 +86,3 @@ export function inferSections($: cheerio.CheerioAPI): PageSection[] {
 
   return sections
 }
-
-

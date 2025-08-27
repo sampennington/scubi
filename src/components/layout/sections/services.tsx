@@ -1,9 +1,4 @@
-import {
-  Card,
-  CardDescription,
-  CardHeader,
-  CardTitle
-} from "@/components/ui/card"
+import { Card, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 
 enum ServiceStatus {
   SOON = 1,
@@ -44,17 +39,14 @@ const serviceList: ServiceProps[] = [
 export const ServicesSection = () => {
   return (
     <section id="services" className="container mx-auto px-4 py-24 sm:py-32">
-      <h2 className="mb-2 text-center text-lg text-primary tracking-wider">
-        Who Scubi Is For
-      </h2>
+      <h2 className="mb-2 text-center text-lg text-primary tracking-wider">Who Scubi Is For</h2>
 
       <h2 className="mb-4 text-center font-bold text-3xl md:text-4xl">
         Perfect for Every Type of Dive Business
       </h2>
       <h3 className="mx-auto mb-8 text-center text-muted-foreground text-xl md:w-1/2">
-        Whether you're an established dive shop or just starting out, Scubi
-        helps you create a professional online presence that brings in more
-        divers.
+        Whether you're an established dive shop or just starting out, Scubi helps you create a
+        professional online presence that brings in more divers.
       </h3>
       <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3" />
 
