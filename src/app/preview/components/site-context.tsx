@@ -4,6 +4,7 @@ import { createContext, useContext, useState, useEffect, type ReactNode, useCall
 import type { Block, NavigationItem, Page } from "@/lib/api"
 import type { SiteSettings } from "@/lib/api/types"
 import { getBlocks } from "@/lib/actions/blocks"
+import { getSiteSettings } from "@/lib/actions/site-settings"
 
 export interface SiteContextValue {
   shopId: string
@@ -19,6 +20,7 @@ export interface SiteContextValue {
   isShopOwner: boolean
   publishSite: () => void
   refreshBlocks: () => Promise<void>
+  refreshSiteSettings?: () => Promise<void>
   isLoadingLocalBlocks: boolean
   blockSettingsActive: string | null | undefined
   setBlockSettingsActive: (id: string) => void
@@ -39,7 +41,7 @@ interface TemplateProviderProps {
 export function TemplateProvider({
   children,
   shopId,
-  siteSettings,
+  siteSettings: initialSiteSettings,
   pages,
   currentPage,
   currentPath,
@@ -49,6 +51,7 @@ export function TemplateProvider({
   const [blockSettingsActive, setBlockSettingsActive] = useState<string | null>()
 
   const [isLoadingLocalBlocks, setIsLoadingLocalBlocks] = useState(false)
+  const [siteSettings, setSiteSettings] = useState<SiteSettings>(initialSiteSettings)
 
   const [blocks, setBlocks] = useState<Block[]>([])
   const [previewDimension, setPreviewDimension] = useState<"mobile" | "tablet" | "desktop">(
@@ -70,6 +73,13 @@ export function TemplateProvider({
     }
     setIsLoadingLocalBlocks(false)
   }, [])
+
+  const fetchSiteSettings = useCallback(async () => {
+    const { settings } = await getSiteSettings(shopId)
+    if (settings) {
+      setSiteSettings(settings)
+    }
+  }, [shopId])
 
   useEffect(() => {
     fetchBlocks(currentPage.id)
@@ -104,6 +114,7 @@ export function TemplateProvider({
         isShopOwner,
         publishSite: () => null,
         refreshBlocks: () => fetchBlocks(currentPage.id),
+        refreshSiteSettings: fetchSiteSettings,
         isLoadingLocalBlocks,
         blockSettingsActive,
         setBlockSettingsActive

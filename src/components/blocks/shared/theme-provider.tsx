@@ -23,8 +23,17 @@ const loadGoogleFont = (fontFamily: string) => {
 
 export function ThemeProvider({ children }: ThemeProviderProps) {
   const { siteSettings } = useSite()
-  const { primaryColor, secondaryColor, accentColor, fontFamilyHeading, fontFamilyBody } =
-    siteSettings
+  const {
+    primaryColor,
+    secondaryColor,
+    accentColor,
+    fontFamilyHeading,
+    fontFamilyBody,
+    buttonSize,
+    buttonBorderRadius,
+    primaryButtonStyle,
+    secondaryButtonStyle
+  } = siteSettings
 
   // Load fonts when theme changes
   useEffect(() => {
@@ -52,7 +61,11 @@ export function ThemeProvider({ children }: ThemeProviderProps) {
           "--secondary": secondaryColor || "#64748b",
           "--accent": accentColor || "#06b6d4",
           "--font-heading": getFontStyle(fontFamilyHeading || "Inter"),
-          "--font-body": getFontStyle(fontFamilyBody || "Inter")
+          "--font-body": getFontStyle(fontFamilyBody || "Inter"),
+          "--button-size": buttonSize || "md",
+          "--button-border-radius": buttonBorderRadius || "md",
+          "--primary-button-style": primaryButtonStyle || "solid",
+          "--secondary-button-style": secondaryButtonStyle || "outline"
         } as React.CSSProperties
       }
     >

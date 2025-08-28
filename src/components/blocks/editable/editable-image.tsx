@@ -35,12 +35,14 @@ export const EditableImage = ({
   aspectRatio,
   onError
 }: EditableImageProps) => {
-  const { handleEdit } = useBlockEdit()
+  const { handleEdit, blockId } = useBlockEdit()
   const { startUpload, isUploading } = useUploadThing("blockImageUploader")
   const [isCropperOpen, setIsCropperOpen] = useState(false)
 
+  const uploadElementId = `file-input-${blockId}-${fieldPath}`
+
   const initiateUpload = () => {
-    document.getElementById(`file-input-${fieldPath}`)?.click()
+    document.getElementById(uploadElementId)?.click()
   }
 
   const handleFileUpload = async (file: File) => {
@@ -100,7 +102,7 @@ export const EditableImage = ({
       )}
 
       <input
-        id={`file-input-${fieldPath}`}
+        id={uploadElementId}
         type="file"
         accept="image/*"
         onChange={handleFileSelect}

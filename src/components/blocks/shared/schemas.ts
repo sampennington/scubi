@@ -3,6 +3,7 @@ import { BlockType } from "@/database/schema"
 import { BlockButtonSchema } from "./primitives"
 import { HeroContentSchema, isHeroContent } from "../layout/hero/hero.schema"
 import { StatsContentSchema, isStatsContent as isStatsContentFromSchema } from "../content/stats/stats.schema"
+import { contentStickySchema, type ContentStickyContent } from "../content/content-sticky/content-sticky.schema"
 
 export const TextContentSchema = z.object({
   text: z.string(),
@@ -285,7 +286,8 @@ export const BlockSchemas = {
   [BlockType.TWO_COLUMN]: TwoColumnBlockContentSchema,
   [BlockType.COURSES]: CoursesContentSchema,
   [BlockType.MARINE_LIFE]: MarineLifeContentSchema,
-  [BlockType.STATS]: StatsContentSchema
+  [BlockType.STATS]: StatsContentSchema,
+  [BlockType.CONTENT_STICKY]: contentStickySchema
 } as const
 
 export type BlockButton = z.infer<typeof BlockButtonSchema>
@@ -381,6 +383,10 @@ export function isStatsContent(data: unknown): data is StatsContent {
   return isStatsContentFromSchema(data)
 }
 
+export function isContentStickyContent(data: unknown): data is ContentStickyContent {
+  return contentStickySchema.safeParse(data).success
+}
+
 export const typeGuardMap: Record<BlockType, (data: unknown) => boolean> = {
   [BlockType.HERO]: isHeroContent,
   [BlockType.TEXT]: isTextContent,
@@ -401,6 +407,6 @@ export const typeGuardMap: Record<BlockType, (data: unknown) => boolean> = {
   [BlockType.MARINE_LIFE]: isMarineLifeContent,
   [BlockType.REVIEWS]: isReviewsContent,
   [BlockType.STATS]: isStatsContent,
-  [BlockType.CONTENT_STICKY]: (data) => false,
+  [BlockType.CONTENT_STICKY]: isContentStickyContent,
   [BlockType.DIVE_SITES]: (data) => false
 }

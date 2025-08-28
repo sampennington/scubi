@@ -246,7 +246,11 @@ export const siteSettings = pgTable("site_settings", {
   secondaryColor: text("secondary_color"),
   accentColor: text("accent_color"),
   fontFamilyHeading: text("font_family_heading"),
-  fontFamilyBody: text("font_family_body")
+  fontFamilyBody: text("font_family_body"),
+  buttonBorderRadius: text("button_border_radius").default("md"),
+  buttonSize: text("button_size").default("md"),
+  primaryButtonStyle: text("primary_button_style").default("solid"),
+  secondaryButtonStyle: text("secondary_button_style").default("outline")
 })
 
 export const reviews = pgTable("reviews", {

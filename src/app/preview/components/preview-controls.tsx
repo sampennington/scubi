@@ -1,5 +1,6 @@
 "use client"
 
+import { useState } from "react"
 import { useRouter } from "next/navigation"
 import { Button } from "@/components/ui/button"
 import {
@@ -9,15 +10,18 @@ import {
   SendIcon,
   SmartphoneIcon,
   TabletIcon,
-  MonitorIcon
+  MonitorIcon,
+  PaletteIcon
 } from "lucide-react"
 import { ShopOwner } from "@/components/ui/shop-ownership-check"
 import { useSite } from "@/app/preview/components/site-context"
 import { Switch } from "@/components/ui/switch"
+import { ThemeEditorModal } from "./theme-editor-modal"
 import type { DeviceId } from "@/lib/preview-presets"
 
 export function PreviewControls({ shopId }: { shopId: string }) {
   const router = useRouter()
+  const [isThemeModalOpen, setIsThemeModalOpen] = useState(false)
   const { isEditMode, setEditMode, publishSite, previewDimension, setPreviewDimension } = useSite()
 
   const handleBack = () => {
@@ -76,6 +80,16 @@ export function PreviewControls({ shopId }: { shopId: string }) {
           <Button
             variant="outline"
             size="sm"
+            onClick={() => setIsThemeModalOpen(true)}
+            className="flex items-center gap-2"
+          >
+            <PaletteIcon className="h-4 w-4" />
+            <span className="hidden sm:inline">Theme</span>
+          </Button>
+
+          <Button
+            variant="outline"
+            size="sm"
             onClick={() => setEditMode(!isEditMode)}
             className="flex items-center gap-2"
           >
@@ -94,6 +108,11 @@ export function PreviewControls({ shopId }: { shopId: string }) {
           </Button>
         </div>
       </div>
+      
+      <ThemeEditorModal 
+        isOpen={isThemeModalOpen} 
+        onClose={() => setIsThemeModalOpen(false)} 
+      />
     </ShopOwner>
   )
 }
