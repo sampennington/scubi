@@ -1,3 +1,4 @@
+import { ComponentType } from "react"
 import type { z } from "zod"
 
 // Base field configuration
@@ -115,9 +116,10 @@ export interface BlockConfig {
   name: string
   description?: string
   category: "layout" | "content" | "media" | "commerce" | "social" | "interactive" | "specialized"
-  icon?: string
+  icon?: ComponentType
   schema: z.ZodSchema
   settings: SettingsConfig
+  default: Record<string, unknown>
   preview?: PreviewConfig
   version?: string
   deprecated?: boolean

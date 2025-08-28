@@ -2,6 +2,7 @@ import { z } from "zod"
 import { BlockType } from "@/database/schema"
 import { BlockButtonSchema } from "./primitives"
 import { HeroContentSchema, isHeroContent } from "../layout/hero/hero.schema"
+import { StatsContentSchema, isStatsContent as isStatsContentFromSchema } from "../content/stats/stats.schema"
 
 export const TextContentSchema = z.object({
   text: z.string(),
@@ -283,7 +284,8 @@ export const BlockSchemas = {
   [BlockType.SOCIAL_FEED]: SocialFeedContentSchema,
   [BlockType.TWO_COLUMN]: TwoColumnBlockContentSchema,
   [BlockType.COURSES]: CoursesContentSchema,
-  [BlockType.MARINE_LIFE]: MarineLifeContentSchema
+  [BlockType.MARINE_LIFE]: MarineLifeContentSchema,
+  [BlockType.STATS]: StatsContentSchema
 } as const
 
 export type BlockButton = z.infer<typeof BlockButtonSchema>
@@ -305,6 +307,7 @@ export type TwoColumnContent = z.infer<typeof TwoColumnBlockContentSchema>
 export type CoursesContent = z.infer<typeof CoursesContentSchema>
 export type MarineLifeContent = z.infer<typeof MarineLifeContentSchema>
 export type ReviewsContent = z.infer<typeof ReviewsContentSchema>
+export type StatsContent = z.infer<typeof StatsContentSchema>
 
 export function isTextContent(data: unknown): data is TextContent {
   return TextContentSchema.safeParse(data).success
@@ -374,6 +377,10 @@ export function isReviewsContent(data: unknown): data is ReviewsContent {
   return ReviewsContentSchema.safeParse(data).success
 }
 
+export function isStatsContent(data: unknown): data is StatsContent {
+  return isStatsContentFromSchema(data)
+}
+
 export const typeGuardMap: Record<BlockType, (data: unknown) => boolean> = {
   [BlockType.HERO]: isHeroContent,
   [BlockType.TEXT]: isTextContent,
@@ -393,5 +400,7 @@ export const typeGuardMap: Record<BlockType, (data: unknown) => boolean> = {
   [BlockType.COURSES]: isCoursesContent,
   [BlockType.MARINE_LIFE]: isMarineLifeContent,
   [BlockType.REVIEWS]: isReviewsContent,
+  [BlockType.STATS]: isStatsContent,
+  [BlockType.CONTENT_STICKY]: (data) => false,
   [BlockType.DIVE_SITES]: (data) => false
 }

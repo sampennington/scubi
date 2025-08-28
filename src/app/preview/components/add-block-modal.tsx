@@ -6,10 +6,9 @@ import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { SearchIcon, PlusIcon } from "lucide-react"
 import { useSite } from "@/app/preview/components/site-context"
-import { BlockType } from "@/database/schema"
 import { createBlock, updateBlockOrder } from "@/lib/actions/blocks"
-import { defaultContent } from "@/components/blocks/shared/defaults-index"
 import { toast } from "sonner"
+import { useBlockRegistry } from "@/lib/blocks"
 
 interface AddBlockModalProps {
   isOpen: boolean
@@ -18,62 +17,34 @@ interface AddBlockModalProps {
   order: number | null
 }
 
-const EDITABLE_BLOCKS = [
-  {
-    type: BlockType.HERO,
-    name: "Hero Section",
-    description: "A prominent section with title, text, and call-to-action buttons",
-    icon: "🎯"
-  },
-  {
-    type: BlockType.MULTI_COLUMN,
-    name: "Multi Column",
-    description: "Content organized in multiple columns with headings and descriptions",
-    icon: "📊"
-  },
-  {
-    type: BlockType.TEAM,
-    name: "Team",
-    description: "Showcase team members with photos, roles, and contact information",
-    icon: "👥"
-  },
-  {
-    type: BlockType.CONTACT_FORM,
-    name: "Contact Form",
-    description: "A form for visitors to get in touch with you",
-    icon: "📝"
-  },
-  {
-    type: BlockType.COURSES,
-    name: "Courses",
-    description: "Display available courses with details and pricing",
-    icon: "📚"
-  },
-  {
-    type: BlockType.REVIEWS,
-    name: "Reviews",
-    description: "Display customer reviews from Google, TripAdvisor, and other platforms",
-    icon: "⭐"
-  }
-]
-
 export function AddBlockModal({ isOpen, onClose, onBlockAdded, order }: AddBlockModalProps) {
   const [searchQuery, setSearchQuery] = useState("")
   const [isCreating, setIsCreating] = useState(false)
   const { currentPage, blocks } = useSite()
+  const registry = useBlockRegistry()
 
-  const filteredBlocks = EDITABLE_BLOCKS.filter(
+  const availableBlocks = registry.getAllBlocks()
+  console.log({ availableBlocks })
+  const filteredBlocks = availableBlocks.filter(
     (block) =>
       block.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      block.description.toLowerCase().includes(searchQuery.toLowerCase())
+      block.description?.toLowerCase().includes(searchQuery.toLowerCase())
   )
 
-  const handleCreateBlock = async (blockType: BlockType) => {
+  const handleCreateBlock = async (blockType: string) => {
     setIsCreating(true)
     try {
       if (order === null) {
         throw new Error("Order is required")
       }
+
+      const blockConfig = registry.get(blockType)
+      if (!blockConfig) {
+        throw new Error(`Block type ${blockType} not found in registry`)
+      }
+      
+      console.log('Block config:', blockConfig)
+      console.log('Default content:', blockConfig.default)
 
       const blocksToUpdate = blocks.filter((block) => (block.order ?? 0) > order)
 
@@ -87,7 +58,7 @@ export function AddBlockModal({ isOpen, onClose, onBlockAdded, order }: AddBlock
       const result = await createBlock({
         pageId: currentPage.id,
         type: blockType,
-        content: defaultContent[blockType] as Record<string, unknown>,
+        content: blockConfig.default || {},
         order: order
       })
 
@@ -125,27 +96,31 @@ export function AddBlockModal({ isOpen, onClose, onBlockAdded, order }: AddBlock
           </div>
 
           <div className="grid gap-3">
-            {filteredBlocks.map((block) => (
-              <div
-                key={block.type}
-                className="flex items-start gap-3 rounded-lg border p-3 transition-colors hover:bg-accent/50"
-              >
-                <div className="text-2xl">{block.icon}</div>
-                <div className="min-w-0 flex-1">
-                  <h3 className="font-medium text-sm">{block.name}</h3>
-                  <p className="mt-1 text-muted-foreground text-sm">{block.description}</p>
-                </div>
-                <Button
-                  size="sm"
-                  onClick={() => handleCreateBlock(block.type)}
-                  disabled={isCreating}
-                  className="flex-shrink-0"
+            {filteredBlocks.map((block) => {
+              const Icon = block.icon
+              console.log({ Icon })
+              return (
+                <div
+                  key={block.id}
+                  className="flex items-start gap-3 rounded-lg border p-3 transition-colors hover:bg-accent/50"
                 >
-                  <PlusIcon className="mr-2 h-4 w-4" />
-                  Add
-                </Button>
-              </div>
-            ))}
+                  {Icon && <div className="text-2xl">{<Icon />}</div>}
+                  <div className="min-w-0 flex-1">
+                    <h3 className="font-medium text-sm">{block.name}</h3>
+                    <p className="mt-1 text-muted-foreground text-sm">{block.description}</p>
+                  </div>
+                  <Button
+                    size="sm"
+                    onClick={() => handleCreateBlock(block.id)}
+                    disabled={isCreating}
+                    className="flex-shrink-0"
+                  >
+                    <PlusIcon className="mr-2 h-4 w-4" />
+                    Add
+                  </Button>
+                </div>
+              )
+            })}
           </div>
 
           {filteredBlocks.length === 0 && (

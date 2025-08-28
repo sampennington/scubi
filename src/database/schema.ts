@@ -29,7 +29,8 @@ export const BlockType = {
   MARINE_LIFE: "marine-life",
   DIVE_SITES: "dive-sites",
   REVIEWS: "reviews",
-  CONTENT_STICKY: "content-sticky"
+  CONTENT_STICKY: "content-sticky",
+  STATS: "stats"
 } as const
 
 export const BlockTypeDescriptions: Record<BlockType, string> = {
@@ -72,7 +73,9 @@ export const BlockTypeDescriptions: Record<BlockType, string> = {
   [BlockType.REVIEWS]:
     "Aggregates third‑party reviews (e.g., Google, TripAdvisor) with ratings and excerpts, optionally linking to sources.",
   [BlockType.CONTENT_STICKY]:
-    "A content section with sticky image layout featuring text, features list, and background graphics for showcasing workflows or processes."
+    "A content section with sticky image layout featuring text, features list, and background graphics for showcasing workflows or processes.",
+  [BlockType.STATS]:
+    "Display impressive statistics and key metrics in a grid layout with customizable values, labels, and styling options."
 }
 
 export type BlockType = (typeof BlockType)[keyof typeof BlockType]

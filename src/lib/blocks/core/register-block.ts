@@ -9,11 +9,11 @@ export interface BlockDefinition<T> {
   name: string
   description?: string
   category: "layout" | "content" | "media" | "commerce" | "social" | "interactive" | "specialized"
-  icon?: string
+  icon?: ComponentType
   component: ComponentType<Block & { content: T }>
   schema: ZodSchema<T>
   settings: SettingsConfig
-  defaults: T
+  default: T
   preview?: {
     thumbnail?: string
     category?: string
@@ -54,6 +54,7 @@ export function registerBlock<T>(definition: BlockDefinition<T>): void {
     icon: definition.icon,
     schema: definition.schema,
     settings: definition.settings,
+    default: definition.default as Record<string, unknown>,
     preview: definition.preview,
     version: definition.version || "1.0.0",
     deprecated: definition.deprecated || false
@@ -103,14 +104,14 @@ function validateBlockDefinition<T>(definition: BlockDefinition<T>): string[] {
     errors.push("Missing required field: settings")
   }
 
-  if (!definition.defaults) {
+  if (!definition.default) {
     errors.push("Missing required field: defaults")
   }
 
   // Validate schema with defaults
-  if (definition.schema && definition.defaults) {
+  if (definition.schema && definition.default) {
     try {
-      const result = definition.schema.safeParse(definition.defaults)
+      const result = definition.schema.safeParse(definition.default)
       if (!result.success) {
         errors.push(`Default data doesn't match schema: ${result.error.message}`)
       }

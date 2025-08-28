@@ -1,0 +1,6 @@
+export { StatsBlock } from "./stats.component"
+export { defaultStatsContent } from "./stats.default"
+export { statsBlockDefinition } from "./stats.definition"
+export { statsBlockConfig } from "./stats.config"
+export type { StatsContent, StatItem } from "./stats.schema"
+export { StatsContentSchema, StatItemSchema, isStatsContent } from "./stats.schema"

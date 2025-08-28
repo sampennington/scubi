@@ -1,4 +1,6 @@
+import { LayoutPanelTop } from "lucide-react"
 import type { BlockConfig } from "../../../../lib/blocks/core/config-types"
+import { defaultHeroContent } from "./hero.default"
 import { HeroContentSchema } from "./hero.schema"
 
 export const heroBlockConfig: BlockConfig = {
@@ -7,8 +9,9 @@ export const heroBlockConfig: BlockConfig = {
   description:
     "A full-width hero section with title, description, background image, and call-to-action buttons",
   category: "layout",
-  icon: "layout-template",
+  icon: LayoutPanelTop,
   schema: HeroContentSchema,
+  default: defaultHeroContent,
   preview: {
     thumbnail: "/block-previews/hero.jpg",
     category: "Headers",

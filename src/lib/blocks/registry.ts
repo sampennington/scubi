@@ -1,13 +1,16 @@
 import { BlockType } from "@/database/schema"
 import { HeroBlock } from "@/components/blocks/layout/hero"
 import { ContentStickyBlock } from "@/components/blocks/content/content-sticky"
+import { StatsBlock } from "@/components/blocks/content/stats"
 import { registerBlocks } from "./core/register-block"
 import { heroBlockDefinition } from "@/components/blocks/layout/hero/hero.definition"
 import { contentStickyBlockDefinition } from "@/components/blocks/content/content-sticky/content-sticky.definition"
+import { statsBlockDefinition } from "@/components/blocks/content/stats/stats.definition"
 
 export const blockComponents = {
   [BlockType.HERO]: HeroBlock,
-  [BlockType.CONTENT_STICKY]: ContentStickyBlock
+  [BlockType.CONTENT_STICKY]: ContentStickyBlock,
+  [BlockType.STATS]: StatsBlock
 } as const
 
 export type BlockComponentType = keyof typeof blockComponents
@@ -21,4 +24,4 @@ export function isValidBlockType(blockType: string): blockType is BlockType {
 }
 
 // @ts-ignore Cannot make this work!!
-registerBlocks(heroBlockDefinition, contentStickyBlockDefinition)
+registerBlocks(heroBlockDefinition, contentStickyBlockDefinition, statsBlockDefinition)

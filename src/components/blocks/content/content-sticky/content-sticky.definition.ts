@@ -7,13 +7,14 @@ import type { BlockDefinition } from "@/lib/blocks"
 export const contentStickyBlockDefinition: BlockDefinition<ContentStickyContent> = {
   id: "content-sticky",
   name: "Content with Sticky Image",
-  description: "A content section with sticky image layout featuring text, features list, and background graphics",
+  description:
+    "A content section with sticky image layout featuring text, features list, and background graphics",
   category: "content" as const,
-  icon: "layout-grid",
+  icon: contentStickyBlockConfig.icon,
   component: ContentStickyBlock,
   schema: contentStickySchema,
   settings: contentStickyBlockConfig.settings,
-  defaults: defaultContentStickyContent,
+  default: defaultContentStickyContent,
   preview: {
     thumbnail: "/block-previews/content-sticky.jpg",
     category: "Content",

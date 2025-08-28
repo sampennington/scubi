@@ -10,11 +10,11 @@ export const heroBlockDefinition: BlockDefinition<HeroContent> = {
   description:
     "A full-width hero section with title, description, background image, and call-to-action buttons",
   category: "layout" as const,
-  icon: "layout-template",
+  icon: heroBlockConfig.icon,
   component: HeroBlock,
   schema: HeroContentSchema,
   settings: heroBlockConfig.settings,
-  defaults: defaultHeroContent,
+  default: defaultHeroContent,
   preview: {
     thumbnail: "/block-previews/hero.jpg",
     category: "Headers",
