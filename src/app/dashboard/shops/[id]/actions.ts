@@ -20,7 +20,7 @@ export async function createBlock(data: {
   pageId: string
   type: string
   content: Record<string, unknown>
-  order?: number
+  order: number
 }) {
   return createBlockShared(data, [`/dashboard/shops/${data.pageId}`])
 }
@@ -45,30 +45,29 @@ export async function reorderBlocks(blockIds: string[]) {
 }
 
 export async function updateSiteSettings(shopId: string, data: Partial<SiteSettings>) {
+  const session = await auth.api.getSession({ headers: await headers() })
+
+  if (!session?.user) {
+    return { success: false, error: "Unauthorized" }
+  }
+
   try {
-    const session = await auth.api.getSession({ headers: await headers() })
-
-    if (!session?.user) {
-      return { success: false, error: "Unauthorized" }
-    }
-
     await api.siteSettings.update(shopId, data)
-
     return { success: true }
   } catch (error) {
     console.error("Error updating site settings:", error)
-    return { success: false, error: "Error updating site settings" }
+    return { success: false, error: "Could not update site settings. Please try again." }
   }
 }
 
 export async function createPage(shopId: string, data: Partial<Page>) {
+  const session = await auth.api.getSession({ headers: await headers() })
+
+  if (!session?.user) {
+    return { success: false, error: "Unauthorized" }
+  }
+
   try {
-    const session = await auth.api.getSession({ headers: await headers() })
-
-    if (!session?.user) {
-      return { success: false, error: "Unauthorized" }
-    }
-
     await api.pages.create({
       shopId,
       title: data.title || "Untitled Page",
@@ -79,24 +78,23 @@ export async function createPage(shopId: string, data: Partial<Page>) {
 
     return { success: true }
   } catch (error) {
-    console.error("Error creating Page:", error)
-    return { success: false, error: "Error creating Page" }
+    console.error("Error creating page:", error)
+    return { success: false, error: "Could not create page. Please try again." }
   }
 }
 
 export async function updatePage(id: string, data: Partial<Page>) {
+  const session = await auth.api.getSession({ headers: await headers() })
+
+  if (!session?.user) {
+    return { success: false, error: "Unauthorized" }
+  }
+
   try {
-    const session = await auth.api.getSession({ headers: await headers() })
-
-    if (!session?.user) {
-      return { success: false, error: "Unauthorized" }
-    }
-
     await api.pages.update(id, data)
-
     return { success: true }
   } catch (error) {
-    console.error("Error updating Page:", error)
-    return { success: false, error: "Error updating Page" }
+    console.error("Error updating page:", error)
+    return { success: false, error: "Could not update page. Please try again." }
   }
 }

@@ -6,7 +6,12 @@ import { generateId } from "@/lib/utils"
 export type Block = typeof blocks.$inferSelect
 export const blockApi = {
   async getByPageId(pageId: string): Promise<Block[]> {
-    return db.select().from(blocks).where(eq(blocks.pageId, pageId)).orderBy(asc(blocks.order))
+    try {
+      return await db.select().from(blocks).where(eq(blocks.pageId, pageId)).orderBy(asc(blocks.order))
+    } catch (error) {
+      console.error('Failed to fetch blocks by page ID:', error)
+      throw new Error('Failed to load blocks')
+    }
   },
 
   async create(data: {
@@ -15,29 +20,49 @@ export const blockApi = {
     content: Record<string, unknown>
     order: number
   }): Promise<Block> {
-    const [block] = await db
-      .insert(blocks)
-      .values({
-        id: generateId(),
-        ...data
-      })
-      .returning()
-    return block
+    try {
+      const [block] = await db
+        .insert(blocks)
+        .values({
+          id: generateId(),
+          ...data
+        })
+        .returning()
+      return block
+    } catch (error) {
+      console.error('Failed to create block:', error)
+      throw new Error('Failed to create block')
+    }
   },
 
   async update(id: string, data: Partial<Block>): Promise<Block | null> {
-    const [block] = await db.update(blocks).set(data).where(eq(blocks.id, id)).returning()
-    return block || null
+    try {
+      const [block] = await db.update(blocks).set(data).where(eq(blocks.id, id)).returning()
+      return block || null
+    } catch (error) {
+      console.error('Failed to update block:', error)
+      throw new Error('Failed to update block')
+    }
   },
 
   async delete(id: string): Promise<boolean> {
-    const result = await db.delete(blocks).where(eq(blocks.id, id))
-    return (result.rowCount ?? 0) > 0
+    try {
+      const result = await db.delete(blocks).where(eq(blocks.id, id))
+      return (result.rowCount ?? 0) > 0
+    } catch (error) {
+      console.error('Failed to delete block:', error)
+      throw new Error('Failed to delete block')
+    }
   },
 
   async reorder(blockIds: string[]): Promise<void> {
-    for (let i = 0; i < blockIds.length; i++) {
-      await db.update(blocks).set({ order: i }).where(eq(blocks.id, blockIds[i]))
+    try {
+      for (let i = 0; i < blockIds.length; i++) {
+        await db.update(blocks).set({ order: i }).where(eq(blocks.id, blockIds[i]))
+      }
+    } catch (error) {
+      console.error('Failed to reorder blocks:', error)
+      throw new Error('Failed to reorder blocks')
     }
   }
 }

@@ -24,14 +24,13 @@ export async function createBlock(
     pageId: string
     type: string
     content: Record<string, unknown>
-    order?: number
+    order: number
   },
   revalidatePaths: string[] = []
 ): Promise<{ success: boolean; block?: Block; error?: string }> {
   try {
     const block = await api.blocks.create(data)
 
-    // Revalidate all specified paths
     revalidatePaths.forEach((path) => revalidatePath(path))
 
     return { success: true, block }
