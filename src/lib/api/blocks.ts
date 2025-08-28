@@ -13,7 +13,7 @@ export const blockApi = {
     pageId: string
     type: string
     content: Record<string, unknown>
-    order?: number
+    order: number
   }): Promise<Block> {
     const [block] = await db
       .insert(blocks)

@@ -1,4 +1,4 @@
-import { ComponentType } from "react"
+import type { ComponentType } from "react"
 import type { z } from "zod"
 
 // Base field configuration

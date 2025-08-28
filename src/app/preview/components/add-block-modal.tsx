@@ -14,7 +14,7 @@ interface AddBlockModalProps {
   isOpen: boolean
   onClose: () => void
   onBlockAdded: () => void
-  order: number | null
+  order: number
 }
 
 export function AddBlockModal({ isOpen, onClose, onBlockAdded, order }: AddBlockModalProps) {
@@ -34,19 +34,12 @@ export function AddBlockModal({ isOpen, onClose, onBlockAdded, order }: AddBlock
   const handleCreateBlock = async (blockType: string) => {
     setIsCreating(true)
     try {
-      if (order === null) {
-        throw new Error("Order is required")
-      }
-
       const blockConfig = registry.get(blockType)
       if (!blockConfig) {
         throw new Error(`Block type ${blockType} not found in registry`)
       }
-      
-      console.log('Block config:', blockConfig)
-      console.log('Default content:', blockConfig.default)
 
-      const blocksToUpdate = blocks.filter((block) => (block.order ?? 0) > order)
+      const blocksToUpdate = blocks.filter((block) => (block.order ?? 0) >= order)
 
       for (const block of blocksToUpdate) {
         const updateResult = await updateBlockOrder(block.id, (block.order ?? 0) + 1)
@@ -59,7 +52,7 @@ export function AddBlockModal({ isOpen, onClose, onBlockAdded, order }: AddBlock
         pageId: currentPage.id,
         type: blockType,
         content: blockConfig.default || {},
-        order: order
+        order
       })
 
       if (!result.success) {
@@ -98,7 +91,6 @@ export function AddBlockModal({ isOpen, onClose, onBlockAdded, order }: AddBlock
           <div className="grid gap-3">
             {filteredBlocks.map((block) => {
               const Icon = block.icon
-              console.log({ Icon })
               return (
                 <div
                   key={block.id}

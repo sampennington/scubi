@@ -213,7 +213,7 @@ export const blocks = pgTable("blocks", {
     .notNull(),
   type: text("type").notNull(), // 'hero', 'text', 'image', 'multi-column'
   content: jsonb("content").notNull(), // block content
-  order: integer("order").default(0),
+  order: integer("order"),
   updatedAt: timestamp("updated_at")
     .$defaultFn(() => /* @__PURE__ */ new Date())
     .notNull()
