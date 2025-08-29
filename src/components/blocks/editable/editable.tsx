@@ -42,7 +42,15 @@ export const E = {
     }
 
     if (!isEditMode) {
-      return <NoEditImage src={src} alt={alt} width={width} height={height} />
+      return (
+        <NoEditImage
+          src={src}
+          alt={alt}
+          width={width}
+          height={height}
+          className={props.className}
+        />
+      )
     }
 
     return (

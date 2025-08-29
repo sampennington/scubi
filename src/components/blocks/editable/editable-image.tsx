@@ -69,13 +69,20 @@ export const EditableImage = ({
   return (
     <div
       className={cn(
-        "overflow-hidden object-cover",
+        "overflow-hidden",
         buttons === "overlay" ? "relative" : "flex flex-col items-center p-3",
         className
       )}
     >
       {src ? (
-        <NoEditImage src={src} alt={alt} width={width} height={height} onError={onError} />
+        <Image
+          src={src}
+          alt={alt}
+          width={width || 400}
+          height={height || 400}
+          onError={onError}
+          className={cn("transition-all duration-200")}
+        />
       ) : (
         <button
           type="button"
@@ -131,17 +138,20 @@ export const NoEditImage = ({
   alt,
   width,
   height,
-  onError
+  onError,
+  className
 }: {
   src: string
   alt: string
   width?: number
   height?: number
+  className?: string
   onError?: () => void
 }) => {
   if (!src) {
     return null
   }
+
   return (
     <Image
       src={src}
@@ -149,7 +159,7 @@ export const NoEditImage = ({
       width={width || 400}
       height={height || 400}
       onError={onError}
-      className={cn("object-cover transition-all duration-200")}
+      className={className}
     />
   )
 }
