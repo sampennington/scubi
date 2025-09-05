@@ -1,7 +1,17 @@
 import type React from "react"
 import { useState, useMemo, useEffect } from "react"
 import { createPortal } from "react-dom"
-import { Settings, X, Trash2, GripVertical, Plus, ChevronDown, ChevronRight } from "lucide-react"
+import {
+  Settings,
+  X,
+  Trash2,
+  GripVertical,
+  Plus,
+  ChevronDown,
+  ChevronRight,
+  ChevronUp,
+  ChevronDown as MoveDown
+} from "lucide-react"
 import { Button } from "../../ui/button"
 import * as DialogPrimitive from "@radix-ui/react-dialog"
 import { cn } from "@/lib/utils"
@@ -10,6 +20,8 @@ import { useSite } from "../../../app/preview/components/site-context"
 import { AddBlockModal } from "../../../app/preview/components/add-block-modal"
 import { useBlockEdit } from "./context"
 import { deleteBlock as deleteBlockPreview } from "@/app/preview/[shopId]/actions"
+import { moveBlockUp, moveBlockDown } from "@/lib/actions/blocks"
+import { toast } from "sonner"
 
 interface BlockSettingsPanelProps {
   children: React.ReactNode
@@ -74,7 +86,7 @@ export const BlockSettingsPanel = ({
 }: BlockSettingsPanelProps) => {
   const [isOpen, setIsOpen] = useState(false)
   const [isModalOpen, setIsModalOpen] = useState(false)
-  const { isEditMode, refreshBlocks } = useSite()
+  const { isEditMode, blocks, setBlocks, refreshBlocks, currentPage } = useSite()
   const { blockId, order } = useBlockEdit()
 
   const handleBlockAdded = useMemo<() => void>(
@@ -92,6 +104,48 @@ export const BlockSettingsPanel = ({
       await refreshBlocks()
     }
   }, [onDeleteBlock, refreshBlocks, blockId])
+
+  const handleMoveBlock = async (direction: "up" | "down") => {
+    if (!blockId) return
+
+    const currentIndex = blocks.findIndex((b) => b.id === blockId)
+    const isUp = direction === "up"
+
+    // Store the current blocks for potential revert
+    const previousBlocks = [...blocks]
+
+    // Create optimistic update
+    const newBlocks = [...blocks]
+    const [movedBlock] = newBlocks.splice(currentIndex, 1)
+    newBlocks.splice(isUp ? currentIndex - 1 : currentIndex + 1, 0, movedBlock)
+
+    // Apply optimistic update immediately
+    setBlocks(newBlocks)
+
+    try {
+      const result = await (isUp ? moveBlockUp : moveBlockDown)(blockId, [
+        `/preview/${currentPage.shopId}`
+      ])
+      if (result.success) {
+        await refreshBlocks()
+      } else {
+        // Revert on failure
+        setBlocks(previousBlocks)
+        toast.error(`Failed to move block ${direction}`, {
+          description: result.error || "There was an issue reordering the block"
+        })
+      }
+    } catch (_error) {
+      // Revert on error
+      setBlocks(previousBlocks)
+      toast.error("Error moving block", {
+        description: "Network error - please check your connection and try again"
+      })
+    }
+  }
+
+  const handleMoveUp = () => handleMoveBlock("up")
+  const handleMoveDown = () => handleMoveBlock("down")
 
   if (!isEditMode) {
     return null
@@ -114,6 +168,26 @@ export const BlockSettingsPanel = ({
             title="Add block above"
           >
             <Plus className="h-4 w-4" />
+          </Button>
+
+          <Button
+            variant="ghost"
+            size="sm"
+            onClick={handleMoveUp}
+            className="h-8 w-8 p-0 hover:bg-accent"
+            title="Move block up"
+          >
+            <ChevronUp className="h-4 w-4" />
+          </Button>
+
+          <Button
+            variant="ghost"
+            size="sm"
+            onClick={handleMoveDown}
+            className="h-8 w-8 p-0 hover:bg-accent"
+            title="Move block down"
+          >
+            <MoveDown className="h-4 w-4" />
           </Button>
 
           <DialogPrimitive.Trigger asChild>
@@ -154,7 +228,7 @@ export const BlockSettingsPanel = ({
           isOpen={isModalOpen}
           onClose={() => setIsModalOpen(false)}
           onBlockAdded={handleBlockAdded}
-          order={order}
+          order={order ?? 0}
         />
 
         <SettingsPortal>

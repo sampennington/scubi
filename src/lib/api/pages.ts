@@ -16,8 +16,8 @@ export const pageApi = {
       const [page] = await db.select().from(pages).where(eq(pages.id, id))
       return page || null
     } catch (error) {
-      console.error('Failed to fetch page by ID:', error)
-      throw new Error('Failed to load page')
+      console.error("Failed to fetch page by ID:", error)
+      throw new Error("Failed to load page")
     }
   },
 
@@ -34,11 +34,11 @@ export const pageApi = {
 
       return page
     } catch (error) {
-      if (error instanceof Error && error.message === 'NEXT_NOT_FOUND') {
+      if (error instanceof Error && error.message === "NEXT_NOT_FOUND") {
         throw error // Re-throw notFound() errors
       }
-      console.error('Failed to fetch page by slug:', error)
-      throw new Error('Failed to load page')
+      console.error("Failed to fetch page by slug:", error)
+      throw new Error("Failed to load page")
     }
   },
 
@@ -46,8 +46,8 @@ export const pageApi = {
     try {
       return await db.select().from(pages).where(eq(pages.shopId, shopId)).orderBy(asc(pages.slug))
     } catch (error) {
-      console.error('Failed to fetch pages by shop ID:', error)
-      throw new Error('Failed to load pages')
+      console.error("Failed to fetch pages by shop ID:", error)
+      throw new Error("Failed to load pages")
     }
   },
 
@@ -70,8 +70,8 @@ export const pageApi = {
 
       return buildTree(null)
     } catch (error) {
-      console.error('Failed to fetch navigation tree:', error)
-      throw new Error('Failed to load navigation')
+      console.error("Failed to fetch navigation tree:", error)
+      throw new Error("Failed to load navigation")
     }
   },
 
@@ -83,8 +83,8 @@ export const pageApi = {
         .where(and(eq(pages.shopId, shopId), eq(pages.showInNav, true)))
         .orderBy(asc(pages.order), asc(pages.title))
     } catch (error) {
-      console.error('Failed to fetch visible pages:', error)
-      throw new Error('Failed to load visible pages')
+      console.error("Failed to fetch visible pages:", error)
+      throw new Error("Failed to load visible pages")
     }
   },
 
@@ -110,8 +110,8 @@ export const pageApi = {
         .returning()
       return page
     } catch (error) {
-      console.error('Failed to create page:', error)
-      throw new Error('Failed to create page')
+      console.error("Failed to create page:", error)
+      throw new Error("Failed to create page")
     }
   },
 
@@ -120,8 +120,8 @@ export const pageApi = {
       const [page] = await db.update(pages).set(data).where(eq(pages.id, id)).returning()
       return page || null
     } catch (error) {
-      console.error('Failed to update page:', error)
-      throw new Error('Failed to update page')
+      console.error("Failed to update page:", error)
+      throw new Error("Failed to update page")
     }
   },
 
@@ -130,8 +130,8 @@ export const pageApi = {
       const result = await db.delete(pages).where(eq(pages.id, id))
       return (result.rowCount ?? 0) > 0
     } catch (error) {
-      console.error('Failed to delete page:', error)
-      throw new Error('Failed to delete page')
+      console.error("Failed to delete page:", error)
+      throw new Error("Failed to delete page")
     }
   },
 
@@ -189,8 +189,8 @@ export const pageApi = {
         order: 3
       })
     } catch (error) {
-      console.error('Failed to create example pages:', error)
-      throw new Error('Failed to create example pages')
+      console.error("Failed to create example pages:", error)
+      throw new Error("Failed to create example pages")
     }
   }
 }

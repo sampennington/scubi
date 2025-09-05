@@ -1,6 +1,6 @@
-'use client'
+"use client"
 
-import { ErrorBoundary } from '@/components/ui/error-boundary'
+import { ErrorBoundary } from "@/components/ui/error-boundary"
 
 export default function GlobalError({
   error,
@@ -9,11 +9,5 @@ export default function GlobalError({
   error: Error & { digest?: string }
   reset: () => void
 }) {
-  return (
-    <ErrorBoundary 
-      error={error} 
-      reset={reset}
-      title="Something went wrong"
-    />
-  )
+  return <ErrorBoundary error={error} reset={reset} title="Something went wrong" />
 }

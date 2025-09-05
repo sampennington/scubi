@@ -9,7 +9,9 @@ import type { BlockType } from "@/database/schema"
 export const BlockRenderer = () => {
   const { blocks, isLoadingLocalBlocks } = useSite()
 
-  if (isLoadingLocalBlocks) {
+  console.log("blocks", isLoadingLocalBlocks)
+
+  if (isLoadingLocalBlocks && blocks.length === 0) {
     return (
       <div className="flex min-h-[50vh] w-full items-center justify-center">
         <div className="flex flex-col items-center gap-4">

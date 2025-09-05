@@ -12,20 +12,17 @@ interface SkeletonCardProps {
   className?: string
 }
 
-export function SkeletonCard({ 
-  titleWidth = "w-32", 
-  lines = 2, 
-  className = "" 
+export function SkeletonCard({
+  titleWidth = "w-32",
+  lines = 2,
+  className = ""
 }: SkeletonCardProps) {
   return (
     <div className={`rounded-lg border bg-white p-6 ${className}`}>
       <Skeleton className={`mb-4 h-6 ${titleWidth}`} />
       <div className="space-y-2">
         {Array.from({ length: lines }).map((_, i) => (
-          <Skeleton 
-            key={i} 
-            className={`h-4 ${i === lines - 1 ? 'w-3/4' : 'w-full'}`} 
-          />
+          <Skeleton key={i} className={`h-4 ${i === lines - 1 ? "w-3/4" : "w-full"}`} />
         ))}
       </div>
     </div>

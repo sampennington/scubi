@@ -2,8 +2,14 @@ import { z } from "zod"
 import { BlockType } from "@/database/schema"
 import { BlockButtonSchema } from "./primitives"
 import { HeroContentSchema, isHeroContent } from "../layout/hero/hero.schema"
-import { StatsContentSchema, isStatsContent as isStatsContentFromSchema } from "../content/stats/stats.schema"
-import { contentStickySchema, type ContentStickyContent } from "../content/content-sticky/content-sticky.schema"
+import {
+  StatsContentSchema,
+  isStatsContent as isStatsContentFromSchema
+} from "../content/stats/stats.schema"
+import {
+  contentStickySchema,
+  type ContentStickyContent
+} from "../content/content-sticky/content-sticky.schema"
 
 export const TextContentSchema = z.object({
   text: z.string(),

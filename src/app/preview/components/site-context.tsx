@@ -15,6 +15,7 @@ export interface SiteContextValue {
   currentPage: Page
   pages: NavigationItem[]
   blocks: Block[]
+  setBlocks: (blocks: Block[]) => void
   siteSettings: SiteSettings
   currentPath: string
   isShopOwner: boolean
@@ -49,10 +50,8 @@ export function TemplateProvider({
 }: TemplateProviderProps) {
   const [isEditMode, setIsEditMode] = useState(false)
   const [blockSettingsActive, setBlockSettingsActive] = useState<string | null>()
-
   const [isLoadingLocalBlocks, setIsLoadingLocalBlocks] = useState(false)
   const [siteSettings, setSiteSettings] = useState<SiteSettings>(initialSiteSettings)
-
   const [blocks, setBlocks] = useState<Block[]>([])
   const [previewDimension, setPreviewDimension] = useState<"mobile" | "tablet" | "desktop">(
     "desktop"
@@ -108,6 +107,7 @@ export function TemplateProvider({
         setPreviewDimension,
         siteSettings,
         blocks,
+        setBlocks,
         pages,
         currentPage,
         currentPath,

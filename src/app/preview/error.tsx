@@ -1,6 +1,6 @@
-'use client'
+"use client"
 
-import { ErrorBoundary } from '@/components/ui/error-boundary'
+import { ErrorBoundary } from "@/components/ui/error-boundary"
 
 export default function PreviewErrorPage({
   error,

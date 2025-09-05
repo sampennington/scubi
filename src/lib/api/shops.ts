@@ -20,11 +20,11 @@ export const shopApi = {
       }
       return shop
     } catch (error) {
-      if (error instanceof Error && error.message === 'NEXT_NOT_FOUND') {
+      if (error instanceof Error && error.message === "NEXT_NOT_FOUND") {
         throw error
       }
-      console.error('Failed to fetch shop by ID:', error)
-      throw new Error('Failed to load shop')
+      console.error("Failed to fetch shop by ID:", error)
+      throw new Error("Failed to load shop")
     }
   },
 
@@ -36,11 +36,11 @@ export const shopApi = {
       }
       return shop
     } catch (error) {
-      if (error instanceof Error && error.message === 'NEXT_NOT_FOUND') {
+      if (error instanceof Error && error.message === "NEXT_NOT_FOUND") {
         throw error
       }
-      console.error('Failed to fetch shop by slug:', error)
-      throw new Error('Failed to load shop')
+      console.error("Failed to fetch shop by slug:", error)
+      throw new Error("Failed to load shop")
     }
   },
 
@@ -49,8 +49,8 @@ export const shopApi = {
       const [shop] = await db.select().from(shops).where(eq(shops.customDomain, domain))
       return shop || null
     } catch (error) {
-      console.error('Failed to fetch shop by domain:', error)
-      throw new Error('Failed to load shop')
+      console.error("Failed to fetch shop by domain:", error)
+      throw new Error("Failed to load shop")
     }
   },
 
@@ -73,8 +73,8 @@ export const shopApi = {
 
       return results
     } catch (error) {
-      console.error('Failed to fetch shops by user ID:', error)
-      throw new Error('Failed to load shops')
+      console.error("Failed to fetch shops by user ID:", error)
+      throw new Error("Failed to load shops")
     }
   },
 
@@ -96,8 +96,8 @@ export const shopApi = {
 
       return shop
     } catch (error) {
-      console.error('Failed to create shop:', error)
-      throw new Error('Failed to create shop')
+      console.error("Failed to create shop:", error)
+      throw new Error("Failed to create shop")
     }
   },
 
@@ -106,8 +106,8 @@ export const shopApi = {
       const [shop] = await db.update(shops).set(data).where(eq(shops.id, id)).returning()
       return shop || null
     } catch (error) {
-      console.error('Failed to update shop:', error)
-      throw new Error('Failed to update shop')
+      console.error("Failed to update shop:", error)
+      throw new Error("Failed to update shop")
     }
   },
 
@@ -116,8 +116,8 @@ export const shopApi = {
       const result = await db.delete(shops).where(eq(shops.id, id))
       return (result.rowCount ?? 0) > 0
     } catch (error) {
-      console.error('Failed to delete shop:', error)
-      throw new Error('Failed to delete shop')
+      console.error("Failed to delete shop:", error)
+      throw new Error("Failed to delete shop")
     }
   }
 }

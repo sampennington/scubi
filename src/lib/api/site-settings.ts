@@ -9,8 +9,8 @@ export const siteSettingsApi = {
       const [settings] = await db.select().from(siteSettings).where(eq(siteSettings.shopId, shopId))
       return settings || null
     } catch (error) {
-      console.error('Failed to fetch site settings by shop ID:', error)
-      throw new Error('Failed to load site settings')
+      console.error("Failed to fetch site settings by shop ID:", error)
+      throw new Error("Failed to load site settings")
     }
   },
 
@@ -36,8 +36,8 @@ export const siteSettingsApi = {
 
       return result || null
     } catch (error) {
-      console.error('Failed to update site settings:', error)
-      throw new Error('Failed to update site settings')
+      console.error("Failed to update site settings:", error)
+      throw new Error("Failed to update site settings")
     }
   }
 }

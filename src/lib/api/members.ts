@@ -28,8 +28,8 @@ export const memberApi = {
         .where(eq(shopMembers.shopId, shopId))
         .orderBy(asc(shopMembers.role))
     } catch (error) {
-      console.error('Failed to fetch shop members:', error)
-      throw new Error('Failed to load shop members')
+      console.error("Failed to fetch shop members:", error)
+      throw new Error("Failed to load shop members")
     }
   },
 
@@ -38,8 +38,8 @@ export const memberApi = {
       const [member] = await db.insert(shopMembers).values(data).returning()
       return member
     } catch (error) {
-      console.error('Failed to add shop member:', error)
-      throw new Error('Failed to add shop member')
+      console.error("Failed to add shop member:", error)
+      throw new Error("Failed to add shop member")
     }
   },
 
@@ -52,8 +52,8 @@ export const memberApi = {
         .returning()
       return member || null
     } catch (error) {
-      console.error('Failed to update member role:', error)
-      throw new Error('Failed to update member role')
+      console.error("Failed to update member role:", error)
+      throw new Error("Failed to update member role")
     }
   },
 
@@ -64,8 +64,8 @@ export const memberApi = {
         .where(and(eq(shopMembers.userId, userId), eq(shopMembers.shopId, shopId)))
       return (result.rowCount ?? 0) > 0
     } catch (error) {
-      console.error('Failed to remove shop member:', error)
-      throw new Error('Failed to remove shop member')
+      console.error("Failed to remove shop member:", error)
+      throw new Error("Failed to remove shop member")
     }
   },
 
@@ -77,8 +77,8 @@ export const memberApi = {
         .where(and(eq(shopMembers.userId, userId), eq(shopMembers.shopId, shopId)))
       return member?.role || null
     } catch (error) {
-      console.error('Failed to get member role:', error)
-      throw new Error('Failed to get member role')
+      console.error("Failed to get member role:", error)
+      throw new Error("Failed to get member role")
     }
   },
 
@@ -90,7 +90,7 @@ export const memberApi = {
         .where(and(eq(shopMembers.userId, userId), eq(shopMembers.shopId, shopId)))
       return !!member
     } catch (error) {
-      console.error('Failed to check membership:', error)
+      console.error("Failed to check membership:", error)
       return false
     }
   },
@@ -103,7 +103,7 @@ export const memberApi = {
         .where(and(eq(shopMembers.userId, userId), eq(shopMembers.shopId, shopId)))
       return member?.role === "admin"
     } catch (error) {
-      console.error('Failed to check admin status:', error)
+      console.error("Failed to check admin status:", error)
       return false
     }
   }

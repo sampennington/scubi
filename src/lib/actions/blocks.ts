@@ -121,3 +121,61 @@ export async function getBlocksByPageId(pageId: string) {
     return []
   }
 }
+
+export async function moveBlockUp(blockId: string, revalidatePaths: string[] = []) {
+  try {
+    // Get current block and all blocks from the same page
+    const currentBlock = await api.blocks.getById(blockId)
+    if (!currentBlock) {
+      return { success: false, error: "Block not found" }
+    }
+
+    const allBlocks = await api.blocks.getByPageId(currentBlock.pageId)
+    const currentIndex = allBlocks.findIndex(b => b.id === blockId)
+    
+    if (currentIndex <= 0) {
+      return { success: false, error: "Block is already at the top" }
+    }
+
+    // Swap orders with the block above
+    const blockAbove = allBlocks[currentIndex - 1]
+    await api.blocks.update(blockId, { order: blockAbove.order })
+    await api.blocks.update(blockAbove.id, { order: currentBlock.order })
+
+    revalidatePaths.forEach((path) => revalidatePath(path))
+    
+    return { success: true }
+  } catch (error) {
+    console.error("Error moving block up:", error)
+    return { success: false, error: "Failed to move block up" }
+  }
+}
+
+export async function moveBlockDown(blockId: string, revalidatePaths: string[] = []) {
+  try {
+    // Get current block and all blocks from the same page
+    const currentBlock = await api.blocks.getById(blockId)
+    if (!currentBlock) {
+      return { success: false, error: "Block not found" }
+    }
+
+    const allBlocks = await api.blocks.getByPageId(currentBlock.pageId)
+    const currentIndex = allBlocks.findIndex(b => b.id === blockId)
+    
+    if (currentIndex >= allBlocks.length - 1) {
+      return { success: false, error: "Block is already at the bottom" }
+    }
+
+    // Swap orders with the block below
+    const blockBelow = allBlocks[currentIndex + 1]
+    await api.blocks.update(blockId, { order: blockBelow.order })
+    await api.blocks.update(blockBelow.id, { order: currentBlock.order })
+
+    revalidatePaths.forEach((path) => revalidatePath(path))
+    
+    return { success: true }
+  } catch (error) {
+    console.error("Error moving block down:", error)
+    return { success: false, error: "Failed to move block down" }
+  }
+}

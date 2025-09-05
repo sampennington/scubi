@@ -108,11 +108,8 @@ export function PreviewControls({ shopId }: { shopId: string }) {
           </Button>
         </div>
       </div>
-      
-      <ThemeEditorModal 
-        isOpen={isThemeModalOpen} 
-        onClose={() => setIsThemeModalOpen(false)} 
-      />
+
+      <ThemeEditorModal isOpen={isThemeModalOpen} onClose={() => setIsThemeModalOpen(false)} />
     </ShopOwner>
   )
 }
