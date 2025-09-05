@@ -5,6 +5,7 @@ import { useSite } from "../../../app/preview/components/site-context"
 import { defaultContent } from "./defaults-index"
 import { Loader2 } from "lucide-react"
 import type { BlockType } from "@/database/schema"
+import { EditStateProvider } from "../editable/edit-state-manager"
 
 export const BlockRenderer = () => {
   const { blocks, isLoadingLocalBlocks } = useSite()
@@ -27,13 +28,15 @@ export const BlockRenderer = () => {
   }
 
   return (
-    <div className="flex w-full flex-col">
-      {blocks.map((block) => (
-        <div key={block.id}>
-          <BlockWithValidation block={block} />
-        </div>
-      ))}
-    </div>
+    <EditStateProvider>
+      <div className="flex w-full flex-col">
+        {blocks.map((block) => (
+          <div key={block.id}>
+            <BlockWithValidation block={block} />
+          </div>
+        ))}
+      </div>
+    </EditStateProvider>
   )
 }
 

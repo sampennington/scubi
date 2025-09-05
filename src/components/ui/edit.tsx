@@ -2,6 +2,8 @@
 
 import { useSite } from "@/app/preview/components/site-context"
 import { EditableBlock } from "@/components/blocks/editable/block"
+import { HtmlContent } from "@/components/blocks/shared/html-content"
+import { getFeaturesForElement } from "@/components/blocks/editable/editor-presets"
 import type { ComponentProps, JSX } from "react"
 import { useBlockEdit } from "../blocks/editable/context"
 
@@ -35,6 +37,12 @@ const createEditableElement = <T extends keyof JSX.IntrinsicElements>(
     const Element = element as React.ElementType
 
     if (!isEditMode) {
+      const features = getFeaturesForElement(element)
+
+      if (features?.saveAsHtml) {
+        return <HtmlContent content={children} className={className} as={element} {...props} />
+      }
+
       return (
         <Element className={className} {...props}>
           {children}
@@ -50,6 +58,7 @@ const createEditableElement = <T extends keyof JSX.IntrinsicElements>(
         multiline={multiline}
         maxLength={maxLength}
         className={className}
+        elementType={element}
       >
         <Element {...props}>{children}</Element>
       </EditableBlock>

@@ -1,19 +1,25 @@
 /** biome-ignore-all lint/a11y/noStaticElementInteractions: doing something weird */
 "use client"
 
-import { useState, useRef, useEffect } from "react"
+import { useState, useRef, useEffect, useId } from "react"
 import { Input } from "@/components/ui/input"
 import { Textarea } from "@/components/ui/textarea"
+import { LexicalEditor } from "./lexical-editor"
+import { getFeaturesForElement } from "./editor-presets"
+import { useEditState } from "./edit-state-manager"
+import { HtmlContent } from "../shared/html-content"
 
 interface EditableBlockProps {
   children: React.ReactNode
   value: string
   onSave: (value: string) => void
-  type?: "text" | "textarea"
+  type?: "text" | "textarea" | "lexical"
   className?: string
   placeholder?: string
   multiline?: boolean
   maxLength?: number
+  elementType?: string // For determining Lexical features
+  useLexical?: boolean // Force Lexical usage
 }
 
 export const EditableBlock = ({
@@ -24,8 +30,11 @@ export const EditableBlock = ({
   className = "",
   placeholder = "Enter text...",
   multiline = false,
-  maxLength
+  maxLength,
+  elementType,
+  useLexical = true
 }: EditableBlockProps) => {
+  const editorId = useId()
   const [isEditing, setIsEditing] = useState(false)
   const [editValue, setEditValue] = useState(value)
   const [isHovered, setIsHovered] = useState(false)
@@ -35,10 +44,58 @@ export const EditableBlock = ({
   const containerRef = useRef<HTMLDivElement>(null)
   const childRef = useRef<HTMLDivElement>(null)
 
+  const { activeEditId, setActiveEditId, registerEditor, unregisterEditor } = useEditState()
+
+  // Determine editor type and features
+  const shouldUseLexical = useLexical && (multiline || elementType)
+  const editorFeatures = elementType ? getFeaturesForElement(elementType) : undefined
+
+  // Check if this editor is active
+  const isActive = activeEditId === editorId
+
   // Update edit value when prop value changes
   useEffect(() => {
     setEditValue(value)
   }, [value])
+
+  const handleSave = () => {
+    if (editValue.trim() !== value) {
+      onSave(editValue.trim())
+    }
+    setIsEditing(false)
+  }
+
+  const handleCancel = () => {
+    setEditValue(value)
+    setIsEditing(false)
+  }
+
+  // Register/unregister with global edit state
+  useEffect(() => {
+    const handleBlur = () => {
+      if (isEditing) {
+        if (editValue.trim() !== value) {
+          onSave(editValue.trim())
+        }
+      }
+      setIsEditing(false)
+      setIsHovered(false)
+    }
+
+    registerEditor(editorId, handleBlur)
+    return () => unregisterEditor(editorId)
+  }, [editorId, registerEditor, unregisterEditor, isEditing, editValue, value, onSave])
+
+  // Update editing state based on global active state
+  useEffect(() => {
+    if (!isActive && isEditing) {
+      handleSave()
+      setIsEditing(false)
+    }
+    if (!isActive) {
+      setIsHovered(false)
+    }
+  }, [isActive])
 
   // Extract computed styles from the child element
   useEffect(() => {
@@ -93,27 +150,21 @@ export const EditableBlock = ({
   }, [isEditing, type])
 
   const handleMouseEnter = () => {
-    setIsHovered(true)
+    if (isActive || !activeEditId) {
+      setIsHovered(true)
+    }
   }
 
   const handleMouseLeave = () => {
-    setIsHovered(false)
+    if (!isEditing) {
+      setIsHovered(false)
+    }
   }
 
   const handleClick = () => {
+    setActiveEditId(editorId)
     setIsEditing(true)
-  }
-
-  const handleSave = () => {
-    if (editValue.trim() !== value) {
-      onSave(editValue.trim())
-    }
-    setIsEditing(false)
-  }
-
-  const handleCancel = () => {
-    setEditValue(value)
-    setIsEditing(false)
+    setIsHovered(true)
   }
 
   const handleKeyDown = (e: React.KeyboardEvent) => {
@@ -124,14 +175,6 @@ export const EditableBlock = ({
       e.preventDefault()
       handleCancel()
     }
-  }
-
-  const handleBlur = () => {
-    setTimeout(() => {
-      if (!containerRef.current?.contains(document.activeElement)) {
-        handleSave()
-      }
-    }, 100)
   }
 
   // Show edit interface when hovering or editing
@@ -150,6 +193,7 @@ export const EditableBlock = ({
           handleClick()
         }
       }}
+      data-editor-id={editorId}
       // biome-ignore lint/a11y/useKeyWithClickEvents: a
       // biome-ignore lint/a11y/noNoninteractiveTabindex: a
       tabIndex={0}
@@ -176,7 +220,11 @@ export const EditableBlock = ({
           visibility: isEditing ? "hidden" : "visible"
         }}
       >
-        {children}
+        {editorFeatures?.saveAsHtml && typeof value === "string" && value.includes("<") ? (
+          <HtmlContent content={value} className={className} />
+        ) : (
+          children
+        )}
       </div>
 
       {/* Edit interface - shown when hovering or editing */}
@@ -187,13 +235,23 @@ export const EditableBlock = ({
           }`}
           style={{ visibility: showEditInterface ? "visible" : "hidden" }}
         >
-          {type === "textarea" ? (
+          {shouldUseLexical ? (
+            <LexicalEditor
+              value={editValue}
+              onChange={setEditValue}
+              onSave={handleSave}
+              onCancel={handleCancel}
+              placeholder={placeholder}
+              style={computedStyles}
+              saveAsHtml={editorFeatures?.saveAsHtml}
+              features={editorFeatures}
+            />
+          ) : type === "textarea" ? (
             <Textarea
               ref={textareaRef}
               value={editValue}
               onChange={(e) => setEditValue(e.target.value)}
               onKeyDown={handleKeyDown}
-              onBlur={handleBlur}
               placeholder={placeholder}
               maxLength={maxLength}
               className="resize-none border-0 bg-transparent p-0"
@@ -211,7 +269,6 @@ export const EditableBlock = ({
               value={editValue}
               onChange={(e) => setEditValue(e.target.value)}
               onKeyDown={handleKeyDown}
-              onBlur={handleBlur}
               placeholder={placeholder}
               maxLength={maxLength}
               className="border-0 bg-transparent p-0"
