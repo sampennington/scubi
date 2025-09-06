@@ -19,6 +19,24 @@ Each block consists of:
 - **Component**: React component for rendering
 - **Preview**: Optional preview configuration
 
+## Development Guidelines
+
+### Schema Best Practices
+
+- **No Defaults in Schemas**: Zod schemas should NOT include `.default()` values. Default values belong in the separate `.default.ts` file
+- **Schema Purpose**: Block schemas define the shape and validation only, default values are handled separately in the block structure
+- **Type Safety**: Use proper Zod validation for runtime type checking and TypeScript inference
+
+### File Structure
+
+Each block should follow the established pattern:
+- `block-name.schema.ts` - Zod validation schema (no defaults)
+- `block-name.default.ts` - Default content values
+- `block-name.config.ts` - Settings panel configuration
+- `block-name.component.tsx` - React component
+- `block-name.definition.ts` - Block definition for registry
+- `index.ts` - Exports
+
 ## Adding a New Block
 
 ### 1. Create the Block Component

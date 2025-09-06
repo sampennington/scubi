@@ -10,6 +10,11 @@ import {
   contentStickySchema,
   type ContentStickyContent
 } from "../content/content-sticky/content-sticky.schema"
+import {
+  ReviewsContentSchema as ReviewsContentSchemaFromBlock,
+  isReviewsContent as isReviewsContentFromSchema,
+  type ReviewsContent as ReviewsContentFromBlock
+} from "../social/reviews/reviews.schema"
 
 export const TextContentSchema = z.object({
   text: z.string(),
@@ -99,30 +104,7 @@ export const TeamContentSchema = z.object({
   fullWidthPhoto: z.boolean().optional()
 })
 
-export const ReviewsContentSchema = z.object({
-  title: z.string().optional(),
-  description: z.string().optional(),
-  platform: z.enum(["all", "google", "tripadvisor", "facebook", "yelp"]).default("all"),
-  layout: z.enum(["grid", "carousel", "list"]).default("grid"),
-  columns: z.enum(["1", "2", "3", "4"]).default("4"),
-  maxReviews: z.number().min(1).max(50).default(8),
-  showRating: z.boolean().default(true),
-  showPhotos: z.boolean().default(true),
-  showVerifiedBadge: z.boolean().default(true),
-  showDate: z.boolean().default(true),
-  showPlatform: z.boolean().default(false),
-  showReadMore: z.boolean().default(true),
-  truncateLength: z.number().min(50).max(500).default(150),
-  showAggregateRating: z.boolean().default(true),
-  showReviewButton: z.boolean().default(true),
-  reviewButtonText: z.string().default("Review us on Google"),
-  reviewButtonUrl: z.string().optional(),
-  sortBy: z.enum(["date", "rating", "helpful"]).default("date"),
-  sortOrder: z.enum(["desc", "asc"]).default("desc"),
-  filterRating: z.enum(["all", "5", "4", "3", "2", "1"]).default("all"),
-  autoRefresh: z.boolean().default(false),
-  refreshInterval: z.number().min(300).max(86400).default(3600) // in seconds
-})
+export const ReviewsContentSchema = ReviewsContentSchemaFromBlock
 
 export const FAQItemSchema = z.object({
   question: z.string(),
@@ -314,7 +296,7 @@ export type SocialFeedContent = z.infer<typeof SocialFeedContentSchema>
 export type TwoColumnContent = z.infer<typeof TwoColumnBlockContentSchema>
 export type CoursesContent = z.infer<typeof CoursesContentSchema>
 export type MarineLifeContent = z.infer<typeof MarineLifeContentSchema>
-export type ReviewsContent = z.infer<typeof ReviewsContentSchema>
+export type ReviewsContent = ReviewsContentFromBlock
 export type StatsContent = z.infer<typeof StatsContentSchema>
 
 export function isTextContent(data: unknown): data is TextContent {
@@ -382,7 +364,7 @@ export function isMarineLifeContent(data: unknown): data is MarineLifeContent {
 }
 
 export function isReviewsContent(data: unknown): data is ReviewsContent {
-  return ReviewsContentSchema.safeParse(data).success
+  return isReviewsContentFromSchema(data)
 }
 
 export function isStatsContent(data: unknown): data is StatsContent {

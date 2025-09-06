@@ -276,3 +276,24 @@ export const reviews = pgTable("reviews", {
     .$defaultFn(() => new Date())
     .notNull()
 })
+
+export const jobs = pgTable("jobs", {
+  id: text("id").primaryKey(),
+  type: text("type").notNull(), // 'scrape_reviews', 'export_data', etc.
+  status: text("status").notNull(), // 'pending', 'running', 'completed', 'failed'
+  shopId: text("shop_id")
+    .references(() => shops.id, { onDelete: "cascade" })
+    .notNull(),
+  input: jsonb("input").notNull(), // Job parameters
+  output: jsonb("output"), // Job results
+  error: text("error"), // Error message if failed
+  progress: integer("progress").default(0), // 0-100
+  startedAt: timestamp("started_at"),
+  completedAt: timestamp("completed_at"),
+  createdAt: timestamp("created_at")
+    .$defaultFn(() => new Date())
+    .notNull(),
+  updatedAt: timestamp("updated_at")
+    .$defaultFn(() => new Date())
+    .notNull()
+})

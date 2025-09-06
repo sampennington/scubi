@@ -1,0 +1,6 @@
+export { ReviewsBlock } from "./reviews.component"
+export { defaultReviewsContent } from "./reviews.default"
+export { reviewsBlockDefinition } from "./reviews.definition"
+export { reviewsBlockConfig } from "./reviews.config"
+export type { ReviewsContent } from "./reviews.schema"
+export { ReviewsContentSchema, isReviewsContent } from "./reviews.schema"

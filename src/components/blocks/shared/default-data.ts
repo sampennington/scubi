@@ -319,9 +319,7 @@ export const defaultReviewsContent: ReviewsContent = {
   reviewButtonUrl: "https://google.com",
   sortBy: "date",
   sortOrder: "desc",
-  filterRating: "all",
-  autoRefresh: false,
-  refreshInterval: 3600
+  filterRating: "all"
 }
 
 export const defaultContent: Partial<

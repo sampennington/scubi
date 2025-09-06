@@ -25,6 +25,11 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 **Scraper (standalone):**
 - `npx tsx src/scraper/index.ts https://example.com` - Run website scraper
 
+**Task System:**
+- SSE-based background task system for long-running operations
+- Real-time progress updates and task control (pause/resume/abort)
+- Child process isolation for resource-intensive tasks
+
 ## Architecture Overview
 
 ### Core Tech Stack
@@ -80,6 +85,14 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 - Multi-role shop membership system
 - Trial period support
 
+**Task System:**
+- Server-Sent Events (SSE) for real-time progress updates
+- Child process isolation using Node.js `spawn()` for resource-intensive tasks
+- TypeScript workers compiled and executed with `tsx`
+- Task lifecycle management (idle → running → paused/resumed → completed/failed/aborted)
+- Background task processing for web scraping, data processing, etc.
+- React hooks (`useTask`) for UI integration with automatic reconnection
+
 ### Development Configuration
 
 **Local Development:**
@@ -106,9 +119,17 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 - Run `npm run lint` to automatically fix class ordering
 - Example: `className="flex items-center justify-center gap-4 rounded-lg bg-blue-500 px-4 py-2 text-white"`
 
+
 ### Important Files
 - `src/config/site.ts` - Site-wide configuration
 - `src/lib/auth.ts` - Better Auth configuration
 - `src/database/schema.ts` - Complete database schema
 - `drizzle.config.ts` - Database connection config
 - `biome.json` - Code formatting and linting rules
+
+**Task System Files:**
+- `src/lib/tasks/task-manager.ts` - Core task management with child processes
+- `src/lib/tasks/use-task.ts` - React hook for SSE task integration
+- `src/lib/tasks/types.ts` - Task system TypeScript types
+- `src/lib/tasks/workers/` - TypeScript worker implementations
+- `src/app/api/tasks/[taskType]/route.ts` - Generic SSE API routes
