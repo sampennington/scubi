@@ -27,11 +27,7 @@ export async function checkRecentJobs(shopId: string) {
 }
 
 export async function getJobLogs(jobId: string) {
-  const job = await db
-    .select()
-    .from(jobs)
-    .where(eq(jobs.id, jobId))
-    .limit(1)
+  const job = await db.select().from(jobs).where(eq(jobs.id, jobId)).limit(1)
 
   return job[0] || null
 }

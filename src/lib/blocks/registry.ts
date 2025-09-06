@@ -27,4 +27,9 @@ export function isValidBlockType(blockType: string): blockType is BlockType {
 }
 
 // @ts-ignore Cannot make this work!!
-registerBlocks(heroBlockDefinition, contentStickyBlockDefinition, statsBlockDefinition, reviewsBlockDefinition)
+registerBlocks(
+  heroBlockDefinition,
+  contentStickyBlockDefinition,
+  statsBlockDefinition,
+  reviewsBlockDefinition
+)

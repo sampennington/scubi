@@ -37,7 +37,7 @@ export function EditStateProvider({ children }: { children: ReactNode }) {
   useEffect(() => {
     const handleGlobalClick = (e: MouseEvent) => {
       const target = e.target as Element
-      
+
       // Check if click is outside all editors
       let clickedInsideEditor = false
       for (const [editorId] of editorsRef.current) {
@@ -47,24 +47,26 @@ export function EditStateProvider({ children }: { children: ReactNode }) {
           break
         }
       }
-      
+
       // If clicked outside all editors, clear active state
       if (!clickedInsideEditor && activeEditId) {
         handleSetActiveEditId(null)
       }
     }
 
-    document.addEventListener('mousedown', handleGlobalClick, true)
-    return () => document.removeEventListener('mousedown', handleGlobalClick, true)
+    document.addEventListener("mousedown", handleGlobalClick, true)
+    return () => document.removeEventListener("mousedown", handleGlobalClick, true)
   }, [activeEditId])
 
   return (
-    <EditStateContext.Provider value={{
-      activeEditId,
-      setActiveEditId: handleSetActiveEditId,
-      registerEditor,
-      unregisterEditor
-    }}>
+    <EditStateContext.Provider
+      value={{
+        activeEditId,
+        setActiveEditId: handleSetActiveEditId,
+        registerEditor,
+        unregisterEditor
+      }}
+    >
       {children}
     </EditStateContext.Provider>
   )
