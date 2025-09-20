@@ -2,6 +2,7 @@ import { StickyNote } from "lucide-react"
 import type { BlockConfig } from "../../../../lib/blocks/core/config-types"
 import { defaultContentStickyContent } from "./content-sticky.default"
 import { contentStickySchema } from "./content-sticky.schema"
+import { backgroundSettingsSection } from "../../shared/background"
 
 export const contentStickyBlockConfig: BlockConfig = {
   id: "content-sticky",
@@ -101,6 +102,7 @@ export const contentStickyBlockConfig: BlockConfig = {
           }
         ]
       },
+      backgroundSettingsSection,
       {
         id: "bottom",
         title: "Bottom Section",

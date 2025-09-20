@@ -131,8 +131,8 @@ export async function moveBlockUp(blockId: string, revalidatePaths: string[] = [
     }
 
     const allBlocks = await api.blocks.getByPageId(currentBlock.pageId)
-    const currentIndex = allBlocks.findIndex(b => b.id === blockId)
-    
+    const currentIndex = allBlocks.findIndex((b) => b.id === blockId)
+
     if (currentIndex <= 0) {
       return { success: false, error: "Block is already at the top" }
     }
@@ -143,7 +143,7 @@ export async function moveBlockUp(blockId: string, revalidatePaths: string[] = [
     await api.blocks.update(blockAbove.id, { order: currentBlock.order })
 
     revalidatePaths.forEach((path) => revalidatePath(path))
-    
+
     return { success: true }
   } catch (error) {
     console.error("Error moving block up:", error)
@@ -160,8 +160,8 @@ export async function moveBlockDown(blockId: string, revalidatePaths: string[] =
     }
 
     const allBlocks = await api.blocks.getByPageId(currentBlock.pageId)
-    const currentIndex = allBlocks.findIndex(b => b.id === blockId)
-    
+    const currentIndex = allBlocks.findIndex((b) => b.id === blockId)
+
     if (currentIndex >= allBlocks.length - 1) {
       return { success: false, error: "Block is already at the bottom" }
     }
@@ -172,7 +172,7 @@ export async function moveBlockDown(blockId: string, revalidatePaths: string[] =
     await api.blocks.update(blockBelow.id, { order: currentBlock.order })
 
     revalidatePaths.forEach((path) => revalidatePath(path))
-    
+
     return { success: true }
   } catch (error) {
     console.error("Error moving block down:", error)

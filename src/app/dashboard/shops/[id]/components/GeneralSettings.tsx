@@ -58,7 +58,7 @@ export const GeneralSettings = ({
 
         <Section title="Branding">
           <div className="space-y-6">
-            <LogoUpload
+            {/* <LogoUpload
               value={form.watch("logoUrl")}
               onChange={(url) => form.setValue("logoUrl", url)}
               onRemove={() => form.setValue("logoUrl", "")}
@@ -67,7 +67,7 @@ export const GeneralSettings = ({
               value={form.watch("faviconUrl")}
               onChange={(url) => form.setValue("faviconUrl", url)}
               onRemove={() => form.setValue("faviconUrl", "")}
-            />
+            /> */}
           </div>
         </Section>
 

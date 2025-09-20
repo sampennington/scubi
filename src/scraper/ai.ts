@@ -2,15 +2,15 @@ import dotenv from "dotenv"
 dotenv.config({ path: ".env.local" })
 
 import { type BlockType, BlockTypeDescriptions } from "@/database/schema"
-import { BlockSchemas } from "@/components/blocks/schemas"
 import { error, warn } from "@/scraper/utils/logger"
 import OpenAI from "openai"
+import { BlockSchemas } from "@/components/blocks/shared/schemas"
 
 const openai = new OpenAI({
   apiKey: process.env.OPENAI_API_KEY
 })
 
-type Section = {
+export type Section = {
   type: BlockType
   title: "string"
   contentText: "string"

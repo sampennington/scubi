@@ -2,6 +2,7 @@ import { Star } from "lucide-react"
 import type { BlockConfig } from "@/lib/blocks/core/config-types"
 import { defaultReviewsContent } from "./reviews.default"
 import { ReviewsContentSchema } from "./reviews.schema"
+import { backgroundSettingsSection } from "../../shared/background"
 
 export const reviewsBlockConfig: BlockConfig = {
   id: "reviews",
@@ -47,6 +48,7 @@ export const reviewsBlockConfig: BlockConfig = {
           }
         ]
       },
+      backgroundSettingsSection,
       {
         id: "layout",
         title: "Layout & Display",

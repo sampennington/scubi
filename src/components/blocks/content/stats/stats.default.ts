@@ -19,7 +19,7 @@ export const defaultStatsContent: StatsContent = {
   ],
   layout: "grid",
   columns: "3",
-  backgroundColor: "#111827",
+  background: { type: "color", color: "#111827" },
   textColor: "#ffffff",
   alignment: "center"
 }

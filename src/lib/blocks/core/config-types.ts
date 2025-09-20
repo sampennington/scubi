@@ -21,7 +21,7 @@ export interface TextFieldConfig extends BaseFieldConfig {
 
 export interface SelectFieldConfig extends BaseFieldConfig {
   type: "select"
-  options: Array<{ value: string; label: string }>
+  options: Array<{ value: string | number; label: string }>
   multiple?: boolean
 }
 
@@ -68,6 +68,16 @@ export interface ArrayFieldConfig extends BaseFieldConfig {
   addButtonText?: string
 }
 
+export interface ButtonFieldConfig extends BaseFieldConfig {
+  type: "button"
+  variant?: "default" | "destructive" | "outline" | "secondary" | "ghost" | "link"
+  size?: "default" | "sm" | "lg" | "icon"
+  text: string
+  action: string
+  disabled?: boolean
+  loading?: boolean
+}
+
 // Union of all field types
 export type FieldConfig =
   | TextFieldConfig
@@ -79,6 +89,7 @@ export type FieldConfig =
   | RangeFieldConfig
   | ObjectFieldConfig
   | ArrayFieldConfig
+  | ButtonFieldConfig
 
 // Conditional rendering
 export interface ConditionConfig {

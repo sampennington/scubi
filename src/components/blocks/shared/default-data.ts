@@ -31,6 +31,7 @@ import type {
   MarineLifeContent,
   ReviewsContent
 } from "./schemas"
+import type { InstagramGalleryContent } from "../social/instagram-gallery/instagram-gallery.schema"
 import { BlockType } from "@/database/schema"
 
 export const defaultHeroContent: HeroContent = {
@@ -322,6 +323,29 @@ export const defaultReviewsContent: ReviewsContent = {
   filterRating: "all"
 }
 
+export const defaultInstagramGalleryContent: InstagramGalleryContent = {
+  title: "Follow Us on Instagram",
+  description: "Check out our latest diving adventures and underwater photography",
+  layout: "grid",
+  columns: 4,
+  maxPosts: 12,
+  showCaption: true,
+  showLikes: true,
+  showComments: true,
+  showDate: false,
+  showOverlay: true,
+  hoverEffect: "zoom",
+  postType: "all",
+  sortBy: "date",
+  sortOrder: "desc",
+  aspectRatio: "square",
+  spacing: "medium",
+  openInNewTab: true,
+  background: {
+    type: "none"
+  }
+}
+
 export const defaultContent: Partial<
   Record<
     BlockType,
@@ -331,6 +355,7 @@ export const defaultContent: Partial<
     | ContactFormContent
     | CoursesContent
     | ReviewsContent
+    | InstagramGalleryContent
   >
 > = {
   [BlockType.HERO]: defaultHeroContent as HeroContent,
@@ -338,5 +363,6 @@ export const defaultContent: Partial<
   [BlockType.TEAM]: defaultTeamContent as TeamContent,
   [BlockType.CONTACT_FORM]: defaultContactFormContent as ContactFormContent,
   [BlockType.COURSES]: defaultCoursesContent as CoursesContent,
-  [BlockType.REVIEWS]: defaultReviewsContent as ReviewsContent
+  [BlockType.REVIEWS]: defaultReviewsContent as ReviewsContent,
+  [BlockType.INSTAGRAM_GALLERY]: defaultInstagramGalleryContent as InstagramGalleryContent
 }

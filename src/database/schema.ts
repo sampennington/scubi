@@ -6,7 +6,8 @@ import {
   integer,
   jsonb,
   unique,
-  primaryKey
+  primaryKey,
+  index
 } from "drizzle-orm/pg-core"
 
 export const BlockType = {
@@ -30,7 +31,8 @@ export const BlockType = {
   DIVE_SITES: "dive-sites",
   REVIEWS: "reviews",
   CONTENT_STICKY: "content-sticky",
-  STATS: "stats"
+  STATS: "stats",
+  INSTAGRAM_GALLERY: "instagram-gallery"
 } as const
 
 export const BlockTypeDescriptions: Record<BlockType, string> = {
@@ -75,7 +77,9 @@ export const BlockTypeDescriptions: Record<BlockType, string> = {
   [BlockType.CONTENT_STICKY]:
     "A content section with sticky image layout featuring text, features list, and background graphics for showcasing workflows or processes.",
   [BlockType.STATS]:
-    "Display impressive statistics and key metrics in a grid layout with customizable values, labels, and styling options."
+    "Display impressive statistics and key metrics in a grid layout with customizable values, labels, and styling options.",
+  [BlockType.INSTAGRAM_GALLERY]:
+    "Display Instagram posts in a beautiful grid or carousel layout with engagement stats, hover effects, and filtering options."
 }
 
 export type BlockType = (typeof BlockType)[keyof typeof BlockType]
@@ -157,7 +161,6 @@ export const subscriptions = pgTable("subscriptions", {
 export const shops = pgTable("shops", {
   id: text("id").primaryKey(), // UUID or ULID
   name: text("name").notNull(), // "Blue Divers"
-  slug: text("slug").notNull().unique(), // for URLs: blue-divers
   customDomain: text("custom_domain"), // e.g. bluedivers.com
   templateId: text("template_id"),
   createdBy: text("created_by").references(() => users.id, {
@@ -259,6 +262,7 @@ export const reviews = pgTable("reviews", {
     .references(() => shops.id, { onDelete: "cascade" })
     .notNull(),
   platform: text("platform").notNull(), // 'google', 'tripadvisor', 'facebook', etc.
+  reviewId: text("review_id"), // Unique review ID from the platform
   externalId: text("external_id"), // ID from the platform
   reviewerName: text("reviewer_name").notNull(),
   reviewerPhoto: text("reviewer_photo"), // URL to profile photo
@@ -276,6 +280,49 @@ export const reviews = pgTable("reviews", {
     .$defaultFn(() => new Date())
     .notNull()
 })
+
+export const instagramPosts = pgTable(
+  "instagram_posts",
+  {
+    id: text("id").primaryKey(),
+    shopId: text("shop_id")
+      .references(() => shops.id, { onDelete: "cascade" })
+      .notNull(),
+    postId: text("post_id").notNull(), // Instagram post ID
+    shortcode: text("shortcode").notNull(), // Instagram shortcode
+    profileUrl: text("profile_url").notNull(), // Instagram profile that the post belongs to
+    ownerId: text("owner_id"), // Instagram account owner ID
+    ownerUsername: text("owner_username"), // Instagram account username
+    imageUrl: text("image_url").notNull(), // Original Instagram image URL
+    localImageUrl: text("local_image_url"), // Locally hosted image URL
+    caption: text("caption"),
+    hashtags: text("hashtags").array(),
+    likesCount: integer("likes_count").default(0).notNull(),
+    commentsCount: integer("comments_count").default(0).notNull(),
+    postUrl: text("post_url").notNull(),
+    postDate: timestamp("post_date").notNull(),
+    postType: text("post_type").notNull(), // 'image', 'video', 'carousel'
+    isVideo: boolean("is_video").default(false).notNull(),
+    videoUrl: text("video_url"),
+    localVideoUrl: text("local_video_url"), // Locally hosted video URL
+    scrapedAt: timestamp("scraped_at")
+      .$defaultFn(() => new Date())
+      .notNull(),
+    createdAt: timestamp("created_at")
+      .$defaultFn(() => new Date())
+      .notNull(),
+    updatedAt: timestamp("updated_at")
+      .$defaultFn(() => new Date())
+      .notNull()
+  },
+  (instagramPosts) => ({
+    uniquePostPerShop: unique().on(instagramPosts.shopId, instagramPosts.postId),
+    postIdIndex: index("instagram_posts_post_id_idx").on(instagramPosts.postId),
+    shopIdIndex: index("instagram_posts_shop_id_idx").on(instagramPosts.shopId),
+    profileUrlIndex: index("instagram_posts_profile_url_idx").on(instagramPosts.profileUrl),
+    postDateIndex: index("instagram_posts_post_date_idx").on(instagramPosts.postDate)
+  })
+)
 
 export const jobs = pgTable("jobs", {
   id: text("id").primaryKey(),

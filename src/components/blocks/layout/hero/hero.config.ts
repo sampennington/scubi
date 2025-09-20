@@ -2,6 +2,7 @@ import { LayoutPanelTop } from "lucide-react"
 import type { BlockConfig } from "../../../../lib/blocks/core/config-types"
 import { defaultHeroContent } from "./hero.default"
 import { HeroContentSchema } from "./hero.schema"
+import { backgroundSettingsSection } from "../../shared/background"
 
 export const heroBlockConfig: BlockConfig = {
   id: "hero",
@@ -48,20 +49,12 @@ export const heroBlockConfig: BlockConfig = {
           }
         ]
       },
+      backgroundSettingsSection,
       {
-        id: "background",
-        title: "Background",
-        description: "Hero background styling",
+        id: "branding",
+        title: "Branding",
+        description: "Logo and company branding",
         fields: [
-          {
-            type: "image",
-            name: "image",
-            label: "Background Image",
-            description: "Full-width background image",
-            accept: "image/*",
-            aspectRatio: "16/9",
-            defaultValue: ""
-          },
           {
             type: "image",
             name: "logo",

@@ -39,5 +39,6 @@ export {
   defaultMarineLifeContent,
   defaultMapContent,
   defaultReviewsContent,
+  defaultInstagramGalleryContent,
   defaultContent
 } from "./default-data"

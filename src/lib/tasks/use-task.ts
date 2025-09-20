@@ -1,37 +1,37 @@
 "use client"
 
 import { useState, useEffect, useCallback, useRef } from "react"
-import type { TaskStatus, TaskUpdate, TaskProgress } from "./types"
+import type { TaskUpdate, TaskProgress } from "@/lib/queue/types"
 
-export interface UseTaskOptions {
-  onComplete?: (result: unknown) => void
+type TaskStatus = "idle" | "waiting" | "active" | "completed" | "failed"
+
+export interface UseTaskOptions<T> {
+  onComplete?: (result: T) => void
   onError?: (error: string) => void
   onUpdate?: (update: TaskUpdate) => void
   autoConnect?: boolean
 }
 
-export interface UseTaskReturn {
+export interface UseTaskReturn<T> {
   // Task state
   taskId: string | null
   status: TaskStatus
   progress: TaskProgress | null
   message: string
   error: string | null
-  result: unknown
+  result: T | null
 
   // Connection state
   isConnected: boolean
 
   // Actions
   startTask: (taskType: string, input: unknown) => Promise<void>
-  pauseTask: () => Promise<void>
-  resumeTask: () => Promise<void>
   abortTask: () => Promise<void>
   connectToTask: (taskId: string, taskType: string) => void
   disconnect: () => void
 }
 
-export function useTask(options: UseTaskOptions = {}): UseTaskReturn {
+export function useTask<T>(options: UseTaskOptions<T> = {}): UseTaskReturn<T> {
   const { onComplete, onError, onUpdate, autoConnect = true } = options
 
   // Task state
@@ -41,7 +41,7 @@ export function useTask(options: UseTaskOptions = {}): UseTaskReturn {
   const [progress, setProgress] = useState<TaskProgress | null>(null)
   const [message, setMessage] = useState("")
   const [error, setError] = useState<string | null>(null)
-  const [result, setResult] = useState<unknown>(null)
+  const [result, setResult] = useState<T | null>(null)
   const [isConnected, setIsConnected] = useState(false)
 
   // SSE connection
@@ -66,7 +66,7 @@ export function useTask(options: UseTaskOptions = {}): UseTaskReturn {
 
       setTaskId(newTaskId)
       setTaskType(newTaskType)
-      setStatus("idle")
+      setStatus("waiting")
       setProgress(null)
       setMessage("")
       setError(null)
@@ -87,21 +87,18 @@ export function useTask(options: UseTaskOptions = {}): UseTaskReturn {
         try {
           const update: TaskUpdate = JSON.parse(event.data)
 
-          // Ignore connection messages
-          if (update.type === ("connected" as any)) return
+          if (update.type === "connected") return
 
-          // Update state based on the update type
           if (update.status) setStatus(update.status)
           if (update.progress) setProgress(update.progress)
           if (update.message) setMessage(update.message)
           if (update.error) setError(update.error)
-          if (update.result) setResult(update.result)
+          if (update.result) setResult(update.result as T)
 
-          // Call callbacks
           onUpdate?.(update)
 
-          if (update.status === "completed") {
-            onComplete?.(update.result)
+          if (update.status === "completed" && update.result) {
+            onComplete?.(update.result as T)
           } else if (update.status === "failed") {
             onError?.(update.error || "Task failed")
           }
@@ -110,11 +107,11 @@ export function useTask(options: UseTaskOptions = {}): UseTaskReturn {
         }
       }
 
-      eventSource.onerror = (event) => {
+      eventSource.onerror = () => {
         setIsConnected(false)
 
-        // Don't reconnect if task is completed/failed/aborted
-        if (status === "completed" || status === "failed" || status === "aborted") {
+        // Don't reconnect if task is completed/failed
+        if (status === "completed" || status === "failed") {
           disconnect()
           return
         }
@@ -138,7 +135,7 @@ export function useTask(options: UseTaskOptions = {}): UseTaskReturn {
         const response = await fetch(`/api/tasks/${newTaskType}`, {
           method: "POST",
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ action: "start", ...(input as Record<string, any>) })
+          body: JSON.stringify({ action: "start", ...(input as Record<string, unknown>) })
         })
 
         const data = await response.json()
@@ -158,42 +155,6 @@ export function useTask(options: UseTaskOptions = {}): UseTaskReturn {
     [connectToTask, onError]
   )
 
-  const pauseTask = useCallback(async () => {
-    if (!taskId || !taskType) return
-
-    try {
-      const response = await fetch(`/api/tasks/${taskType}`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ action: "pause", taskId })
-      })
-
-      if (!response.ok) {
-        throw new Error("Failed to pause task")
-      }
-    } catch (err) {
-      console.error("Error pausing task:", err)
-    }
-  }, [taskId, taskType])
-
-  const resumeTask = useCallback(async () => {
-    if (!taskId || !taskType) return
-
-    try {
-      const response = await fetch(`/api/tasks/${taskType}`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ action: "resume", taskId })
-      })
-
-      if (!response.ok) {
-        throw new Error("Failed to resume task")
-      }
-    } catch (err) {
-      console.error("Error resuming task:", err)
-    }
-  }, [taskId, taskType])
-
   const abortTask = useCallback(async () => {
     if (!taskId || !taskType) return
 
@@ -206,14 +167,12 @@ export function useTask(options: UseTaskOptions = {}): UseTaskReturn {
         throw new Error("Failed to abort task")
       }
 
-      // Disconnect after aborting
       disconnect()
     } catch (err) {
       console.error("Error aborting task:", err)
     }
   }, [taskId, taskType, disconnect])
 
-  // Cleanup on unmount
   useEffect(() => {
     return () => {
       disconnect()
@@ -232,8 +191,6 @@ export function useTask(options: UseTaskOptions = {}): UseTaskReturn {
 
     // Actions
     startTask,
-    pauseTask,
-    resumeTask,
     abortTask,
     connectToTask,
     disconnect

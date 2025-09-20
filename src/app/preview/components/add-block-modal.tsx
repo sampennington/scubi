@@ -8,8 +8,6 @@ import { Label } from "@/components/ui/label"
 import { SearchIcon, PlusIcon, ArrowLeftIcon, ExternalLinkIcon } from "lucide-react"
 import { useSite } from "@/app/preview/components/site-context"
 import { createBlock, updateBlockOrder } from "@/lib/actions/blocks"
-import { useTask } from "@/lib/tasks/use-task"
-import type { ScrapeReviewsInput, ScrapeReviewsOutput } from "@/lib/tasks/types"
 import { toast } from "sonner"
 import { useBlockRegistry } from "@/lib/blocks"
 
@@ -26,31 +24,13 @@ export function AddBlockModal({ isOpen, onClose, onBlockAdded, order }: AddBlock
   const [showReviewsSetup, setShowReviewsSetup] = useState(false)
   const [googleProfileUrl, setGoogleProfileUrl] = useState("")
   const [isScrapingReviews, setIsScrapingReviews] = useState(false)
+  const [showInstagramSetup, setShowInstagramSetup] = useState(false)
+  const [instagramProfileUrl, setInstagramProfileUrl] = useState("")
+  const [isScrapingInstagram, setIsScrapingInstagram] = useState(false)
   const { currentPage, blocks, shopId } = useSite()
   const registry = useBlockRegistry()
 
-  const task = useTask({
-    onComplete: (result: unknown) => {
-      const output = result as ScrapeReviewsOutput
-      toast.success("Reviews scraped successfully!", {
-        description: `Found ${output?.reviewsScraped || 0} reviews`
-      })
-      onBlockAdded()
-      onClose()
-      resetModalState()
-    },
-    onError: (error: string) => {
-      toast.error("Review scraping failed", {
-        description: error
-      })
-      onBlockAdded()
-      onClose()
-      resetModalState()
-    }
-  })
-
   const availableBlocks = registry.getAllBlocks()
-  console.log({ availableBlocks })
   const filteredBlocks = availableBlocks.filter(
     (block) =>
       block.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
@@ -61,6 +41,12 @@ export function AddBlockModal({ isOpen, onClose, onBlockAdded, order }: AddBlock
     // Special handling for reviews block
     if (blockType === "reviews") {
       setShowReviewsSetup(true)
+      return
+    }
+
+    // Special handling for Instagram gallery block
+    if (blockType === "instagram-gallery") {
+      setShowInstagramSetup(true)
       return
     }
 
@@ -142,14 +128,23 @@ export function AddBlockModal({ isOpen, onClose, onBlockAdded, order }: AddBlock
         throw new Error(result.error || "Failed to create reviews block")
       }
 
-      // Start background task to scrape reviews
-      await task.startTask('scrape-reviews', {
-        mapsUrl: googleProfileUrl,
-        shopId
-      } as ScrapeReviewsInput)
+      const reviewsResponse = await fetch("/api/reviews/fetch", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          mapsUrl: googleProfileUrl,
+          shopId
+        })
+      })
+
+      const reviewsData = await reviewsResponse.json()
+
+      if (!reviewsResponse.ok || !reviewsData.success) {
+        throw new Error(reviewsData.error || "Failed to fetch reviews")
+      }
 
       toast.success("Reviews block created!", {
-        description: "Starting to scrape reviews in the background..."
+        description: `Fetched ${reviewsData.reviewsSaved} reviews successfully!`
       })
     } catch (error) {
       toast.error("Failed to create reviews block", {
@@ -160,10 +155,77 @@ export function AddBlockModal({ isOpen, onClose, onBlockAdded, order }: AddBlock
     }
   }
 
+  const handleInstagramSetup = async () => {
+    if (!instagramProfileUrl.trim()) {
+      toast.error("Please enter your Instagram profile URL")
+      return
+    }
+
+    setIsScrapingInstagram(true)
+    try {
+      const blockConfig = registry.get("instagram-gallery")
+      if (!blockConfig) {
+        throw new Error("Instagram gallery block not found in registry")
+      }
+
+      const blocksToUpdate = blocks.filter((block) => (block.order ?? 0) >= order)
+
+      for (const block of blocksToUpdate) {
+        const updateResult = await updateBlockOrder(block.id, (block.order ?? 0) + 1)
+        if (!updateResult.success) {
+          throw new Error(`Failed to update block order: ${updateResult.error}`)
+        }
+      }
+
+      const instagramContent = {
+        ...blockConfig.default,
+        title: "Follow Us on Instagram",
+        description: "Check out our latest diving adventures and underwater photography"
+      }
+
+      const result = await createBlock({
+        pageId: currentPage.id,
+        type: "instagram-gallery",
+        content: instagramContent,
+        order
+      })
+
+      if (!result.success) {
+        throw new Error(result.error || "Failed to create Instagram gallery block")
+      }
+
+      const instagramResponse = await fetch("/api/instagram/fetch", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          profileUrl: instagramProfileUrl,
+          shopId
+        })
+      })
+
+      const instagramData = await instagramResponse.json()
+
+      if (!instagramResponse.ok || !instagramData.success) {
+        throw new Error(instagramData.error || "Failed to fetch Instagram posts")
+      }
+
+      toast.success("Instagram gallery created!", {
+        description: `Fetched ${instagramData.postsSaved} posts successfully!`
+      })
+    } catch (error) {
+      toast.error("Failed to create Instagram gallery", {
+        description: error instanceof Error ? error.message : "Unknown error"
+      })
+    } finally {
+      setIsScrapingInstagram(false)
+    }
+  }
+
   const resetModalState = () => {
     setShowReviewsSetup(false)
-    task.disconnect()
     setGoogleProfileUrl("")
+    setShowInstagramSetup(false)
+    setInstagramProfileUrl("")
     setSearchQuery("")
   }
 
@@ -177,9 +239,7 @@ export function AddBlockModal({ isOpen, onClose, onBlockAdded, order }: AddBlock
       <DialogContent className="max-w-2xl">
         <DialogHeader>
           <DialogTitle>
-            {task.status === 'running' || task.status === 'paused' ? (
-              "Scraping Reviews"
-            ) : showReviewsSetup ? (
+            {showReviewsSetup ? (
               <div className="flex items-center gap-2">
                 <Button
                   variant="ghost"
@@ -191,74 +251,25 @@ export function AddBlockModal({ isOpen, onClose, onBlockAdded, order }: AddBlock
                 </Button>
                 Setup Reviews Block
               </div>
+            ) : showInstagramSetup ? (
+              <div className="flex items-center gap-2">
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  onClick={() => setShowInstagramSetup(false)}
+                  className="h-auto p-1"
+                >
+                  <ArrowLeftIcon className="h-4 w-4" />
+                </Button>
+                Setup Instagram Gallery
+              </div>
             ) : (
               "Add New Block"
             )}
           </DialogTitle>
         </DialogHeader>
 
-        {task.taskId && (task.status === 'running' || task.status === 'paused') ? (
-          <div className="space-y-6">
-            <div className="rounded-lg bg-blue-50 p-4">
-              <h3 className="font-semibold text-blue-900 text-sm">Scraping Google Maps Reviews</h3>
-              <p className="mt-2 text-blue-700 text-sm">
-                {task.message || "We're collecting your reviews from Google Maps. This may take a few minutes."}
-              </p>
-            </div>
-
-            <div className="space-y-4">
-              {/* Connection status */}
-              <div className="flex items-center gap-2 text-sm">
-                <div className={`w-2 h-2 rounded-full ${task.isConnected ? 'bg-green-500' : 'bg-red-500'}`} />
-                {task.isConnected ? 'Connected' : 'Disconnected'}
-              </div>
-
-              {/* Progress bar */}
-              {task.progress && (
-                <div className="space-y-2">
-                  <div className="flex justify-between text-sm">
-                    <span>{task.progress.message}</span>
-                    <span>{task.progress.percentage}%</span>
-                  </div>
-                  <div className="w-full bg-gray-200 rounded-full h-2">
-                    <div 
-                      className="bg-blue-600 h-2 rounded-full transition-all duration-300" 
-                      style={{ width: `${task.progress.percentage}%` }}
-                    />
-                  </div>
-                  <div className="text-xs text-gray-500">
-                    {task.progress.current} / {task.progress.total}
-                  </div>
-                </div>
-              )}
-
-              {/* Task controls */}
-              <div className="flex gap-2">
-                {task.status === 'running' && (
-                  <Button variant="outline" size="sm" onClick={() => task.pauseTask()}>
-                    Pause
-                  </Button>
-                )}
-                {task.status === 'paused' && (
-                  <Button variant="outline" size="sm" onClick={() => task.resumeTask()}>
-                    Resume
-                  </Button>
-                )}
-                <Button variant="destructive" size="sm" onClick={() => task.abortTask()}>
-                  Abort
-                </Button>
-              </div>
-
-              {/* Status and error messages */}
-              {task.error && (
-                <div className="rounded-lg bg-red-50 p-3 text-red-800 text-sm">
-                  <div className="font-medium">Error:</div>
-                  <div>{task.error}</div>
-                </div>
-              )}
-            </div>
-          </div>
-        ) : showReviewsSetup ? (
+        {showReviewsSetup ? (
           <div className="space-y-6">
             <div className="rounded-lg bg-blue-50 p-4">
               <h3 className="font-semibold text-blue-900 text-sm">
@@ -314,6 +325,63 @@ export function AddBlockModal({ isOpen, onClose, onBlockAdded, order }: AddBlock
                 disabled={isScrapingReviews || !googleProfileUrl.trim()}
               >
                 {isScrapingReviews ? "Setting up reviews..." : "Create Reviews Block"}
+              </Button>
+            </div>
+          </div>
+        ) : showInstagramSetup ? (
+          <div className="space-y-6">
+            <div className="rounded-lg bg-purple-50 p-4">
+              <h3 className="font-semibold text-purple-900 text-sm">
+                Connect Your Instagram Profile
+              </h3>
+              <p className="mt-2 text-purple-700 text-sm">
+                We'll automatically fetch and display your Instagram posts to showcase your diving adventures.
+              </p>
+            </div>
+
+            <div className="space-y-3">
+              <Label htmlFor="instagram-url" className="font-medium text-sm">
+                Instagram Profile URL
+              </Label>
+              <Input
+                id="instagram-url"
+                placeholder="https://www.instagram.com/your-username/"
+                value={instagramProfileUrl}
+                onChange={(e) => setInstagramProfileUrl(e.target.value)}
+                className="w-full"
+              />
+              <p className="text-muted-foreground text-xs">
+                Paste your Instagram profile URL (e.g., https://www.instagram.com/your-username/)
+              </p>
+            </div>
+
+            <div className="rounded-lg border border-gray-200 p-4">
+              <div className="flex items-start gap-3">
+                <ExternalLinkIcon className="mt-0.5 h-4 w-4 text-muted-foreground" />
+                <div className="flex-1 space-y-2">
+                  <h4 className="font-medium text-sm">How to find your Instagram URL:</h4>
+                  <ol className="space-y-1 text-muted-foreground text-xs">
+                    <li>1. Go to Instagram and open your profile</li>
+                    <li>2. Copy the URL from your browser address bar</li>
+                    <li>3. Paste it above (should look like: instagram.com/your-username)</li>
+                  </ol>
+                </div>
+              </div>
+            </div>
+
+            <div className="flex justify-between gap-3">
+              <Button
+                variant="outline"
+                onClick={() => setShowInstagramSetup(false)}
+                disabled={isScrapingInstagram}
+              >
+                Cancel
+              </Button>
+              <Button
+                onClick={handleInstagramSetup}
+                disabled={isScrapingInstagram || !instagramProfileUrl.trim()}
+              >
+                {isScrapingInstagram ? "Setting up Instagram gallery..." : "Create Instagram Gallery"}
               </Button>
             </div>
           </div>

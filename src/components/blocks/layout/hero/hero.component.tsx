@@ -9,6 +9,7 @@ import { E } from "@/components/blocks/editable/editable"
 import { cn } from "@/lib/utils"
 import { DynamicSettings } from "@/components/blocks/shared/dynamic-settings"
 import { blockRegistry } from "@/lib/blocks"
+import { applyBackgroundWithExisting } from "@/components/blocks/shared/background"
 
 export interface HeroBlockProps extends Block {
   content: HeroContent
@@ -27,6 +28,7 @@ const HeroBlockContent = () => {
   const {
     title,
     text,
+    background,
     image,
     logo,
     logoUrl,
@@ -42,13 +44,21 @@ const HeroBlockContent = () => {
     minHeight: `${minHeight}vh`
   }
 
-  const backgroundStyle = image
-    ? {
-        backgroundImage: `linear-gradient(rgba(17, 24, 39, 0.8), rgba(17, 24, 39, 0.8)), url(${image})`,
-        backgroundSize: "cover",
-        backgroundPosition: "center"
-      }
-    : {}
+  // Use new background system or fallback to legacy image
+  const finalBackground =
+    background ||
+    (image
+      ? {
+          type: "image" as const,
+          url: image,
+          position: "center" as const,
+          size: "cover" as const,
+          repeat: "no-repeat" as const,
+          overlay: { enabled: true, color: "rgba(17, 24, 39, 0.8)" }
+        }
+      : { type: "none" as const })
+
+  const backgroundProps = applyBackgroundWithExisting(finalBackground, "bg-gray-900")
 
   const getAlignmentClasses = () => {
     switch (alignment) {
@@ -85,7 +95,10 @@ const HeroBlockContent = () => {
         title={`${blockConfig.name} Settings`}
       />
 
-      <div className={cn("bg-gray-900")} style={backgroundStyle}>
+      <div
+        className={backgroundProps.className}
+        style={{ ...backgroundProps.style, ...containerStyle }}
+      >
         <header className="absolute inset-x-0 top-0 z-50">
           <nav aria-label="Global" className="flex items-center justify-between p-6 lg:px-8">
             {logo && (

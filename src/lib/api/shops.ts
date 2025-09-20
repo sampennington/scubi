@@ -28,21 +28,21 @@ export const shopApi = {
     }
   },
 
-  async getBySlug(slug: string): Promise<Shop | null> {
-    try {
-      const [shop] = await db.select().from(shops).where(eq(shops.slug, slug))
-      if (!shop) {
-        notFound()
-      }
-      return shop
-    } catch (error) {
-      if (error instanceof Error && error.message === "NEXT_NOT_FOUND") {
-        throw error
-      }
-      console.error("Failed to fetch shop by slug:", error)
-      throw new Error("Failed to load shop")
-    }
-  },
+  // async getBySlug(slug: string): Promise<Shop | null> {
+  //   try {
+  //     const [shop] = await db.select().from(shops).where(eq(shops.slug, slug))
+  //     if (!shop) {
+  //       notFound()
+  //     }
+  //     return shop
+  //   } catch (error) {
+  //     if (error instanceof Error && error.message === "NEXT_NOT_FOUND") {
+  //       throw error
+  //     }
+  //     console.error("Failed to fetch shop by slug:", error)
+  //     throw new Error("Failed to load shop")
+  //   }
+  // },
 
   async getByDomain(domain: string): Promise<Shop | null> {
     try {
@@ -60,7 +60,6 @@ export const shopApi = {
         .select({
           id: shops.id,
           name: shops.name,
-          slug: shops.slug,
           customDomain: shops.customDomain,
           templateId: shops.templateId,
           createdBy: shops.createdBy,
@@ -80,7 +79,6 @@ export const shopApi = {
 
   async create(data: {
     name: string
-    slug: string
     createdBy: string
     customDomain?: string
     templateId?: string

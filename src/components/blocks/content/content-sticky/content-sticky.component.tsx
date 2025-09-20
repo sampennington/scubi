@@ -6,6 +6,8 @@ import { BlockEditProvider, useBlockEdit } from "@/components/blocks/editable/co
 import { E } from "@/components/blocks/editable/editable"
 import { DynamicSettings } from "@/components/blocks/shared/dynamic-settings"
 import { blockRegistry } from "@/lib/blocks"
+import { cn } from "@/lib/utils"
+import { applyBackgroundWithExisting } from "@/components/blocks/shared/background"
 
 export interface ContentStickyBlockProps extends Block {
   content: ContentStickyContent
@@ -32,11 +34,14 @@ const ContentStickyBlockContent = () => {
     subtitle,
     image,
     imageAlt,
+    background,
     content: mainContent,
     features,
     bottomTitle,
     bottomContent
   } = { ...defaultContentStickyContent, ...content }
+
+  const backgroundProps = applyBackgroundWithExisting(background || { type: "none" }, "bg-gray-900")
 
   return (
     <div className="group relative">
@@ -47,7 +52,13 @@ const ContentStickyBlockContent = () => {
         title={`${blockConfig.name} Settings`}
       />
 
-      <div className="relative isolate overflow-hidden bg-gray-900 px-6 py-24 sm:py-32 lg:overflow-visible lg:px-0">
+      <div
+        className={cn(
+          "relative isolate overflow-hidden px-6 py-24 sm:py-32 lg:overflow-visible lg:px-0",
+          backgroundProps.className
+        )}
+        style={backgroundProps.style}
+      >
         <div className="-z-10 absolute inset-0 overflow-hidden">
           <svg
             aria-hidden="true"

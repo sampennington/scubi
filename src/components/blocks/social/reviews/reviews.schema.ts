@@ -1,8 +1,10 @@
 import { z } from "zod"
+import { BackgroundConfigSchema } from "../../shared/background"
 
 export const ReviewsContentSchema = z.object({
   title: z.string().optional(),
   description: z.string().optional(),
+  background: BackgroundConfigSchema.optional(),
   platform: z.enum(["all", "google", "tripadvisor", "facebook", "yelp"]),
   layout: z.enum(["grid", "carousel", "list"]),
   columns: z.enum(["1", "2", "3", "4"]),

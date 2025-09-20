@@ -4,7 +4,7 @@ dotenv.config({ path: ".env.local" })
 
 import * as cheerio from "cheerio"
 import { PlaywrightRenderer } from "./engines/playwright-renderer"
-import { llmExtractBlocks } from "./ai"
+import { llmExtractBlocks, type Section } from "./ai"
 
 import {
   SiteScrapeSchema,
@@ -32,6 +32,8 @@ import {
 } from "@/scraper/utils/html"
 import { extractBusinessProfile } from "@/scraper/utils/business"
 import { info } from "@/scraper/utils/logger"
+// import { llmExtractBlocks } from "./ai"
+import type { Block } from "../lib/api"
 
 const DEFAULT_MAX_PAGES = 40
 
@@ -64,18 +66,14 @@ async function scrapePage(url: Url, renderer: PlaywrightRenderer): Promise<Scrap
   const images = extractPageImages($, url)
   const seo = extractSeoMeta($)
 
-  const { blocks, sections } = await llmExtractBlocks({
-    url,
-    text,
-    html,
-    screenshot: rendered.lowQScreenShotbase64
-  })
-
-  // write blocks to file
-  const fs = require("fs")
-  const path = require("path")
-  const blocksPath = path.join(process.cwd(), "tmp", "scrapes", `blocks-${Date.now()}.json`)
-  fs.writeFileSync(blocksPath, JSON.stringify(blocks, null, 2))
+  // const { blocks, sections } = await llmExtractBlocks({
+  //   url,
+  //   text,
+  //   html,
+  //   screenshot: rendered.lowQScreenShotbase64
+  // })
+  const blocks: Block[] = []
+  const sections: Section[] = []
 
   return ScrapedPageSchema.parse({
     url,
@@ -86,8 +84,7 @@ async function scrapePage(url: Url, renderer: PlaywrightRenderer): Promise<Scrap
     sections,
     blockCandidates: blocks,
     images,
-    seo,
-    ai: { blocks, sections }
+    seo
   })
 }
 

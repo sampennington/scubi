@@ -1,4 +1,5 @@
 import { z } from "zod"
+import { BackgroundConfigSchema } from "../../shared/background"
 
 export const StatItemSchema = z.object({
   label: z.string(),
@@ -11,7 +12,7 @@ export const StatsContentSchema = z.object({
   stats: z.array(StatItemSchema),
   layout: z.enum(["grid", "horizontal"]).optional(),
   columns: z.enum(["2", "3", "4"]).optional(),
-  backgroundColor: z.string().optional(),
+  background: BackgroundConfigSchema.optional(),
   textColor: z.string().optional(),
   alignment: z.enum(["left", "center", "right"]).optional()
 })

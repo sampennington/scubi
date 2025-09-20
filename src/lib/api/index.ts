@@ -6,6 +6,7 @@ import { templateApi } from "./templates"
 import { siteSettingsApi } from "./site-settings"
 import { subscriptionApi } from "./subscriptions"
 import { reviewsApi } from "./reviews"
+import { instagramApi } from "./instagram"
 
 export { shopApi, type Shop, type ShopWithMembers } from "./shops"
 export { memberApi } from "./members"
@@ -15,6 +16,7 @@ export { templateApi } from "./templates"
 export { siteSettingsApi } from "./site-settings"
 export { subscriptionApi } from "./subscriptions"
 export { reviewsApi } from "./reviews"
+export { instagramApi } from "./instagram"
 
 export type PageWithBlocks = Page & {
   blocks: Block[]
@@ -29,6 +31,7 @@ export const api = {
   siteSettings: siteSettingsApi,
   subscriptions: subscriptionApi,
   reviews: reviewsApi,
+  instagram: instagramApi,
 
   utils: {
     async getShopWithMembers(shopId: string): Promise<ShopWithMembers | null> {

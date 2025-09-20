@@ -2,6 +2,7 @@ import { TrendingUp } from "lucide-react"
 import type { BlockConfig } from "../../../../lib/blocks/core/config-types"
 import { defaultStatsContent } from "./stats.default"
 import { StatsContentSchema } from "./stats.schema"
+import { backgroundSettingsSection } from "../../shared/background"
 
 export const statsBlockConfig: BlockConfig = {
   id: "stats",
@@ -140,20 +141,14 @@ export const statsBlockConfig: BlockConfig = {
           }
         ]
       },
+      backgroundSettingsSection,
       {
         id: "styling",
-        title: "Styling",
-        description: "Background and text color customization",
+        title: "Text Styling",
+        description: "Text color customization",
         collapsible: true,
         defaultOpen: false,
         fields: [
-          {
-            type: "color",
-            name: "backgroundColor",
-            label: "Background Color",
-            description: "Background color for the stats section",
-            defaultValue: "#111827"
-          },
           {
             type: "color",
             name: "textColor",

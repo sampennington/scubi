@@ -15,6 +15,7 @@ import { ColorPicker } from "@/components/ui/color-picker"
 import { Plus, Trash2 } from "lucide-react"
 import type { FieldConfig } from "@/lib/blocks/core/config-types"
 import { EditableImage } from "../../editable/editable-image"
+import { Loader2 } from "lucide-react"
 
 type FieldValue =
   | string
@@ -33,9 +34,10 @@ interface DynamicFieldProps {
   onChange: (value: FieldValue) => void
   error?: string
   touched?: boolean
+  onAction?: (action: string) => void
 }
 
-export function DynamicField({ config, value, onChange, error, touched }: DynamicFieldProps) {
+export function DynamicField({ config, value, onChange, error, touched, onAction }: DynamicFieldProps) {
   const hasError = error && touched
 
   switch (config.type) {
@@ -137,13 +139,20 @@ export function DynamicField({ config, value, onChange, error, touched }: Dynami
     case "select":
       return (
         <div className="space-y-1">
-          <Select value={(value as string) || ""} onValueChange={onChange}>
+          <Select
+            value={String(value) || ""}
+            onValueChange={(newValue) => {
+              // Convert back to number if the original option value was a number
+              const selectedOption = config.options.find(opt => String(opt.value) === newValue)
+              onChange(selectedOption ? selectedOption.value : newValue)
+            }}
+          >
             <SelectTrigger className={hasError ? "border-red-500" : ""}>
               <SelectValue placeholder="Select an option..." />
             </SelectTrigger>
             <SelectContent>
               {config.options.map((option) => (
-                <SelectItem key={option.value} value={option.value}>
+                <SelectItem key={String(option.value)} value={String(option.value)}>
                   {option.label}
                 </SelectItem>
               ))}
@@ -260,6 +269,28 @@ export function DynamicField({ config, value, onChange, error, touched }: Dynami
             {config.addButtonText || "Add Item"}
           </Button>
 
+          {hasError && <p className="text-red-500 text-sm">{error}</p>}
+        </div>
+      )
+    }
+
+    case "button": {
+      const buttonConfig = config as Extract<FieldConfig, { type: "button" }>
+      const isLoading = buttonConfig.loading
+
+      return (
+        <div className="space-y-1">
+          <Button
+            type="button"
+            variant={buttonConfig.variant || "default"}
+            size={buttonConfig.size || "default"}
+            disabled={buttonConfig.disabled || isLoading}
+            onClick={() => onAction?.(buttonConfig.action)}
+            className="w-full"
+          >
+            {isLoading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
+            {buttonConfig.text}
+          </Button>
           {hasError && <p className="text-red-500 text-sm">{error}</p>}
         </div>
       )

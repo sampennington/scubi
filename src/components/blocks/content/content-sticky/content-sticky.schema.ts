@@ -1,4 +1,5 @@
 import { z } from "zod"
+import { BackgroundConfigSchema } from "../../shared/background"
 
 export const contentStickySchema = z.object({
   eyebrow: z.string(),
@@ -7,6 +8,7 @@ export const contentStickySchema = z.object({
   image: z.string(),
   imageAlt: z.string(),
   content: z.string(),
+  background: BackgroundConfigSchema.optional(),
   features: z.array(
     z.object({
       icon: z.string(),

@@ -1,5 +1,6 @@
 import { z } from "zod"
 import { BlockButtonSchema } from "../../shared/primitives"
+import { BackgroundConfigSchema } from "../../shared/background"
 
 export const HeroNavigationItemSchema = z.object({
   name: z.string(),
@@ -9,6 +10,8 @@ export const HeroNavigationItemSchema = z.object({
 export const HeroContentSchema = z.object({
   title: z.string(),
   text: z.string(),
+  background: BackgroundConfigSchema.optional(),
+  // Keep image for backward compatibility, will be deprecated
   image: z.string().optional(),
   logo: z.string().optional(),
   logoUrl: z.string().optional(),

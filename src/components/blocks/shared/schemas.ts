@@ -15,6 +15,10 @@ import {
   isReviewsContent as isReviewsContentFromSchema,
   type ReviewsContent as ReviewsContentFromBlock
 } from "../social/reviews/reviews.schema"
+import {
+  InstagramGalleryContentSchema,
+  isInstagramGalleryContent
+} from "../social/instagram-gallery/instagram-gallery.schema"
 
 export const TextContentSchema = z.object({
   text: z.string(),
@@ -275,7 +279,8 @@ export const BlockSchemas = {
   [BlockType.COURSES]: CoursesContentSchema,
   [BlockType.MARINE_LIFE]: MarineLifeContentSchema,
   [BlockType.STATS]: StatsContentSchema,
-  [BlockType.CONTENT_STICKY]: contentStickySchema
+  [BlockType.CONTENT_STICKY]: contentStickySchema,
+  [BlockType.INSTAGRAM_GALLERY]: InstagramGalleryContentSchema
 } as const
 
 export type BlockButton = z.infer<typeof BlockButtonSchema>
@@ -396,5 +401,6 @@ export const typeGuardMap: Record<BlockType, (data: unknown) => boolean> = {
   [BlockType.REVIEWS]: isReviewsContent,
   [BlockType.STATS]: isStatsContent,
   [BlockType.CONTENT_STICKY]: isContentStickyContent,
+  [BlockType.INSTAGRAM_GALLERY]: isInstagramGalleryContent,
   [BlockType.DIVE_SITES]: (data) => false
 }

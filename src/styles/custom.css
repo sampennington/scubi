@@ -121,3 +121,14 @@ html {
 .site-preview button {
   font-family: var(--font-body, var(--font-sans));
 }
+
+/* Full width breakout utility */
+@layer utilities {
+  .breakout-full {
+    width: 100vw;
+    margin-left: 50%;
+    transform: translateX(-50%);
+    margin-top: 0;
+    margin-bottom: 0;
+  }
+}

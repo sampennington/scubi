@@ -15,13 +15,15 @@ interface DynamicSettingsProps {
   value: Record<string, any>
   onChange: (field: string, value: any) => void
   title?: string
+  onAction?: (action: string) => void
 }
 
 export function DynamicSettings({
   config,
   value,
   onChange,
-  title = "Block Settings"
+  title = "Block Settings",
+  onAction
 }: DynamicSettingsProps) {
   const [formState, setFormState] = useState<FormState>(() => initializeFormState(config, value))
 
@@ -86,6 +88,7 @@ export function DynamicSettings({
                   onChange={(newValue) => handleFieldChange(field.name, newValue)}
                   error={fieldState?.error}
                   touched={fieldState?.touched}
+                  onAction={onAction}
                 />
               </SettingItem>
             )

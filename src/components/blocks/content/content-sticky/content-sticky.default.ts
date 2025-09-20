@@ -1,4 +1,5 @@
 import type { ContentStickyContent } from "./content-sticky.schema"
+import { defaultBackgroundConfig } from "../../shared/background"
 
 export const defaultContentStickyContent: ContentStickyContent = {
   eyebrow: "Deploy faster",
@@ -8,6 +9,7 @@ export const defaultContentStickyContent: ContentStickyContent = {
   image:
     "https://images.unsplash.com/photo-1551434678-e076c223a692?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80",
   imageAlt: "App Screenshot",
+  background: defaultBackgroundConfig,
   content:
     "Faucibus commodo massa rhoncus, volutpat. Dignissim sed eget risus enim. Mattis mauris semper sed amet vitae sed turpis id. Id dolor praesent donec est. Odio penatibus risus viverra tellus varius sit neque erat velit. Faucibus commodo massa rhoncus, volutpat. Dignissim sed eget risus enim. Mattis mauris semper sed amet vitae sed turpis id.",
   features: [

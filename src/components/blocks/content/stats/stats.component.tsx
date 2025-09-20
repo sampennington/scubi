@@ -6,6 +6,7 @@ import { E } from "@/components/blocks/editable/editable"
 import { cn } from "@/lib/utils"
 import { DynamicSettings } from "@/components/blocks/shared/dynamic-settings"
 import { blockRegistry } from "@/lib/blocks"
+import { applyBackgroundWithExisting } from "@/components/blocks/shared/background"
 
 export interface StatsBlockProps extends Block {
   content: StatsContent
@@ -20,7 +21,17 @@ const StatsBlockContent = () => {
     return null
   }
 
-  const { title, description, stats, layout, columns, backgroundColor, textColor, alignment } = {
+  const {
+    title,
+    description,
+    stats,
+    layout,
+    columns,
+    background,
+    backgroundColor,
+    textColor,
+    alignment
+  } = {
     ...defaultStatsContent,
     ...content
   }
@@ -47,7 +58,14 @@ const StatsBlockContent = () => {
     }
   }
 
-  const backgroundStyle = backgroundColor ? { backgroundColor } : { backgroundColor: "#111827" }
+  // Use new background system or fallback to legacy backgroundColor
+  const finalBackground =
+    background ||
+    (backgroundColor
+      ? { type: "color" as const, color: backgroundColor }
+      : { type: "color" as const, color: "#111827" })
+
+  const backgroundProps = applyBackgroundWithExisting(finalBackground)
 
   const textStyle = textColor ? { color: textColor } : { color: "#ffffff" }
 
@@ -60,7 +78,10 @@ const StatsBlockContent = () => {
         title={`${blockConfig.name} Settings`}
       />
 
-      <div className="py-24 sm:py-32" style={backgroundStyle}>
+      <div
+        className={cn("py-24 sm:py-32", backgroundProps.className)}
+        style={backgroundProps.style}
+      >
         <div className="mx-auto max-w-7xl px-6 lg:px-8">
           {(title || description) && (
             <div className={cn("mx-auto max-w-2xl", getAlignmentClasses())}>

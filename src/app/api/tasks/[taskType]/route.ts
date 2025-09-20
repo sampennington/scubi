@@ -1,11 +1,11 @@
 import { type NextRequest, NextResponse } from "next/server"
-import { taskManager } from "@/lib/tasks/task-manager"
-import type { TaskUpdate } from "@/lib/tasks/types"
+import { queueManager } from "@/lib/queue"
+import type { TaskUpdate } from "@/lib/queue/types"
 
 interface TaskRouteParams {
-  params: {
+  params: Promise<{
     taskType: string
-  }
+  }>
 }
 
 // GET: Stream real-time updates via SSE
@@ -16,11 +16,11 @@ export async function GET(request: NextRequest) {
     return NextResponse.json({ error: "taskId is required" }, { status: 400 })
   }
 
-  // Create SSE stream
+  console.log(`[API] SSE connection established for task: ${taskId}`)
+
   const encoder = new TextEncoder()
   const stream = new ReadableStream({
     start(controller) {
-      // Send initial connection message
       const initialMessage = `data: ${JSON.stringify({
         type: "connected",
         taskId,
@@ -28,48 +28,33 @@ export async function GET(request: NextRequest) {
       })}\n\n`
       controller.enqueue(encoder.encode(initialMessage))
 
-      // Listen for task updates
       const handleUpdate = (update: TaskUpdate) => {
         const message = `data: ${JSON.stringify(update)}\n\n`
         try {
           controller.enqueue(encoder.encode(message))
 
-          // Close stream when task completes
-          if (
-            update.status === "completed" ||
-            update.status === "failed" ||
-            update.status === "aborted"
-          ) {
+          if (update.status === "completed" || update.status === "failed") {
             setTimeout(() => {
               try {
                 controller.close()
-              } catch (e) {
-                // Stream might already be closed
-              }
+              } catch {}
             }, 1000)
           }
-        } catch (error) {
-          // Client disconnected, clean up
-          taskManager.off(`task:${taskId}`, handleUpdate)
+        } catch {
+          queueManager.offSpecificTask(taskId, handleUpdate)
           try {
             controller.close()
-          } catch (e) {
-            // Already closed
-          }
+          } catch {}
         }
       }
 
-      // Register listener for this specific task
-      taskManager.on(`task:${taskId}`, handleUpdate)
+      queueManager.onSpecificTask(taskId, handleUpdate)
 
-      // Handle client disconnect
       request.signal.addEventListener("abort", () => {
-        taskManager.off(`task:${taskId}`, handleUpdate)
+        queueManager.offSpecificTask(taskId, handleUpdate)
         try {
           controller.close()
-        } catch (e) {
-          // Already closed
-        }
+        } catch {}
       })
     }
   })
@@ -89,35 +74,19 @@ export async function GET(request: NextRequest) {
 // POST: Start or resume task
 export async function POST(request: NextRequest, { params }: TaskRouteParams) {
   try {
-    const { taskType } = params
+    const { taskType } = await params
     const body = await request.json()
-    const { action = "start", taskId, ...input } = body
+    const { action = "start", ...input } = body
 
     if (action === "start") {
       // Start new task
-      const newTaskId = await taskManager.startTask(taskType, input, input.shopId)
+      console.log(`[API] Starting ${taskType} task with input:`, input)
+      const newTaskId = await queueManager.addJob(taskType, input)
+      console.log(`[API] Started ${taskType} task with ID: ${newTaskId}`)
       return NextResponse.json({
         success: true,
         taskId: newTaskId,
         message: `${taskType} task started`
-      })
-    }
-
-    if (action === "resume" && taskId) {
-      const success = taskManager.resumeTask(taskId)
-      return NextResponse.json({
-        success,
-        taskId,
-        message: success ? "Task resumed" : "Failed to resume task"
-      })
-    }
-
-    if (action === "pause" && taskId) {
-      const success = taskManager.pauseTask(taskId)
-      return NextResponse.json({
-        success,
-        taskId,
-        message: success ? "Task paused" : "Failed to pause task"
       })
     }
 
@@ -136,14 +105,14 @@ export async function POST(request: NextRequest, { params }: TaskRouteParams) {
 // DELETE: Abort task
 export async function DELETE(request: NextRequest, { params }: TaskRouteParams) {
   try {
-    const { taskType } = params
+    const { taskType } = await params
     const taskId = request.nextUrl.searchParams.get("taskId")
 
     if (!taskId) {
       return NextResponse.json({ error: "taskId is required" }, { status: 400 })
     }
 
-    const success = taskManager.abortTask(taskId)
+    const success = await queueManager.removeJob(taskType, taskId)
     return NextResponse.json({
       success,
       taskId,
