@@ -1,11 +1,8 @@
 "use client"
 
-import { useEffect, useRef, useState } from "react"
+import { useEffect, useRef } from "react"
 import {
   $getRoot,
-  $getSelection,
-  $isRangeSelection,
-  FORMAT_TEXT_COMMAND,
   $createParagraphNode,
   $createTextNode
 } from "lexical"
@@ -26,8 +23,6 @@ import { LinkNode, AutoLinkNode } from "@lexical/link"
 import { MarkNode } from "@lexical/mark"
 import { CodeNode } from "@lexical/code"
 import { TRANSFORMERS } from "@lexical/markdown"
-import { Bold, Italic, Underline } from "lucide-react"
-import { Button } from "../../ui/button"
 import { cn } from "@/lib/utils"
 
 interface LexicalEditorProps {
@@ -49,104 +44,9 @@ interface LexicalEditorProps {
   }
 }
 
-// Floating toolbar component
-function FloatingToolbar({ features }: { features: LexicalEditorProps["features"] }) {
-  const [editor] = useLexicalComposerContext()
-  const [isVisible, setIsVisible] = useState(false)
-  const [position, setPosition] = useState({ top: 0, left: 0 })
-
-  useEffect(() => {
-    const updateToolbar = () => {
-      const selection = $getSelection()
-
-      if ($isRangeSelection(selection) && !selection.isCollapsed()) {
-        setIsVisible(true)
-
-        // Use setTimeout to ensure DOM has updated
-        setTimeout(() => {
-          const nativeSelection = window.getSelection()
-          if (nativeSelection && nativeSelection.rangeCount > 0) {
-            const range = nativeSelection.getRangeAt(0)
-            const rect = range.getBoundingClientRect()
-            setPosition({
-              top: rect.top + window.scrollY - 60,
-              left: rect.left + window.scrollX + rect.width / 2
-            })
-          }
-        }, 0)
-      } else {
-        setIsVisible(false)
-      }
-    }
-
-    const unregister = editor.registerUpdateListener(({ editorState }) => {
-      editorState.read(updateToolbar)
-    })
-
-    // Also listen for selection changes
-    const handleSelectionChange = () => {
-      editor.getEditorState().read(updateToolbar)
-    }
-
-    document.addEventListener("selectionchange", handleSelectionChange)
-
-    return () => {
-      unregister()
-      document.removeEventListener("selectionchange", handleSelectionChange)
-    }
-  }, [editor])
-
-  if (!isVisible) return null
-
-  const formatText = (format: "bold" | "italic" | "underline") => {
-    editor.dispatchCommand(FORMAT_TEXT_COMMAND, format)
-  }
-
-  return (
-    <div
-      className="fixed z-[9999] flex items-center gap-1 rounded-lg border bg-white p-2 shadow-xl"
-      style={{
-        top: position.top,
-        left: position.left,
-        transform: "translateX(-50%)"
-      }}
-      data-lexical-editor
-    >
-      {features?.bold !== false && (
-        <Button
-          variant="ghost"
-          size="sm"
-          onClick={() => formatText("bold")}
-          className="h-8 w-8 p-0"
-          onMouseDown={(e) => e.preventDefault()} // Prevent blur
-        >
-          <Bold className="h-4 w-4" />
-        </Button>
-      )}
-      {features?.italic !== false && (
-        <Button
-          variant="ghost"
-          size="sm"
-          onClick={() => formatText("italic")}
-          className="h-8 w-8 p-0"
-          onMouseDown={(e) => e.preventDefault()} // Prevent blur
-        >
-          <Italic className="h-4 w-4" />
-        </Button>
-      )}
-      {features?.underline !== false && (
-        <Button
-          variant="ghost"
-          size="sm"
-          onClick={() => formatText("underline")}
-          className="h-8 w-8 p-0"
-          onMouseDown={(e) => e.preventDefault()} // Prevent blur
-        >
-          <Underline className="h-4 w-4" />
-        </Button>
-      )}
-    </div>
-  )
+// Floating toolbar component - disabled for now to prevent infinite loop issues
+function FloatingToolbar() {
+  return null
 }
 
 // Custom content editable with style preservation
@@ -396,7 +296,7 @@ export function LexicalEditor({
             {features?.links !== false && <LinkPlugin />}
             {features?.lists !== false && <ListPlugin />}
             <MarkdownShortcutPlugin transformers={TRANSFORMERS} />
-            <FloatingToolbar features={features} />
+            <FloatingToolbar />
           </>
         )}
       </LexicalComposer>

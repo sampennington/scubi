@@ -1,7 +1,7 @@
 /** biome-ignore-all lint/a11y/noStaticElementInteractions: doing something weird */
 "use client"
 
-import { useState, useRef, useEffect, useId } from "react"
+import { useState, useRef, useEffect, useId, useCallback } from "react"
 import { Input } from "@/components/ui/input"
 import { Textarea } from "@/components/ui/textarea"
 import { LexicalEditor } from "./lexical-editor"
@@ -58,12 +58,12 @@ export const EditableBlock = ({
     setEditValue(value)
   }, [value])
 
-  const handleSave = () => {
+  const handleSave = useCallback(() => {
     if (editValue.trim() !== value) {
       onSave(editValue.trim())
     }
     setIsEditing(false)
-  }
+  }, [editValue, value, onSave])
 
   const handleCancel = () => {
     setEditValue(value)
@@ -95,7 +95,7 @@ export const EditableBlock = ({
     if (!isActive) {
       setIsHovered(false)
     }
-  }, [isActive])
+  }, [isActive, isEditing, handleSave])
 
   // Extract computed styles from the child element
   useEffect(() => {
