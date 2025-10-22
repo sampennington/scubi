@@ -176,7 +176,7 @@ const CoursesBlockContent = () => {
           </div>
         )}
 
-        <ShopOwner shopId={shopId}>
+        <ShopOwner>
           <div className="mt-8 text-center">
             <Button onClick={addNewCourse} variant="outline" className="flex items-center gap-2">
               <Plus className="h-4 w-4" />

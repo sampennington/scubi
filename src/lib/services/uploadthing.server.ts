@@ -2,7 +2,9 @@ import { UTApi } from "uploadthing/server"
 
 type UploadData = {
   key: string
-  url: string
+  url?: string
+  ufsUrl?: string
+  appUrl?: string
   name: string
   size: number
   customId?: string | null
@@ -10,7 +12,7 @@ type UploadData = {
 
 type UploadResponse =
   | { data: UploadData; error: null }
-  | { data: null; error: { code: string; message: string; data: any } }
+  | { data: null; error: { code: string; message: string; data: unknown } }
 
 export interface HostedUpload {
   key: string
@@ -58,13 +60,14 @@ const normaliseUploadThingResult = (value: unknown): HostedUpload | null => {
     }
 
     const data = response.data
-    if (!data.key || !data.url) {
+    const url = data.ufsUrl || data.url
+    if (!data.key || !url) {
       return null
     }
 
     return {
       key: data.key,
-      url: data.url,
+      url,
       name: data.name,
       size: data.size,
       customId: data.customId || null

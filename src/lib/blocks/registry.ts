@@ -29,8 +29,8 @@ export function isValidBlockType(blockType: string): blockType is BlockType {
   return blockType in blockComponents
 }
 
-// @ts-ignore Cannot make this work!!
 registerBlocks(
+  // @ts-ignore Cannot make this work!!
   heroBlockDefinition,
   contentStickyBlockDefinition,
   statsBlockDefinition,

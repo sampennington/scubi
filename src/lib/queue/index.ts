@@ -1,5 +1,7 @@
 import { TaskQueue } from "./task-queue"
 import type { TaskJobData, TaskUpdate } from "./types"
+import { scraperTaskDefinition } from "./tasks/scraper"
+import { instagramTaskDefinition } from "./tasks/instagram"
 
 class QueueManager {
   private taskQueue: TaskQueue
@@ -10,7 +12,8 @@ class QueueManager {
   }
 
   private registerTasks(): void {
-    // Future tasks will be registered here
+    this.taskQueue.registerTask("website-scraper", scraperTaskDefinition)
+    this.taskQueue.registerTask("instagram-fetch", instagramTaskDefinition)
   }
 
   async addJob<TData extends TaskJobData>(

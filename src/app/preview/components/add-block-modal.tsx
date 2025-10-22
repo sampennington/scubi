@@ -5,11 +5,14 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/u
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
+import { Progress } from "@/components/ui/progress"
 import { SearchIcon, PlusIcon, ArrowLeftIcon, ExternalLinkIcon } from "lucide-react"
 import { useSite } from "@/app/preview/components/site-context"
 import { createBlock, updateBlockOrder } from "@/lib/actions/blocks"
 import { toast } from "sonner"
 import { useBlockRegistry } from "@/lib/blocks"
+import { useTask } from "@/lib/tasks/use-task"
+import type { InstagramTaskResult } from "@/lib/queue/tasks/instagram"
 
 interface AddBlockModalProps {
   isOpen: boolean
@@ -26,9 +29,25 @@ export function AddBlockModal({ isOpen, onClose, onBlockAdded, order }: AddBlock
   const [isScrapingReviews, setIsScrapingReviews] = useState(false)
   const [showInstagramSetup, setShowInstagramSetup] = useState(false)
   const [instagramProfileUrl, setInstagramProfileUrl] = useState("")
-  const [isScrapingInstagram, setIsScrapingInstagram] = useState(false)
   const { currentPage, blocks, shopId } = useSite()
   const registry = useBlockRegistry()
+
+  const instagramTask = useTask<InstagramTaskResult>({
+    onComplete: (result) => {
+      if (result.success) {
+        toast.success("Instagram gallery created!", {
+          description: `Fetched ${result.postsSaved} posts successfully`
+        })
+        onBlockAdded()
+        handleClose()
+      }
+    },
+    onError: (error) => {
+      toast.error("Failed to fetch Instagram posts", {
+        description: error
+      })
+    }
+  })
 
   const availableBlocks = registry.getAllBlocks()
   const filteredBlocks = availableBlocks.filter(
@@ -161,7 +180,6 @@ export function AddBlockModal({ isOpen, onClose, onBlockAdded, order }: AddBlock
       return
     }
 
-    setIsScrapingInstagram(true)
     try {
       const blockConfig = registry.get("instagram-gallery")
       if (!blockConfig) {
@@ -194,30 +212,14 @@ export function AddBlockModal({ isOpen, onClose, onBlockAdded, order }: AddBlock
         throw new Error(result.error || "Failed to create Instagram gallery block")
       }
 
-      const instagramResponse = await fetch("/api/instagram/fetch", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          profileUrl: instagramProfileUrl,
-          shopId
-        })
-      })
-
-      const instagramData = await instagramResponse.json()
-
-      if (!instagramResponse.ok || !instagramData.success) {
-        throw new Error(instagramData.error || "Failed to fetch Instagram posts")
-      }
-
-      toast.success("Instagram gallery created!", {
-        description: `Fetched ${instagramData.postsSaved} posts successfully!`
+      await instagramTask.startTask("instagram-fetch", {
+        profileUrl: instagramProfileUrl,
+        shopId
       })
     } catch (error) {
       toast.error("Failed to create Instagram gallery", {
         description: error instanceof Error ? error.message : "Unknown error"
       })
-    } finally {
-      setIsScrapingInstagram(false)
     }
   }
 
@@ -335,7 +337,8 @@ export function AddBlockModal({ isOpen, onClose, onBlockAdded, order }: AddBlock
                 Connect Your Instagram Profile
               </h3>
               <p className="mt-2 text-purple-700 text-sm">
-                We'll automatically fetch and display your Instagram posts to showcase your diving adventures.
+                We'll automatically fetch and display your Instagram posts to showcase your diving
+                adventures.
               </p>
             </div>
 
@@ -369,19 +372,55 @@ export function AddBlockModal({ isOpen, onClose, onBlockAdded, order }: AddBlock
               </div>
             </div>
 
+            {(instagramTask.status === "active" || instagramTask.status === "waiting") && (
+              <div className="space-y-2 rounded-lg border border-purple-200 bg-purple-50 p-4">
+                <div className="flex items-center justify-between text-sm">
+                  <span className="font-medium text-purple-900">{instagramTask.message}</span>
+                  {instagramTask.progress && (
+                    <span className="font-semibold text-purple-900">
+                      {Math.round(instagramTask.progress.percentage)}%
+                    </span>
+                  )}
+                </div>
+                <Progress value={instagramTask.progress?.percentage ?? 0} className="h-2" />
+                {instagramTask.progress?.partialResult &&
+                typeof instagramTask.progress.partialResult === "object" &&
+                instagramTask.progress.partialResult !== null ? (
+                  <div className="flex gap-4 text-purple-700 text-xs">
+                    <span>
+                      Saved:{" "}
+                      {(instagramTask.progress.partialResult as { savedCount?: number })
+                        .savedCount ?? 0}
+                    </span>
+                    <span>
+                      Duplicates:{" "}
+                      {(instagramTask.progress.partialResult as { duplicatesSkipped?: number })
+                        .duplicatesSkipped ?? 0}
+                    </span>
+                  </div>
+                ) : null}
+              </div>
+            )}
+
             <div className="flex justify-between gap-3">
               <Button
                 variant="outline"
                 onClick={() => setShowInstagramSetup(false)}
-                disabled={isScrapingInstagram}
+                disabled={instagramTask.status === "active" || instagramTask.status === "waiting"}
               >
                 Cancel
               </Button>
               <Button
                 onClick={handleInstagramSetup}
-                disabled={isScrapingInstagram || !instagramProfileUrl.trim()}
+                disabled={
+                  instagramTask.status === "active" ||
+                  instagramTask.status === "waiting" ||
+                  !instagramProfileUrl.trim()
+                }
               >
-                {isScrapingInstagram ? "Setting up Instagram gallery..." : "Create Instagram Gallery"}
+                {instagramTask.status === "active" || instagramTask.status === "waiting"
+                  ? instagramTask.message || "Setting up Instagram gallery..."
+                  : "Create Instagram Gallery"}
               </Button>
             </div>
           </div>

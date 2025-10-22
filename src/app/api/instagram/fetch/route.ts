@@ -76,7 +76,7 @@ export async function POST(request: NextRequest) {
             ownerId: post.ownerId,
             ownerUsername: post.ownerUsername,
             imageUrl: post.displayUrl,
-            localImageUrl: imageUpload?.url ?? post.displayUrl,
+            localImageUrl: imageUpload?.url,
             caption: post.caption || "",
             hashtags: post.hashtags || [],
             likesCount: post.likesCount || 0,

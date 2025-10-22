@@ -19,8 +19,7 @@ import { ShopOwner } from "../../ui/shop-ownership-check"
 import { useSite } from "../../../app/preview/components/site-context"
 import { AddBlockModal } from "../../../app/preview/components/add-block-modal"
 import { useBlockEdit } from "./context"
-import { deleteBlock as deleteBlockPreview } from "@/app/preview/[shopId]/actions"
-import { moveBlockUp, moveBlockDown } from "@/lib/actions/blocks"
+import { deleteBlock, moveBlockUp, moveBlockDown } from "@/lib/actions/blocks"
 import { toast } from "sonner"
 
 interface BlockSettingsPanelProps {
@@ -100,7 +99,7 @@ export const BlockSettingsPanel = ({
       if (!blockId) return
       const ok = window.confirm("Delete this block?")
       if (!ok) return
-      await deleteBlockPreview(blockId)
+      await deleteBlock(blockId)
       await refreshBlocks()
     }
   }, [onDeleteBlock, refreshBlocks, blockId])

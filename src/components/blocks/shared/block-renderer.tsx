@@ -10,8 +10,6 @@ import { EditStateProvider } from "../editable/edit-state-manager"
 export const BlockRenderer = () => {
   const { blocks, isLoadingLocalBlocks } = useSite()
 
-  console.log("blocks", isLoadingLocalBlocks)
-
   if (isLoadingLocalBlocks && blocks.length === 0) {
     return (
       <div className="flex min-h-[50vh] w-full items-center justify-center">

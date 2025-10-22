@@ -19,6 +19,9 @@ import { BlockEditProvider, useBlockEdit } from "@/components/blocks/editable/co
 import { DynamicSettings } from "@/components/blocks/shared/dynamic-settings"
 import { blockRegistry } from "@/lib/blocks"
 import { applyBackgroundWithExisting } from "@/components/blocks/shared/background"
+import { useTask } from "@/lib/tasks/use-task"
+import type { InstagramTaskResult } from "@/lib/queue/tasks/instagram"
+import { Progress } from "@/components/ui/progress"
 
 const truncateText = (text: string, maxLength: number) => {
   if (text.length <= maxLength) return text
@@ -40,20 +43,33 @@ const getAspectRatioClass = (aspectRatio: string) => {
 
 const getGridSpacingClasses = (spacing: string, verticalSpacing: string) => {
   const spacingMap = {
-    "none": "0",
-    "small": "2",
-    "medium": "4",
-    "large": "6"
+    none: "0",
+    small: "2",
+    medium: "4",
+    large: "6"
   }
 
   const horizontal = spacingMap[spacing as keyof typeof spacingMap] || "4"
   const vertical = spacingMap[verticalSpacing as keyof typeof spacingMap] || "4"
 
-  const result = horizontal === vertical ? `gap-${horizontal}` : `gap-x-${horizontal} gap-y-${vertical}`
+  return horizontal === vertical ? `gap-${horizontal}` : `gap-x-${horizontal} gap-y-${vertical}`
+}
 
-  console.log("Spacing debug:", { spacing, verticalSpacing, horizontal, vertical, result })
-
-  return result
+const getGridColumnsClass = (columns: number) => {
+  switch (columns) {
+    case 2:
+      return "grid-cols-1 md:grid-cols-2"
+    case 3:
+      return "grid-cols-1 md:grid-cols-2 lg:grid-cols-3"
+    case 4:
+      return "grid-cols-1 md:grid-cols-2 lg:grid-cols-4"
+    case 5:
+      return "grid-cols-1 md:grid-cols-2 lg:grid-cols-5"
+    case 6:
+      return "grid-cols-1 md:grid-cols-2 lg:grid-cols-6"
+    default:
+      return "grid-cols-1 md:grid-cols-2 lg:grid-cols-4"
+  }
 }
 
 const getHoverEffectClass = (hoverEffect: string) => {
@@ -95,8 +111,19 @@ const InstagramGalleryBlockContent = () => {
   const { content, handleEdit } = useBlockEdit<InstagramGalleryContent>()
   const [posts, setPosts] = useState<InstagramPost[]>()
   const [loading, setLoading] = useState(true)
-  const [refetching, setRefetching] = useState(false)
   const [currentIndex, setCurrentIndex] = useState(0)
+
+  const instagramTask = useTask<InstagramTaskResult>({
+    onComplete: (result) => {
+      if (result.success) {
+        toast.success(`Successfully fetched ${result.postsSaved} new posts`)
+        fetchPosts()
+      }
+    },
+    onError: (error) => {
+      toast.error(error || "Failed to fetch Instagram posts")
+    }
+  })
 
   const {
     title,
@@ -122,7 +149,6 @@ const InstagramGalleryBlockContent = () => {
     borderRadius,
     overlayOnHover
   } = { ...defaultInstagramGalleryContent, ...content }
-
   const backgroundProps = applyBackgroundWithExisting(background || { type: "none" })
 
   const fetchPosts = useCallback(async () => {
@@ -152,38 +178,16 @@ const InstagramGalleryBlockContent = () => {
       return
     }
 
-    setRefetching(true)
-
     try {
-      const response = await fetch("/api/instagram/fetch", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json"
-        },
-        body: JSON.stringify({
-          profileUrl: siteSettings.instagramUrl,
-          shopId
-        })
+      await instagramTask.startTask("instagram-fetch", {
+        profileUrl: siteSettings.instagramUrl,
+        shopId
       })
-
-      const result = await response.json()
-
-      if (result.success) {
-        toast.success(
-          `Successfully fetched ${result.postsSaved} new posts${result.duplicatesSkipped > 0 ? `, ${result.duplicatesSkipped} duplicates skipped` : ""}`
-        )
-        // Refresh the posts display
-        await fetchPosts()
-      } else {
-        toast.error(result.error || "Failed to fetch Instagram posts")
-      }
     } catch (error) {
-      console.error("Error refetching Instagram posts:", error)
-      toast.error("Failed to fetch Instagram posts. Please try again.")
-    } finally {
-      setRefetching(false)
+      console.error("Error starting Instagram fetch task:", error)
+      toast.error("Failed to start Instagram fetch. Please try again.")
     }
-  }, [siteSettings.instagramUrl, shopId, fetchPosts])
+  }, [siteSettings.instagramUrl, shopId, instagramTask])
 
   useEffect(() => {
     fetchPosts()
@@ -225,7 +229,7 @@ const InstagramGalleryBlockContent = () => {
             className={cn(
               "grid",
               `grid-cols-1 md:grid-cols-2 lg:grid-cols-${columns}`,
-              getSpacingClass(spacing)
+              getGridSpacingClasses(spacing, verticalSpacing)
             )}
           >
             {Array.from({ length: maxPosts }).map((_, i) => (
@@ -252,11 +256,13 @@ const InstagramGalleryBlockContent = () => {
                 ...section,
                 fields: section.fields.map((field) => {
                   if (field.name === "refetchPosts" && field.type === "button") {
+                    const isProcessing =
+                      instagramTask.status === "active" || instagramTask.status === "waiting"
                     return {
                       ...field,
-                      loading: refetching,
-                      disabled: refetching || !siteSettings.instagramUrl,
-                      text: refetching ? "Fetching..." : "Refetch Posts"
+                      loading: isProcessing,
+                      disabled: isProcessing || !siteSettings.instagramUrl,
+                      text: isProcessing ? instagramTask.message || "Fetching..." : "Refetch Posts"
                     }
                   }
                   return field
@@ -276,7 +282,10 @@ const InstagramGalleryBlockContent = () => {
         }}
       />
 
-      <section className={cn("w-full", !fullWidth && "py-12", backgroundProps.className)} style={backgroundProps.style}>
+      <section
+        className={cn("w-full", !fullWidth && "py-12", backgroundProps.className)}
+        style={backgroundProps.style}
+      >
         <div className="container mx-auto px-4">
           {(title || description) && (
             <div className="mb-12 text-center">
@@ -285,6 +294,19 @@ const InstagramGalleryBlockContent = () => {
                 <p className="mx-auto mb-8 max-w-2xl text-lg text-muted-foreground">
                   {description}
                 </p>
+              )}
+              {(instagramTask.status === "active" || instagramTask.status === "waiting") && (
+                <div className="mx-auto max-w-md space-y-2">
+                  <div className="flex items-center justify-between text-sm">
+                    <span className="text-muted-foreground">{instagramTask.message}</span>
+                    {instagramTask.progress && (
+                      <span className="font-medium">
+                        {Math.round(instagramTask.progress.percentage)}%
+                      </span>
+                    )}
+                  </div>
+                  <Progress value={instagramTask.progress?.percentage ?? 0} className="h-2" />
+                </div>
               )}
             </div>
           )}
@@ -314,12 +336,7 @@ const InstagramGalleryBlockContent = () => {
             <div
               className={cn(
                 "grid",
-                columns === 2 ? "grid-cols-1 md:grid-cols-2" :
-                columns === 3 ? "grid-cols-1 md:grid-cols-2 lg:grid-cols-3" :
-                columns === 4 ? "grid-cols-1 md:grid-cols-2 lg:grid-cols-4" :
-                columns === 5 ? "grid-cols-1 md:grid-cols-2 lg:grid-cols-5" :
-                columns === 6 ? "grid-cols-1 md:grid-cols-2 lg:grid-cols-6" :
-                "grid-cols-1 md:grid-cols-2 lg:grid-cols-4",
+                getGridColumnsClass(columns),
                 fullWidth ? "gap-0" : getGridSpacingClasses(spacing, verticalSpacing)
               )}
             >

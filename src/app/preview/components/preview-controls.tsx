@@ -23,7 +23,7 @@ export function PreviewControls({ shopId }: { shopId: string }) {
   const router = useRouter()
   const [isThemeModalOpen, setIsThemeModalOpen] = useState(false)
   const { isEditMode, setEditMode, publishSite, previewDimension, setPreviewDimension } = useSite()
-
+  console.log("isEditMode", isEditMode)
   const handleBack = () => {
     router.back()
   }
@@ -39,7 +39,7 @@ export function PreviewControls({ shopId }: { shopId: string }) {
   }
 
   return (
-    <ShopOwner shopId={shopId}>
+    <ShopOwner>
       <div className="fixed bottom-0 z-500 flex w-full items-center gap-2 rounded-lg border border-border p-3 backdrop-blur-sm">
         <Button
           variant="outline"

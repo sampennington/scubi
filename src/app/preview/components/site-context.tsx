@@ -1,6 +1,6 @@
 "use client"
 
-import { createContext, useContext, useState, useEffect, type ReactNode, useCallback } from "react"
+import { createContext, useContext, useState, useEffect, type ReactNode, useCallback, useMemo } from "react"
 import type { Block, NavigationItem, Page } from "@/lib/api"
 import type { SiteSettings } from "@/lib/api/types"
 import { getBlocks } from "@/lib/actions/blocks"
@@ -84,7 +84,7 @@ export function TemplateProvider({
     fetchBlocks(currentPage.id)
   }, [currentPage.id, fetchBlocks])
 
-  const setEditMode = (enabled: boolean) => {
+  const setEditMode = useCallback((enabled: boolean) => {
     setIsEditMode(enabled)
 
     // Update URL without navigation
@@ -95,31 +95,54 @@ export function TemplateProvider({
       newUrl.searchParams.set("edit", "false")
     }
     window.history.replaceState({}, "", newUrl.toString())
-  }
+  }, [])
+
+  const publishSite = useCallback(() => null, [])
+
+  const refreshBlocks = useCallback(() => fetchBlocks(currentPage.id), [fetchBlocks, currentPage.id])
+
+  const contextValue = useMemo(
+    () => ({
+      shopId,
+      isEditMode,
+      setEditMode,
+      previewDimension,
+      setPreviewDimension,
+      siteSettings,
+      blocks,
+      setBlocks,
+      pages,
+      currentPage,
+      currentPath,
+      isShopOwner,
+      publishSite,
+      refreshBlocks,
+      refreshSiteSettings: fetchSiteSettings,
+      isLoadingLocalBlocks,
+      blockSettingsActive,
+      setBlockSettingsActive
+    }),
+    [
+      shopId,
+      isEditMode,
+      setEditMode,
+      previewDimension,
+      siteSettings,
+      blocks,
+      pages,
+      currentPage,
+      currentPath,
+      isShopOwner,
+      publishSite,
+      refreshBlocks,
+      fetchSiteSettings,
+      isLoadingLocalBlocks,
+      blockSettingsActive
+    ]
+  )
 
   return (
-    <SiteContext.Provider
-      value={{
-        shopId,
-        isEditMode,
-        setEditMode,
-        previewDimension,
-        setPreviewDimension,
-        siteSettings,
-        blocks,
-        setBlocks,
-        pages,
-        currentPage,
-        currentPath,
-        isShopOwner,
-        publishSite: () => null,
-        refreshBlocks: () => fetchBlocks(currentPage.id),
-        refreshSiteSettings: fetchSiteSettings,
-        isLoadingLocalBlocks,
-        blockSettingsActive,
-        setBlockSettingsActive
-      }}
-    >
+    <SiteContext.Provider value={contextValue}>
       {children}
     </SiteContext.Provider>
   )

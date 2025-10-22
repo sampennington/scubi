@@ -1,6 +1,6 @@
 "use client"
 
-import { createContext, useContext, useState, useRef, useEffect, type ReactNode } from "react"
+import { createContext, useContext, useState, useRef, useEffect, useCallback, useMemo, type ReactNode } from "react"
 
 interface EditStateContextValue {
   activeEditId: string | null
@@ -15,24 +15,30 @@ export function EditStateProvider({ children }: { children: ReactNode }) {
   const [activeEditId, setActiveEditId] = useState<string | null>(null)
   const editorsRef = useRef<Map<string, () => void>>(new Map())
 
-  const registerEditor = (id: string, onBlur: () => void) => {
+  const registerEditor = useCallback((id: string, onBlur: () => void) => {
     editorsRef.current.set(id, onBlur)
-  }
+  }, [])
 
-  const unregisterEditor = (id: string) => {
+  const unregisterEditor = useCallback((id: string) => {
     editorsRef.current.delete(id)
-  }
+  }, [])
 
-  const handleSetActiveEditId = (id: string | null) => {
-    // If switching to a different editor, blur the current one
-    if (activeEditId && activeEditId !== id) {
-      const currentEditor = editorsRef.current.get(activeEditId)
+  const handleSetActiveEditId = useCallback((id: string | null) => {
+    // Get the current active ID before updating
+    const currentActiveId = activeEditId
+
+    // If switching to a different editor, blur the current one (deferred)
+    if (currentActiveId && currentActiveId !== id) {
+      const currentEditor = editorsRef.current.get(currentActiveId)
       if (currentEditor) {
-        currentEditor()
+        // Defer the blur to avoid updating during render
+        setTimeout(() => currentEditor(), 0)
       }
     }
+
+    // Update the active ID
     setActiveEditId(id)
-  }
+  }, [activeEditId])
 
   useEffect(() => {
     const handleGlobalClick = (e: MouseEvent) => {
@@ -56,17 +62,20 @@ export function EditStateProvider({ children }: { children: ReactNode }) {
 
     document.addEventListener("mousedown", handleGlobalClick, true)
     return () => document.removeEventListener("mousedown", handleGlobalClick, true)
-  }, [activeEditId])
+  }, [activeEditId, handleSetActiveEditId])
+
+  const contextValue = useMemo(
+    () => ({
+      activeEditId,
+      setActiveEditId: handleSetActiveEditId,
+      registerEditor,
+      unregisterEditor
+    }),
+    [activeEditId, handleSetActiveEditId, registerEditor, unregisterEditor]
+  )
 
   return (
-    <EditStateContext.Provider
-      value={{
-        activeEditId,
-        setActiveEditId: handleSetActiveEditId,
-        registerEditor,
-        unregisterEditor
-      }}
-    >
+    <EditStateContext.Provider value={contextValue}>
       {children}
     </EditStateContext.Provider>
   )

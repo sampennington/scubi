@@ -7,10 +7,11 @@ import {
   useEffect,
   useRef,
   useCallback,
+  useMemo,
   type ReactNode
 } from "react"
 import { setProperty } from "dot-prop"
-import { updateBlock } from "@/app/dashboard/shops/[id]/actions"
+import { updateBlock } from "@/lib/actions/blocks"
 import type { BlockType } from "@/database/schema"
 import type { Block } from "@/lib/api"
 
@@ -70,37 +71,40 @@ export const BlockEditProvider = <T extends Record<string, unknown>>({
     [id, type]
   )
 
-  const handleEdit = async (
-    fieldPath: string,
-    value: string | number | boolean | object | Array<unknown>,
-    debounce: boolean = false
-  ) => {
-    if (!id) {
-      console.warn("No blockId or not in edit mode")
-      return
-    }
+  const handleEdit = useCallback(
+    async (
+      fieldPath: string,
+      value: string | number | boolean | object | Array<unknown>,
+      debounce: boolean = false
+    ) => {
+      if (!id) {
+        console.warn("No blockId or not in edit mode")
+        return
+      }
 
-    const updatedContent = setProperty(localContent, fieldPath, value)
-    setLocalContent({ ...updatedContent })
+      const updatedContent = setProperty(localContent, fieldPath, value)
+      setLocalContent({ ...updatedContent })
 
-    if (debounceTimeoutRef.current) {
-      clearTimeout(debounceTimeoutRef.current)
-    }
+      if (debounceTimeoutRef.current) {
+        clearTimeout(debounceTimeoutRef.current)
+      }
 
-    if (debounce) {
-      pendingUpdateRef.current = { content: updatedContent, fieldPath, value }
-      debounceTimeoutRef.current = setTimeout(() => {
-        debouncedUpdateBlock(updatedContent)
-      }, 500)
-    } else {
-      setIsSaving(true)
-      await updateBlock(id, {
-        content: updatedContent,
-        type: type as BlockType
-      })
-      setIsSaving(false)
-    }
-  }
+      if (debounce) {
+        pendingUpdateRef.current = { content: updatedContent, fieldPath, value }
+        debounceTimeoutRef.current = setTimeout(() => {
+          debouncedUpdateBlock(updatedContent)
+        }, 500)
+      } else {
+        setIsSaving(true)
+        await updateBlock(id, {
+          content: updatedContent,
+          type: type as BlockType
+        })
+        setIsSaving(false)
+      }
+    },
+    [id, type, localContent, debouncedUpdateBlock]
+  )
 
   useEffect(() => {
     return () => {
@@ -110,16 +114,19 @@ export const BlockEditProvider = <T extends Record<string, unknown>>({
     }
   }, [])
 
+  const contextValue = useMemo(
+    () => ({
+      handleEdit,
+      isSaving,
+      blockId: id,
+      order,
+      content: localContent
+    }),
+    [handleEdit, isSaving, id, order, localContent]
+  )
+
   return (
-    <BlockEditContext.Provider
-      value={{
-        handleEdit,
-        isSaving,
-        blockId: id,
-        order,
-        content: localContent
-      }}
-    >
+    <BlockEditContext.Provider value={contextValue}>
       {children}
     </BlockEditContext.Provider>
   )

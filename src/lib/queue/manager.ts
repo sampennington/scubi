@@ -1,5 +1,6 @@
 import { TaskQueue } from "./task-queue"
 import { scraperTaskDefinition } from "./tasks/scraper"
+import { instagramTaskDefinition } from "./tasks/instagram"
 
 export class TaskManager {
   private static instance: TaskManager
@@ -29,6 +30,7 @@ export class TaskManager {
 
   private registerTasks(): void {
     this.taskQueue.registerTask("website-scraper", scraperTaskDefinition)
+    this.taskQueue.registerTask("instagram-fetch", instagramTaskDefinition)
   }
 
   getTaskQueue(): TaskQueue {
@@ -37,6 +39,10 @@ export class TaskManager {
 
   async addScraperTask(domain: string, shopId?: string): Promise<string> {
     return this.taskQueue.addJob("website-scraper", { domain, shopId })
+  }
+
+  async addInstagramTask(profileUrl: string, shopId: string): Promise<string> {
+    return this.taskQueue.addJob("instagram-fetch", { profileUrl, shopId })
   }
 
   async getTaskStatus(taskType: string, jobId: string): Promise<string | null> {
